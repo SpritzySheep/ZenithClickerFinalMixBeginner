@@ -615,7 +615,7 @@ BEST = {
 }
 
 STAT = {
-    mod = 'vanilla',
+    mod = 'finalmixbeg',
     version = nil, -- will be set after loading
     system = SYSTEM,
     joinDate = os.date("%b %Y"),
