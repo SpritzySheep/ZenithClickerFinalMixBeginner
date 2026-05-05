@@ -14,13 +14,13 @@ if love['_os'] == 'Web' then
 end
 
 function love.conf(t)
-    local identity = 'Zenith_Clicker'
+    local identity = 'Zenith_Clicker_FM_Beginner'
     local mobile = love._os == 'Android' or love._os == 'iOS'
 
     local fs = love.filesystem
     fs.setIdentity(identity)
 
-    t.identity = 'Zenith_Clicker'
+    t.identity = 'Zenith_Clicker_FM_Beginner'
     t.externalstorage = true
     t.version = "11.4"
     t.gammacorrect = false
