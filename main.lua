@@ -542,20 +542,20 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     zpChange   = GC.newText(FONT.get(30)),
     dcBest     = GC.newText(FONT.get(30)),
     dcTimer    = GC.newText(FONT.get(30)),
-    title      = GC.newText(FONT.get(50), "EXPERT QUICK PICK"),
-    load       = GC.newText(FONT.get(50), "JOINING ROOM..."),
+    title      = GC.newText(FONT.get(50), "EXPERT GAMEPLAY"),
+    load       = GC.newText(FONT.get(50), "LOAD"),
     pb         = GC.newText(FONT.get(50)),
     endResult  = GC.newText(FONT.get(30)),
     endHeight  = GC.newText(FONT.get(50)),
     endFloor   = GC.newText(FONT.get(30)),
-    linePB     = GC.newText(FONT.get(50), "PB"),
+    linePB     = GC.newText(FONT.get(50), "PR"),
     lineKM     = GC.newText(FONT.get(50), "1000"),
     height     = GC.newText(FONT.get(30)),
     time       = GC.newText(FONT.get(30)),
     rank       = GC.newText(FONT.get(30)),
     chain      = GC.newText(FONT.get(50)),
     chain2     = GC.newText(FONT.get(50, 'led')),
-    b2b        = GC.newText(FONT.get(30), "B2B x"),
+    b2b        = GC.newText(FONT.get(30), "Chain"),
     spike      = GC.newText(FONT.get(50)),
     gigaspeed  = GC.newText(FONT.get(50), {
         COLOR.dR, "G", COLOR.dO, "I", COLOR.dY, "G",
@@ -570,11 +570,11 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
-    slogan     = GC.newText(FONT.get(30), "CROWD THE TOWER!"),
-    slogan_EX  = GC.newText(FONT.get(30), "THRONG THE TOWER!"),
-    slogan_rEX = GC.newText(FONT.get(30), "OVERFLOW THE TOWER!"),
+    slogan     = GC.newText(FONT.get(30), "FINAL MIX BEGINNER"),
+    slogan_EX  = GC.newText(FONT.get(30), "FINAL MIX BEGINNER EXTRA"),
+    slogan_rEX = GC.newText(FONT.get(30), "FINAL MIX BEGINNER FINAL"),
     forfeit    = GC.newText(FONT.get(50), "KEEP HOLDING TO FORFEIT"),
-    credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO"),
+    credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO, Original game by Mr. Z"),
     test       = GC.newText(FONT.get(50), "TEST"),
 }
 if not FontLoaded then
@@ -626,7 +626,7 @@ STAT = {
         "a", "s", "d", "f", "g", "h", "j", "k", "l",
         "space", "z", "x", "c"
     },
-    aboutme = "Click the Zenith!",
+    aboutme = "Zenith Extra",
     maxFloor = 1,
     maxHeight = 0,
     heightDate = "NO DATE",
@@ -659,10 +659,10 @@ STAT = {
 
     fullscreen = true,
     syscursor = false,
-    cardBrightness = 90,
-    bgBrightness = 40,
+    cardBrightness = 100,
+    bgBrightness = 30,
     bg = true,
-    sfx = 60,
+    sfx = 100,
     bgm = 100,
 
     autoMute = false,
@@ -1657,8 +1657,8 @@ function Daemon_Fast()
     local expApproach = MATH.expApproach
     local deckSize = #ModData.deck
 
-    local startBtnTexts = { "START", "STAR", "STA", "ST", "S", "", "C", "CO", "COM", "COMM", "COMME", "COMMEN", "COMMENC", "COMMENCE" }
-    local resetBtnTexts = { "RESET", "RESE", "RES", "RE", "R", "", "S", "SP", "SPI", "SPIN" }
+    local startBtnTexts = { "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT" }
+    local resetBtnTexts = { "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR" }
     local startBtnPtr = 1
     local resetBtnPtr = 1
 
@@ -1811,8 +1811,8 @@ else
     DiscordRPC.setAppID('1341822039253712989')
     DiscordRPC.setEnable(true)
     DiscordRPC.update {
-        details = "QUICK PICK",
-        state = "Enjoying Music",
+        details = "FM BEGINNER",
+        state = "In Menu",
     }
 end
 
