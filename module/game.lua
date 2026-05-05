@@ -834,7 +834,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
 end
 
 function GAME.addHeight(h, realHeight)
-    h = h * (realHeight and 1 or GAME.rank / 4)
+    h = h * (realHeight and 1 or GAME.rank)
     GAME.heightBonus = GAME.heightBonus + h
     GAME.heightBuffer = GAME.heightBuffer + h
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
@@ -847,28 +847,28 @@ function GAME.addXP(xp)
 
     local oldRank = GAME.rank
     local oldLockTimer = GAME.xpLockTimer
-    while GAME.xp >= 4 * GAME.rank do
+    while GAME.xp >= 1 do
         GAME.xp = GAME.xp - 4 * GAME.rank
         GAME.rank = GAME.rank + 1
         GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
 
         -- Rank skip
-        if GAME.xp >= 2 * GAME.rank then
+        if GAME.xp >= 2 then
             GAME.xpLockLevel = GAME.xpLockLevelMax
-            if GAME.xp >= 4 * GAME.rank then
-                GAME.rank = GAME.rank + floor(GAME.xp / (4 * GAME.rank))
+            if GAME.xp >= 4 then
+                GAME.rank = GAME.rank + floor(GAME.xp / (4))
             end
         end
     end
     if GAME.rank > GAME.rankLimit then
-        GAME.rank = GAME.rankLimit
-        GAME.xp = 4 * GAME.rank
+        GAME.rank = GAME.rank
+        GAME.xp = GAME.xp
     end
     if GAME.rank ~= oldRank then
         GAME.xpLockTimer = GAME.xpLockLevel
         GAME.rankupLast = true
         GAME.peakRank = max(GAME.peakRank, GAME.rank)
-        TEXTS.rank:set("R-" .. GAME.rank)
+        TEXTS.rank:set("Speed Lv" .. GAME.rank - 1)
         SFX.play('speed_up_' .. (speedupSFX[GAME.rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(GAME.rank / 4, 1))
         -- if GAME.height > 0 and not GAME.gigaspeedEntered and GAME.rank >= GigaSpeedReq[max(GAME.floor, (GAME.negFloor - 1) % 10 + 1)] then
         if not GAME.gigaspeed and GAME.height > 0 and GAME.rank >= GigaSpeedReq[GAME.floor] then
