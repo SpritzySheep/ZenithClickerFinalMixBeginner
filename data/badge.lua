@@ -107,7 +107,17 @@ local d = {
     {
         id = 'ascendant',
         name = "Ascendant",
-        desc = "Gather 40,0000 Chakra Escence",
+        desc = "Gather 40,000 Chakra Escence",
+    },
+    {
+        id = 'ascension',
+        name = "Ascension",
+        desc = "Gather 50,000 Chakra Escence",
+    },
+    {
+        id = 'ascension2',
+        name = "Ascension Phase 2",
+        desc = "Gather 60,000 Chakra Escence",
     },
 }
 

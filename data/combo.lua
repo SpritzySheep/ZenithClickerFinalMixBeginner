@@ -48,6 +48,18 @@ d.menu = {
     { set = "MS VL AS",           name = "Human Experiment" },
     { set = "EX GV DH",           name = "Thermal Anomaly" },
     { set = "MS GV AS",           name = "Dazed" },
+    { set = "EX NH",              name = "A Fair Leader" },
+    { set = "EX GV",              name = "Invictus" },
+    { set = "DH EX",              name = "The Devil's Temptation" },
+    { set = "EX IN",              name = "The Emperor's Dilemma" },
+    { set = "AS EX",              name = "The Dancing Queen" },
+    { set = "MS NH",              name = "All In" },
+    { set = "NH VL",              name = "Resistance" },
+    { set = "DH NH",              name = "Purgatory Lite" },
+    { set = "IN NH",              name = "Helen Keller" },
+    { set = "DP NH",              name = "Hand in Hand" },
+    { set = "GV MS",              name = "Cheese Race" },
+    { set = "MS VL",              name = "Swiss Cheese" },
 }
 
 d.game = {

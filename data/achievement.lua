@@ -962,7 +962,6 @@ local d = {
         quote = [[The impossible promise of an eternity just like this moment.]],
         scoreSimp = heightNumber,
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
-        type = 'event',
     },
 
     { title = "Supercharged Clone", credit = "@Garbo" },
@@ -1045,7 +1044,7 @@ local d = {
     { -- human_experiment
         ex = true,
         id = 'human_experiment',
-        name = "Human Experiment",
+        name = "Mouse Experiment",
         desc = [[Shortest time spent in F7 with MS VL AS]],
         quote = [["You can assure me that this is safe, right?"]],
         comp = '<',
@@ -1472,7 +1471,7 @@ local d = {
         type = 'issued',
     },
 
-    { title = "FINAL MIX BEGINNER"},
+    { title = "FINAL MIX BEGINNER - 2 MP Combos"},
 
     { -- EXNH
         id = 'EXNH',
@@ -1497,7 +1496,7 @@ local d = {
     },
     { -- EXIN
         id = 'EXIN',
-        name = "The Emperor's Dilema",
+        name = "The Emperor's Dilemma",
         desc = [[HFD with EX IN]],
         quote = [[The Emperor's new clothes took on a whole other meaning.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
@@ -1514,6 +1513,48 @@ local d = {
         name = "All In",
         desc = [[HFD with NH MS]],
         quote = [[Just eat the entire poker table.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- NHVL
+        id = 'NHVL',
+        name = "Resistance",
+        desc = [[HFD with NH VL]],
+        quote = [[What doesn't kill you doesn't kill you.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DHNH
+        id = 'DHNH',
+        name = "Purgatory Lite",
+        desc = [[HFD with NH DH]],
+        quote = [[Soda that kills.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- INNH
+        id = 'INNH',
+        name = "Helen Keller",
+        desc = [[HFD with NH IN]],
+        quote = [[Genuinely don't even know who this is.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DPNH
+        id = 'DPNH',
+        name = "Hand in Hand",
+        desc = [[HFD with NH DP]],
+        quote = [[Should really pay Traverse Town a vist sometime.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- GVMS
+        id = 'GVMS',
+        name = "Cheese Race",
+        desc = [[HFD with MS GV]],
+        quote = [[A shaman's worst nightmare.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- MSVL
+        id = 'MSVL',
+        name = "Swiss Cheese",
+        desc = [[HFD with MS VL]],
+        quote = [[Probably what those cheese coins are made of.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
 }

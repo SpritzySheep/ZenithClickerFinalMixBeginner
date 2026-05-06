@@ -1585,7 +1585,7 @@ scene.widgetList = {
         color = { .35, .12, .05 },
         textColor = TextColor,
         sound_hover = 'menuhover',
-        fontSize = 70, text = "START",
+        fontSize = 70, text = "COMMIT",
         onPress = function(k)
             if k == 3 then return end
             HoldingButtons.startBtn = true
@@ -1608,7 +1608,7 @@ scene.widgetList = {
         pos = { .5, .5 }, x = 500, y = -120, w = 160, h = 100,
         color = 'DR',
         sound_hover = 'menutap',
-        fontSize = 30, text = "RESET", textColor = TextColor,
+        fontSize = 30, text = "CLEAR", textColor = TextColor,
         onPress = function(k)
             if k == 3 then return end
             HoldingButtons.resetBtn = true

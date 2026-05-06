@@ -170,6 +170,15 @@ TEXTURE = {
             assets 'rank/x.png',
             assets 'rank/x+.png',
             assets 'rank/xx.png',
+            assets 'rank/y-.png',
+            assets 'rank/y.png',
+            assets 'rank/y+.png',
+            assets 'rank/z-.png',
+            assets 'rank/z2.png',
+            assets 'rank/z+.png',
+            assets 'rank/k-.png',
+            assets 'rank/k.png',
+            assets 'rank/k+.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -352,6 +361,12 @@ TEXTURE = {
             EXIN = aq(16, 7),
             ASEX = aq(1, 8),
             MSNH = aq(9, 8),
+            NHVL = aq(10, 8),
+            DHNH = aq(5, 7),
+            INNH = aq(11, 8),
+            DPNH = aq(12, 8),
+            GVMS = aq(13, 8),
+            MSVL = aq(7, 5),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1668,7 +1683,7 @@ function Daemon_Fast()
     local deckSize = #ModData.deck
 
     local startBtnTexts = { "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT", "COMMIT" }
-    local resetBtnTexts = { "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR" }
+    local resetBtnTexts = { "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "CLEAR", "SPIN" }
     local startBtnPtr = 1
     local resetBtnPtr = 1
 

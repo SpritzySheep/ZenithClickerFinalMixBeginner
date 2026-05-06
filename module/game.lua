@@ -346,7 +346,7 @@ function GAME.getComboName(list, mode)
             end
             -- Random gray
             for i = #fstr, 1, -1 do
-                ins(fstr, i, { MATH.rand(0, 1), MATH.rand(0, 1), MATH.rand(0, 1) })
+                ins(fstr, i, { MATH.rand(1, 1), MATH.rand(1, 1), MATH.rand(1, 1) })
             end
             if M.IN == 0 then
                 local colors = {}

@@ -81,7 +81,7 @@ local function calculateRating()
 
     cr = cr + crProgress.achvGet * 5
 
-    cr = cr + ((crProgress.achvGet * crProgress.achvGet)/20)
+    cr = cr + ((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))
 
     -- ACHV Wreath (competitive achievement count)
     for i = 1, #Achievements do
@@ -96,6 +96,9 @@ local function calculateRating()
     end
 
     if cr >= 25000 then IssueSecret('champion', true) end
+    if cr >= 40000 then IssueSecret('ascendant', true) end
+    if cr >= 50000 then IssueSecret('ascension', true) end
+    if cr >= 60000 then IssueSecret('ascension2', true) end
 
     return MATH.round(cr), cap
 end
@@ -246,7 +249,8 @@ function RefreshProfile()
         if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
         if rating >= 40000 then clickerLV = clickerLV + 1 end
         if rating >= 50000 then clickerLV = clickerLV + 1 end
-        if rating == cap then clickerLV = clickerLV + 1 end
+        if rating >= 60000 then clickerLV = clickerLV + 1 end
+        if rating >= 25000 then clickerLV = clickerLV + 1 end
         for i = 0, clickerLV - 1 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
@@ -279,6 +283,8 @@ function RefreshProfile()
     GC.print("CHAKRA ESSENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
+        rating >= 60000 and "ASCENDED, PHASE 2" or
+        rating >= 50000 and "ASCENDED" or
         rating >= 40500 and "ASCENSION READY" or
         rating >= 40000 and "THE VERY BEST!" or
         rating >= 37000 and "ALMOST THERE!" or
@@ -296,8 +302,7 @@ function RefreshProfile()
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
-        STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 <= 62 and 0 or
-        MATH.clamp(math.ceil(rating / 2000), 1, 21)
+        MATH.clamp(math.ceil(rating / 2000), 1, 30)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
