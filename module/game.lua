@@ -278,25 +278,25 @@ end
 ---@param list string[]
 function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
-    local zp = 1
-    if m.EX then zp = zp * 1.4 elseif m.rEX then zp = zp * 2.6 end
-    if m.NH then zp = zp * 1.1 elseif m.rNH then zp = zp * (1.4 + .05 * (#list - 1)) end
-    if m.MS then zp = zp * 1.2 elseif m.rMS then zp = zp * 1.7 end
-    if m.GV then zp = zp * 1.1 elseif m.rGV then zp = zp * 1.2 end
-    if m.VL then zp = zp * 1.1 elseif m.rVL then zp = zp * (1.2 + .02 * (#list - 1)) end
-    if m.DH then zp = zp * 1.2 elseif m.rDH then zp = zp * 1.6 end
-    if m.IN then zp = zp * 1.2 elseif m.rIN then zp = zp * 1.6 end
-    if m.AS then zp = zp * .85 elseif m.rAS then zp = zp * 1.0 end
-    if m.DP then zp = zp * .95 elseif m.rDP then zp = zp * 2.1 end
-    if m.rMS and m.rGV then zp = zp * 1.1 end
-    if m.rEX and m.rVL then zp = zp * 1.2 end
-    if m.rDH and m.rIN then zp = zp * 1.4 end
-    if m.rEX and m.rDP then zp = zp * 0.84 end
+    local zp = 2
+    if m.EX then zp = zp * 2.8 elseif m.rEX then zp = zp * 5.2 end
+    if m.NH then zp = zp * 2.2 elseif m.rNH then zp = zp * (2.8 + .1 * (#list - 1)) end
+    if m.MS then zp = zp * 2.4 elseif m.rMS then zp = zp * 3.4 end
+    if m.GV then zp = zp * 2.2 elseif m.rGV then zp = zp * 2.4 end
+    if m.VL then zp = zp * 2.2 elseif m.rVL then zp = zp * (2.4 + .04 * (#list - 1)) end
+    if m.DH then zp = zp * 2.4 elseif m.rDH then zp = zp * 3.2 end
+    if m.IN then zp = zp * 2.4 elseif m.rIN then zp = zp * 3.2 end
+    if m.AS then zp = zp * 1.7 elseif m.rAS then zp = zp * 2.0 end
+    if m.DP then zp = zp * 1.9 elseif m.rDP then zp = zp * 4.2 end
+    if m.rMS and m.rGV then zp = zp * 2.2 end
+    if m.rEX and m.rVL then zp = zp * 2.4 end
+    if m.rDH and m.rIN then zp = zp * 2.8 end
+    if m.rEX and m.rDP then zp = zp * 1.68 end
 
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
-    if hardCnt >= 2 then zp = zp * 0.99 ^ (hardCnt - 1) end
-    if zp > 99.98 then zp = 100 end -- Current Abyss: 99.99x
+    if hardCnt >= 2 then zp = zp * 1.98 ^ (hardCnt - 1) end
+    if zp > 99.98 then zp = zp end -- Current Abyss: 99.99x
 
     return zp
 end
@@ -346,7 +346,7 @@ function GAME.getComboName(list, mode)
             end
             -- Random gray
             for i = #fstr, 1, -1 do
-                ins(fstr, i, { MATH.rand(.872, 1), MATH.rand(.872, 1), MATH.rand(.872, 1) })
+                ins(fstr, i, { MATH.rand(0, 1), MATH.rand(0, 1), MATH.rand(0, 1) })
             end
             if M.IN == 0 then
                 local colors = {}
@@ -613,10 +613,10 @@ function GAME.genQuest()
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
         if questCount == 1 then
             -- Prevent 1-mod quest being DP
-            pool.DP = 0
+            pool.DP = 8
         elseif M.DH == 2 then
             -- Reduce DP on rDH
-            pool.DP = pool.DP * .5
+            pool.DP = pool.DP * 7
         end
         for _ = 1, questCount do
             local mod = MATH.randFreqAll(pool)
@@ -834,7 +834,7 @@ function GAME.takeDamage(dmg, reason, toAlly)
 end
 
 function GAME.addHeight(h, realHeight)
-    h = h * (realHeight and 1 or GAME.rank)
+    h = h * (realHeight and 1 or GAME.rank - 1)
     GAME.heightBonus = GAME.heightBonus + h
     GAME.heightBuffer = GAME.heightBuffer + h
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
@@ -847,16 +847,16 @@ function GAME.addXP(xp)
 
     local oldRank = GAME.rank
     local oldLockTimer = GAME.xpLockTimer
-    while GAME.xp >= 1 do
+    while GAME.xp >= GAME.rank do
         GAME.xp = GAME.xp - 4 * GAME.rank
         GAME.rank = GAME.rank + 1
         GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
 
         -- Rank skip
-        if GAME.xp >= 2 then
+        if GAME.xp >= GAME.rank then
             GAME.xpLockLevel = GAME.xpLockLevelMax
-            if GAME.xp >= 4 then
-                GAME.rank = GAME.rank + floor(GAME.xp / (4))
+            if GAME.xp >= 2 * GAME.rank then
+                GAME.rank = GAME.rank + floor(GAME.xp/1.5)
             end
         end
     end
@@ -2149,7 +2149,7 @@ function GAME.start()
 
     -- Rank
     GAME.rank = 1
-    TEXTS.rank:set("R-1")
+    TEXTS.rank:set("Speed Lv0")
     GAME.xp = 0
     GAME.rankupLast = false
     GAME.xpLockLevel = GAME.xpLockLevelMax

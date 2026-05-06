@@ -104,6 +104,11 @@ local d = {
         name = "Successor",
         desc = "Have a better score than Dev on 62% achievements",
     },
+    {
+        id = 'ascendant',
+        name = "Ascendant",
+        desc = "Gather 40,0000 Chakra Escence",
+    },
 }
 
 for i = 1, #d do

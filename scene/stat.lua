@@ -55,29 +55,33 @@ local function getAchvCompletion()
 end
 local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
 local function calculateRating()
-    local cap = 25000
+    local cap = 999999999999999
     local cr = 0
 
     -- Best height (5K)
-    cr = cr + 5000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
+    cr = cr + 6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
 
     -- Best time (5K)
-    cr = cr + 5000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
+    cr = cr + 6000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
 
     -- Mod completion (3K)
-    cr = cr + 3000 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)
+    cr = cr + 3600 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)
 
     -- Mod speedrun (2K)
-    cr = cr + 2000 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)
+    cr = cr + 2400 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)
 
     -- Zenith point (3K)
-    cr = cr + 3000 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
+    cr = cr + 3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
 
     -- Daily challenge (2K)
-    cr = cr + 2000 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
+    cr = cr + 2400 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
 
     -- Achievement (5K)
-    cr = cr + 5000 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)
+    cr = cr + (7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6))
+
+    cr = cr + crProgress.achvGet * 5
+
+    cr = cr + ((crProgress.achvGet * crProgress.achvGet)/20)
 
     -- ACHV Wreath (competitive achievement count)
     for i = 1, #Achievements do
@@ -86,7 +90,7 @@ local function calculateRating()
             cap = cap + 1
             local r = A.rank(ACHV[A.id] or A.noScore or 0)
             if r == 5.9999 then
-                cr = cr + 1
+                cr = cr + 37
             end
         end
     end
@@ -194,7 +198,7 @@ function RefreshProfile()
 
     -- ID
     FONT.set(30)
-    GC.print(("Joined " .. STAT.joinDate):upper(), 165, 96, 0, .7)
+    GC.print(("Joined on " .. STAT.joinDate):upper(), 165, 96, 0, .7)
     FONT.set(50)
     GC.setColor(COLOR.L)
     GC.print(STAT.uid, 165, 18, 0, 1.2)
@@ -240,7 +244,8 @@ function RefreshProfile()
         if STAT.totalTime >= 3600 * 26 then clickerLV = clickerLV + 1 end
         if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then clickerLV = clickerLV + 1 end
         if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
-        if rating >= 25000 then clickerLV = clickerLV + 1 end
+        if rating >= 40000 then clickerLV = clickerLV + 1 end
+        if rating >= 50000 then clickerLV = clickerLV + 1 end
         if rating == cap then clickerLV = clickerLV + 1 end
         for i = 0, clickerLV - 1 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
@@ -271,14 +276,14 @@ function RefreshProfile()
     GC.setColor(rating <= 25000 and lblColor or textColor)
     GC.line(7, bh - 30, bw - 7, bh - 30)
     GC.setColor(lblColor)
-    GC.print("CLICKER  LEAGUE", 7, 2, 0, .8)
+    GC.print("CHAKRA ESSENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
-        rating >= cap and "THE CHOSEN ONE." or
-        rating >= 25000 and "THE VERY BEST!" or
-        rating >= 24500 and "ALMOST THERE!" or
-        rating >= 23800 and "YOU ARE GETTING THERE!" or
-        rating >= 22050 and "YOU'RE NOT FAR OFF." or
+        rating >= 40500 and "ASCENSION READY" or
+        rating >= 40000 and "THE VERY BEST!" or
+        rating >= 37000 and "ALMOST THERE!" or
+        rating >= 34000 and "YOU ARE GETTING THERE!" or
+        rating >= 30000 and "YOU'RE NOT FAR OFF." or
         "CALCULATED FROM CAREER"
     )
     GC.mDraw(t30, bw / 2, 105, 0, .7)
@@ -286,24 +291,24 @@ function RefreshProfile()
     GC.setColor(scoreColor)
     dblMidDraw(t50, bw / 2, bh / 2 - 4)
     -- CR
-    t30:set("CR")
+    t30:set("CE")
     GC.setColor(scoreColor)
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
         STAT.totalTime / 60 + STAT.totalFloor / 9 + STAT.totalGiga / 2 <= 62 and 0 or
-        MATH.clamp(math.ceil(rating / 1400), 1, 18)
+        MATH.clamp(math.ceil(rating / 2000), 1, 21)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
     if rank > 0 then
         -- Progress Bar
-        GC.setColor(rating <= 25000 and textColor or scoreColor)
+        GC.setColor(rating <= rating and textColor or scoreColor)
         GC.line(7, bh - 30,
             MATH.lerp(7, bw - 7,
-                rank <= 17 and rating % 1400 / 1400 or
-                rating <= 25000 and MATH.iLerp(23800, 25000, rating) or
-                MATH.iLerp(25000, cap, rating)),
+                rank <= rank and rating % 2000 / 2000 or
+                rating <= 999999999 and MATH.iLerp(23800, 999999999, rating) or
+                MATH.iLerp(999999999, cap, rating)),
             bh - 30
         )
     end
@@ -315,7 +320,7 @@ function RefreshProfile()
     GC.rectangle('fill', 0, 0, bw, bh)
     FONT.set(30)
     GC.setColor(lblColor)
-    GC.print("MAX  ALTITUDE", 7, 2, 0, .8)
+    GC.print("BEST ASCENSION", 7, 2, 0, .8)
     GC.line(7, bh - 30, bw - 7, bh - 30)
     GC.setColor(textColor)
     t30:set(STAT.heightDate)
@@ -334,7 +339,7 @@ function RefreshProfile()
     GC.rectangle('fill', 0, 0, bw, bh)
     FONT.set(30)
     GC.setColor(lblColor)
-    GC.print("FASTEST  SPEEDRUN", 7, 2, 0, .8)
+    GC.print("FASTEST EXPLORATION", 7, 2, 0, .8)
     GC.line(7, bh - 30, bw - 7, bh - 30)
     GC.setColor(textColor)
     t30:set(STAT.timeDate)
@@ -357,15 +362,15 @@ function RefreshProfile()
     GC.setColor(1, 1, 1)
     local maxComp = TABLE.countAll(GAME.completion, 0) == 9 and 9 or 18
     for _, l in next, {
-        { t = { textColor, "1-Mod Ascent" },                                                      x = 26,  y = 33 },
-        { t = { textColor, "1-Mod Speedrun" },                                                    x = 26,  y = 58 },
+        { t = { textColor, "1Mod Ascent" },                                                      x = 26,  y = 33 },
+        { t = { textColor, "1Mod Speedrun" },                                                    x = 26,  y = 58 },
         { t = { textColor, "Achievements" },                                                      x = 26,  y = 83 },
         { t = { scoreColor, crProgress.f10 .. " / " .. maxComp },                                 x = 200, y = 33 },
         { t = { scoreColor, crProgress.sr .. " / " .. maxComp },                                  x = 200, y = 58 },
         { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 200, y = 83 },
-        { t = { textColor, "Best Altitude" },                                                     x = 300, y = 8 },
-        { t = { textColor, "Best Speedrun" },                                                     x = 300, y = 33 },
-        { t = { textColor, "Zenith Points" },                                                     x = 300, y = 58 },
+        { t = { textColor, "Best Ascension" },                                                     x = 300, y = 8 },
+        { t = { textColor, "Fastest Explore" },                                                     x = 300, y = 33 },
+        { t = { textColor, "Zenith Point" },                                                     x = 300, y = 58 },
         { t = { textColor, "Daily Challenge" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
@@ -394,7 +399,7 @@ function RefreshProfile()
         { k = "Time",    v = { scoreColor, ("%dh%dm"):format(STAT.totalTime / 3600, STAT.totalTime % 3600 / 60) }, x = 380, y = 08, d = 80 },
         { k = "Floor",   v = { scoreColor, STAT.totalFloor },                                                      x = 380, y = 33, d = 80 },
         { k = "Height",  v = { scoreColor, floor(STAT.totalHeight * .001), textColor, " km" },                     x = 380, y = 58, d = 80 },
-        { k = "Bonus",   v = { scoreColor, floor(STAT.totalBonus * .001), textColor, " km" },                      x = 380, y = 83, d = 80 },
+        { k = "Weight",   v = { scoreColor, floor(STAT.totalBonus * .001), textColor, " kg" },                      x = 380, y = 83, d = 80 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

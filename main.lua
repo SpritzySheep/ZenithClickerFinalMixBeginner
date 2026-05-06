@@ -149,6 +149,8 @@ TEXTURE = {
         clicker_star = assets 'stat/clicker_star.png',
         rank = {
             [0] = assets 'rank/z.png',
+            assets 'stat/avatar.png',
+            assets 'rank/z.png',
             assets 'rank/d.png',
             assets 'rank/d+.png',
             assets 'rank/c-.png',
@@ -167,6 +169,7 @@ TEXTURE = {
             assets 'rank/u.png',
             assets 'rank/x.png',
             assets 'rank/x+.png',
+            assets 'rank/xx.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -342,6 +345,13 @@ TEXTURE = {
             dark_force = aq(3, 1),
             return_to_the_light = aq(5, 5),
             smooth_dismount = aq(4, 1),
+
+            EXNH = aq(3, 5),
+            EXGV = aq(9, 2),
+            DHEX = aq(15, 7),
+            EXIN = aq(16, 7),
+            ASEX = aq(1, 8),
+            MSNH = aq(9, 8),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',

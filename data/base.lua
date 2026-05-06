@@ -170,10 +170,10 @@ NegEvents = {
     {
         text = 'b1.ASoff',
         color = 'lO',
-        cond = function() return GAME.mod.AS > 0 end,
+        cond = function() return GAME.mod.AS >= 0 end,
         event = function()
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.AS = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -181,8 +181,8 @@ NegEvents = {
     },
 
     -- B2: Zenith Restaurant
-    { h = -50 }, { event = { 'dmgDelay', -2 } },
-    { event = { 'attackMul', -.1, 'timerMul', -.25 } },
+    { h = -50 }, { event = { 'dmgDelay', 2 } },
+    { event = { 'attackMul', -.5, 'timerMul', .25 } },
     { h = -55 }, { text = 'b2.begin' },
     { h = -60 },
     {
@@ -197,10 +197,10 @@ NegEvents = {
     {
         text = 'b2.VLoff',
         color = 'lO',
-        cond = function() return GAME.mod.VL > 0 end,
+        cond = function() return GAME.mod.VL >= 0 end,
         event = function()
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.VL = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -211,11 +211,11 @@ NegEvents = {
     {
         text = 'b2.INoff',
         color = 'lO',
-        cond = function() return GAME.mod.IN > 0 end,
+        cond = function() return GAME.mod.IN >= 0 end,
         event = function()
-            GAME.dmgCycle = GAME.dmgCycle + GAME.mod.IN * 1
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.dmgCycle = GAME.dmgCycle + 5
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.IN = 0
             RefreshBGM()
             for _, C in ipairs(Cards) do C:flip() end
@@ -233,8 +233,8 @@ NegEvents = {
 
 
     -- B3: Underground Parking
-    { h = -150 }, { event = { 'dmgDelay', -2, 'dmgCycle', -.5 } },
-    { event = { 'attackMul', -.1, 'timerMul', -.15 } },
+    { h = -150 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
+    { event = { 'attackMul', -.5, 'timerMul', .25 } },
     { h = -155 }, { text = 'b3.begin' },
     { h = -160 }, { text = 'b3.effStart' },
     { h = -165 }, { event = { 'invisUI', true } },
@@ -248,11 +248,11 @@ NegEvents = {
     {
         text = 'b3.GVoff',
         color = 'lO',
-        cond = function() return GAME.mod.GV > 0 end,
+        cond = function() return GAME.mod.GV >= 0 end,
         event = function()
-            GAME.dmgDelay = GAME.dmgDelay + GAME.mod.GV * 4
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.dmgDelay = GAME.dmgDelay + 16
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.GV = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -267,22 +267,22 @@ NegEvents = {
     { h = -280 }, { event = { 'invisUI', false } },
 
     -- B4: The Bunker
-    { h = -300 }, { event = { 'dmgDelay', -1, 'dmgCycle', -.5 } },
-    { event = { 'attackMul', -.1, 'timerMul', -.1 } },
+    { h = -300 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
+    { event = { 'attackMul', -.5, 'timerMul', .25 } },
     { h = -310 },
     { text = 'b4.begin' },
-    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
+    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -320 }, { text = 'b4.effStart', event = { 'glassCard', true } },
     { h = -380 },
     { text = 'b4.noMS', color = 'lB', cond = function() return GAME.mod.MS == 0 end },
     {
         text = 'b4.MSoff',
         color = 'lO',
-        cond = function() return GAME.mod.MS > 0 end,
+        cond = function() return GAME.mod.MS >= 0 end,
         event = function()
-            GAME.extraQuestBase = GAME.extraQuestBase - GAME.mod.MS * .2
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.extraQuestBase = GAME.extraQuestBase - 3
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.MS = 0
             GAME.sortCards()
             GAME.refreshModIcon()
@@ -292,9 +292,9 @@ NegEvents = {
     { h = -450 }, { event = { 'glassCard', false } },
 
     -- B5: The Infirmary
-    { h = -450 }, { event = { 'dmgDelay', -1, 'dmgCycle', -.5 } },
-    { event = { 'attackMul', -.1 } },
-    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
+    { h = -450 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
+    { event = { 'attackMul', -.5 } },
+    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -460 }, { text = 'b5.begin' },
     { h = -470 }, { text = 'b5.effStart' },
     {
@@ -308,11 +308,11 @@ NegEvents = {
     {
         text = 'b5.DHoff',
         color = 'lO',
-        cond = function() return GAME.mod.DH > 0 end,
+        cond = function() return GAME.mod.DH >= 0 end,
         event = function()
-            GAME.extraQuestVar = GAME.extraQuestVar - GAME.mod.DH * .2
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.extraQuestVar = GAME.extraQuestVar - 3
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.DH = 0
             GAME.refreshModIcon()
             GAME.refreshRPC()
@@ -327,9 +327,9 @@ NegEvents = {
     },
 
     -- B6: Decayed Catacombs
-    { h = -650 }, { event = { 'dmgDelay', -1, 'dmgTime', 1, 'maxQuestSize', 1 } },
-    { event = { 'attackMul', -.1 } },
-    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
+    { h = -650 }, { event = { 'dmgDelay', 2, 'dmgTime', 1, 'maxQuestSize', -2 } },
+    { event = { 'attackMul', -.5 } },
+    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -660 }, { text = 'b6.begin' },
     { h = -670 }, { text = 'b6.effStart', event = { 'invisCard', true } },
     { h = -720 },
@@ -337,14 +337,14 @@ NegEvents = {
     {
         text = 'b6.NHoff',
         color = 'lO',
-        cond = function() return GAME.mod.NH > 0 end,
+        cond = function() return GAME.mod.NH >= 0 end,
         event = function()
-            GAME.dmgHeal = GAME.dmgHeal + GAME.mod.NH * 3
-            GAME.attackMul = GAME.attackMul - .1
-            GAME.dmgTimerMul = GAME.dmgTimerMul + .01
+            GAME.dmgHeal = GAME.dmgHeal + 12
+            GAME.attackMul = GAME.attackMul - .5
+            GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.NH = 0
-            GAME.maxQuestCount = 3
-            GAME.xpLockLevelMax = 5
+            GAME.maxQuestCount = 1
+            GAME.xpLockLevelMax = 5555555555
             GAME.refreshModIcon()
             GAME.refreshRPC()
         end,
@@ -352,16 +352,16 @@ NegEvents = {
     { h = -850 }, { event = { 'invisCard', false } },
 
     -- B7: Sacreligious Ruins
-    { h = -850 }, { event = { 'dmgDelay', -1, 'dmgCycle', -.5 } },
-    { event = { 'attackMul', -.1 } },
-    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
+    { h = -850 }, { event = { 'dmgDelay', 1, 'dmgCycle', .5 } },
+    { event = { 'attackMul', -.5 } },
+    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -860 }, { text = 'b7.begin' },
     { h = -900 }, { text = 'b7.effStart' },
     { h = -950 }, { text = 'b7.mid' },
 
     -- B8: Singularity Reactor
-    { h = -1100 }, { event = { 'dmgDelay', -1, 'dmgCycle', -.5 } },
-    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 2) end },
+    { h = -1100 }, { event = { 'dmgDelay', 1, 'dmgCycle', .5 } },
+    { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -1115 }, { text = 'b8.begin' },
     { h = -1145 }, { text = 'b8.mid1', color = 'R', size = 1.26, sfx = 'b2bcharge_distance_3', duration = 1.26 },
     { h = -1160 }, { text = 'b8.mid2', color = 'R', size = 1.26, sfx = 'b2bcharge_distance_3', duration = 1.26 },
@@ -390,16 +390,16 @@ NegEvents = {
 
 
     -- B9: Distorted Gateways
-    { h = -1350 }, { event = { 'dmgDelay', -.5 } },
+    { h = -1350 }, { event = { 'dmgDelay', .5 } },
     { h = -1360 }, { text = 'b9.begin' },
-    { event = function() GAME.rankLimit = math.min(GAME.rankLimit, 10) end },
+    { event = function() GAME.rankLimit = math.min(GAME.rankLimit, 999) end },
     {
         text = 'b9.mid',
         color = 'lR',
         size = 2.6,
         duration = 16,
         event = function()
-            GAME.time = math.max(GAME.time, 419)
+            GAME.time = math.max(GAME.time, 0)
         end
     },
 
@@ -419,7 +419,7 @@ NegEvents = {
             GAME.chain = 0
             GAME.maxQuestCount = 1
             if GAME.rank > 8 then
-                GAME.rank = 8
+                GAME.rank = 38
                 GAME.xp = 32
             end
             GAME.xpLockLevelMax = 2600
