@@ -3,17 +3,18 @@ local scene = {}
 
 local maskAlpha, cardShow
 local card = GC.newCanvas(1200, 720)
-local totalBadges = 22
+local totalBadges = 23
 
 local floor = math.floor
-
+local badgeList = 0
 local baseColor = { .12, .26, .14 }
 local areaColor = { .12, .23, .12 }
 local titleColor = { COLOR.HEX("16582D") }
 local textColor = { COLOR.HEX("54B06D") }
 local scoreColor = { COLOR.HEX("B0FFC0") }
 local setup = { stencil = true, card }
-
+local scroll, scroll1 = 0, 0
+local maxScroll = 90000
 local crProgress = {
     f10 = 0,
     sr = 0,
@@ -82,6 +83,21 @@ local function calculateRating()
     cr = cr + crProgress.achvGet * 5
 
     cr = cr + ((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))
+
+    cr = cr + MATH.floor(STAT.totalGiga * 0.2)
+    cr = cr + MATH.floor(STAT.totalTera * 0.3)
+    cr = cr + MATH.floor(STAT.totalPeta * 0.4)
+    cr = cr + MATH.floor(STAT.zp/1000000)
+    cr = cr + STAT.totalGame
+    cr = cr + MATH.floor(STAT.totalQuest / 1000)
+    cr = cr + MATH.floor(STAT.totalFlip / 2000)
+    cr = cr + MATH.floor(STAT.totalPerfect / 2500)
+    cr = cr + MATH.floor(STAT.totalHeight / 2000)
+    cr = cr + MATH.floor(STAT.totalBonus / 10000)
+    cr = cr + MATH.floor(STAT.totalFloor / 5)
+    cr = cr + MATH.floor(STAT.totalAttack / 200)
+    cr = cr + MATH.floor(STAT.maxHeight / 10)
+    cr = cr + MATH.floor(STAT.maxFloor * 100)
 
     -- ACHV Wreath (competitive achievement count)
     for i = 1, #Achievements do
@@ -220,6 +236,8 @@ function RefreshProfile()
 
     -- Small badges
     local badgeCount = 0
+    local badgeScroll = 0
+    badgeList = badgeCount
     local badges = TABLE.sort(TABLE.getKeys(STAT.badge), function(a, b)
         return (BadgeData[a] or BadgeData[0]).prio < (BadgeData[b] or BadgeData[0]).prio
     end)
@@ -227,7 +245,7 @@ function RefreshProfile()
         local id = badges[i]
         if TEXTURE.stat.badges[id] then
             badgeCount = badgeCount + 1
-            GC.mDraw(TEXTURE.stat.badges[id], 6 + 52 * badgeCount, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+            GC.mDraw(TEXTURE.stat.badges[id], (6 + 48 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
             local bd = BadgeData[id] or BadgeData[0]
             scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
             scene.widgetList[badgeCount]:reset()
@@ -302,7 +320,7 @@ function RefreshProfile()
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
-        MATH.clamp(math.ceil(rating / 2000), 1, 30)
+        MATH.clamp(math.ceil(rating / 2000), 1, 33)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
@@ -519,15 +537,39 @@ scene.widgetList = {
         onClick = function() love.keypressed('escape') end,
     },
 }
+
+
+
+function scene.keyDown(key, isRep)
+    local timer = 30
+    if isRep then return true end
+    if key == 'a' then
+            scroll = scroll + 0
+            scene.widgetList.link:resetPos()
+            RefreshProfile()
+    end
+    if key == 'd' then
+            scroll = scroll - 0
+            scene.widgetList.link:resetPos()
+            RefreshProfile()
+    end
+    if key == 'escape' or key == 'f2' then
+        SFX.play('menuclick')
+        SCN.back('none')
+    end
+    ZENITHA._cursor.active = true
+    return true
+end
 for i = 1, totalBadges do
     table.insert(scene.widgetList, i, WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = -363 + 35 * (i - 1), y = -80, w = 35,
+        pos = { .5, .5 }, x = (-363 + 32 * (i - 1)), y = -80, w = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,
         floatText = "", -- Dynamic text
+
     })
 end
 

@@ -48,6 +48,7 @@ d.menu = {
     { set = "MS VL AS",           name = "Human Experiment" },
     { set = "EX GV DH",           name = "Thermal Anomaly" },
     { set = "MS GV AS",           name = "Dazed" },
+
     { set = "EX NH",              name = "A Fair Leader" },
     { set = "EX GV",              name = "Invictus" },
     { set = "DH EX",              name = "The Devil's Temptation" },
@@ -60,6 +61,14 @@ d.menu = {
     { set = "DP NH",              name = "Hand in Hand" },
     { set = "GV MS",              name = "Cheese Race" },
     { set = "MS VL",              name = "Swiss Cheese" },
+    { set = "MS DH",              name = "Dig In" },
+    { set = "MS IN",              name = "Blind Bet" },
+    { set = "MS AS",              name = "Roulette Wheel" },
+    { set = "MS DP",              name = "It's Complicated..." },
+    { set = "GV VL",              name = "Comfort Food" },
+    { set = "GV DH",              name = "The Speed Demon" },
+    { set = "GV AS",              name = "The Juggler" },
+    { set = "GV DP",              name = "Heavy Hearts" },
 }
 
 d.game = {

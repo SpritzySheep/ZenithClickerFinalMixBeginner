@@ -2,7 +2,7 @@
 local scene = {}
 
 local scroll, scroll1 = 0, 0
-local maxScroll = 620
+local maxScroll = 90000
 
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
@@ -28,11 +28,11 @@ local function addSection(y)
 end
 
 for d = .5, 2.5, .5 do
-    addText({ COLOR.LD, "ZENITH" }, 40 + d, 20 + d)
-    addText({ COLOR.LD, "CLICKER" }, 80 + d, 95 + d)
+    addText({ COLOR.LD, "FINAL MIX" }, 40 + d, 20 + d)
+    addText({ COLOR.LD, "BEGINNER" }, 80 + d, 95 + d)
 end
-addText("ZENITH", 40, 20)
-addText("CLICKER", 80, 95)
+addText("FINAL MIX", 40, 20)
+addText("BEGINNER", 80, 95)
 
 addSection(220)
 
@@ -40,12 +40,17 @@ addSection(350)
 
 -- THE TEAM
 
-addText({ COLOR.O, "THE TEAM" }, 0, 20, .3)
+addText({ COLOR.O, "ORIGNAL GAME TEAM" }, 0, 20, .3)
 
 local function addMajorCredit(x, y, color, name, role, desc)
     addText({ color, name }, x, y, .5)
     addText({ COLOR.LD, role }, x, y + 40, .26)
     if desc then addText({ COLOR.LD, desc }, x, y + 60, .2) end
+end
+
+local function addRank(x, y, color, rank, ce)
+    addText({ color, rank }, x, y, 1)
+    addText({ COLOR.LD, ce }, x, y + 70, .5)
 end
 
 addMajorCredit(0000, 060, { COLOR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
@@ -129,6 +134,55 @@ addText({
         "ZYRIXIA",
     }, ",  ")
 }, 0, 60, .26)
+
+addSection(1450)
+
+addText({ COLOR.O, "FINAL MIX BEGINNER MOD BY" }, 0, 20, .3)
+
+addMajorCredit(0, 50, { COLOR.HEX 'FF82F0' }, "Spritzy Lunabright", "F-MixB Dev")
+
+addText({ COLOR.O, "WITH HELP FROM" }, 0, 110, .3)
+
+addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, "Trevor Smithy", "ZCEM Dev")
+
+addSection(1650)
+
+addText({ COLOR.O, "RANK ALMANAC" }, 0, 20, .3)
+addText({ COLOR.O, "WARNING: THIS SHOWS ALL RANKS, SPOILERS AHEAD" }, 0, 40, .3)
+
+addRank(0, 50, { COLOR.HEX '000000' }, "", "0 CE")
+addRank(0, 150, { COLOR.HEX '131313' }, "?", "2,000 CE")
+addRank(0, 250, { COLOR.HEX '685868' }, "D", "4,000 CE")
+addRank(0, 350, { COLOR.HEX '624462' }, "D+", "6,000 CE")
+addRank(0, 450, { COLOR.HEX '43294E' }, "C-", "8,000 CE")
+addRank(0, 550, { COLOR.HEX '371744' }, "C", "10,000 CE")
+addRank(0, 650, { COLOR.HEX '301C41' }, "C+", "12,000 CE")
+addRank(0, 750, { COLOR.HEX '2A2156' }, "B-", "14,000 CE")
+addRank(0, 850, { COLOR.HEX '222C5B' }, "B", "16,000 CE")
+addRank(0, 950, { COLOR.HEX '386987' }, "B+", "18,000 CE")
+addRank(0, 1050, { COLOR.HEX '35A690' }, "A-", "20,000 CE")
+addRank(0, 1150, { COLOR.HEX '5BBE7A' }, "A", "22,000 CE")
+addRank(0, 1250, { COLOR.HEX '1CAD2B' }, "A+", "24,000 CE")
+addRank(0, 1350, { COLOR.HEX 'B6B621' }, "S-", "26,000 CE")
+addRank(0, 1450, { COLOR.HEX 'C1A425' }, "S", "28,000 CE")
+addRank(0, 1550, { COLOR.HEX 'D8A312' }, "S+", "30,000 CE")
+addRank(0, 1650, { COLOR.HEX 'D07A25' }, "SS", "32,000 CE")
+addRank(0, 1750, { COLOR.HEX 'DC401A' }, "U", "34,000 CE")
+addRank(0, 1850, { COLOR.HEX 'F86EFD' }, "X", "36,000 CE")
+addRank(0, 1950, { COLOR.HEX 'A979FB' }, "X+", "38,000 CE")
+addRank(0, 2050, { COLOR.HEX 'E03BE6' }, "XX", "40,000 CE")
+addRank(0, 2150, { COLOR.HEX 'E33CED' }, "Y-", "42,000 CE")
+addRank(0, 2250, { COLOR.HEX 'E837C8' }, "Y", "44,000 CE")
+addRank(0, 2350, { COLOR.HEX 'E83790' }, "Y+", "46,000 CE")
+addRank(0, 2450, { COLOR.HEX 'EB423A' }, "Z-", "48,000 CE")
+addRank(0, 2550, { COLOR.HEX 'E95D38' }, "Z", "50,000 CE")
+addRank(0, 2650, { COLOR.HEX 'E17331' }, "Z+", "52,000 CE")
+addRank(0, 2750, { COLOR.HEX 'EC993B' }, "K-", "54,000 CE")
+addRank(0, 2850, { COLOR.HEX 'EAB539' }, "K", "56,000 CE")
+addRank(0, 2950, { COLOR.HEX 'EBD33A' }, "K+", "58,000 CE")
+addRank(0, 3050, { COLOR.HEX 'E0E635' }, "V-", "60,000 CE")
+addRank(0, 3150, { COLOR.HEX 'C6EA39' }, "V", "62,000 CE")
+addRank(0, 3250, { COLOR.HEX 'A7E938' }, "V+", "64,000 CE")
 
 local timer
 function scene.load()
@@ -263,7 +317,7 @@ function scene.draw()
     gc_replaceTransform(SCR.xOy_dl)
     gc_setColor(clr.L)
     FONT.set(30)
-    gc_print("THANK YOU FOR PLAYING ZENITH CLICKER!", 15, -45, 0, .85, 1)
+    gc_print("THANK YOU FOR PLAYING FINAL MIX BEGINNER!", 15, -45, 0, .85, 1)
 end
 
 scene.widgetList = {

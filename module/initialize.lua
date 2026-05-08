@@ -31,6 +31,8 @@ function Initialize(save)
     if STAT.totalF10 == 0 and STAT.totalGiga > 0 then STAT.totalF10 = math.floor(STAT.totalGiga * 0.872) end
     if STAT.totalBonus == 0 and STAT.totalGame > 2.6 then STAT.totalBonus = STAT.totalHeight * 0.5 end
     if STAT.totalPerfect == 0 and STAT.totalQuest > 0 then STAT.totalPerfect = math.floor(STAT.totalQuest * 0.872) end
+    if STAT.totalTera == not STAT.totalTera then STAT.totalTera = 0 end
+    if STAT.totalPeta == not STAT.totalPeta then STAT.totalPeta = 0 end
     if BEST.version then STAT.version, BEST.version = BEST.version, nil end
     local oldVer = STAT.version
     if STAT.version == nil then

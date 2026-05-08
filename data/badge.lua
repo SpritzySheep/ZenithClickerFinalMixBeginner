@@ -105,19 +105,24 @@ local d = {
         desc = "Have a better score than Dev on 62% achievements",
     },
     {
+        id = 'peta',
+        name = "PETASPEED!!!!",
+        desc = "Reached F10 while maintaining Petaspeed",
+    },
+    {
         id = 'ascendant',
         name = "Ascendant",
-        desc = "Gather 40,000 Chakra Escence",
+        desc = "Gathered 40,000 Chakra Escence",
     },
     {
         id = 'ascension',
         name = "Ascension",
-        desc = "Gather 50,000 Chakra Escence",
+        desc = "Gathered 50,000 Chakra Escence",
     },
     {
         id = 'ascension2',
         name = "Ascension Phase 2",
-        desc = "Gather 60,000 Chakra Escence",
+        desc = "Gathered 60,000 Chakra Escence",
     },
 }
 

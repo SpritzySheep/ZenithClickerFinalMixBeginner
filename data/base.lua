@@ -16,6 +16,7 @@ AchvData = {
 
 GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 10, 1e99, 1e99, 1e99, 1e99 }
 TeraMusicReq = { [0] = 9, 11, 11, 12, 12, 13, 13, 1e99, 1e99, 1e99 }
+PetaMusicReq = { [0] = 10, 12, 12, 13, 13, 14, 14, 15, 15, 15 }
 
 GravityTimer = {
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },
@@ -61,7 +62,7 @@ Floors = {
     { top = 1350, event = { 'dmgDelay', -1, 'dmgCycle', -.5 },                 name = "The Core" },
     { top = 1650, event = { 'dmgDelay', -.5, 'dmgWrong', 1 },                  name = "Corruption",          MSshuffle = 4 },
     { top = 1e99, event = { 'dmgDelay', -.5, 'dmgCycle', -.5, 'dmgTime', 1 },  name = "Platform of the Gods" },
-    { top = 1e99, name = "Stellar Nebula Frontier" }, -- Only name is used
+    { top = 1e99, name = "Gateway to the Stars" }, -- Only name is used
     -- Initial: Delay=15. Cycle=5, Wrong=1
     -- Total: Delay-10, Cycle-3, Wrong+4
 }

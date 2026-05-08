@@ -1471,6 +1471,27 @@ local d = {
         type = 'issued',
     },
 
+   -- { title = "FINAL MIX BEGINNER - SPEED MOUSE"},
+
+   -- { -- Tera
+   --     id = 'Tera',
+   --     name = "Speed of Sound",
+   --     desc = [[Teraspeed Entries]],
+   --     quote = [[It's like hedgehogs or something.]],
+   --     scoreSimp = function(n) return n .. " TERAs" end,
+   --     rank = numberRank(0, 20, 40, 70, 120, 200, 300),
+   --     hide = function() return STAT.totalTera == 0 end,
+   -- },
+   -- { -- Peta
+   --     id = 'Peta',
+   --     name = "Mach Ten",
+   --     desc = [[Peaspeed Entries]],
+   --     quote = [[It's like hedgehogs or something.]],
+   --     scoreSimp = function(n) return n .. " PETAs" end,
+   --     rank = numberRank(0, 19, 38, 66, 110, 190, 285),
+   --     hide = function() return STAT.totalPeta == 0 end,
+   -- }, 
+
     { title = "FINAL MIX BEGINNER - 2 MP Combos"},
 
     { -- EXNH
@@ -1480,11 +1501,25 @@ local d = {
         quote = [[A ruler shall not favor only the rich.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
+    { -- EXMS
+        id = 'EXMS',
+        name = "Block Rationing",
+        desc = [[HFD with EX MS]],
+        quote = [[What do you mean I can't have two similar achievements?!]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
     { -- EXGV
         id = 'EXGV',
         name = "Invictus",
         desc = [[HFD WUT "Expert Mode" and "Gravity" mods]],
         quote = [[A new trial for those who've been trialed.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- EXVL
+        id = 'EXVL',
+        name = "Icarus",
+        desc = [[HFD with EX VL]],
+        quote = [[Forget those wings of wax, use your real wings!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
     { -- DHEX
@@ -1548,6 +1583,7 @@ local d = {
         name = "Cheese Race",
         desc = [[HFD with MS GV]],
         quote = [[A shaman's worst nightmare.]],
+        credit = "Elisah",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
     { -- MSVL
@@ -1555,6 +1591,62 @@ local d = {
         name = "Swiss Cheese",
         desc = [[HFD with MS VL]],
         quote = [[Probably what those cheese coins are made of.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DHMS
+        id = 'DHMS',
+        name = "Dig In",
+        desc = [[HFD with MS DH]],
+        quote = [[Fill your belly!]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- INMS
+        id = 'INMS',
+        name = "Blind Bet",
+        desc = [[HFD with MS IN]],
+        quote = [[The gambler's folicy.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- ASMS
+        id = 'ASMS',
+        name = "Roulette Wheel",
+        desc = [[HFD with MS AS]],
+        quote = [[The gambler's circular thingie.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DPMS
+        id = 'DPMS',
+        name = "It's Complicated...",
+        desc = [[HFD with MS DP]],
+        quote = [["Sweetie, did you eat the table again?"]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- GVVL
+        id = 'GVVL',
+        name = "Comfort Food",
+        desc = [[HFD with GV VL]],
+        quote = [[For when you're feeling down and just need something to do.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DHGV
+        id = 'DHGV',
+        name = "The Speed Demon",
+        desc = [[HFD with GV DH]],
+        quote = [[No, no, no! Wrong way!]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- ASGV
+        id = 'ASGV',
+        name = "The Juggler",
+        desc = [[HFD with GV AS]],
+        quote = [[Look at he go]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+    },
+    { -- DPGV
+        id = 'DPGV',
+        name = "Heavy Hearts",
+        desc = [[HFD with GV DP]],
+        quote = [[Should probably get that checked out.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
 }

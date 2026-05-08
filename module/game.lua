@@ -170,6 +170,7 @@ local GAME = {
     hasseenDPnerf = false,
     gigaspeedFloor = {},
     teraspeedFloor = {},
+    petaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
@@ -225,6 +226,7 @@ GAME.rank = 1
 GAME.xp = 0
 GAME.height = 0
 GAME.chain = 0
+GAME.gspeedlv = 2
 
 local M = GAME.mod
 local MD = ModData
@@ -856,7 +858,7 @@ function GAME.addXP(xp)
         if GAME.xp >= GAME.rank then
             GAME.xpLockLevel = GAME.xpLockLevelMax
             if GAME.xp >= 2 * GAME.rank then
-                GAME.rank = GAME.rank + floor(GAME.xp/1.5)
+                GAME.rank = GAME.rank + floor(GAME.xp/2)
             end
         end
     end
@@ -875,8 +877,12 @@ function GAME.addXP(xp)
             GAME.setGigaspeedAnim(true)
             GAME.refreshRPC()
         end
-        if GAME.gigaspeed and not GAME.teramusic and GAME.rank >= TeraMusicReq[GAME.floor] then
+        if GAME.gigaspeed and not GAME.teramusic and GAME.rank >= TeraMusicReq[GAME.floor] and GAME.rank < PetaMusicReq[GAME.floor] then
             GAME.startTeraAnim()
+            GAME.refreshRPC()
+        end
+        if not GAME.petaspeed and GAME.rank >= PetaMusicReq[GAME.floor] then
+            GAME.startPetaAnim()
             GAME.refreshRPC()
         end
     else
@@ -892,6 +898,7 @@ function GAME.setGigaspeedAnim(on)
         GAME.gigaspeedFloor[GAME.floor] = true
         GAME.gigaCount = GAME.gigaCount + 1
         GigaSpeed.isTera = false
+        GigaSpeed.isPeta = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -906,6 +913,7 @@ function GAME.setGigaspeedAnim(on)
 end
 
 function GAME.startTeraAnim()
+    GAME.gspeedlv = 3
     GAME.teramusic = true
     GAME.teraspeedFloor[GAME.floor] = true
     GAME.teraCount = GAME.teraCount + 1
@@ -917,6 +925,27 @@ function GAME.startTeraAnim()
 end
 
 function GAME.stopTeraspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startPetaAnim()
+    GAME.gspeedlv = 4
+    GAME.petaspeed = true
+    GAME.petaspeedFloor[GAME.floor] = true
+    GAME.petaCount = GAME.petaCount + 1
+    GigaSpeed.isPeta = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopPetaspeed(mode)
+    GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
         PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
@@ -1058,6 +1087,10 @@ function GAME.upFloor()
             GAME.setGigaspeedAnim(false)
             if GAME.teramusic then
                 IssueAchv('blazing_speed')
+                GAME.finishTera = true
+            end
+            if GAME.petaspeed then
+                IssueSecret('peta')
                 GAME.finishTera = true
             end
             GAME.stopTeraspeed('f10')
@@ -2188,8 +2221,10 @@ function GAME.start()
     GAME.gigaspeedEntered = false
     TABLE.clear(GAME.gigaspeedFloor)
     TABLE.clear(GAME.teraspeedFloor)
+    TABLE.clear(GAME.petaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
+    GAME.petaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -2378,7 +2413,9 @@ function GAME.finish(reason)
         STAT.totalHeight = roundUnit(STAT.totalHeight + abs(GAME.roundHeight), .1)
         STAT.totalBonus = roundUnit(STAT.totalBonus + abs(GAME.heightBonus), .1)
         STAT.totalFloor = STAT.totalFloor + (GAME.floor - 1) + (GAME.negFloor - 1)
-        STAT.totalGiga = STAT.totalGiga + GAME.gigaCount + GAME.teraCount
+        STAT.totalGiga = STAT.totalGiga + GAME.gigaCount
+        STAT.totalTera = STAT.totalTera + GAME.teraCount
+        STAT.totalPeta = STAT.totalPeta + GAME.petaCount
         if GAME.floor >= 10 then
             STAT.totalF10 = STAT.totalF10 + 1
             if GAME.floorTime <= 6.26 then
@@ -2386,6 +2423,7 @@ function GAME.finish(reason)
                 SubmitAchv('clock_out', STAT.clockOutCount, true)
             end
         end
+        
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
@@ -2613,6 +2651,8 @@ function GAME.finish(reason)
         SubmitAchv('tower_climber', STAT.totalHeight, true, true)
         SubmitAchv('tower_regular', STAT.totalFloor, true, true)
         SubmitAchv('speed_player', STAT.totalGiga, true, true)
+        -- SubmitAchv('tera', STAT.totalTera, true, true)
+        -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
         for id in next, MD.name do _t = _t + min(BEST.speedrun[id], 2600) end
         SubmitAchv('zenith_speedrunner', _t, true)
@@ -2697,7 +2737,7 @@ function GAME.finish(reason)
             --     end
         end
         if M.EX < 2 and M.DP < 2 then
-            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount)
+            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount)
         end
         if M.DP > 0 then
             SubmitAchv('the_responsible_one', GAME.reviveCount)
@@ -2753,6 +2793,7 @@ function GAME.finish(reason)
 
     GAME.setGigaspeedAnim(false)
     GAME.stopTeraspeed('fin')
+    GAME.stopPetaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -2955,7 +2996,7 @@ function GAME.update(dt, realDT)
     if GAME.xpLockTimer > 0 then
         GAME.xpLockTimer = GAME.xpLockTimer - dt
     else
-        GAME.xp = GAME.xp - dt * GAME.leakSpeed * GAME.rank * (GAME.rank + 1) / 60
+        GAME.xp = GAME.xp - dt * GAME.leakSpeed  / GAME.rank
         if GAME.xp <= 0 then
             GAME.xp = 0
             if GAME.rank > 1 then
@@ -2972,7 +3013,7 @@ function GAME.update(dt, realDT)
                         GAME.stopTeraspeed('drop')
                     end
                 end
-                TEXTS.rank:set("R-" .. GAME.rank)
+                TEXTS.rank:set("Speed Lv" .. (GAME.rank - 1))
                 SFX.play('speed_down', .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1))
                 if not GAME.achv_demoteH then
                     GAME.achv_demoteH = GAME.roundHeight
@@ -2993,11 +3034,10 @@ function GAME.update(dt, realDT)
 
     if GAME.floor >= 10 then
         -- Omega floor
-        if not GAME.omega and GAME.height >= 6200 then
+        if not GAME.omega and GAME.height >= 2000 then
             GAME.omega = true
-            GAME.showFloorText("Ω", Floors[11].name, 6.2)
+            GAME.showFloorText("EXTRA", Floors[11].name, 6.2)
             SFX.play('zenith_levelup_a', 1, 0, Tone(1))
-            PlayBGM('fomg')
             ins(GAME.secTime, GAME.floorTime)
             GAME.refreshSectionTime()
             GAME.floorTime = 0

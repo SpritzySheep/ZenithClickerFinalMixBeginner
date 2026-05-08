@@ -179,6 +179,9 @@ TEXTURE = {
             assets 'rank/k-.png',
             assets 'rank/k.png',
             assets 'rank/k+.png',
+            assets 'rank/v-.png',
+            assets 'rank/v.png',
+            assets 'rank/v+.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -356,7 +359,9 @@ TEXTURE = {
             smooth_dismount = aq(4, 1),
 
             EXNH = aq(3, 5),
+            EXMS = aq(2, 7),
             EXGV = aq(9, 2),
+            EXVL = aq(12, 5),
             DHEX = aq(15, 7),
             EXIN = aq(16, 7),
             ASEX = aq(1, 8),
@@ -367,6 +372,14 @@ TEXTURE = {
             DPNH = aq(12, 8),
             GVMS = aq(13, 8),
             MSVL = aq(7, 5),
+            DHMS = aq(14, 8),
+            INMS = aq(9, 8),
+            ASMS = aq(15, 8),
+            DPMS = aq(12, 4),
+            GVVL = aq(16, 8),
+            DHGV = aq(10, 4),
+            ASGV = aq(11, 7),
+            DPGV = aq(13, 4),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -592,6 +605,11 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.K, "A", COLOR.G, "S", COLOR.J, "P",
         COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
     }),
+    petaspeed  = GC.newText(FONT.get(50), {
+        COLOR.R, "P", COLOR.O, "E", COLOR.Y, "T",
+        COLOR.K, "A", COLOR.G, "S", COLOR.J, "P",
+        COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -679,6 +697,8 @@ STAT = {
     totalFlip = 0,
     totalAttack = 0,
     totalGiga = 0,
+    totalTera = 0,
+    totalPeta = 0,
     totalF10 = 0,
     badge = {},
 
