@@ -43,7 +43,7 @@ local function q2(ox, oy, w, h)
         2178, 1663
     )
 end
-local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256, 256, 256, 4096, 2048) end
+local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256, 256, 256, 4096, 2560) end
 TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
@@ -182,6 +182,15 @@ TEXTURE = {
             assets 'rank/v-.png',
             assets 'rank/v.png',
             assets 'rank/v+.png',
+            assets 'rank/o-.png',
+            assets 'rank/o.png',
+            assets 'rank/o+.png',
+            assets 'rank/oo.png',
+            assets 'rank/m-.png',
+            assets 'rank/m.png',
+            assets 'rank/m+.png',
+            assets 'rank/mm.png',
+            assets 'rank/mmm.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -380,6 +389,16 @@ TEXTURE = {
             DHGV = aq(10, 4),
             ASGV = aq(11, 7),
             DPGV = aq(13, 4),
+            DHVL = aq(4, 6),
+            INVL = aq(1, 1),
+            ASVL = aq(1, 10),
+            DPVL = aq(2, 10),
+            DHIN = aq(3, 10),
+            ASDH = aq(4, 10),
+            DHDP = aq(4, 2),
+            ASIN = aq(5, 10),
+            DPIN = aq(11, 8),
+            ASDP = aq(14, 5),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -610,6 +629,34 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.K, "A", COLOR.G, "S", COLOR.J, "P",
         COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
     }),
+    exaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "E", COLOR.O, "X", COLOR.Y, "A",
+        COLOR.K, "S", COLOR.G, "P", COLOR.J, "E",
+         COLOR.S, "E", COLOR.B, "D",
+    }),
+    zetaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "Z", COLOR.O, "E", COLOR.Y, "T",
+        COLOR.K, "A", COLOR.G, "S", COLOR.J, "P",
+        COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
+    }),
+    yottaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "Y", COLOR.O, "O", COLOR.Y, "T",
+        COLOR.K, "T", COLOR.G, "A", COLOR.J, "S",
+        COLOR.C, "P", COLOR.S, "E", COLOR.B, "E",
+        COLOR.V, "D",
+    }),
+    ronnaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "R", COLOR.O, "O", COLOR.Y, "N",
+        COLOR.K, "N", COLOR.G, "A", COLOR.J, "S",
+        COLOR.C, "P", COLOR.S, "E", COLOR.B, "E",
+        COLOR.V, "D",
+    }),
+    quettaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "Q", COLOR.O, "U", COLOR.Y, "E",
+        COLOR.K, "T", COLOR.G, "T", COLOR.J, "A",
+        COLOR.C, "S", COLOR.S, "P", COLOR.B, "E",
+        COLOR.V, "E", COLOR.M, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -657,6 +704,8 @@ BEST = {
     speedrun = setmetatable({}, Metatable.best_speedrun),
 }
 
+CEheight = 0
+
 STAT = {
     mod = 'finalmixbeg',
     version = nil, -- will be set after loading
@@ -699,7 +748,14 @@ STAT = {
     totalGiga = 0,
     totalTera = 0,
     totalPeta = 0,
+    totalExa = 0,
+    totalZeta = 0,
+    totalYotta = 0,
+    totalRonna = 0,
+    totalQuetta = 0,
     totalF10 = 0,
+    badges = 0,
+    AP = 0,
     badge = {},
 
     fullscreen = true,
@@ -712,6 +768,7 @@ STAT = {
 
     autoMute = false,
     oldHitbox = false,
+    ExtraSpeed = false,
 }
 
 ACHV = {}

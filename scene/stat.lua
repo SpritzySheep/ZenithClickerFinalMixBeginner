@@ -3,7 +3,7 @@ local scene = {}
 
 local maskAlpha, cardShow
 local card = GC.newCanvas(1200, 720)
-local totalBadges = 23
+local totalBadges = 50
 
 local floor = math.floor
 local badgeList = 0
@@ -61,7 +61,7 @@ local function calculateRating()
 
     -- Best height (5K)
     cr = cr + 6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
-
+    ABOUT.CEheight = (6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2))
     -- Best time (5K)
     cr = cr + 6000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)
 
@@ -79,14 +79,21 @@ local function calculateRating()
 
     -- Achievement (5K)
     cr = cr + (7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6))
-
+    STAT.achv = floor(crProgress.achvGet)
     cr = cr + crProgress.achvGet * 5
 
     cr = cr + ((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))
 
+    cr = cr + (343*STAT.badges)
+
     cr = cr + MATH.floor(STAT.totalGiga * 0.2)
     cr = cr + MATH.floor(STAT.totalTera * 0.3)
     cr = cr + MATH.floor(STAT.totalPeta * 0.4)
+    cr = cr + MATH.floor(STAT.totalExa * 0.5)
+    cr = cr + MATH.floor(STAT.totalZeta * 0.6)
+    cr = cr + MATH.floor(STAT.totalYotta * 0.7)
+    cr = cr + MATH.floor(STAT.totalRonna * 0.8)
+    cr = cr + MATH.floor(STAT.totalQuetta * 0.9)
     cr = cr + MATH.floor(STAT.zp/1000000)
     cr = cr + STAT.totalGame
     cr = cr + MATH.floor(STAT.totalQuest / 1000)
@@ -115,6 +122,8 @@ local function calculateRating()
     if cr >= 40000 then IssueSecret('ascendant', true) end
     if cr >= 50000 then IssueSecret('ascension', true) end
     if cr >= 60000 then IssueSecret('ascension2', true) end
+    if cr >= 70000 then IssueSecret('ascension3', true) end
+    if cr >= 80000 then IssueSecret('ascension4', true) end
 
     return MATH.round(cr), cap
 end
@@ -245,13 +254,14 @@ function RefreshProfile()
         local id = badges[i]
         if TEXTURE.stat.badges[id] then
             badgeCount = badgeCount + 1
-            GC.mDraw(TEXTURE.stat.badges[id], (6 + 48 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+            GC.mDraw(TEXTURE.stat.badges[id], (6 + 30 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
             local bd = BadgeData[id] or BadgeData[0]
             scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
             scene.widgetList[badgeCount]:reset()
             scene.widgetList[i]:setVisible(true)
         end
     end
+    STAT.badges = badgeCount
     for i = badgeCount + 1, totalBadges do
         scene.widgetList[i]:setVisible(false)
     end
@@ -265,9 +275,7 @@ function RefreshProfile()
         if STAT.totalTime >= 3600 * 26 then clickerLV = clickerLV + 1 end
         if STAT.maxHeight >= 10000 and STAT.minTime <= 42 then clickerLV = clickerLV + 1 end
         if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
-        if rating >= 40000 then clickerLV = clickerLV + 1 end
-        if rating >= 50000 then clickerLV = clickerLV + 1 end
-        if rating >= 60000 then clickerLV = clickerLV + 1 end
+        for i = 1, MATH.floor((rating-30000)/10000) do clickerLV = clickerLV + 1 end
         if rating >= 25000 then clickerLV = clickerLV + 1 end
         for i = 0, clickerLV - 1 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
@@ -301,6 +309,8 @@ function RefreshProfile()
     GC.print("CHAKRA ESSENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
+        rating >= 80000 and "ASCENDED, PHASE 4" or
+        rating >= 70000 and "ASCENDED, PHASE 3" or
         rating >= 60000 and "ASCENDED, PHASE 2" or
         rating >= 50000 and "ASCENDED" or
         rating >= 40500 and "ASCENSION READY" or
@@ -320,7 +330,7 @@ function RefreshProfile()
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
-        MATH.clamp(math.ceil(rating / 2000), 1, 33)
+        MATH.clamp(math.ceil(rating / 2000), 1, 42)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
@@ -564,7 +574,7 @@ for i = 1, totalBadges do
     table.insert(scene.widgetList, i, WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = (-363 + 32 * (i - 1)), y = -80, w = 35,
+        pos = { .5, .5 }, x = (-363 + 19 * (i - 1)), y = -80, w = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,

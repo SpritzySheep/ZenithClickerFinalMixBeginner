@@ -1,6 +1,7 @@
 ---@type Zenitha.Scene
 local scene = {}
 
+
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
 
@@ -26,6 +27,9 @@ local function addSection(y)
     tempY = y
     table.insert(lines, y)
 end
+ABOUT = {
+    CEheight = 0,
+}
 
 for d = .5, 2.5, .5 do
     addText({ COLOR.LD, "FINAL MIX" }, 40 + d, 20 + d)
@@ -145,6 +149,11 @@ addText({ COLOR.O, "WITH HELP FROM" }, 0, 110, .3)
 
 addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, "Trevor Smithy", "ZCEM Dev")
 
+-- addSection(1650)
+-- addText({ COLOR.O, "CHAKRA ESCENCE BREAKDOWN" }, 0, 20, 1)
+-- addText({ COLOR.A, "MAXIMAL HEIGHT" }, -200, 80, .5)
+-- addText({ COLOR.A, ABOUT.CEheight }, 200, 80, .5)
+
 addSection(1650)
 
 addText({ COLOR.O, "RANK ALMANAC" }, 0, 20, .3)
@@ -183,7 +192,15 @@ addRank(0, 2950, { COLOR.HEX 'EBD33A' }, "K+", "58,000 CE")
 addRank(0, 3050, { COLOR.HEX 'E0E635' }, "V-", "60,000 CE")
 addRank(0, 3150, { COLOR.HEX 'C6EA39' }, "V", "62,000 CE")
 addRank(0, 3250, { COLOR.HEX 'A7E938' }, "V+", "64,000 CE")
-
+addRank(0, 3350, { COLOR.HEX '89E938' }, "O-", "66,000 CE")
+addRank(0, 3450, { COLOR.HEX '6CEA39' }, "O", "68,000 CE")
+addRank(0, 3550, { COLOR.HEX '68E132' }, "O+", "70,000 CE")
+addRank(0, 3650, { COLOR.HEX '4EEA39' }, "OO", "72,000 CE")
+addRank(0, 3750, { COLOR.HEX '3AEB42' }, "M-", "74,000 CE")
+addRank(0, 3850, { COLOR.HEX '45F361' }, "M", "76,000 CE")
+addRank(0, 3950, { COLOR.HEX '3CED7E' }, "M+", "78,000 CE")
+addRank(0, 4050, { COLOR.HEX '3AEB99' }, "MM", "80,000 CE")
+addRank(0, 4150, { COLOR.HEX '38E9B4' }, "MMM", "82,000 CE")
 local timer
 function scene.load()
     MSG.clear()

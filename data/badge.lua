@@ -110,6 +110,31 @@ local d = {
         desc = "Reached F10 while maintaining Petaspeed",
     },
     {
+        id = 'exa',
+        name = "EXASPEED!!!!!",
+        desc = "Entered Exaspeed",
+    },
+    {
+        id = 'zeta',
+        name = "ZETASPEED!!!!!!",
+        desc = "Entered Zetaspeed",
+    },
+    {
+        id = 'yotta',
+        name = "YOTTASPEED!!!!!!!",
+        desc = "Entered Yottaspeed",
+    },
+    {
+        id = 'ronna',
+        name = "RONNASPEED!!!!!!!!",
+        desc = "Entered Ronnaspeed",
+    },
+    {
+        id = 'quetta',
+        name = "QUETTASPEED!!!!!!!!!",
+        desc = "Entered Quettaspeed",
+    },
+    {
         id = 'ascendant',
         name = "Ascendant",
         desc = "Gathered 40,000 Chakra Escence",
@@ -123,6 +148,16 @@ local d = {
         id = 'ascension2',
         name = "Ascension Phase 2",
         desc = "Gathered 60,000 Chakra Escence",
+    },
+    {
+        id = 'ascension3',
+        name = "Ascension Phase 3",
+        desc = "Gathered 70,000 Chakra Escence",
+    },
+    {
+        id = 'ascension4',
+        name = "Ascension Phase 4",
+        desc = "Gathered 80,000 Chakra Escence",
     },
 }
 

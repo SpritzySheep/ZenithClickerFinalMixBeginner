@@ -559,6 +559,10 @@ scene.widgetList = {
                 elseif data == 'test' then
                     TestMode = true
                     SFX.play('maintenance')
+                elseif data == 'achbonus' then
+                    STAT.ExtraSpeed = not STAT.ExtraSpeed
+                    SFX.play('maintenance')
+                    MSG('dark', "Speed Level Bonus from AP: " .. (STAT.ExtraSpeed and "TRUE" or "FALSE"))
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
                 elseif data == 'repo' then
@@ -599,6 +603,7 @@ scene.widgetList = {
                             "Try 'test'",
                             "Try 'dev'",
                             "Try 'repo'",
+                            "Try 'achbonus'",
                             MATH.coin("Try 'mp'", "Try 'music'"),
                             "Try 'f" .. STAT.maxFloor .. "'",
                             STAT.clicker and "Try 'true_ending'" or nil,

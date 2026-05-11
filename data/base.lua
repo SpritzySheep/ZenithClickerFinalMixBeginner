@@ -14,9 +14,14 @@ AchvData = {
     { id = 'achv_issued',   bg = COLOR.DM,          fg = COLOR.lM, fg2 = COLOR.lM },
 }
 
-GigaSpeedReq = { [0] = 7, 8, 8, 9, 9, 10, 10, 1e99, 1e99, 1e99, 1e99 }
-TeraMusicReq = { [0] = 9, 11, 11, 12, 12, 13, 13, 1e99, 1e99, 1e99 }
-PetaMusicReq = { [0] = 10, 12, 12, 13, 13, 14, 14, 15, 15, 15 }
+GigaSpeedReq = 11
+TeraMusicReq = 13
+PetaMusicReq = 15
+ExaMusicReq = 17
+ZetaMusicReq = 19
+YottaMusicReq = 21
+RonnaMusicReq = 23
+QuettaMusicReq = 25
 
 GravityTimer = {
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },

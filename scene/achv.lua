@@ -302,7 +302,7 @@ local achvIconInit
 function scene.load()
     if not achvIconInit then
         achvIconInit = true
-        TEXTURE.achievement.icons = GC.initCanvas(4096, 2048, function()
+        TEXTURE.achievement.icons = GC.initCanvas(4096, 2560, function()
             GC.setShader(GC.newShader [[
                 vec4 effect(vec4 color, sampler2D tex, vec2 texCoord, vec2 scrCoord) {
                     vec4 t = texture2D(tex, texCoord);
@@ -380,7 +380,7 @@ function scene.update(dt)
             local r = math.random(94, 126)
             TEXTURE.achievement.iconQuad[name]:setViewport(
                 MATH.rand(.5, 15.5) * 256 - r, MATH.rand(.5, 5.5) * 256 - r,
-                2 * r, 2 * r, 4096, 2048
+                2 * r, 2 * r, 4096, 2560
             )
         end
     end

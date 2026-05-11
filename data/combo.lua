@@ -69,6 +69,16 @@ d.menu = {
     { set = "GV DH",              name = "The Speed Demon" },
     { set = "GV AS",              name = "The Juggler" },
     { set = "GV DP",              name = "Heavy Hearts" },
+    { set = "VL DH",              name = "Lucifer" },
+    { set = "VL IN",              name = "Memorization" },
+    { set = "VL AS",              name = "Water from Stone" },
+    { set = "VL DP",              name = "Power Couple" },
+    { set = "DH IN",              name = "The Ghost" },
+    { set = "DH AS",              name = "The Deal with the Devil" },
+    { set = "DH DP",              name = "Forbidden Lovers" },
+    { set = "IN AS",              name = "The Abstract Artist" },
+    { set = "IN DP",              name = "Love is Blind" },
+    { set = "AS DP",              name = "Collaboration" },
 }
 
 d.game = {

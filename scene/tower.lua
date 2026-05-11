@@ -903,6 +903,31 @@ function scene.overDraw()
         if GigaSpeed.textTimer then
             gc_setBlendMode('add')
             gc_setColor(.26, .26, .26)
+            if GAME.gspeedlv == 9 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.quettaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
+            if GAME.gspeedlv == 8 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.ronnaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
+            if GAME.gspeedlv == 7 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.yottaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
+            if GAME.gspeedlv == 6 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.zetaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
+            if GAME.gspeedlv == 5 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.exaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
             if GAME.gspeedlv == 4 then
                 for p = -10, 10, 3 do
                     gc_mDraw(TEXTS.petaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)

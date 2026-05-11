@@ -33,6 +33,13 @@ function Initialize(save)
     if STAT.totalPerfect == 0 and STAT.totalQuest > 0 then STAT.totalPerfect = math.floor(STAT.totalQuest * 0.872) end
     if STAT.totalTera == not STAT.totalTera then STAT.totalTera = 0 end
     if STAT.totalPeta == not STAT.totalPeta then STAT.totalPeta = 0 end
+    if STAT.totalExa == not STAT.totalExa then STAT.totalExa = 0 end
+    if STAT.totalZeta == not STAT.totalZeta then STAT.totalZeta = 0 end
+    if STAT.totalYotta == not STAT.totalYotta then STAT.totalYotta = 0 end
+    if STAT.totalRonna == not STAT.totalRonna then STAT.totalRonna = 0 end
+    if STAT.totalQuetta == not STAT.totalQuetta then STAT.totalQuetta = 0 end
+    if STAT.badges == not STAT.badges then STAT.badges = 0 end
+    if STAT.CEheight == not STAT.CEheight then STAT.CEheight = 0 end
     if BEST.version then STAT.version, BEST.version = BEST.version, nil end
     local oldVer = STAT.version
     if STAT.version == nil then

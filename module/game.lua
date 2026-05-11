@@ -171,6 +171,11 @@ local GAME = {
     gigaspeedFloor = {},
     teraspeedFloor = {},
     petaspeedFloor = {},
+    exaspeedFloor = {},
+    zetaspeedFloor = {},
+    yottaspeedFloor = {},
+    ronnaspeedFloor = {},
+    quettaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
@@ -227,6 +232,7 @@ GAME.xp = 0
 GAME.height = 0
 GAME.chain = 0
 GAME.gspeedlv = 2
+GAME.CEheight = 0
 
 local M = GAME.mod
 local MD = ModData
@@ -653,7 +659,11 @@ function GAME.genQuest()
             a = 0,
         })
     until #GAME.quests >= 3
-
+    if STAT.ExtraSpeed then
+        if GAME.rank <  (1 + (floor(STAT.achv/100))) then
+            GAME.rank = (1 + (floor(STAT.achv/100)))
+        end
+    end
     GAME.questTime = 0
     GAME.fault = false
     GAME.faultWrong = false
@@ -836,9 +846,13 @@ function GAME.takeDamage(dmg, reason, toAlly)
 end
 
 function GAME.addHeight(h, realHeight)
-    h = h * (realHeight and 1 or GAME.rank - 1)
+    h = h * (realHeight and 1 or (GAME.rank / 4) - 1)
     GAME.heightBonus = GAME.heightBonus + h
+    if GAME.height > 2050 then
+    GAME.height = GAME.height + h
+    else
     GAME.heightBuffer = GAME.heightBuffer + h
+    end
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
 end
 
@@ -873,16 +887,36 @@ function GAME.addXP(xp)
         TEXTS.rank:set("Speed Lv" .. GAME.rank - 1)
         SFX.play('speed_up_' .. (speedupSFX[GAME.rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(GAME.rank / 4, 1))
         -- if GAME.height > 0 and not GAME.gigaspeedEntered and GAME.rank >= GigaSpeedReq[max(GAME.floor, (GAME.negFloor - 1) % 10 + 1)] then
-        if not GAME.gigaspeed and GAME.height > 0 and GAME.rank >= GigaSpeedReq[GAME.floor] then
+        if not GAME.gigaspeed and GAME.height > 0 and GAME.rank >= GigaSpeedReq then
             GAME.setGigaspeedAnim(true)
             GAME.refreshRPC()
         end
-        if GAME.gigaspeed and not GAME.teramusic and GAME.rank >= TeraMusicReq[GAME.floor] and GAME.rank < PetaMusicReq[GAME.floor] then
+        if GAME.gspeedlv < 3 and GAME.rank >= TeraMusicReq and GAME.rank < PetaMusicReq then
             GAME.startTeraAnim()
             GAME.refreshRPC()
         end
-        if not GAME.petaspeed and GAME.rank >= PetaMusicReq[GAME.floor] then
+        if GAME.gspeedlv < 4 and GAME.rank >= PetaMusicReq then
             GAME.startPetaAnim()
+            GAME.refreshRPC()
+        end
+        if GAME.gspeedlv < 5 and GAME.rank >= ExaMusicReq then
+            GAME.startExaAnim()
+            GAME.refreshRPC()
+        end
+        if GAME.gspeedlv < 6 and GAME.rank >= ZetaMusicReq then
+            GAME.startZetaAnim()
+            GAME.refreshRPC()
+        end
+        if GAME.gspeedlv < 7 and GAME.rank >= YottaMusicReq then
+            GAME.startYottaAnim()
+            GAME.refreshRPC()
+        end
+        if GAME.gspeedlv < 8 and GAME.rank >= RonnaMusicReq then
+            GAME.startRonnaAnim()
+            GAME.refreshRPC()
+        end
+        if GAME.gspeedlv < 9 and GAME.rank >= QuettaMusicReq then
+            GAME.startQuettaAnim()
             GAME.refreshRPC()
         end
     else
@@ -899,6 +933,11 @@ function GAME.setGigaspeedAnim(on)
         GAME.gigaCount = GAME.gigaCount + 1
         GigaSpeed.isTera = false
         GigaSpeed.isPeta = false
+        GigaSpeed.isExa = false
+        GigaSpeed.isZeta = false
+        GigaSpeed.isYotta = false
+        GigaSpeed.isRonna = false
+        GigaSpeed.isQuetta = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -945,6 +984,106 @@ function GAME.startPetaAnim()
 end
 
 function GAME.stopPetaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startExaAnim()
+    GAME.gspeedlv = 5
+    GAME.exaspeed = true
+    GAME.exaspeedFloor[GAME.floor] = true
+    GAME.exaCount = GAME.exaCount + 1
+    GigaSpeed.isExa = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopExaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startZetaAnim()
+    GAME.gspeedlv = 6
+    GAME.zetaspeed = true
+    GAME.zetaspeedFloor[GAME.floor] = true
+    GAME.zetaCount = GAME.zetaCount + 1
+    GigaSpeed.isZeta = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopZetaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startYottaAnim()
+    GAME.gspeedlv = 7
+    GAME.yottaspeed = true
+    GAME.yottaspeedFloor[GAME.floor] = true
+    GAME.yottaCount = GAME.yottaCount + 1
+    GigaSpeed.isYotta = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopYottaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startRonnaAnim()
+    GAME.gspeedlv = 8
+    GAME.ronnaspeed = true
+    GAME.ronnaspeedFloor[GAME.floor] = true
+    GAME.ronnaCount = GAME.ronnaCount + 1
+    GigaSpeed.isRonna = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopRonnaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startQuettaAnim()
+    GAME.gspeedlv = 9
+    GAME.quettaspeed = true
+    GAME.quettaspeedFloor[GAME.floor] = true
+    GAME.quettaCount = GAME.quettaCount + 1
+    GigaSpeed.isQuetta = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+    PlayBGM('tera', true)
+end
+
+function GAME.stopQuettaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1075,6 +1214,22 @@ function GAME.upFloor()
     end
 
     -- End game
+    if GAME.zetaCount >= 1 then
+                IssueSecret('zeta')
+                GAME.finishTera = true
+            end
+    if GAME.yottaCount >= 1 then
+                IssueSecret('yotta')
+                GAME.finishTera = true
+    end
+    if GAME.ronnaCount >= 1 then
+                IssueSecret('ronna')
+                GAME.finishTera = true
+    end
+    if GAME.quettaCount >= 1 then
+                IssueSecret('quetta')
+                GAME.finishTera = true
+    end
     if GAME.floor >= 10 then
         local roundTime = roundUnit(GAME.time, .001)
         if GAME.gigaspeed then
@@ -1093,7 +1248,11 @@ function GAME.upFloor()
                 IssueSecret('peta')
                 GAME.finishTera = true
             end
-            GAME.stopTeraspeed('f10')
+            if GAME.exaspeed then
+                IssueSecret('exa')
+                GAME.finishTera = true
+            end
+            
 
             local setStr = (GAME.anyUltra and 'u' or '') .. GAME.comboStr
             local t = BEST.speedrun[setStr]
@@ -2222,9 +2381,19 @@ function GAME.start()
     TABLE.clear(GAME.gigaspeedFloor)
     TABLE.clear(GAME.teraspeedFloor)
     TABLE.clear(GAME.petaspeedFloor)
+    TABLE.clear(GAME.exaspeedFloor)
+    TABLE.clear(GAME.zetaspeedFloor)
+    TABLE.clear(GAME.yottaspeedFloor)
+    TABLE.clear(GAME.ronnaspeedFloor)
+    TABLE.clear(GAME.quettaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
+    GAME.exaCount = 0
+    GAME.zetaCount = 0
+    GAME.yottaCount = 0
+    GAME.ronnaCount = 0
+    GAME.quettaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -2416,6 +2585,11 @@ function GAME.finish(reason)
         STAT.totalGiga = STAT.totalGiga + GAME.gigaCount
         STAT.totalTera = STAT.totalTera + GAME.teraCount
         STAT.totalPeta = STAT.totalPeta + GAME.petaCount
+        STAT.totalExa = STAT.totalExa + GAME.exaCount
+        STAT.totalZeta = STAT.totalZeta + GAME.zetaCount
+        STAT.totalYotta = STAT.totalYotta + GAME.yottaCount
+        STAT.totalRonna = STAT.totalRonna + GAME.ronnaCount
+        STAT.totalQuetta = STAT.totalQuetta + GAME.quettaCount
         if GAME.floor >= 10 then
             STAT.totalF10 = STAT.totalF10 + 1
             if GAME.floorTime <= 6.26 then
@@ -2737,7 +2911,7 @@ function GAME.finish(reason)
             --     end
         end
         if M.EX < 2 and M.DP < 2 then
-            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount)
+            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount + GAME.exaCount + GAME.zetaCount + GAME.yottaCount + GAME.ronnaCount + GAME.quettaCount)
         end
         if M.DP > 0 then
             SubmitAchv('the_responsible_one', GAME.reviveCount)
@@ -2794,6 +2968,11 @@ function GAME.finish(reason)
     GAME.setGigaspeedAnim(false)
     GAME.stopTeraspeed('fin')
     GAME.stopPetaspeed('fin')
+    GAME.stopExaspeed('fin')
+    GAME.stopZetaspeed('fin')
+    GAME.stopYottaspeed('fin')
+    GAME.stopRonnaspeed('fin')
+    GAME.stopQuettaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -2980,7 +3159,7 @@ function GAME.update(dt, realDT)
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
-            GAME.height = GAME.height + GAME.rank / 4 * dt * icLerp(1, 6, Floors[GAME.floor].top - GAME.height)
+            GAME.height = GAME.height + GAME.rank / 4 * dt
         end
     end
 
@@ -3004,12 +3183,12 @@ function GAME.update(dt, realDT)
                 GAME.xp = 4 * GAME.rank
                 GAME.rankupLast = false
                 if GAME.gigaspeed then
-                    if GAME.rank < GigaSpeedReq[0] then
+                    if GAME.rank < GigaSpeedReq - 1 then
                         GAME.setGigaspeedAnim(false)
                         SFX.play('zenith_speedrun_end')
                         SFX.play('zenith_speedrun_end')
                         if MATH.between(GAME.height, Floors[9].top - 50, Floors[9].top) then IssueAchv('cut_off') end
-                    elseif GAME.teramusic and GAME.rank < TeraMusicReq[0] then
+                    elseif GAME.teramusic and GAME.rank < TeraMusicReq then
                         GAME.stopTeraspeed('drop')
                     end
                 end
