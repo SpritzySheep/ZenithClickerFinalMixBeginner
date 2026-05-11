@@ -1,3 +1,6 @@
+Most recent code is in main2 branch because I accidentally included the love file in the commit to the main branch so now github desktop won't let me commit to it
+
+
 # Zenith Clicker
 
     Welcome to Zenith Clicker, where the goal is to select required Tarot cards and send players to scale the tower.  
