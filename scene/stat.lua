@@ -2,16 +2,16 @@
 local scene = {}
 
 local maskAlpha, cardShow
-local card = GC.newCanvas(1200, 720)
+local card = GC.newCanvas(2650, 1440)
 local totalBadges = 50
 
 local floor = math.floor
 local badgeList = 0
-local baseColor = { .12, .26, .14 }
-local areaColor = { .12, .23, .12 }
-local titleColor = { COLOR.HEX("16582D") }
-local textColor = { COLOR.HEX("54B06D") }
-local scoreColor = { COLOR.HEX("B0FFC0") }
+local baseColor = { .2, 0, .4 }
+local areaColor = { .1, .0, .3 }
+local titleColor = { COLOR.HEX("808080") }
+local textColor = { COLOR.HEX("8080FF") }
+local scoreColor = { COLOR.HEX("C080FF") }
 local setup = { stencil = true, card }
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
@@ -182,34 +182,34 @@ function RefreshProfile()
 
     -- Banner
     GC.setColor(.42, .42, .42)
-    GC.draw(TEXTURE.logo, bannerQuad, 0, 10, 0, 1200 / 512, 150 / 256)
+    GC.draw(TEXTURE.logo, bannerQuad, 0, 10, 0, 2800 / 512, 150 / 256)
 
     -- Main panel & frame
     GC.setColor(pnlColor)
     -- base
-    GC.rectangle('fill', 0, 720, 1200, -560)
+    GC.rectangle('fill', 0, 0, 2800, 1440)
     -- deco
-    GC.draw(saw, sawQuad, 0, 720 - 560, 0, 7.2, 7.2, 0, 3)
+    GC.draw(saw, sawQuad, 0, 1440 - 560, 0, 7.2, 7.2, 0, 3)
     -- top ribbon (badges)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 210, 1200, 60)
+    GC.rectangle('fill', 00, 210, 2800, 60)
     -- bottom ribbon
-    GC.rectangle('fill', 0, 720, 1200, -90)
+    GC.rectangle('fill', 0, 1440, 1800, -90)
     -- github link
     FONT.set(50)
     GC.setColor(scoreColor)
-    GC.printf("↗  VIEW FULL RECORDS", 0, 640, 1200, 'center')
+    GC.printf("↗  VIEW FULL RECORDS", 0, 1370, 1200, 'center')
     -- bottom dark
     GC.setColor(0, 0, 0, .3)
-    GC.rectangle('fill', 0, 720, 1200, -3)
+    --GC.rectangle('fill', 0, 720, 1200, -3)
     -- right dark
     GC.setColor(0, 0, 0, .15)
-    GC.rectangle('fill', 1200, 720, -3, -560)
-    GC.draw(TEXTURE.transition, 1200, 720 - 560, -1.5708, .626, -3)
+    --GC.rectangle('fill', 1200, 720, -3, -560)
+    --GC.draw(TEXTURE.transition, 1200, 720 - 560, -1.5708, .626, -3)
     -- left light
     GC.setColor(1, 1, 1, .15)
-    GC.rectangle('fill', 0, 720, 3, -560)
-    GC.draw(TEXTURE.transition, 0, 720 - 560, -1.5708, .626, 3)
+    --GC.rectangle('fill', 0, 720, 3, -560)
+    --GC.draw(TEXTURE.transition, 0, 720 - 560, -1.5708, .626, 3)
 
     -- X
     FONT.set(30)
@@ -220,16 +220,16 @@ function RefreshProfile()
     local avatar = AVATAR or TEXTURE.stat.avatar
     GC.setColor(1, 1, 1)
     GC.stc_setComp()
-    GC.stc_rect(30, 0, 120, 120, 6)
-    GC.draw(avatar, 30, 0, 0, 120 / math.min(avatar:getDimensions()))
+    GC.stc_rect(2650-1440, 0, 1440, 1440, 0)
+    GC.draw(avatar, 2650-1440, 0, 0, 1440 / math.min(avatar:getDimensions()))
     GC.stc_stop()
 
     -- ID
     FONT.set(30)
-    GC.print(("Joined on " .. STAT.joinDate):upper(), 165, 96, 0, .7)
+    GC.print(("Joined on " .. STAT.joinDate):upper(), 100, 96, 0, .7)
     FONT.set(50)
     GC.setColor(COLOR.L)
-    GC.print(STAT.uid, 165, 18, 0, 1.2)
+    GC.print(STAT.uid, 100, 18, 0, 1.2)
 
     -- Time
     GC.ucs_move(1065, 165)
@@ -334,6 +334,7 @@ function RefreshProfile()
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
+    GC.draw(rankIcon, 2200, 650,0, 400 / rankIcon:getWidth())
     if rank > 0 then
         -- Progress Bar
         GC.setColor(rating <= rating and textColor or scoreColor)
@@ -440,6 +441,57 @@ function RefreshProfile()
         GC.print(l.v, l.x + l.d, l.y, 0, .75)
     end
     GC.ucs_back()
+    GC.ucs_move(25, 640)
+    GC.setColor(boxColor)
+    GC.rectangle('fill', 0, 0, 290, 435)
+    FONT.set(30)
+    GC.setColor(lblColor)
+    GC.print("CE BREAKDOWN", 7, 2, 0, .8)
+    for _, l in next, {
+        { k = "Maximal Height",    v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2))+MATH.floor(STAT.maxHeight / 10) }, x = 26,  y = 33, d = 200 },
+        { k = "Fastest Time",  v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)) },  x = 26,  y = 58, d = 200 },
+        { k = "Single Mod Ascent",    v = { scoreColor, MATH.floor(3600 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)) },  x = 26,  y = 83, d = 200 },
+        { k = "Single Mod Speed",    v = { scoreColor, MATH.floor(2400 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)) },  x = 26, y = 108, d = 200 },
+        { k = "Zenith Points",   v = { scoreColor,MATH.floor(3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)) + MATH.floor(STAT.zp/1000000) },    x = 26, y = 133, d = 200 },
+        { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))) }, x = 26, y = 158, d = 200 },
+        { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 183, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9)) }, x = 26, y = 208, d = 200 },
+        { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 1000) },                     x = 26, y = 233, d = 200 },
+        { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 2000) },                      x = 26, y = 258, d = 200 },
+        { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 2500) },                      x = 26, y = 283, d = 200 },
+        { k = "Total Height",   v = { scoreColor, MATH.floor(STAT.totalHeight / 2000) },                      x = 26, y = 308, d = 200 },
+        { k = "Total Bonus",    v = { scoreColor, MATH.floor(STAT.totalBonus / 10000) },                      x = 26, y = 333, d = 200 },
+        { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 358, d = 200 },
+        { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 383, d = 200 },
+        { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 408, d = 200 },
+    } do
+        GC.setColor(textColor)
+        GC.print(l.k, l.x, l.y, 0, .75)
+        GC.setColor(1, 1, 1)
+        GC.print(l.v, l.x + l.d, l.y, 0, .75)
+    end
+    GC.ucs_back()
+    GC.ucs_move(340, 640)
+    GC.setColor(boxColor)
+    GC.rectangle('fill', 0, 0, 250, 210)
+    FONT.set(30)
+    GC.setColor(lblColor)
+    GC.print("SPEED ENTRIES", 7, 2, 0, .8)
+    for _, l in next, {
+        { k = "Teraspeed",    v = { scoreColor, STAT.totalTera }, x = 26,  y = 33, d = 160 },
+        { k = "Petaspeed",  v = { scoreColor, STAT.totalPeta },  x = 26,  y = 58, d = 160 },
+        { k = "Exaspeed",    v = { scoreColor, STAT.totalExa         },  x = 26,  y = 83, d = 160 },
+        { k = "Zetaspeed",    v = { scoreColor, STAT.totalZeta },  x = 26, y = 108, d = 160 },
+        { k = "Yottaspeed",   v = { scoreColor, STAT.totalYotta },    x = 26, y = 133, d = 160 },
+        { k = "Ronnaspeed", v = { scoreColor, STAT.totalRonna }, x = 26, y = 158, d = 160 },
+        { k = "Quettaspeed",  v = { scoreColor, STAT.totalQuetta }, x = 26, y = 183, d = 160 },
+    } do
+        GC.setColor(textColor)
+        GC.print(l.k, l.x, l.y, 0, .75)
+        GC.setColor(1, 1, 1)
+        GC.print(l.v, l.x + l.d, l.y, 0, .75)
+    end
+    GC.ucs_back()
 
     -- Watermark
     if TestMode then
@@ -512,7 +564,7 @@ end
 scene.widgetList = {
     WIDGET.new {
         name = 'peakZP', type = 'hint',
-        pos = { .5, .5 }, x = -100, y = 150, w = 180, h = 35,
+        pos = { .5, .5 }, x = -590, y = -90, w = 180, h = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         labelDist = 2,
@@ -521,7 +573,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'full', type = 'button_invis',
-        pos = { .5, .5 }, x = 0, y = 210, w = 800, h = 60,
+        pos = { .5, .5 }, x = -480, y = 450, w = 800, h = 60,
         onPress = function()
             if cardShow == 1 then
                 SFX.play('menuconfirm')
@@ -532,13 +584,13 @@ scene.widgetList = {
     -- CLOSE button
     WIDGET.new {
         name = 'close', type = 'button_invis',
-        pos = { .5, .5 }, x = 344, y = -196, w = 100, h = 50,
+        pos = { .5, .5 }, x = -174, y = -436, w = 100, h = 50,
         onClick = function() love.keypressed('escape') end,
     },
     -- Inside the profile card
     WIDGET.new {
         name = 'protect', type = 'button_invis',
-        pos = { .5, .5 }, w = 820, h = 500,
+        pos = { .5, .5 }, w = 1780, h = 960,
     },
     -- Outside the profile card
     WIDGET.new {
@@ -574,7 +626,7 @@ for i = 1, totalBadges do
     table.insert(scene.widgetList, i, WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = (-363 + 19 * (i - 1)), y = -80, w = 35,
+        pos = { .5, .5 }, x = (-863 + 20.1 * (i - 1)), y = -320, w = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,

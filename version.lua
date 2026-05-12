@@ -3,6 +3,6 @@ return {
     ["apkCode"] = 011401,
     ["verCode"] = 011401,
 
-    ["appVer"] = "0.5.4 Gamma",
-    ["verStr"] = "0.5.4 Gamma",
+    ["appVer"] = "0.5.14.5 Gamma",
+    ["verStr"] = "0.5.14.5 Gamma",
 }

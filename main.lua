@@ -12,8 +12,7 @@ STRING.install()
 
 SCR.setSize(1600, 1000)
 
-for _, v in next, {
-    'customAssets',
+FILE.createDirectory({
     'customAssets/achievements',
     'customAssets/badges',
     'customAssets/card',
@@ -24,7 +23,7 @@ for _, v in next, {
     'customAssets/revive',
     'customAssets/stat',
     'customAssets/tower',
-} do love.filesystem.createDirectory(v) end
+})
 
 
 ---@return love.Texture
@@ -1091,30 +1090,33 @@ function PlayBGM(name, force)
 
     if GAME.playing and RevMusicMode() then name = name .. 'r' end
     if name == 'fomgr' then name = 'fomg' end
-    if name:sub(1, 2) == 'f0' then
+    if name == 'f0r' then
         BgmPlaying = 'f0'
-    elseif name:sub(1, 2) == 'f1' and name:sub(1, 3) ~= 'f10' then
+    elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
         BgmPlaying = 'f1'
     else
         BgmPlaying = name
     end
 
     if not BgmData[BgmPlaying] then return end
-    BgmLooping = BgmData[BgmPlaying].loop
-    BgmNeedSkip = BgmData[BgmPlaying].teleport
     BgmNeedStop = false
 
     if BgmPlaying == 'f0' then
         BgmLooping = false
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
         BGM.play(BgmSet.f0)
         RefreshBGM(name)
     elseif BgmPlaying == 'f1' then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
         BGM.play(BgmSet.f1, force and '' or '-sdin')
         local start = math.random(3, 5) * BgmData.f1.introLen
         BgmNeedSkip[1] = start + BgmData.f1.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM(name)
     elseif name == 'tera' then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
         BGM.play('tera', '-sdin')
         local startFrom
         if last then
@@ -1126,10 +1128,10 @@ function PlayBGM(name, force)
         BgmNeedSkip[1] = start + BgmData.tera.introLen
         BGM.set('all', 'seek', start)
         RefreshBGM()
-    else
-        if BGM.play(name, force and '' or '-sdin') then
-            RefreshBGM()
-        end
+    elseif BGM.play(name, force and '' or '-sdin') then
+        BgmLooping = BgmData[BgmPlaying].loop
+        BgmNeedSkip = BgmData[BgmPlaying].teleport
+        RefreshBGM()
     end
 end
 
@@ -1753,41 +1755,7 @@ function Daemon_Slow()
         end
 
         -- HTTP returns
-        local msg = ASYNC.get('checkUpdate')
-        if msg then
-            local suc, res = pcall(JSON.decode, msg)
-            if suc and res then
-                if (require 'version'.appVer):lower() == res.tag_name then
-                    LOG('info', "Already on latest version (" .. res.tag_name .. ")")
-                else
-                    SFX.play('social_notify_major')
-                    MSG('info', "New version " .. res.tag_name .. " available!", 6.26)
-                end
-            else
-                LOG('info', "Failed to check for updates")
-            end
-        end
-        msg = ASYNC.get('submitDaily')
-        if msg then
-            local suc, res = pcall(JSON.decode, msg)
-            local duration = GAME.playing and 0 or 10
-            if suc and res then
-                if res.error then
-                    MSG('warn', "Daily Challenge submission failed:\n" .. res.error, duration * .626)
-                else
-                    MSG('check',
-                        "Daily Challenge score submitted!\n" ..
-                        "Alt #" .. tostring(res.altRank) .. " of " .. tostring(res.altCount) .. ", top: " .. tostring(res.altBest) .. "m\n" ..
-                        "SR #" .. tostring(res.timeRank) .. " of " .. tostring(res.timeCount) .. ", top: " .. tostring(res.timeBest) .. "s",
-                        duration)
-                    SFX.play('pause_continue', 1, 0, Tone(-5))
-                end
-                DAILYCMD = nil
-            else
-                MSG('warn', "Daily Challenge submission failed\nRetry with secret code 'resubmit'\ndata received from server: " .. msg, 10 * 1.6)
-                SFX.play('pause_retry', 1, 0, Tone(-5))
-            end
-        end
+        
 
         TASK.yieldT(.6)
     end

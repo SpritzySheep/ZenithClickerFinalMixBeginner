@@ -34,7 +34,6 @@ local songList = {
     f9 = "Dr Ocelot - Broken Record",
     f10 = "petrtech - Deified Validation",
     tera = "Dr Ocelot - Schnellfeuer BULLET",
-    f1ex = "Dr Ocelot - Infernal Registration",
 
     f0r = "Dr Ocelot - Awaiting Judgement",
     f1r = "Dr Ocelot - Desecrated Ruins",
@@ -50,6 +49,8 @@ local songList = {
     terar = "Dr Ocelot - Kugelhagel OVERDRIVE",
 
     fomg = "Ronezkj15 - Strained Endurance",
+    f1_withEX = "Dr Ocelot - Infernal Registration",
+    f1r_withEX = "Dr Ocelot - Infernal Registration+",
 }
 local bgmColors = {
     f1 = { COLOR.HEX 'E46A24' },
@@ -72,7 +73,6 @@ local bgmColors = {
     f8r = { COLOR.HEX 'F16A77' },
     f9r = { COLOR.HEX '3DA878' },
     f10r = { COLOR.HEX 'AD80F5' },
-
     f0 = { COLOR.HEX '8C2B15' },
     f0r = { COLOR.HEX '8C2B15' },
     tera = { COLOR.HEX 'C0C0C0' },
@@ -86,7 +86,19 @@ end
 
 local function refreshSongInfo()
     if not MusicPlayer then return end
-    playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
+    if SongNamePlaying == 'f0' and GAME.anyRev then
+        playingBgmTitle = songList.f0r
+    elseif SongNamePlaying == 'f1' and GAME.anyRev then
+        if GAME.mod.EX > 0 then
+            playingBgmTitle = songList.f1r_withEX
+        else
+            playingBgmTitle = songList.f1r
+        end
+    elseif SongNamePlaying == 'f1' and GAME.mod.EX > 0 then
+        playingBgmTitle = songList.f1_withEX
+    else
+        playingBgmTitle = songList[SongNamePlaying] or "Rewrite"
+    end
     playingBgmLength = BGM.getDuration()
     playingBgmLengthStr = STRING.time_simp(playingBgmLength)
     GAME.refreshRPC()
@@ -176,7 +188,7 @@ function scene.keyDown(key, isRep)
             end
         end
         else
-        if key == 'escape' then
+        if key == 'escape' or key == 'f1' then
             SFX.play('menuclick')
             SCN.back('none')
         elseif MATH.between(tonumber(key) or 0, 1, maxPage) then
@@ -283,16 +295,11 @@ function scene.draw()
         local beatLen = 60 / BgmData[BgmPlaying].bpm
         local beatBar = BgmData[BgmPlaying].bar
 
-        -- Glow
-        gc.push('transform')
-        gc_replaceTransform(SCR.origin)
-        gc_setColor(1, 1, 1, .06 + .04 * math.sin(playTime / beatLen * 1.5708))
-        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
-        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
-        gc.pop()
+
 
         gc_ucs_move(50, 120)
 
+        -- Time
         FONT.set(30)
         gc_setColor(clr.T)
         gc_print(STRING.time_simp(playTime), 0, 49, 0, .626)
@@ -308,22 +315,42 @@ function scene.draw()
             end
         end
 
+        -- Progress Bar
         gc_setColor(clr.L)
         gc_rectangle('fill', 0, 46, len, 4)
         if BgmPlaying == 'tera' then
             gc_setColor(COLOR.rainbow_light(2.6 * t))
         elseif BgmPlaying == 'terar' then
-            gc_setColor(COLOR.rainbow_light(26 * t))
+            gc_setColor(COLOR.rainbow_light(20 * t))
+        else
+            gc_setColor(bgmColors[BgmPlaying] or clr.LT)
         end
         gc_rectangle('fill', 0, 46, len * playTime / playingBgmLength, 4)
 
+        -- Ambient Glow
+        gc.push('transform')
+        gc_replaceTransform(SCR.origin)
+        if BgmPlaying == 'tera' or BgmPlaying == 'terar' then
+            gc_setAlpha(.26)
+        else
+            gc_setAlpha(.2 + .06 * math.sin(playTime / beatLen * 1.5708))
+        end
+        gc_draw(TEXTURE.transition, 0, 0, 0, .42 / 128 * SCR.w, SCR.h)
+        gc_draw(TEXTURE.transition, SCR.w, 0, 0, -.42 / 128 * SCR.w, SCR.h)
+        gc.pop()
+
+        -- Title
+        gc_setAlpha(1)
         gc_mStr(playingBgmTitle, len / 2, 0)
-        gc_setColor(1, 1, 1, .35 - .26 * math.sin(playTime / (beatBar * beatLen) * 3.1416))
+        if not (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
+            gc_setColor(1, 1, 1, .35 - .26 * math.sin(playTime / (beatBar * beatLen) * 3.1416))
+        end
         gc_mStr(playingBgmTitle, len / 2, 0)
         gc_setColor(clr.LT)
         gc_setAlpha(.26)
         gc_printf(data.meta, len / 2, 56, 2 * len, 'center', 0, .42, .42, len)
 
+        -- Skip marks
         if BgmNeedSkip then
             local alpha = .26 + .62 * (-2.6 * t % 1)
             gc_setColor(COLOR.C)
