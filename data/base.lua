@@ -29,14 +29,14 @@ GravityTimer = {
 }
 
 PieceData = {
-    { id = 'nightcore', text = { COLOR.lR, "Z", }, popup = { COLOR.lR, "Z - Nightcore" } },
-    { id = 'slowmo',    text = { COLOR.lG, "S", }, popup = { COLOR.lG, "S - Sloooooow-mo" } },
-    { id = 'glassCard', text = { COLOR.lB, "J", }, popup = { COLOR.lB, "J - Glass Card" } },
-    { id = 'fastLeak',  text = { COLOR.lO, "L", }, popup = { COLOR.lO, "L - Fast Leak" } },
-    { id = 'invisUI',   text = { COLOR.lM, "T", }, popup = { COLOR.lM, "T - Invisible UI" } },
-    { id = 'invisCard', text = { COLOR.lY, "O", }, popup = { COLOR.lY, "O - Invisible Card" } },
-    { id = 'closeCard', text = { COLOR.lC, "I", }, popup = { COLOR.lC, "I - Close Card" } },
-    { id = 'allclear',  text = { COLOR.LL, "-", }, popup = { COLOR.LL, "All Clear" } },
+     { id = 'nightcore', text = { COLOR.lR, "Z" }, piece = { COLOR.lR, CHAR.brik.Z },  popup = { COLOR.lR, "Z - Nightcore" } },
+    { id = 'slowmo',    text = { COLOR.lG, "S" }, piece = { COLOR.lG, CHAR.brik.S },  popup = { COLOR.lG, "S - Sloooooow-mo" } },
+    { id = 'glassCard', text = { COLOR.lB, "J" }, piece = { COLOR.lB, CHAR.brik.J },  popup = { COLOR.lB, "J - Glass Card" } },
+    { id = 'fastLeak',  text = { COLOR.lO, "L" }, piece = { COLOR.lO, CHAR.brik.L },  popup = { COLOR.lO, "L - Fast Leak" } },
+    { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T },  popup = { COLOR.lM, "T - Invisible UI" } },
+    { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O },  popup = { COLOR.lY, "O - Invisible Card" } },
+    { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
+    { id = 'allclear',  text = { COLOR.LL, "-" }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
 }
 
 RevSwampName = {
@@ -195,6 +195,7 @@ NegEvents = {
         text = 'b2.effStart',
         event = function()
             GAME.nightcore = true
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -233,6 +234,7 @@ NegEvents = {
     {
         event = function()
             GAME.nightcore = false
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -243,12 +245,42 @@ NegEvents = {
     { event = { 'attackMul', -.5, 'timerMul', .25 } },
     { h = -155 }, { text = 'b3.begin' },
     { h = -160 }, { text = 'b3.effStart' },
-    { h = -165 }, { event = { 'invisUI', true } },
-    { h = -170 }, { event = { 'invisUI', false } },
-    { h = -175 }, { event = { 'invisUI', true } },
+    { h = -165 },
+    {
+        event = function()
+            GAME.invisUI = true
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -170 },
+    {
+        event = function()
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -175 },
+    {
+        event = function()
+            GAME.invisUI = true
+            GAME.refreshPieceFstr()
+        end
+    },
     { h = -180 }, { text = 'b3.mid1' },
-    { h = -185 }, { event = { 'invisUI', false } },
-    { h = -195 }, { event = { 'invisUI', true } },
+    { h = -185 },
+    {
+        event = function()
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -195 },
+    {
+        event = function()
+            GAME.invisUI = true
+            GAME.refreshPieceFstr()
+        end
+    },
     { h = -200 },
     { text = 'b3.noGV', color = 'lB', cond = function() return GAME.mod.GV == 0 end },
     {
@@ -265,12 +297,41 @@ NegEvents = {
             RefreshBGM()
         end,
     },
-    { h = -200 }, { event = { 'invisUI', false } },
-    { h = -210 }, { event = { 'invisUI', true } },
+    {
+        event = function()
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -210 },
+    {
+        event = function()
+            GAME.invisUI = true
+            GAME.refreshPieceFstr()
+        end
+    },
     { h = -220 }, { text = 'b3.mid2' },
-    { h = -250 }, { event = { 'invisUI', false } },
-    { h = -260 }, { event = { 'invisUI', true } },
-    { h = -280 }, { event = { 'invisUI', false } },
+    { h = -250 },
+    {
+        event = function()
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -260 },
+    {
+        event = function()
+            GAME.invisUI = true
+            GAME.refreshPieceFstr()
+        end
+    },
+    { h = -280 },
+    {
+        event = function()
+            GAME.invisUI = false
+            GAME.refreshPieceFstr()
+        end
+    },
 
     -- B4: The Bunker
     { h = -300 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
@@ -278,7 +339,14 @@ NegEvents = {
     { h = -310 },
     { text = 'b4.begin' },
     { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
-    { h = -320 }, { text = 'b4.effStart', event = { 'glassCard', true } },
+    { h = -320 },
+    {
+        text = 'b4.effStart',
+        event = function()
+            GAME.glassCard = true
+            GAME.refreshPieceFstr()
+        end
+    },
     { h = -380 },
     { text = 'b4.noMS', color = 'lB', cond = function() return GAME.mod.MS == 0 end },
     {
@@ -298,7 +366,13 @@ NegEvents = {
     { h = -450 }, { event = { 'glassCard', false } },
 
     -- B5: The Infirmary
-    { h = -450 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
+    { h = -450 },
+    {
+        event = function()
+            GAME.glassCard = false
+            GAME.refreshPieceFstr()
+        end
+    },
     { event = { 'attackMul', -.5 } },
     { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -460 }, { text = 'b5.begin' },
@@ -306,6 +380,7 @@ NegEvents = {
     {
         event = function()
             GAME.slowmo = true
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -328,6 +403,7 @@ NegEvents = {
     {
         event = function()
             GAME.slowmo = false
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -337,7 +413,14 @@ NegEvents = {
     { event = { 'attackMul', -.5 } },
     { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -660 }, { text = 'b6.begin' },
-    { h = -670 }, { text = 'b6.effStart', event = { 'invisCard', true } },
+    { h = -670 },
+    {
+        text = 'b6.effStart',
+        event = function()
+            GAME.invisCard = true
+            GAME.refreshPieceFstr()
+        end
+    },
     { h = -720 },
     { text = 'b6.noNH', color = 'lB', cond = function() return GAME.mod.NH == 0 end },
     {
@@ -355,7 +438,13 @@ NegEvents = {
             GAME.refreshRPC()
         end,
     },
-    { h = -850 }, { event = { 'invisCard', false } },
+    { h = -850 },
+    {
+        event = function()
+            GAME.invisCard = false
+            GAME.refreshPieceFstr()
+        end
+    },
 
     -- B7: Sacreligious Ruins
     { h = -850 }, { event = { 'dmgDelay', 1, 'dmgCycle', .5 } },
@@ -382,6 +471,7 @@ NegEvents = {
     {
         event = function()
             GAME.nightcore = true
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -390,6 +480,7 @@ NegEvents = {
     {
         event = function()
             GAME.nightcore = false
+            GAME.refreshPieceFstr()
             RefreshBGM()
         end
     },
@@ -418,6 +509,7 @@ NegEvents = {
             GAME.lifeLeak = 0
             GAME.dmgWrong = 1
             GAME.invisCard = true
+            GAME.refreshPieceFstr()
             GAME.dmgTimerMul = 1e99
             GAME.height = -1650
             GAME.heightBonus = 0

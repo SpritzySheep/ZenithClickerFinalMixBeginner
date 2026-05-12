@@ -135,6 +135,8 @@ local GAME = {
     comboZP = 1,
     isUltraRun = false,
     endFloorFstr = {},
+    pieceFstr = {},
+    pieceFstrObj = GC.newText(FONT.get(70, 'symbol')),
 
     completion = { -- 0=not mastered, 1=mastered, 2=rev mastered
         EX = 0,
@@ -647,7 +649,11 @@ function GAME.genQuest()
         if #combo >= 4 then
             local pwr = #combo * 2 - 7
             if TABLE.find(combo, 'DH') then pwr = pwr + 1 end
-            SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
+            local tone = GAME.nightcore and 12 or 0
+            if GAME.slowmo then tone = tone - 12 end
+            for i = 1, tone == 0 and 1 or 2 do
+                SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1 / i, 0, tone)
+            end
             GAME.showWindup(pwr)
         end
 
@@ -1150,6 +1156,7 @@ end
 
 function GAME.upFloor()
     local roundFloorTime = roundUnit(GAME.floorTime, .001)
+    local roundTime = roundUnit(GAME.time, .001)
     if GAME.floor == 1 then
         if GAME.comboStr == 'rEXrNHrVL' then SubmitAchv('hardcore_beginning', roundFloorTime) end
     elseif GAME.floor == 2 then
@@ -1160,6 +1167,7 @@ function GAME.upFloor()
         if GAME.comboStr == 'EXrDPrVL' then SubmitAchv('unfair_battle', roundFloorTime) end
     elseif GAME.floor == 5 then
         if GAME.comboStr == 'DHDP' then SubmitAchv('museum_heist', roundFloorTime) end
+        if GAME.comboStr == 'ASINVL' and GAME.gigaCount == 0 then SubmitAchv('under_the_radar', roundTime) end
     elseif GAME.floor == 6 then
         if GAME.comboStr == 'EXVLrGV' then SubmitAchv('workaholic', roundFloorTime) end
     elseif GAME.floor == 7 then
@@ -1749,6 +1757,15 @@ function GAME.refreshDailyChallengeText()
     SCN.scenes.tower.widgetList.daily:reset()
 end
 
+function GAME.refreshPieceFstr()
+    TABLE.clear(GAME.pieceFstr)
+    for i = 1, #PieceData - 1 do
+        if GAME[PieceData[i].id] then TABLE.append(GAME.pieceFstr, PieceData[i].piece) end
+    end
+    GAME.pieceFstrObj:set(GAME.pieceFstr)
+end
+
+
 function GAME.swapControl()
     if GAME[GAME.getLifeKey(true)] > 0 then
         GAME.onAlly = not GAME.onAlly
@@ -2256,12 +2273,14 @@ function GAME.commit(auto)
         if not GAME.playing then return end
         GAME.dmgWrongExtra = GAME.dmgWrongExtra + .5
 
+        if M.EX > 0 and M.NH < 2 then GAME.cancelAll(true) end
         if M.GV > 0 then GAME.gravTimer = GAME.gravDelay end
         if M.EX > 0 then
             if M.NH < 2 then GAME.cancelAll(true) end
         elseif M.AS == 1 then
             GAME.cancelBurn()
         end
+        if M.AS == 1 then GAME.cancelBurn() end
     end
 end
 
@@ -2319,6 +2338,7 @@ function GAME.start()
     GAME.playing = true
 
     -- Statistics
+    GAME.refreshPieceFstr()
     GAME.comboStr = table.concat(TABLE.sort(GAME.getHand(true)))
     GAME.prevPB = BEST.highScore[(GAME.isUltraRun and 'u' or '') .. GAME.comboStr]
     if GAME.prevPB == 0 then GAME.prevPB = -2600 end
@@ -2482,7 +2502,17 @@ function GAME.start()
     if M.DP > 0 then IssueAchv('intended_glitch') end
 end
 
----@param reason 'forfeit' | 'wrong' | 'time'
+function GAME.clearResultStat()
+    TEXTS.endHeight:set("")
+    TEXTS.endFloor:set("")
+    TEXTS.endResult:set("")
+    TEXTS.zpChange:set("")
+    TEXTS.floorTime:set("")
+    TEXTS.rankTime:set("")
+    GAME.resIB:clear()
+end
+
+---@param reason 'forfeit' | 'wrong' | 'time' | 'reset'
 function GAME.finish(reason)
     SCN.scenes.tower.widgetList.help:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.help2:setVisible(not GAME.zenithTraveler)
@@ -2523,7 +2553,7 @@ function GAME.finish(reason)
     GAME.teramusic = false
     GAME.currentTask = false
 
-    local unlockDuo
+    
     if GAME.totalQuest > 2.6 then
         LOG('info', ("[%s] (%s) F%d %.1fm in %.3fs"):format(reason, table.concat(GAME.getHand(true), ', '), GAME.floor, GAME.roundHeight, GAME.time))
 
@@ -2532,11 +2562,7 @@ function GAME.finish(reason)
             for k, v in next, M do
                 if v > GAME.completion[k] then
                     if GAME.completion[k] == 0 then
-                        if k == 'DP' then
-                            unlockDuo = true
-                        else
-                            unlockRev = unlockRev + 1
-                        end
+                        unlockRev = unlockRev + 1
                         RevUnlocked = true
                     end
                     GAME.completion[k] = v
@@ -2618,7 +2644,7 @@ function GAME.finish(reason)
                     IssueAchv('its_kinda_rare')
                 end
             end
-            if STAT.mod == 'vanilla' and not TestMode and SupportCurl then
+             if GAME.totalQuest >= 20 and STAT.mod == 'vanilla' and not TestMode and SupportCurl then
                 local curl =
                     SYSTEM == 'Windows' and [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H "Content-Type: application/json" -d "$1"]] or
                     [[curl -s -X POST https://vercel-leaderboard-one.vercel.app/api -H 'Content-Type: application/json' -d '$1']]
@@ -2955,13 +2981,7 @@ function GAME.finish(reason)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
         SaveStat()
     else
-        TEXTS.endHeight:set("")
-        TEXTS.endFloor:set("")
-        TEXTS.endResult:set("")
-        TEXTS.zpChange:set("")
-        TEXTS.floorTime:set("")
-        TEXTS.rankTime:set("")
-        GAME.resIB:clear()
+        GAME.clearResultStat()
     end
     ReleaseAchvBuffer()
 
@@ -2981,18 +3001,7 @@ function GAME.finish(reason)
     GAME.refreshDailyChallengeText()
     GAME.prevPB = max(GAME.prevPB, GAME.height)
 
-    if unlockDuo then
-        CD.DP.lock = true
-        TASK.new(function()
-            TASK.yieldT(0.42)
-            CD.DP.lock = false
-            CD.DP:spin()
-            CD.DP:bounce(1200, .62)
-            SFX.play('supporter')
-        end)
-    end
-
-    if URM and GAME.height < 0 then
+    if URM and GAME.height < -10 then
         PieceSFXID = 0
         GAME.nightcore = false
         GAME.slowmo = false
@@ -3031,7 +3040,7 @@ function GAME.update(dt, realDT)
     GAME.spikeTimer = GAME.spikeTimer - dt
     for i = #GAME.windupAnim, 1, -1 do
         local w = GAME.windupAnim[i]
-        w.bumpTime = w.bumpTime - realDT
+        w.bumpTime = w.bumpTime - (GAME.slowmo and dt / 2 or dt)
         if w.lv < w.lvFin then
             if w.bumpTime <= 0 then
                 w.lv = w.lv + 1

@@ -10,9 +10,8 @@ local lerp, iLerp, cLerp, icLerp, lLerp = MATH.lerp, MATH.iLerp, MATH.cLerp, MAT
 local GAME = GAME
 local M = GAME.mod
 local MD = ModData
-ShortCut = {}
-local ShortCut = ShortCut
-for i = 1, #MD.deck do ShortCut[i] = GC.newText(FONT.get(50)) end
+CardHintText = {}
+for i = 1, #MD.deck do CardHintText[i] = GC.newText(FONT.get(50)) end
 
 HoldingButtons = {}
 local HoldingButtons = HoldingButtons
@@ -243,7 +242,7 @@ function scene.load()
     end
     RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9
 
-    for i = 1, #MD.deck do ShortCut[i]:set(STAT.keybind[i]:upper()) end
+    for i = 1, #MD.deck do CardHintText[i]:set(STAT.keybind[i]:upper()) end
 
     GAME.refreshDailyChallengeText()
     TASK.unlock('sure_quit')
@@ -1301,8 +1300,9 @@ function scene.overDraw()
     if not GAME.invisUI then
         -- Allspin keyboard hint
         if M.AS > 0 and M.EX == 0 then
+            local texts = CardHintText
             for i = 1, #Cards do
-                local obj = ShortCut[i]
+                local obj = texts[i]
                 local x, y = Cards[i].x + 90, Cards[i].y + 155
                 local k = min(60 / obj:getWidth(), 1)
                 gc_setColor(ShadeColor)
@@ -1461,6 +1461,12 @@ function scene.overDraw()
             gc_line(0, 0, 420 * cos(a), 420 * sin(a))
         end
     end
+
+    -- Piece Data
+    gc_replaceTransform(SCR.xOy_m)
+    GC.setColor(1, 1, 1, .26 * GAME.uiHide)
+    local w, h = GAME.pieceFstrObj:getDimensions()
+    GC.draw(GAME.pieceFstrObj, 0, -170, 0, min(4.2, 740 / w), nil, w / 2, h * .57)
 
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)

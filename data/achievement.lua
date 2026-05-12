@@ -54,7 +54,16 @@ end
 ---@field rank? 'floor' | fun(score):number
 ---@field type? 'competitive' | 'unranked' | 'issued' | 'event'
 ---@field hide? fun():boolean
-
+local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc)
+        return {
+            id = id,
+            name = name,
+            desc = desc,
+            quote = quote,
+            rank = rankFunc,
+            hide = hideFunc or FALSE,
+        }
+    end
 ---@type Map<Achievement>
 local d = {
     { title = "General" },
@@ -887,6 +896,17 @@ local d = {
         scoreSimp = function(kill) return kill .. " Entries" end,
         rank = numberRank(0, 2, 3, 3, 4, 4, 5),
     },
+    { -- under_the_radar
+        ex = true,
+        id = 'under_the_radar',
+        name = "Under the Radar",
+        desc = [[Fastest time reaching F6 without entering GIGASPEED with VL IN AS]],
+        quote = [[A face, blended into the crowd of mediocrity.]],
+        comp = '<',
+        credit = "@flomikel",
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        rank = numberRankRev(260, 180, 162, 142, 135, 126, 120),
+    },
     { -- arrogance
         ex = true,
         id = 'arrogance',
@@ -1492,7 +1512,7 @@ local d = {
    --     hide = function() return STAT.totalPeta == 0 end,
    -- }, 
 
-    { title = "FINAL MIX BEGINNER - 2 MP Combos"},
+    { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},
 
     { -- EXNH
         id = 'EXNH',
@@ -1719,6 +1739,23 @@ local d = {
         quote = [[We can do many great things if we work together.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
     },
+
+    { title = "FINAL MIX BEGINNER - 3 Upright Mod Combos"},
+    { -- EXMSNH
+        id = 'EXMSNH',
+        name = "Online Gambling",
+        desc = [[HFD with EX NH MS]],
+        quote = [[-37/10, would not recommend.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 5580),
+    },
+    { -- EXGVNH
+        id = 'EXGVNH',
+        name = "Beyond Death",
+        desc = [[HFD with EX NH GV]],
+        quote = [[Despondent Vermin... May your death bring new life.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 5580),
+    },
+    AchieveFromCombo('EXNHVL', "Archangel", [[HFD with EX NH VL]], [[For when being a normal angel just isn't good enough.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

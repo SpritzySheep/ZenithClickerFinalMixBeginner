@@ -1,10 +1,13 @@
 ---@type Zenitha.Scene
 local scene = {}
 
-local t1, t2 = .26, .42
+local initialized = false
+local t1, t2
 
 function scene.load()
+    t1, t2 = .26, .42
     love.keyboard.setKeyRepeat(false)
+    TEXTS.load:set(SCN.args[1] and "Welcome Back." or "LOAD")
 end
 
 scene.keyDown = TRUE
@@ -15,19 +18,31 @@ function scene.update(dt)
     elseif t1 > 0 then
         t1 = t1 - dt
         if t1 <= 0 then
-            TEXTS.load:set("GETTING READY TO SPECTATE...")
-            BGM.setMaxSources(42)
-            BGM.load(FILE.load('data/bgm.lua', '-luaon'))
-            SFX.load('assets/sfx.ogg', FILE.load('data/sfx.lua', '-luaon'))
-            SFX.load('garbagewindup_5', 'assets/windup_5.ogg')
-            TASK.new(Daemon_Slow)
-            TASK.new(Daemon_Fast)
-            ---@diagnostic disable-next-line
-            local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
-            for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
-            TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
-            TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')
-            _, _ = TEXTURE.moon, TEXTURE.stars
+            if SCN.args[1] then
+                INIT_DATA()
+                GAME.bgH, GAME.height = 0, 0
+                GAME.refreshLockState()
+                Initialize(true)
+                GAME.finishTera = false
+                GAME.clearResultStat()
+            end
+            if not initialized then
+                BGM.setMaxSources(42)
+                BGM.load(FILE.load('data/bgm.lua', '-luaon'))
+                SFX.load('assets/sfx.ogg', FILE.load('data/sfx.lua', '-luaon'))
+                SFX.load('garbagewindup_5', 'assets/windup_5.ogg')
+                TASK.new(Daemon_Slow)
+                TASK.new(Daemon_Fast)
+                TEXTS.load:set("LOAD OK")
+
+                ---@diagnostic disable-next-line
+                local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
+                for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
+                TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
+                TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')
+                _, _ = TEXTURE.moon, TEXTURE.stars
+                initialized = true
+            end
         end
     elseif t2 > 0 then
         t2 = t2 - dt

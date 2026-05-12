@@ -302,6 +302,7 @@ TEXTURE = {
             the_oblivious_artist = aq(14, 7),
             zero_to_sixty = aq(10, 5),
             speed_bonus = aq(9, 4),
+            under_the_radar = aq(16, 8),
             arrogance = aq(3, 5),
             scarcity_mindset = aq(4, 1),
             detail_oriented = aq(8, 6),
@@ -399,6 +400,10 @@ TEXTURE = {
             ASIN = aq(5, 10),
             DPIN = aq(11, 8),
             ASDP = aq(14, 5),
+
+            EXMSNH = aq(15, 8),
+            EXGVNH = aq(3, 10),
+            EXNHVL = aq(3, 6),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -581,6 +586,7 @@ FONT.load {
     serif = "assets/AbhayaLibre-Regular.ttf",
     sans = "assets/DINPro-Medium.otf",
     led = "assets/UniDreamLED.ttf",
+    symbol = "assets/symbols.otf",
 }
 FontLoaded = SYSTEM == 'Web' or MATH.roll(.62)
 FONT.setDefaultFont(FontLoaded and 'sans' or 'serif')
@@ -699,12 +705,14 @@ Metatable = {
     best_highscore = { __index = function() return 0 end },
     best_speedrun = { __index = function() return 1e99 end },
 }
-BEST = {
-    highScore = setmetatable({}, Metatable.best_highscore),
-    speedrun = setmetatable({}, Metatable.best_speedrun),
-}
 
 CEheight = 0
+-- Create BEST, STAT, ACHV tables, only used when launching and on resetall
+function INIT_DATA()
+    BEST = {
+        highScore = setmetatable({}, Metatable.best_highscore),
+        speedrun = setmetatable({}, Metatable.best_speedrun),
+    }
 
 STAT = {
     mod = 'finalmixbeg',
@@ -774,6 +782,10 @@ STAT = {
 ACHV = {}
 
 AchvNotice = {}
+
+end
+
+INIT_DATA()
 
 TestMode = false
 
@@ -943,6 +955,7 @@ end
 
 BgScale = 1
 
+CHAR = require 'module/char'
 require 'data/base'
 SHADER = require 'module/shader'
 GAME = require 'module/game'
@@ -1057,6 +1070,7 @@ BgmData = {
 }
 
 BgmPlaying = false ---@type ZC.bgmName | false
+SongNamePlaying = false -- Same as BgmPlaying, but this distinguishes f0(r) and f1(r) for album page
 BgmLooping = false
 BgmNeedSkip = false
 BgmNeedStop = false
@@ -1321,7 +1335,7 @@ end
 function ReloadTexts()
     local sep = (TEXTS.mod:getFont():getHeight() + TEXTS.title:getFont():getHeight()) / 2
     for _, text in next, TEXTS do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
-    for _, text in next, ShortCut do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
+    for _, text in next, CardHintText do text:setFont(FONT.get(text:getFont():getHeight() < sep and 30 or 50)) end
     for _, quest in next, GAME.quests do quest.name:setFont(FONT.get(70)) end
     TEXTS.height:setFont(FONT.get(30))
     TEXTS.time:setFont(FONT.get(30))
@@ -1459,6 +1473,20 @@ end
 local KBisDown = love.keyboard.isDown
 function ZENITHA.globalEvent.keyDown(key, isRep)
     if isRep then return end
+        -- if KBisDown('lctrl') and KBisDown('lshift') and KBisDown('lalt') and key == 'r' then
+    --     if TASK.lock('reset_all', 4.2) then
+    --         SFX.play('hyperalert')
+    --         MSG('warn', "Reset all progress? This action cannot be undone. Press again to confirm.", 4.2)
+    --     else
+    --         TASK.unlock('reset_all')
+    --         SFX.play('clearquad')
+    --         SFX.play('inject')
+    --         SFX.play('thunder' .. math.random(6))
+    --         MSG.clear()
+    --         SCN.swapTo('joining', 'fade', true)
+    --     end
+    --     return
+    -- end
     if KBisDown('lctrl', 'rctrl') then return end
     if key == 'f12' then
         if TASK.lock('dev') then
@@ -1725,7 +1753,21 @@ function Daemon_Slow()
         end
 
         -- HTTP returns
-        local msg = ASYNC.get('submitDaily')
+        local msg = ASYNC.get('checkUpdate')
+        if msg then
+            local suc, res = pcall(JSON.decode, msg)
+            if suc and res then
+                if (require 'version'.appVer):lower() == res.tag_name then
+                    LOG('info', "Already on latest version (" .. res.tag_name .. ")")
+                else
+                    SFX.play('social_notify_major')
+                    MSG('info', "New version " .. res.tag_name .. " available!", 6.26)
+                end
+            else
+                LOG('info', "Failed to check for updates")
+            end
+        end
+        msg = ASYNC.get('submitDaily')
         if msg then
             local suc, res = pcall(JSON.decode, msg)
             local duration = GAME.playing and 0 or 10
