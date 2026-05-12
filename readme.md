@@ -1,3 +1,7 @@
+!!INFORMATION!!
+This mod is intended for PC and may not properly work on mobile.
+I am unable to test on mobile and can't garantee everything will work properly.
+
 # Zenith Clicker
 
     Welcome to Zenith Clicker, where the goal is to select required Tarot cards and send players to scale the tower.  
