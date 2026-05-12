@@ -1,3 +1,7 @@
+!!INFORMATION!!
+This mod is intended for PC only and does not have an official mobile build.
+
+
 Most recent code is in main2 branch because I accidentally included the love file in the commit to the main branch so now github desktop won't let me commit to it
 
 
