@@ -84,6 +84,15 @@ d.menu = {
     { set = "EX NH MS",           name = "Online Gambling" },
     { set = "EX NH GV",           name = "Beyond Death"},
     { set = "EX NH VL",           name = "Archangel"},
+    { set = "EX NH IN",           name = "The Friar"},
+    { set = "EX NH AS",           name = "Indecision"},
+    { set = "EX NH DP",           name = "The Prudent Parliament"},
+    { set = "EX MS GV",           name = "Mining Operation"},
+    { set = "EX MS VL",           name = "The Wolf of Wall Street"},
+    { set = "EX MS DH",           name = "No Warning"},
+    { set = "EX MS IN",           name = "Irrational"},
+    { set = "EX MS AS",           name = "The Rich Gambler"},
+    { set = "EX MS DP",           name = "Grand Feast"},
 }
 
 d.game = {

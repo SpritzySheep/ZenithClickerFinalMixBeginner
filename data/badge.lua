@@ -135,6 +135,11 @@ local d = {
         desc = "Entered Quettaspeed",
     },
     {
+        id = 'deka',
+        name = "DEKASPEED!!!!!!!!!!",
+        desc = "Entered Dekaspeed",
+    },
+    {
         id = 'ascendant',
         name = "Ascendant",
         desc = "Gathered 40,000 Chakra Escence",
@@ -158,6 +163,11 @@ local d = {
         id = 'ascension4',
         name = "Ascension Phase 4",
         desc = "Gathered 80,000 Chakra Escence",
+    },
+    {
+        id = 'ascension5',
+        name = "Ascension Phase 5",
+        desc = "Gathered 90,000 Chakra Escence",
     },
 }
 

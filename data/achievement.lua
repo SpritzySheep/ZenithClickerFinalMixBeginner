@@ -1512,6 +1512,49 @@ local d = {
    --     hide = function() return STAT.totalPeta == 0 end,
    -- }, 
 
+   { title = "FINAL MIX BEGINNER - POWERLEVELING"},
+
+    { -- Lv0
+        id = 'powerleveling',
+        name = "Powerleveling",
+        desc = [[Zenith Level]],
+        quote = [[Nothing gained without experience.]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(100, 1000, 2000, 3000, 4000, 5000, 9999),
+    },
+    { -- Lv5000
+        id = 'powerleveling2',
+        name = "Super Leveling",
+        desc = [[Zenith Level]],
+        quote = [[A wise old man once said...]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(5000, 6000, 7000, 8000, 9000, 10000, 14999),
+    },
+    { -- Lv10000
+        id = 'powerleveling3',
+        name = "Hyper Leveling",
+        desc = [[Zenith Level]],
+        quote = [["You can never learn too much."]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(10000, 11000, 12000, 13000, 14000, 15000, 19999),
+    },
+    { -- Lv15000
+        id = 'powerleveling4',
+        name = "Ultra Leveling",
+        desc = [[Zenith Level]],
+        quote = [["This much power should not be possible..."]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(15000, 16000, 17000, 18000, 19000, 20000, 24999),
+    },
+    { -- Lv20000
+        id = 'powerleveling5',
+        name = "Mega Leveling",
+        desc = [[Zenith Level]],
+        quote = [["Your body can't handle this much power!"]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(20000, 21000, 22000, 23000, 24000, 25000, 29999),
+    },
+
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},
 
     { -- EXNH
@@ -1756,6 +1799,15 @@ local d = {
         rank = floorRank(1, 3, 5, 7, 9, 10, 5580),
     },
     AchieveFromCombo('EXNHVL', "Archangel", [[HFD with EX NH VL]], [[For when being a normal angel just isn't good enough.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXINNH', "The Friar", [[HFD with EX NH IN]], [[May you spare a coin?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASEXNH', "Indecision", [[HFD with EX NH AS]], [[JUST... CHOOSE... ONE!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPEXNH', "The Prudent Parliament", [[HFD with EX NH DP]], [[Two emperors and an unlikey alliance.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXGVMS', "Mining Operation", [[HFD with EX MS GV]], [[Maybe try deepslate level?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXMSVL', "The Wolf of Wall Street", [[HFD with EX MS VL]], [[I don't think they allow wolves on wall street.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHEXMS', "No Warning", [[HFD with EX MS DH]], [[Technically, ANYTHING could kill you.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXINMS', "Irrational", [[HFD with EX MS IN]], [[3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASEXMS', "The Rich Gambler", [[HFD with EX MS AS]], [[Gamble responsively.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPEXMS', "Grand Feast", [[HFD with EX MS DP]], [[Yum, yum, yum, yum!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

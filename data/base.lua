@@ -15,13 +15,14 @@ AchvData = {
 }
 
 GigaSpeedReq = 11
-TeraMusicReq = 13
-PetaMusicReq = 15
-ExaMusicReq = 17
-ZetaMusicReq = 19
-YottaMusicReq = 21
-RonnaMusicReq = 23
-QuettaMusicReq = 25
+TeraMusicReq = 14
+PetaMusicReq = 17
+ExaMusicReq = 20
+ZetaMusicReq = 23
+YottaMusicReq = 26
+RonnaMusicReq = 29
+QuettaMusicReq = 32
+DekaMusicReq = 35
 
 GravityTimer = {
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },

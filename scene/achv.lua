@@ -193,7 +193,7 @@ function RefreshAchvList(canShuffle)
     end
 
     if not TestMode then
-        overallProgress.ptText = overallProgress.ptGet .. "/" .. overallProgress.ptAll .. " Pts"
+        overallProgress.ptText = overallProgress.ptGet  .. " AP"
         if overallProgress.ptGet < overallProgress.ptAll then
             for i = 0, 5 do
                 if overallProgress.rank[i] > 0 then

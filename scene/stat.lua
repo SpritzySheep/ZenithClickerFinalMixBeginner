@@ -4,7 +4,7 @@ local scene = {}
 local maskAlpha, cardShow
 local card = GC.newCanvas(2650, 1440)
 local totalBadges = 50
-
+local wreaths = 0
 local floor = math.floor
 local badgeList = 0
 local baseColor = { .2, 0, .4 }
@@ -15,6 +15,7 @@ local scoreColor = { COLOR.HEX("C080FF") }
 local setup = { stencil = true, card }
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
+local level = 0
 local crProgress = {
     f10 = 0,
     sr = 0,
@@ -58,6 +59,7 @@ local function norm(x, k) return 1 + (x - 1) / (k * x + 1) end
 local function calculateRating()
     local cap = 999999999999999
     local cr = 0
+    local maxi = 0
 
     -- Best height (5K)
     cr = cr + 6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2)
@@ -75,7 +77,7 @@ local function calculateRating()
     cr = cr + 3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
 
     -- Daily challenge (2K)
-    cr = cr + 2400 * norm(MATH.icLerp(0, 6200, STAT.dzp), 2.6)
+    cr = cr + 2400 * norm(MATH.icLerp(0, 67009019, STAT.zp), 2.6)
 
     -- Achievement (5K)
     cr = cr + (7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6))
@@ -94,13 +96,16 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalYotta * 0.7)
     cr = cr + MATH.floor(STAT.totalRonna * 0.8)
     cr = cr + MATH.floor(STAT.totalQuetta * 0.9)
-    cr = cr + MATH.floor(STAT.zp/1000000)
+    cr = cr + MATH.floor(STAT.totalDeka)
+    level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
+    STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
+    cr = cr + MATH.floor(level)
     cr = cr + STAT.totalGame
-    cr = cr + MATH.floor(STAT.totalQuest / 1000)
-    cr = cr + MATH.floor(STAT.totalFlip / 2000)
-    cr = cr + MATH.floor(STAT.totalPerfect / 2500)
+    cr = cr + MATH.floor(STAT.totalQuest / 50)
+    cr = cr + MATH.floor(STAT.totalFlip / 100)
+    cr = cr + MATH.floor(STAT.totalPerfect / 50)
     cr = cr + MATH.floor(STAT.totalHeight / 2000)
-    cr = cr + MATH.floor(STAT.totalBonus / 10000)
+    cr = cr + MATH.floor(STAT.totalBonus / 1000)
     cr = cr + MATH.floor(STAT.totalFloor / 5)
     cr = cr + MATH.floor(STAT.totalAttack / 200)
     cr = cr + MATH.floor(STAT.maxHeight / 10)
@@ -114,6 +119,7 @@ local function calculateRating()
             local r = A.rank(ACHV[A.id] or A.noScore or 0)
             if r == 5.9999 then
                 cr = cr + 37
+                maxi = maxi + 1
             end
         end
     end
@@ -124,6 +130,7 @@ local function calculateRating()
     if cr >= 60000 then IssueSecret('ascension2', true) end
     if cr >= 70000 then IssueSecret('ascension3', true) end
     if cr >= 80000 then IssueSecret('ascension4', true) end
+    wreaths = maxi
 
     return MATH.round(cr), cap
 end
@@ -306,7 +313,7 @@ function RefreshProfile()
     GC.setColor(rating <= 25000 and lblColor or textColor)
     GC.line(7, bh - 30, bw - 7, bh - 30)
     GC.setColor(lblColor)
-    GC.print("CHAKRA ESSENCE", 7, 2, 0, .8)
+    GC.print("CHAKRA ESCENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
         rating >= 80000 and "ASCENDED, PHASE 4" or
@@ -330,7 +337,7 @@ function RefreshProfile()
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
-        MATH.clamp(math.ceil(rating / 2000), 1, 42)
+        MATH.clamp(math.ceil(rating / 2000), 1, 56)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
@@ -404,19 +411,19 @@ function RefreshProfile()
         { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 200, y = 83 },
         { t = { textColor, "Best Ascension" },                                                     x = 300, y = 8 },
         { t = { textColor, "Fastest Explore" },                                                     x = 300, y = 33 },
-        { t = { textColor, "Zenith Point" },                                                     x = 300, y = 58 },
-        { t = { textColor, "Daily Challenge" },                                                   x = 300, y = 83 },
+        { t = { textColor, "Zenith Points" },                                                     x = 300, y = 58 },
+        { t = { textColor, "Zenith Level" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
-        { t = { scoreColor, MATH.round(STAT.zp / 1000), textColor, " kZP" },                      x = 470, y = 58 },
-        { t = { scoreColor, MATH.round(STAT.dzp), textColor, " ZP" },                             x = 470, y = 83 },
+        { t = { scoreColor, MATH.round(STAT.zp), textColor, "" },                      x = 470, y = 58 },
+        { t = { scoreColor, MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "Peak ZP: " .. MATH.round(STAT.peakZP) .. "\nPeak Daily ZP: " .. MATH.round(STAT.peakDZP)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
 
     -- Full stats
-    GC.ucs_move(605, 500)
+    GC.ucs_move(635, 500)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 570, bh)
     FONT.set(30)
@@ -443,7 +450,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(25, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 290, 435)
+    GC.rectangle('fill', 0, 0, 290, 460)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("CE BREAKDOWN", 7, 2, 0, .8)
@@ -452,18 +459,19 @@ function RefreshProfile()
         { k = "Fastest Time",  v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)) },  x = 26,  y = 58, d = 200 },
         { k = "Single Mod Ascent",    v = { scoreColor, MATH.floor(3600 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)) },  x = 26,  y = 83, d = 200 },
         { k = "Single Mod Speed",    v = { scoreColor, MATH.floor(2400 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)) },  x = 26, y = 108, d = 200 },
-        { k = "Zenith Points",   v = { scoreColor,MATH.floor(3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)) + MATH.floor(STAT.zp/1000000) },    x = 26, y = 133, d = 200 },
-        { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))) }, x = 26, y = 158, d = 200 },
-        { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 183, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9)) }, x = 26, y = 208, d = 200 },
-        { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 1000) },                     x = 26, y = 233, d = 200 },
-        { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 2000) },                      x = 26, y = 258, d = 200 },
-        { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 2500) },                      x = 26, y = 283, d = 200 },
-        { k = "Total Height",   v = { scoreColor, MATH.floor(STAT.totalHeight / 2000) },                      x = 26, y = 308, d = 200 },
-        { k = "Total Bonus",    v = { scoreColor, MATH.floor(STAT.totalBonus / 10000) },                      x = 26, y = 333, d = 200 },
-        { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 358, d = 200 },
-        { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 383, d = 200 },
-        { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 408, d = 200 },
+        { k = "Zenith Points",   v = { scoreColor,MATH.floor(3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)) + MATH.floor(2400 * norm(MATH.icLerp(0, 67009019, STAT.zp), 2.6)) },    x = 26, y = 133, d = 200 },
+        { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
+        { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
+        { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka)) }, x = 26, y = 233, d = 200 },
+        { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
+        { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
+        { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
+        { k = "Total Height",   v = { scoreColor, MATH.floor(STAT.totalHeight / 2000) },                      x = 26, y = 333, d = 200 },
+        { k = "Total Bonus",    v = { scoreColor, MATH.floor(STAT.totalBonus / 1000) },                      x = 26, y = 358, d = 200 },
+        { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 383, d = 200 },
+        { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 408, d = 200 },
+        { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 433, d = 200 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
@@ -473,7 +481,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 250, 210)
+    GC.rectangle('fill', 0, 0, 250, 235)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -485,6 +493,7 @@ function RefreshProfile()
         { k = "Yottaspeed",   v = { scoreColor, STAT.totalYotta },    x = 26, y = 133, d = 160 },
         { k = "Ronnaspeed", v = { scoreColor, STAT.totalRonna }, x = 26, y = 158, d = 160 },
         { k = "Quettaspeed",  v = { scoreColor, STAT.totalQuetta }, x = 26, y = 183, d = 160 },
+        { k = "Dekaspeed",  v = { scoreColor, STAT.totalDeka }, x = 26, y = 208, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

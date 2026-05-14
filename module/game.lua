@@ -178,6 +178,7 @@ local GAME = {
     yottaspeedFloor = {},
     ronnaspeedFloor = {},
     quettaspeedFloor = {},
+    dekaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
@@ -288,24 +289,24 @@ end
 ---@param list string[]
 function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
-    local zp = 2
-    if m.EX then zp = zp * 2.8 elseif m.rEX then zp = zp * 5.2 end
-    if m.NH then zp = zp * 2.2 elseif m.rNH then zp = zp * (2.8 + .1 * (#list - 1)) end
-    if m.MS then zp = zp * 2.4 elseif m.rMS then zp = zp * 3.4 end
-    if m.GV then zp = zp * 2.2 elseif m.rGV then zp = zp * 2.4 end
-    if m.VL then zp = zp * 2.2 elseif m.rVL then zp = zp * (2.4 + .04 * (#list - 1)) end
-    if m.DH then zp = zp * 2.4 elseif m.rDH then zp = zp * 3.2 end
-    if m.IN then zp = zp * 2.4 elseif m.rIN then zp = zp * 3.2 end
-    if m.AS then zp = zp * 1.7 elseif m.rAS then zp = zp * 2.0 end
-    if m.DP then zp = zp * 1.9 elseif m.rDP then zp = zp * 4.2 end
-    if m.rMS and m.rGV then zp = zp * 2.2 end
-    if m.rEX and m.rVL then zp = zp * 2.4 end
-    if m.rDH and m.rIN then zp = zp * 2.8 end
-    if m.rEX and m.rDP then zp = zp * 1.68 end
+    local zp = 1 + (STAT.achv/100)
+    if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
+    if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
+    if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
+    if m.GV then zp = zp * 1.2 elseif m.rGV then zp = zp * 1.4 end
+    if m.VL then zp = zp * 1.2 elseif m.rVL then zp = zp * (1.4 + .03 * (#list - 1)) end
+    if m.DH then zp = zp * 1.4 elseif m.rDH then zp = zp * 2.2 end
+    if m.IN then zp = zp * 1.4 elseif m.rIN then zp = zp * 2.2 end
+    if m.AS then zp = zp * 0.925 elseif m.rAS then zp = zp * 1.1 end
+    if m.DP then zp = zp * 0.975 elseif m.rDP then zp = zp * 1.6 end
+    if m.rMS and m.rGV then zp = zp * 1.2 end
+    if m.rEX and m.rVL then zp = zp * 1.4 end
+    if m.rDH and m.rIN then zp = zp * 1.8 end
+    if m.rEX and m.rDP then zp = zp * 0.92 end
 
     local hardCnt = table.concat(list):count('r')
     if m.EX then hardCnt = hardCnt + 1 end
-    if hardCnt >= 2 then zp = zp * 1.98 ^ (hardCnt - 1) end
+    if hardCnt >= 2 then zp = zp * 1.01 ^ (hardCnt - 1) end
     if zp > 99.98 then zp = zp end -- Current Abyss: 99.99x
 
     return zp
@@ -595,7 +596,7 @@ end
 function GAME.genQuest()
     repeat
         local combo = {}
-        local base = .72 + GAME.floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
+        local base = .5 + GAME.floor ^ .3 / 4 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
         local var = GAME.floor * .26 * GAME.extraQuestVar
         local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
 
@@ -620,13 +621,13 @@ function GAME.genQuest()
                 end
             end
         end
-        local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
+        local questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize-2))
         if questCount == 1 then
             -- Prevent 1-mod quest being DP
-            pool.DP = 8
+            pool.DP = 24
         elseif M.DH == 2 then
             -- Reduce DP on rDH
-            pool.DP = pool.DP * 7
+            pool.DP = pool.DP * 21
         end
         for _ = 1, questCount do
             local mod = MATH.randFreqAll(pool)
@@ -666,8 +667,8 @@ function GAME.genQuest()
         })
     until #GAME.quests >= 3
     if STAT.ExtraSpeed then
-        if GAME.rank <  (1 + (floor(STAT.achv/100))) then
-            GAME.rank = (1 + (floor(STAT.achv/100)))
+        if GAME.rank <  (1 + (floor(STAT.achv/50))) then
+            GAME.rank = (1 + (floor(STAT.achv/50)))
         end
     end
     GAME.questTime = 0
@@ -925,6 +926,10 @@ function GAME.addXP(xp)
             GAME.startQuettaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 10 and GAME.rank >= DekaMusicReq then
+            GAME.startDekaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -944,6 +949,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isYotta = false
         GigaSpeed.isRonna = false
         GigaSpeed.isQuetta = false
+        GigaSpeed.isDeka = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -966,7 +972,6 @@ function GAME.startTeraAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopTeraspeed(mode)
@@ -986,7 +991,6 @@ function GAME.startPetaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopPetaspeed(mode)
@@ -1006,7 +1010,6 @@ function GAME.startExaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopExaspeed(mode)
@@ -1026,7 +1029,6 @@ function GAME.startZetaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopZetaspeed(mode)
@@ -1046,7 +1048,6 @@ function GAME.startYottaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopYottaspeed(mode)
@@ -1066,7 +1067,6 @@ function GAME.startRonnaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopRonnaspeed(mode)
@@ -1086,10 +1086,28 @@ function GAME.startQuettaAnim()
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
-    PlayBGM('tera', true)
 end
 
 function GAME.stopQuettaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startDekaAnim()
+    GAME.gspeedlv = 10
+    GAME.dekaspeed = true
+    GAME.dekaspeedFloor[GAME.floor] = true
+    GAME.dekaCount = GAME.dekaCount + 1
+    GigaSpeed.isDeka = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopDekaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1216,28 +1234,15 @@ function GAME.upFloor()
     -- Text & SFX
     GAME.showFloorText(GAME.floor, Floors[GAME.floor].name, GAME.floor >= 10 and 8.72 or 4.2)
     if GAME.gigaspeed then
-        SFX.play('zenith_split_cleared', 1, 0, Tone(-1))
+        SFX.play('zenith_levelup_' .. ({ 'c', 'b', 'a', 'fsharp', 'e', GAME.anyRev and 'g' or 'a', 'ahalfsharp', 'e', 'e', 'a' })[GAME.floor])
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
     elseif GAME.floor > 1 then
         SFX.play('zenith_levelup_' .. ({ 'c', 'b', 'a', 'fsharp', 'e', GAME.anyRev and 'g' or 'a', 'ahalfsharp', 'e', 'e', 'a' })[GAME.floor])
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
     end
 
     -- End game
-    if GAME.zetaCount >= 1 then
-                IssueSecret('zeta')
-                GAME.finishTera = true
-            end
-    if GAME.yottaCount >= 1 then
-                IssueSecret('yotta')
-                GAME.finishTera = true
-    end
-    if GAME.ronnaCount >= 1 then
-                IssueSecret('ronna')
-                GAME.finishTera = true
-    end
-    if GAME.quettaCount >= 1 then
-                IssueSecret('quetta')
-                GAME.finishTera = true
-    end
+    
     if GAME.floor >= 10 then
         local roundTime = roundUnit(GAME.time, .001)
         if GAME.gigaspeed then
@@ -1289,6 +1294,11 @@ function GAME.upFloor()
             if GAME.fastLeak and GAME.comboStr == 'rVL' then IssueSecret('true_strength') end
             if GAME.invisCard and GAME.comboStr == 'rIN' then IssueSecret('true_invis') end
             if GAME.invisUI and GAME.comboStr == 'rDP' then IssueSecret('true_couple') end
+            if GAME.zetaCount >= 1 then
+                IssueSecret('zeta')
+                GAME.finishTera = true
+            end
+    
         end
 
         if GAME.comboStr == '' then SubmitAchv('zenith_speedrun', roundTime) end
@@ -1297,6 +1307,27 @@ function GAME.upFloor()
     end
     PlayBGM('f' .. GAME.floor)
     GAME.refreshRPC()
+if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
+                IssueSecret('yotta')
+                GAME.finishTera = true
+    end
+    if GAME.ronnaCount >= 1 or STAT.totalRonna >= 1 then
+                IssueSecret('ronna')
+                GAME.finishTera = true
+    end
+    if GAME.quettaCount >= 1 or STAT.totalQuetta >= 1 then
+                IssueSecret('quetta')
+                GAME.finishTera = true
+    end
+    if GAME.dekaCount >= 1 or STAT.totalDeka >= 1 then
+                IssueSecret('deka')
+                GAME.finishTera = true
+    end
+    SubmitAchv('powerleveling', STAT.level)
+    SubmitAchv('powerleveling2', STAT.level)
+    SubmitAchv('powerleveling3', STAT.level)
+    SubmitAchv('powerleveling4', STAT.level)
+    SubmitAchv('powerleveling5', STAT.level)
 end
 
 function GAME.nextFatigue()
@@ -2152,7 +2183,7 @@ function GAME.commit(auto)
         end
 
         attack = attack + surge
-        GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 4 * GAME.attackMul
+        GAME.achv_altFromSurge = GAME.achv_altFromSurge + surge * GAME.rank / 3 * GAME.attackMul
 
         local oldAllyLife = GAME[GAME.getLifeKey(true)]
         ---@cast oldAllyLife number
@@ -2406,6 +2437,7 @@ function GAME.start()
     TABLE.clear(GAME.yottaspeedFloor)
     TABLE.clear(GAME.ronnaspeedFloor)
     TABLE.clear(GAME.quettaspeedFloor)
+    TABLE.clear(GAME.dekaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -2414,6 +2446,7 @@ function GAME.start()
     GAME.yottaCount = 0
     GAME.ronnaCount = 0
     GAME.quettaCount = 0
+    GAME.dekaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -2616,6 +2649,7 @@ function GAME.finish(reason)
         STAT.totalYotta = STAT.totalYotta + GAME.yottaCount
         STAT.totalRonna = STAT.totalRonna + GAME.ronnaCount
         STAT.totalQuetta = STAT.totalQuetta + GAME.quettaCount
+        STAT.totalDeka = STAT.totalDeka + GAME.dekaCount
         if GAME.floor >= 10 then
             STAT.totalF10 = STAT.totalF10 + 1
             if GAME.floorTime <= 6.26 then
@@ -2627,7 +2661,7 @@ function GAME.finish(reason)
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
-        TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
+        TEXTS.zpChange:set(("%.0f ZP  (%.0f%s)"):format(zpGain, 0, DailyActived and ", 260%" or ""))
 
         -- Daily
         if DailyActived then
@@ -2685,7 +2719,7 @@ function GAME.finish(reason)
             end)
         end
 
-        STAT.zp = newZP
+        STAT.zp = STAT.zp + zpGain
         STAT.peakZP = max(STAT.peakZP, STAT.zp)
 
         -- Best
@@ -2937,7 +2971,7 @@ function GAME.finish(reason)
             --     end
         end
         if M.EX < 2 and M.DP < 2 then
-            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount + GAME.exaCount + GAME.zetaCount + GAME.yottaCount + GAME.ronnaCount + GAME.quettaCount)
+            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount + GAME.exaCount + GAME.zetaCount + GAME.yottaCount + GAME.ronnaCount + GAME.quettaCount + GAME.dekaCount)
         end
         if M.DP > 0 then
             SubmitAchv('the_responsible_one', GAME.reviveCount)
@@ -2993,6 +3027,7 @@ function GAME.finish(reason)
     GAME.stopYottaspeed('fin')
     GAME.stopRonnaspeed('fin')
     GAME.stopQuettaspeed('fin')
+    GAME.stopDekaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -3168,7 +3203,7 @@ function GAME.update(dt, realDT)
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
-            GAME.height = GAME.height + GAME.rank / 4 * dt
+            GAME.height = GAME.height + GAME.rank / 3 * dt
         end
     end
 
