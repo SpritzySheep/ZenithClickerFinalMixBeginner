@@ -627,6 +627,10 @@ function DrawBG(brightness, showRuler)
                 gc_setColor(1, 1, 1, .8)
                 gc_draw(StarPS, SCR.w / 2, SCR.h / 2 + GAME.bgH * 2 * BgScale)
                 gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.mars, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 3200) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.jupiter, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 4100) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.saturn, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5000) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.uranus, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5800) * 2 * BgScale, 0, .2 * BgScale)
                 gc_setBlendMode('alpha')
 
                 -- Tower

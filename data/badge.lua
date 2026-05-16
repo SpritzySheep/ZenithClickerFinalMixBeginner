@@ -1,3 +1,4 @@
+---@type Map<Badges>
 local d = {
     [0] = {
         prio = 1e99,
@@ -17,7 +18,7 @@ local d = {
     {
         id = 'speedrun_1',
         name = "Speedrunner",
-        desc = "Finished a speedrun with all single upright mods",
+        desc = "Speedran with all single upright mods",
     },
     {
         id = 'mastery_2',
@@ -27,12 +28,12 @@ local d = {
     {
         id = 'speedrun_2',
         name = "Omnipotence",
-        desc = "Finished a speedrun with all single reversed mods",
+        desc = "Speedran with all single reversed mods",
     },
     {
         id = 'subluminal',
         name = "Sub-luminal",
-        desc = "Reached F10 in under 76.2s (max CR from Best Speedrun)",
+        desc = "Reached F10 in under 76.2s",
     },
     {
         id = 'superluminal',
@@ -42,7 +43,7 @@ local d = {
     {
         id = 'fomg',
         name = "Interstellar",
-        desc = "Reached 6200m (max CR from Best Altitude)",
+        desc = "Reached 6200m",
     },
     {
         id = 'fepsilon',
@@ -52,27 +53,27 @@ local d = {
     {
         id = 'true_expert',
         name = "True Expert",
-        desc = "Finished a speedrun with rEX & Close Card",
+        desc = "Speedran with rEX & Close Card",
     },
     {
         id = 'true_master',
         name = "True Master",
-        desc = "Finished a speedrun with rGV & Nightcore",
+        desc = "Speedran with rGV & Nightcore",
     },
     {
         id = 'true_strength',
         name = "True Strength",
-        desc = "Finished a speedrun with rVL & Fast Leak",
+        desc = "Speedran with rVL & Fast Leak",
     },
     {
         id = 'true_invis',
         name = "True Invisible",
-        desc = "Finished a speedrun with rIN & Invisible Card",
+        desc = "Speedran with rIN & Invisible Card",
     },
     {
         id = 'true_couple',
         name = "True Couple",
-        desc = "Finished a speedrun with rDP & Invisible UI",
+        desc = "Speedran with rDP & Invisible UI",
     },
     {
         id = 'cardiac_arrest',
@@ -97,17 +98,17 @@ local d = {
     {
         id = 'exceed_dev_half',
         name = "Apprentice",
-        desc = "Have a better score than Dev on 26% achievements",
+        desc = "Have a Dev score on 26% achievements",
     },
     {
         id = 'exceed_dev',
         name = "Successor",
-        desc = "Have a better score than Dev on 62% achievements",
+        desc = "Have a Dev score on 62% achievements",
     },
     {
         id = 'peta',
         name = "PETASPEED!!!!",
-        desc = "Reached F10 while maintaining Petaspeed",
+        desc = "Entered Petaspeed",
     },
     {
         id = 'exa',
@@ -168,6 +169,16 @@ local d = {
         id = 'ascension5',
         name = "Ascension Phase 5",
         desc = "Gathered 90,000 Chakra Escence",
+    },
+    {
+        id = 'transcend',
+        name = "Transcension",
+        desc = "Gathered 100,000 Chakra Escence",
+    },
+    {
+        id = 'transcend2',
+        name = "Transcension 30%",
+        desc = "Gathered 150,000 Chakra Escence",
     },
 }
 

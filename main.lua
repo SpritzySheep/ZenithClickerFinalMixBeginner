@@ -129,6 +129,10 @@ TEXTURE = {
     lockover = assets 'card/lockover.png',
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
+    mars = assets 'tower/mars.png',
+    jupiter = assets 'tower/jupiter.png',
+    saturn = assets 'tower/saturn.png',
+    uranus = assets 'tower/uranus.png',
     stars = assets 'tower/stars.png',
 
     revive = {
@@ -203,7 +207,10 @@ TEXTURE = {
             assets 'rank/i-.png',
             assets 'rank/i.png',
             assets 'rank/i+.png',
-            assets 'rank/ii.png',
+            assets 'rank/ii.png', assets 'rank/ii.png', assets 'rank/ii.png', assets 'rank/ii.png', assets 'rank/ii.png',
+            assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png',
+            assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png',
+            assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -414,6 +421,15 @@ TEXTURE = {
             DPIN = aq(11, 8),
             ASDP = aq(14, 5),
 
+            Tera = aq(1, 9),
+            Peta = aq(2, 9),
+            Exa = aq(3, 9),
+            Zeta = aq(4, 9),
+            Yotta = aq(5, 9),
+            Ronna = aq(6, 9),
+            Quetta = aq(7, 9),
+            Deka = aq(8, 9),
+
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
             powerleveling3 = aq(10, 10),
@@ -432,6 +448,10 @@ TEXTURE = {
             EXINMS = aq(8, 10),
             ASEXMS = aq(16, 5),
             DPEXMS = aq(16, 8),
+            EXGVVL = aq(13, 10),
+            DHEXGV = aq(16, 5),
+            EXGVIN = aq(14, 10),
+            ASEXGV = aq(8, 1),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -801,6 +821,7 @@ STAT = {
     AP = 0,
     badge = {},
     level = 0,
+    achv = 0,
 
     fullscreen = true,
     syscursor = false,
@@ -1015,6 +1036,7 @@ SCN.add('tower', require 'scene/tower')
 SCN.add('stat', require 'scene/stat')
 SCN.add('records', require 'scene/records')
 SCN.add('achv', require 'scene/achv')
+SCN.add('badge', require 'scene/badge')
 SCN.add('conf', require 'scene/conf')
 SCN.add('about', require 'scene/about')
 SCN.add('ending', require 'scene/ending')

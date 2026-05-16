@@ -99,6 +99,7 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
+    STAT.ZP = STAT.PeakZP
     cr = cr + MATH.floor(level)
     cr = cr + STAT.totalGame
     cr = cr + MATH.floor(STAT.totalQuest / 50)
@@ -130,6 +131,9 @@ local function calculateRating()
     if cr >= 60000 then IssueSecret('ascension2', true) end
     if cr >= 70000 then IssueSecret('ascension3', true) end
     if cr >= 80000 then IssueSecret('ascension4', true) end
+    if cr >= 90000 then IssueSecret('ascension5', true) end
+    if cr >= 100e3 then IssueSecret('transcend', true) end
+    if cr >= 150e3 then IssueSecret('transcend2', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap
@@ -151,6 +155,7 @@ end
 saw = GC.load(saw)
 saw:setFilter('nearest', 'nearest')
 saw:setWrap('repeat', 'repeat')
+
 local sawQuad = GC.newQuad(0, 0, 180, 3, saw)
 local bannerQuad = GC.newQuad(0, 220, 512, 256, TEXTURE.logo)
 local function dblMidDraw(obj, x, y)
@@ -316,6 +321,8 @@ function RefreshProfile()
     GC.print("CHAKRA ESCENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
+        rating >= 100000 and "TRANSCENSION" or
+        rating >= 90000 and "ASCENDED, PHASE 5" or
         rating >= 80000 and "ASCENDED, PHASE 4" or
         rating >= 70000 and "ASCENDED, PHASE 3" or
         rating >= 60000 and "ASCENDED, PHASE 2" or
@@ -337,7 +344,7 @@ function RefreshProfile()
     dblMidDraw(t30, bw / 2 + t50:getWidth() / 2 + t30:getWidth() / 2, bh / 2 + 4)
     -- Rank
     local rank =
-        MATH.clamp(math.ceil(rating / 2000), 1, 56)
+        MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
@@ -411,13 +418,18 @@ function RefreshProfile()
         { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 200, y = 83 },
         { t = { textColor, "Best Ascension" },                                                     x = 300, y = 8 },
         { t = { textColor, "Fastest Explore" },                                                     x = 300, y = 33 },
-        { t = { textColor, "Zenith Points" },                                                     x = 300, y = 58 },
+        { t = { textColor, "Total ZP" },                                                     x = 300, y = 58 },
         { t = { textColor, "Zenith Level" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
-        { t = { scoreColor, MATH.round(STAT.zp), textColor, "" },                      x = 470, y = 58 },
+        { t = { scoreColor, MATH.round(STAT.zp), textColor, "" },                      x = 420, y = 58 },
         { t = { scoreColor, MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
+    -- GC.rectangle('fill', 0, 0, bw, bh)
+    GC.setColor(lblColor)
+    GC.rectangle('fill', 315, 121, 254, 18)
+    GC.setColor(scoreColor)
+    GC.rectangle('fill', 315, 120, MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
     scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
@@ -449,9 +461,9 @@ function RefreshProfile()
     end
     GC.ucs_back()
     GC.ucs_move(25, 640)
-    GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 290, 460)
     FONT.set(30)
+    GC.setColor(boxColor)
+    GC.rectangle('fill', 0, 0, 300, 465)
     GC.setColor(lblColor)
     GC.print("CE BREAKDOWN", 7, 2, 0, .8)
     for _, l in next, {
@@ -481,7 +493,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 250, 235)
+    GC.rectangle('fill', 0, 0, 254, 235)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -548,6 +560,7 @@ end
 
 function scene.update(dt)
     SCN.scenes.tower.update(dt)
+    STAT.ZP = STAT.PeakZP
     for _, W in next, SCN.scenes.tower.widgetList do
         W:update(dt)
     end
@@ -595,6 +608,14 @@ scene.widgetList = {
         name = 'close', type = 'button_invis',
         pos = { .5, .5 }, x = -174, y = -436, w = 100, h = 50,
         onClick = function() love.keypressed('escape') end,
+    },
+    -- BADGES button
+    WIDGET.new {
+        name = 'BADGES', type = 'button',
+        fontSize = 30, textColor = COLOR.L, text = "BADGES",
+        pos = { .5, .5 }, x = -274, y = -436, w = 150, h = 50,
+        onClick = function() SCN.swapTo('badge', 'none') end,
+        color = COLOR.B,
     },
     -- Inside the profile card
     WIDGET.new {

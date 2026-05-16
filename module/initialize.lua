@@ -43,6 +43,7 @@ function Initialize(save)
     if STAT.totalRonna == not STAT.totalRonna then STAT.totalRonna = 0 end
     if STAT.totalQuetta == not STAT.totalQuetta then STAT.totalQuetta = 0 end
     if STAT.totalDeka == not STAT.totalDeka then STAT.totalDeka = 0 end
+    if STAT.achv == not STAT.achv then STAT.achv = 0 end
     if STAT.badges == not STAT.badges then STAT.badges = 0 end
     if STAT.CEheight == not STAT.CEheight then STAT.CEheight = 0 end
     if BEST.version then STAT.version, BEST.version = BEST.version, nil end

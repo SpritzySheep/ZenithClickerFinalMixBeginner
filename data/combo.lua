@@ -93,6 +93,9 @@ d.menu = {
     { set = "EX MS IN",           name = "Irrational"},
     { set = "EX MS AS",           name = "The Rich Gambler"},
     { set = "EX MS DP",           name = "Grand Feast"},
+    { set = "EX GV VL",           name = "Relaxation"},
+    { set = "EX GV IN",           name = "The Super GM"},
+    { set = "EX GV AS",           name = "Master of the T"},
 }
 
 d.game = {

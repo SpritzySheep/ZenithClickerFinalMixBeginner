@@ -289,7 +289,7 @@ end
 ---@param list string[]
 function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
-    local zp = 1 + (STAT.achv/100)
+    local zp = 1 + (STAT.totalQuest/1000)
     if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
     if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
     if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
@@ -1323,11 +1323,19 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('deka')
                 GAME.finishTera = true
     end
-    SubmitAchv('powerleveling', STAT.level)
-    SubmitAchv('powerleveling2', STAT.level)
-    SubmitAchv('powerleveling3', STAT.level)
-    SubmitAchv('powerleveling4', STAT.level)
-    SubmitAchv('powerleveling5', STAT.level)
+    SubmitAchv('powerleveling', STAT.level,true)
+    SubmitAchv('powerleveling2', STAT.level,true)
+    SubmitAchv('powerleveling3', STAT.level,true)
+    SubmitAchv('powerleveling4', STAT.level,true)
+    SubmitAchv('powerleveling5', STAT.level,true)
+    SubmitAchv('Tera', STAT.totalTera,true)
+    SubmitAchv('Peta', STAT.totalPeta,true)
+    SubmitAchv('Exa', STAT.totalExa,true)
+    SubmitAchv('Zeta', STAT.totalZeta,true)
+    SubmitAchv('Yotta', STAT.totalYotta,true)
+    SubmitAchv('Ronna', STAT.totalRonna,true)
+    SubmitAchv('Quetta', STAT.totalQuetta,true)
+    SubmitAchv('Deka', STAT.totalDeka,true)
 end
 
 function GAME.nextFatigue()
@@ -2719,8 +2727,11 @@ function GAME.finish(reason)
             end)
         end
 
+        if zpGain > 0 then
         STAT.zp = STAT.zp + zpGain
+        end
         STAT.peakZP = max(STAT.peakZP, STAT.zp)
+        if STAT.zp < STAT.peakZP then STAT.zp = STAT.peakZP end
 
         -- Best
         local hand = GAME.getHand(true)
@@ -2885,6 +2896,11 @@ function GAME.finish(reason)
         SubmitAchv('tower_climber', STAT.totalHeight, true, true)
         SubmitAchv('tower_regular', STAT.totalFloor, true, true)
         SubmitAchv('speed_player', STAT.totalGiga, true, true)
+        SubmitAchv('powerleveling', STAT.level)
+    SubmitAchv('powerleveling2', STAT.level)
+    SubmitAchv('powerleveling3', STAT.level)
+    SubmitAchv('powerleveling4', STAT.level)
+    SubmitAchv('powerleveling5', STAT.level)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -3012,6 +3028,13 @@ function GAME.finish(reason)
         end
         SubmitAchv('zenith_explorer_plus', GAME.roundHeight)
         SubmitAchv('supercharged_plus', GAME.achv_maxChain)
+        SubmitAchv('powerleveling', STAT.level)
+    SubmitAchv('powerleveling2', STAT.level)
+    SubmitAchv('powerleveling3', STAT.level)
+    SubmitAchv('powerleveling4', STAT.level)
+    SubmitAchv('powerleveling5', STAT.level)
+        -- SubmitAchv('tera', STAT.totalTera, true, true)
+        -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
         SaveStat()
     else
