@@ -96,6 +96,19 @@ d.menu = {
     { set = "EX GV VL",           name = "Relaxation"},
     { set = "EX GV IN",           name = "The Super GM"},
     { set = "EX GV AS",           name = "Master of the T"},
+    { set = "EX GV DP",           name = "Sinking"},
+    { set = "EX VL DH",           name = "The Mad Lord"},
+    { set = "EX VL IN",           name = "Bounty Hunter"},
+    { set = "EX VL DP",           name = "Measures"},
+    { set = "EX DH IN",           name = "The Architect"},
+    { set = "EX DH AS",           name = "Loki"},
+    { set = "EX DH DP",           name = "Whispers of Sin"},
+    { set = "EX IN AS",           name = "Expertise"},
+    { set = "EX IN DP",           name = "Dominance"},
+    { set = "EX AS DP",           name = "Ballet Partners"},
+    { set = "NH MS GV",           name = "Atlas' Burden"},
+    { set = "NH MS VL",           name = "The Glass Cannon"},
+    { set = "NH MS IN",           name = "The False Prophet"},
 }
 
 d.game = {

@@ -631,6 +631,13 @@ function DrawBG(brightness, showRuler)
                 gc_mDraw(TEXTURE.jupiter, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 4100) * 2 * BgScale, 0, .2 * BgScale)
                 gc_mDraw(TEXTURE.saturn, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5000) * 2 * BgScale, 0, .2 * BgScale)
                 gc_mDraw(TEXTURE.uranus, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5800) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.neptune, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 6500) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.pluto, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7000) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.1 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.oort, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2 * BgScale, 0, .3 * BgScale)
+                gc_mDraw(TEXTURE.oort2, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2.1 * BgScale, 0, .3 * BgScale)
                 gc_setBlendMode('alpha')
 
                 -- Tower
@@ -826,6 +833,14 @@ function scene.draw()
         gc_draw(TEXTS.endResult, -617, 80, 0, .626)
         gc_draw(TEXTS.floorTime, -617, 226 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -527, 226 - GAME.uiHide * 150, 0, .38)
+        if STAT.ExtraSpeed then
+            gc_setColor(COLOR.A)
+            gc_mDraw(TEXTS.theA, -400, 90, 0, 1)
+        end
+        if STAT.MouseGirl then
+            gc_setColor(COLOR.M)
+            gc_mDraw(TEXTS.theM, 500, 135, 0, 4)
+        end
         gc_setColor(COLOR.L)
         gc_mDraw(TEXTS.endHeight, 0, 130, 0, 1.8)
         gc_draw(TEXTS.endResult, -616, 78, 0, .626)
@@ -906,6 +921,11 @@ function scene.overDraw()
         if GigaSpeed.textTimer then
             gc_setBlendMode('add')
             gc_setColor(.26, .26, .26)
+            if GAME.gspeedlv == 11 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.terminaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
             if GAME.gspeedlv == 10 then
                 for p = -10, 10, 3 do
                     gc_mDraw(TEXTS.dekaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
@@ -1271,6 +1291,7 @@ function scene.overDraw()
             gc_setColor(GAME.time % .9 > .45 and COLOR.R or COLOR.D)
         end
         gc_mDraw(TEXTS.height, 800, 978)
+        
 
         if GAME.attackMul < 1 then
             setFont(30)

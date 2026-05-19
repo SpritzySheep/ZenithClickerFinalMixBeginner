@@ -96,6 +96,10 @@ local ins, rem = table.insert, table.remove
 ---@field resetCount number
 ---
 ---@field omega boolean
+---@field mars boolean
+---@field omega boolean
+---@field omega boolean
+---@field omega boolean
 ---@field negFloor number
 ---@field negEvent number
 ---@field timerMul number
@@ -179,6 +183,7 @@ local GAME = {
     ronnaspeedFloor = {},
     quettaspeedFloor = {},
     dekaspeedFloor = {},
+    terminaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
@@ -289,7 +294,12 @@ end
 ---@param list string[]
 function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
-    local zp = 1 + (STAT.totalQuest/1000)
+    local zp = 0
+    if STAT.MouseGirl then
+    zp = 1 + ((STAT.totalQuest/100)*((STAT.totalQuest/10000)^2))
+    else
+    zp = 1 + (STAT.totalQuest/1000)
+    end
     if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
     if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
     if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
@@ -599,6 +609,9 @@ function GAME.genQuest()
         local base = .5 + GAME.floor ^ .3 / 4 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
         local var = GAME.floor * .26 * GAME.extraQuestVar
         local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
+        if STAT.MouseGirl then
+        base = .25 + GAME.floor ^ .15 / 2 + GAME.extraQuestBase + icLerp(12400, 20000, GAME.height)
+        end
 
         GAME.atkBuffer = GAME.atkBuffer + r
         if GAME.atkBuffer > GAME.atkBufferCap then
@@ -622,9 +635,14 @@ function GAME.genQuest()
             end
         end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize-2))
-        if questCount == 1 then
+        if STAT.MouseGirl then questCount = 1 end
+        if questCount == 1 or STAT.MouseGirl then
             -- Prevent 1-mod quest being DP
+            if not STAT.MouseGirl then
             pool.DP = 24
+            else
+            pool.DP = 2048
+            end
         elseif M.DH == 2 then
             -- Reduce DP on rDH
             pool.DP = pool.DP * 21
@@ -666,7 +684,7 @@ function GAME.genQuest()
             a = 0,
         })
     until #GAME.quests >= 3
-    if STAT.ExtraSpeed then
+    if STAT.ExtraSpeed and GAME.height > -10 then
         if GAME.rank <  (1 + (floor(STAT.achv/50))) then
             GAME.rank = (1 + (floor(STAT.achv/50)))
         end
@@ -855,10 +873,18 @@ end
 function GAME.addHeight(h, realHeight)
     h = h * (realHeight and 1 or (GAME.rank / 4) - 1)
     GAME.heightBonus = GAME.heightBonus + h
-    if GAME.height > 2050 then
-    GAME.height = GAME.height + h
+    if not STAT.MouseGirl then
+        if GAME.height > 2050 then
+        GAME.height = GAME.height + h
+        else
+        GAME.heightBuffer = GAME.heightBuffer + h
+        end
     else
-    GAME.heightBuffer = GAME.heightBuffer + h
+    if GAME.height > 2050 then
+        GAME.height = GAME.height + (h)
+        else
+        GAME.heightBuffer = GAME.heightBuffer + h
+        end
     end
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
 end
@@ -930,6 +956,10 @@ function GAME.addXP(xp)
             GAME.startDekaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 11 and GAME.rank >= TerminaMusicReq then
+            GAME.startTerminaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -950,6 +980,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isRonna = false
         GigaSpeed.isQuetta = false
         GigaSpeed.isDeka = false
+        GigaSpeed.isTermina = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1108,6 +1139,25 @@ function GAME.startDekaAnim()
 end
 
 function GAME.stopDekaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startTerminaAnim()
+    GAME.gspeedlv = 11
+    GAME.terminaspeed = true
+    GAME.terminaspeedFloor[GAME.floor] = true
+    GAME.terminaCount = GAME.terminaCount + 1
+    GigaSpeed.isTermina = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopTerminaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1323,11 +1373,16 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('deka')
                 GAME.finishTera = true
     end
+    if GAME.terminaCount >= 1 or STAT.totalTermina >= 1 then
+                IssueSecret('termina')
+                GAME.finishTera = true
+    end
     SubmitAchv('powerleveling', STAT.level,true)
     SubmitAchv('powerleveling2', STAT.level,true)
     SubmitAchv('powerleveling3', STAT.level,true)
     SubmitAchv('powerleveling4', STAT.level,true)
     SubmitAchv('powerleveling5', STAT.level,true)
+    SubmitAchv('powerleveling6', STAT.level,true)
     SubmitAchv('Tera', STAT.totalTera,true)
     SubmitAchv('Peta', STAT.totalPeta,true)
     SubmitAchv('Exa', STAT.totalExa,true)
@@ -1336,6 +1391,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('Ronna', STAT.totalRonna,true)
     SubmitAchv('Quetta', STAT.totalQuetta,true)
     SubmitAchv('Deka', STAT.totalDeka,true)
+    SubmitAchv('Termina', STAT.totalTermina,true)
 end
 
 function GAME.nextFatigue()
@@ -1593,7 +1649,11 @@ function GAME.refreshCurrentCombo()
         GAME.comboMP = GAME.getComboMP(hand)
         GAME.comboZP = GAME.getComboZP(hand)
         TEXTS.mpPreview:set(GAME.comboMP .. " MP")
+        if GAME.comboZP < 10e3 then
         TEXTS.zpPreview:set(("%.2fx ZP"):format(GAME.comboZP))
+        else
+            TEXTS.zpPreview:set(("%.1fkx ZP"):format(GAME.comboZP/1000))
+        end
         DailyActived =
             #GAME.getHand(true) == #DAILY and
             TABLE.equal(TABLE.sort(GAME.getHand(true)), TABLE.sort(TABLE.copy(DAILY)))
@@ -1944,8 +2004,9 @@ function GAME.commit(auto)
         correct = 2
         GAME.incrementPrompt('pass_second')
     end
-
+    local rque = 0
     if correct then
+    rque = rque + 1
         if GAME.currentTask then
             GAME.incrementPrompt('pass')
             for i = 1, #hand do GAME.incrementPrompt('pass_' .. hand[i]) end
@@ -1965,7 +2026,13 @@ function GAME.commit(auto)
 
         GAME.heal((dblCorrect and 3 or 1) * GAME.dmgHeal)
         if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, 2) then GAME.addHeight(3, true) end
-
+        if STAT.MouseGirl and GAME.height > -10 then
+            GAME.addHeight(15)
+            SFX.play('elim')
+        end
+        if GAME.height <= -10 then 
+            GAME.height = ((-10 - (10 * GAME.totalQuest)))
+        end
         local dp = TABLE.find(hand, 'DP')
         local attack = 3
         local surge = 0
@@ -2355,6 +2422,14 @@ function GAME.start()
     MusicPlayer = false
 
     GAME.omega = false
+    GAME.mars = false
+    GAME.jupiter = false
+    GAME.saturn = false
+    GAME.uranus = false
+    GAME.neptune = false
+    GAME.pluto = false
+    GAME.keiper = false
+    GAME.oort = false
     GAME.negFloor = 1
     GAME.negEvent = 1
     GAME.timerMul = 1
@@ -2446,6 +2521,7 @@ function GAME.start()
     TABLE.clear(GAME.ronnaspeedFloor)
     TABLE.clear(GAME.quettaspeedFloor)
     TABLE.clear(GAME.dekaspeedFloor)
+    TABLE.clear(GAME.terminaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -2455,6 +2531,7 @@ function GAME.start()
     GAME.ronnaCount = 0
     GAME.quettaCount = 0
     GAME.dekaCount = 0
+    GAME.terminaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -2658,6 +2735,7 @@ function GAME.finish(reason)
         STAT.totalRonna = STAT.totalRonna + GAME.ronnaCount
         STAT.totalQuetta = STAT.totalQuetta + GAME.quettaCount
         STAT.totalDeka = STAT.totalDeka + GAME.dekaCount
+        STAT.totalTermina = STAT.totalTermina + GAME.terminaCount
         if GAME.floor >= 10 then
             STAT.totalF10 = STAT.totalF10 + 1
             if GAME.floorTime <= 6.26 then
@@ -2901,6 +2979,7 @@ function GAME.finish(reason)
     SubmitAchv('powerleveling3', STAT.level)
     SubmitAchv('powerleveling4', STAT.level)
     SubmitAchv('powerleveling5', STAT.level)
+    SubmitAchv('powerleveling6', STAT.level,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -2987,7 +3066,7 @@ function GAME.finish(reason)
             --     end
         end
         if M.EX < 2 and M.DP < 2 then
-            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount + GAME.exaCount + GAME.zetaCount + GAME.yottaCount + GAME.ronnaCount + GAME.quettaCount + GAME.dekaCount)
+            SubmitAchv('speed_bonus', GAME.gigaCount + GAME.teraCount + GAME.petaCount + GAME.exaCount + GAME.zetaCount + GAME.yottaCount + GAME.ronnaCount + GAME.quettaCount + GAME.dekaCount + GAME.terminaCount)
         end
         if M.DP > 0 then
             SubmitAchv('the_responsible_one', GAME.reviveCount)
@@ -3033,6 +3112,7 @@ function GAME.finish(reason)
     SubmitAchv('powerleveling3', STAT.level)
     SubmitAchv('powerleveling4', STAT.level)
     SubmitAchv('powerleveling5', STAT.level)
+    SubmitAchv('powerleveling6', STAT.level,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
@@ -3051,6 +3131,7 @@ function GAME.finish(reason)
     GAME.stopRonnaspeed('fin')
     GAME.stopQuettaspeed('fin')
     GAME.stopDekaspeed('fin')
+    GAME.stopTerminaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -3219,14 +3300,26 @@ function GAME.update(dt, realDT)
                     if GAME.negFloor < 10 then
                         local f = max(GAME.floor, GAME.negFloor)
                         local fallSpeed = (f * (f + 1) + 10) / 20
+                        if GAME.height > -10 then
                         GAME.height = GAME.height - dt * fallSpeed
+                        end
                     end
                 end
                 if GAME.height < NegFloors[GAME.negFloor].bottom then GAME.downFloor() end
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
             end
         else
+        if GAME.height > -10 then
+            if STAT.MouseGirl then
+            GAME.height = GAME.height + GAME.rank / 0.3 * dt
+            else
             GAME.height = GAME.height + GAME.rank / 3 * dt
+            end
+        end
+        local maxH = 0
+        if GAME.height < maxH then maxH = GAME.height end
+        -- if GAME.invincible and GAME.height > maxH then GAME.height = maxH end
+        if GAME.height < -10 then GAME.rank = 1 end
         end
     end
 
@@ -3287,6 +3380,46 @@ function GAME.update(dt, realDT)
             ins(GAME.secTime, GAME.floorTime)
             GAME.refreshSectionTime()
             GAME.floorTime = 0
+        end
+        if not GAME.mars and GAME.height >= 3200 then
+            GAME.mars = true
+            GAME.showFloorText("α", "Mars", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.jupiter and GAME.height >= 4100 then
+            GAME.jupiter = true
+            GAME.showFloorText("β", "Jupiter", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.saturn and GAME.height >= 5000 then
+            GAME.saturn = true
+            GAME.showFloorText("γ", "Saturn", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.uranus and GAME.height >= 5800 then
+            GAME.uranus = true
+            GAME.showFloorText("δ", "Uranus", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.neptune and GAME.height >= 6500 then
+            GAME.neptune = true
+            GAME.showFloorText("ε", "Neptune", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.pluto and GAME.height >= 7000 then
+            GAME.pluto = true
+            GAME.showFloorText("ζ", "Pluto", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.keiper and GAME.height >= 7500 then
+            GAME.keiper = true
+            GAME.showFloorText("η", "Kuiper Belt", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.oort and GAME.height >= 8000 then
+            GAME.oort = true
+            GAME.showFloorText("θ", "Oort Cloud", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
         end
 
         -- KM line text

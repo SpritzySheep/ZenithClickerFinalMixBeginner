@@ -702,6 +702,10 @@ local page2 = {
                     STAT.ExtraSpeed = not STAT.ExtraSpeed
                     SFX.play('maintenance')
                     MSG('dark', "Speed Level Bonus from AP: " .. (STAT.ExtraSpeed and "TRUE" or "FALSE"))
+                    elseif data == 'mousegirl' and STAT.uid == "SPRITZY_LUNA" then
+                    STAT.MouseGirl = not STAT.MouseGirl
+                    SFX.play('maintenance')
+                    MSG('dark', "MOUSE GIRL: " .. (STAT.MouseGirl and "SQUEAK" or "NAH"))
                 elseif data == 'dev' then
                     MSG('dark', OverDevProgressText)
                 elseif data == 'repo' then

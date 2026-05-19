@@ -133,6 +133,11 @@ TEXTURE = {
     jupiter = assets 'tower/jupiter.png',
     saturn = assets 'tower/saturn.png',
     uranus = assets 'tower/uranus.png',
+    neptune = assets 'tower/neptune.png',
+    pluto = assets 'tower/pluto.png',
+    keiper = assets 'tower/keiper.png',
+    oort = assets 'tower/oort.png',
+    oort2 = assets 'tower/oort2.png',
     stars = assets 'tower/stars.png',
 
     revive = {
@@ -211,6 +216,11 @@ TEXTURE = {
             assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png', assets 'rank/j-.png',
             assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png', assets 'rank/j.png',
             assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png', assets 'rank/j+.png',
+        },
+        upperRank = {
+            [0] = assets 'rank/ii.png',
+            assets 'rank/j-.png', assets 'rank/j.png', assets 'rank/j+.png',
+            assets 'rank/n-.png', assets 'rank/n.png', assets 'rank/n+.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -429,12 +439,14 @@ TEXTURE = {
             Ronna = aq(6, 9),
             Quetta = aq(7, 9),
             Deka = aq(8, 9),
+            Termina = aq(9, 9),
 
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
             powerleveling3 = aq(10, 10),
             powerleveling4 = aq(11, 10),
             powerleveling5 = aq(12, 10),
+            powerleveling6 = aq(16, 10),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -452,6 +464,13 @@ TEXTURE = {
             DHEXGV = aq(16, 5),
             EXGVIN = aq(14, 10),
             ASEXGV = aq(8, 1),
+            DPEXGV = aq(12, 2),
+            DHEXVL = aq(16, 7),
+            EXINVL = aq(1, 8),
+            DPEXVL = aq(15, 10),
+            DHEXIN = aq(7, 1),
+            ASDHEX = aq(3, 8), DHDPEX = aq(12, 4), ASEXIN = aq(7, 5), DPEXIN = aq(15, 4), ASDPEX = aq(9, 4),
+            GVMSNH = aq(6, 7), MSNHVL = aq(16, 9), INMSNH = aq(5, 4),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -717,6 +736,12 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.C, "E", COLOR.S, "E", COLOR.B, "D",
         COLOR.V, "!",
     }),
+    terminaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "T", COLOR.O, "E", COLOR.Y, "R",
+        COLOR.K, "M", COLOR.G, "I", COLOR.J, "N",
+        COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
+        COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -726,31 +751,10 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     forfeit    = GC.newText(FONT.get(50), "KEEP HOLDING TO FORFEIT"),
     credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO, Original game by Mr. Z"),
     test       = GC.newText(FONT.get(50), "TEST"),
+    theA       = GC.newText(FONT.get(50), "A"),
+    theM       = GC.newText(FONT.get(50), "M"),
 }
-if not FontLoaded then
-    TASK.new(function()
-        local loadTime = love.timer.getTime() + (MATH.roll(.9626) and MATH.rand(2.6, 6.26) or 26)
-        while love.timer.getTime() < loadTime do
-            TASK.yieldT(0.1)
-            if GAME.anyRev then
-                TASK.yieldT(0.26)
-                SFX.play('staffsilence')
-                MSG('dark', "A DARK FORCE INTERRUPTED THE FONT LOADING")
-                IssueAchv('dark_force')
-                return
-            end
-            if SCN.cur == 'about' then
-                TASK.yieldT(0.26)
-                SFX.play('staffspam')
-                break
-            end
-        end
-        FONT.setDefaultFont('sans')
-        FontLoaded = true
-        ReloadTexts()
-        FILE.save('', 'serifQuit')
-    end)
-end
+FONT.setDefaultFont('sans')
 
 local button_invis = WIDGET.newClass('button_invis', 'button')
 button_invis.draw = NULL
@@ -816,6 +820,7 @@ STAT = {
     totalRonna = 0,
     totalQuetta = 0,
     totalDeka = 0,
+    totalTermina = 0,
     totalF10 = 0,
     badges = 0,
     AP = 0,
@@ -834,7 +839,9 @@ STAT = {
     autoMute = false,
     oldHitbox = false,
     ExtraSpeed = false,
+    MouseGirl = false,
 }
+
 
 ACHV = {}
 

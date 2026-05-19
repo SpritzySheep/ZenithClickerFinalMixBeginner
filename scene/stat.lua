@@ -97,6 +97,7 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalRonna * 0.8)
     cr = cr + MATH.floor(STAT.totalQuetta * 0.9)
     cr = cr + MATH.floor(STAT.totalDeka)
+    cr = cr + MATH.floor(STAT.totalTermina)
     level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.ZP = STAT.PeakZP
@@ -134,6 +135,15 @@ local function calculateRating()
     if cr >= 90000 then IssueSecret('ascension5', true) end
     if cr >= 100e3 then IssueSecret('transcend', true) end
     if cr >= 150e3 then IssueSecret('transcend2', true) end
+
+    if level >= 5e3 then IssueSecret('Lv5000', true) end
+    if level >= 10e3 then IssueSecret('Lv10000', true) end
+    if level >= 15e3 then IssueSecret('Lv15000', true) end
+    if level >= 20e3 then IssueSecret('Lv20000', true) end
+    if level >= 25e3 then IssueSecret('Lv25000', true) end
+    if level >= 30e3 then IssueSecret('Lv30000', true) end
+
+    if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap
@@ -238,10 +248,10 @@ function RefreshProfile()
 
     -- ID
     FONT.set(30)
-    GC.print(("Joined on " .. STAT.joinDate):upper(), 100, 96, 0, .7)
+    GC.print(("Joined on " .. STAT.joinDate):upper(), 30, 96, 0, .7)
     FONT.set(50)
     GC.setColor(COLOR.L)
-    GC.print(STAT.uid, 100, 18, 0, 1.2)
+    GC.print(STAT.uid .. " Lv" .. STAT.level, 30, 18, 0, 1.2)
 
     -- Time
     GC.ucs_move(1065, 165)
@@ -266,7 +276,7 @@ function RefreshProfile()
         local id = badges[i]
         if TEXTURE.stat.badges[id] then
             badgeCount = badgeCount + 1
-            GC.mDraw(TEXTURE.stat.badges[id], (6 + 30 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+            GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
             local bd = BadgeData[id] or BadgeData[0]
             scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
             scene.widgetList[badgeCount]:reset()
@@ -346,6 +356,10 @@ function RefreshProfile()
     local rank =
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
+    if rating >= 120000 then 
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 6)
+        rankIcon = TEXTURE.stat.upperRank[rank]
+     end
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
     GC.draw(rankIcon, 2200, 650,0, 400 / rankIcon:getWidth())
@@ -415,7 +429,7 @@ function RefreshProfile()
         { t = { textColor, "Achievements" },                                                      x = 26,  y = 83 },
         { t = { scoreColor, crProgress.f10 .. " / " .. maxComp },                                 x = 200, y = 33 },
         { t = { scoreColor, crProgress.sr .. " / " .. maxComp },                                  x = 200, y = 58 },
-        { t = { scoreColor, crProgress.achvGet .. " / " .. crProgress.achvAll },                  x = 200, y = 83 },
+        { t = { scoreColor, crProgress.achvGet .. " AP" },                  x = 200, y = 83 },
         { t = { textColor, "Best Ascension" },                                                     x = 300, y = 8 },
         { t = { textColor, "Fastest Explore" },                                                     x = 300, y = 33 },
         { t = { textColor, "Total ZP" },                                                     x = 300, y = 58 },
@@ -433,6 +447,9 @@ function RefreshProfile()
     GC.ucs_back()
     scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
+    scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. Use code 'achbonus' in Config to turn it on."
+    if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. Use code 'achbonus' in Config to turn it off." end
+    scene.widgetList.achbonus:reset()
 
     -- Full stats
     GC.ucs_move(635, 500)
@@ -475,7 +492,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -493,7 +510,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 235)
+    GC.rectangle('fill', 0, 0, 254, 260)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -506,6 +523,7 @@ function RefreshProfile()
         { k = "Ronnaspeed", v = { scoreColor, STAT.totalRonna }, x = 26, y = 158, d = 160 },
         { k = "Quettaspeed",  v = { scoreColor, STAT.totalQuetta }, x = 26, y = 183, d = 160 },
         { k = "Dekaspeed",  v = { scoreColor, STAT.totalDeka }, x = 26, y = 208, d = 160 },
+        { k = "Terminaspeed",  v = { scoreColor, STAT.totalTermina }, x = 26, y = 233, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
@@ -594,6 +612,16 @@ scene.widgetList = {
         floatText = "", -- Dynamic text
     },
     WIDGET.new {
+        name = 'achbonus', type = 'hint',
+        pos = { .5, .5 }, x = -380, y = -30, w = 180, h = 35,
+        color = COLOR.Y,
+        labelPos = 'topRight',
+        labelDist = 2,
+        text = "AP Bonus",
+        floatFontSize = 30,
+        floatText = "", -- Dynamic text
+    },
+    WIDGET.new {
         name = 'full', type = 'button_invis',
         pos = { .5, .5 }, x = -480, y = 450, w = 800, h = 60,
         onPress = function()
@@ -656,7 +684,7 @@ for i = 1, totalBadges do
     table.insert(scene.widgetList, i, WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = (-863 + 20.1 * (i - 1)), y = -320, w = 35,
+        pos = { .5, .5 }, x = (-850 + 33.5 * (i - 1)), y = -320, w = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,

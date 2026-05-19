@@ -1461,25 +1461,6 @@ local d = {
         quote = [[Also known as background debugging mode]],
         type = 'issued',
     },
-    { -- dark_force
-        ex = true,
-        id = 'dark_force',
-        name = "Dark Force",
-        desc = [[Interrupt font loading with rev mod]],
-        quote = [[The darkness overflows.]],
-        hide = TRUE,
-        type = 'issued',
-    },
-    { -- return_to_the_light
-        ex = true,
-        id = 'return_to_the_light',
-        name = "Return to the Light",
-        desc = [[Reboot immediately when font not loaded]],
-        quote = [[Not again...]],
-        credit = "@FMichael",
-        hide = TRUE,
-        type = 'issued',
-    },
     { -- smooth_dismount
         ex = true,
         id = 'smooth_dismount',
@@ -1565,6 +1546,15 @@ local d = {
         rank = numberRank(0, 5, 11, 20, 36, 63, 95),
         hide = function() return STAT.totalDeka == 0 end,
     }, 
+    { -- Termina
+        id = 'Termina',
+        name = "Fractal Blast",
+        desc = [[Terminaspeed Entries]],
+        quote = [["Fractals?! There's...there's fractals here!"]],
+        scoreSimp = function(n) return n .. " TERMINAs" end,
+        rank = numberRank(0, 3, 8, 15, 28, 49, 75),
+        hide = function() return STAT.totalTermina == 0 end,
+    }, 
 
    { title = "FINAL MIX BEGINNER - POWERLEVELING"},
 
@@ -1607,6 +1597,14 @@ local d = {
         quote = [["Your body can't handle this much power!"]],
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(20000, 21000, 22000, 23000, 24000, 25000, 29999),
+    },
+    { -- Lv25000
+        id = 'powerleveling6',
+        name = "Giga Leveling",
+        desc = [[Zenith Level]],
+        quote = [["You are beyond the universe."]],
+        scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(25000, 26000, 27000, 28000, 29000, 30000, 34999),
     },
 
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},
@@ -1866,6 +1864,19 @@ local d = {
     AchieveFromCombo('DHEXGV', "The Daredevil", [[HFD with EX GV DH]], [[My core is trembling, man...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('EXGVIN', "The Super GM", [[HFD with EX GV IN]], [[YOU AER GRAND-MASTER!^3]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASEXGV', "Master of the T", [[HFD with EX GV AS]], [[T-Spin Triple 6-Combo Back-to-Back x23]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPEXGV', "Sinking", [[HFD with EX GV DP]], [[What are you thinking about?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHEXVL', "The Mad Lord", [[HFD with EX VL DH]], [[I don't wanna get political.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXINVL', "Bounty Hunter", [[HFD with EX VL IN]], [[Bootleg vigilante?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPEXVL', "Measures", [[HFD with EX VL DP]], [[Centimeters, Meters, Kilometers, Astronomical Units, and Light Years!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHEXIN', "The Architect", [[HFD with EX DH IN]], [[Only the best can build the greatest.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHEX', "Loki", [[HFD with EX DH AS]], [[Okie Dokie Lokie.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHDPEX', "Whispers of Sin", [[HFD with EX DH DP]], [[Don't give in... Don't listen to the nightmares...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASEXIN', "Expertise", [[HFD with EX IN AS]], [[XP from experience]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPEXIN', "Dominance", [[HFD with EX IN DP]], [[What do I even put here]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPEX', "Ballet Partners", [[HFD with EX AS DP]], [[A dainty dance for two, a mesmerizing dance for some.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('GVMSNH', "Atlas' Burden", [[HFD with NH MS GV]], [[One singular mouse can't hold up the entire world!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('MSNHVL', "The Glass Cannon", [[HFD with NH MS VL]], [[Not a very practical cannon, is it?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('INMSNH', "The False Prophet", [[HFD with NH MS IN]], [[Fake news.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

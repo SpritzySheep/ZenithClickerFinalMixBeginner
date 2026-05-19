@@ -106,6 +106,41 @@ local d = {
         desc = "Have a Dev score on 62% achievements",
     },
     {
+        id = 'Lv5000',
+        name = "Prestige",
+        desc = "Reached Z-Lv5,000",
+    },
+    {
+        id = 'Lv10000',
+        name = "Prestige II",
+        desc = "Reached Z-Lv10,000",
+    },
+    {
+        id = 'Lv15000',
+        name = "Prestige III",
+        desc = "Reached Z-Lv15,000",
+    },
+    {
+        id = 'Lv20000',
+        name = "Prestige IV",
+        desc = "Reached Z-Lv20,000",
+    },
+    {
+        id = 'Lv25000',
+        name = "Prestige V",
+        desc = "Reached Z-Lv25,000",
+    },
+    {
+        id = 'Lv30000',
+        name = "Prestige VI",
+        desc = "Reached Z-Lv30,000",
+    },
+    {
+        id = 'achv',
+        name = "Overachiever",
+        desc = "Got a total of 1,000 AP",
+    },
+    {
         id = 'peta',
         name = "PETASPEED!!!!",
         desc = "Entered Petaspeed",
@@ -140,6 +175,7 @@ local d = {
         name = "DEKASPEED!!!!!!!!!!",
         desc = "Entered Dekaspeed",
     },
+    {id = 'termina', name = "TERMINASPEED?!", desc = "Entered Terminaspeed",},
     {
         id = 'ascendant',
         name = "Ascendant",

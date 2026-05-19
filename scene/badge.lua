@@ -10,6 +10,8 @@ local gc_setColor, gc_rectangle, gc_print = gc.setColor, gc.rectangle, gc.print
 local gc_setAlpha, gc_setLineWidth = GC.setAlpha, GC.setLineWidth
 local gc_draw, gc_mDraw = GC.draw, GC.mDraw
 local gc_line = GC.line
+local spin = 0
+local allBadge = 43
 
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
@@ -112,10 +114,23 @@ end
 
 
 function scene.draw()
+    if GAME.mod.AS == 1 then
+        spin = spin + 0.02
+    elseif GAME.mod.AS == 2 then
+        spin = spin + 0.06
+    elseif GAME.anyRev and GAME.mod.AS == 0 then
+        spin = 3.141592
+    else
+        spin = 0
+    end
     local function addBadge(id,x,y)
         local scale = 150 / math.max(TEXTURE.stat.badges[id]:getDimensions())
             if STAT.badge[id] then
-        GC.mDraw(TEXTURE.stat.badges[id], x, y,0, scale)
+                if not GAME.mod.anyRev then
+                GC.mDraw(TEXTURE.stat.badges[id], x, y, spin, scale)
+                else
+                GC.mDraw(TEXTURE.stat.badges[id], x, y, spin, scale * -1, scale)
+                end
             else
         GC.mDraw("rank/z.png", x,y,0, scale)
         end
@@ -142,6 +157,9 @@ function scene.draw()
     gc_draw(BadgeText)
     gc_draw(DevNoteText, 0, 285 - DevNoteText:getHeight() * (.68 / 2), 0, .68, .68, 1000, 0)
     local badges = TABLE.sort(TABLE.getKeys(STAT.badge), function(a, b) return (BadgeData[a] or BadgeData[0]).prio < (BadgeData[b] or BadgeData[0]).prio end)
+    if ((200*MATH.floor(#badges/8))-420) > 0 then
+    maxScroll = (200*MATH.floor((#badges+7)/8))-420
+    else maxScroll = 0 end
     for b = 1, #badges do
     addBadge(badges[b],(200 * ((b-1) % 8)) - 700,(200 * MATH.floor((b-1)/8)) + 450)
     end
@@ -176,9 +194,9 @@ function scene.draw()
     gc_setColor(clr.L)
     FONT.set(50)
      if GAME.anyRev then
-        gc_print(#badges .. " BADGES", 15, 68, 0, 1, -1)
+        gc_print(#badges .. "/".. allBadge .." BADGES ("..MATH.floor((#badges/allBadge)*100).."%)", 15, 68, 0, 1, -1)
      else
-        gc_print(#badges .. " BADGES", 15, 0)
+        gc_print(#badges .. "/".. allBadge .." BADGES ("..MATH.floor((#badges/allBadge)*100).."%)", 15, 0)
      end
 
     -- Bottom bar & thanks

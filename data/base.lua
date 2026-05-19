@@ -23,6 +23,7 @@ YottaMusicReq = 26
 RonnaMusicReq = 29
 QuettaMusicReq = 32
 DekaMusicReq = 35
+TerminaMusicReq = 38
 
 GravityTimer = {
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },
@@ -171,7 +172,34 @@ NegTexts = {
 }
 NegEvents = {
     -- B1: The Basement
-    { h = -10 }, { text = 'b1.begin' },
+    { h = -10 }, { text = 'b1.begin' ,
+event = function()
+            GAME.invincible = true
+            GAME.timerMul = 0
+            GAME.lifeLeak = 0
+            GAME.dmgWrong = 1
+            GAME.invisCard = false
+            GAME.refreshPieceFstr()
+            GAME.dmgTimerMul = 1e99
+            GAME.height = -10
+            GAME.heightBonus = 0
+            GAME.attackMul = 0
+            GAME.chain = 0
+            GAME.maxQuestCount = 1
+            if GAME.rank > 1 then
+                GAME.rank = 1
+                GAME.xp = 0
+            end
+            GAME.xpLockLevelMax = 2600
+            GAME.xpLockTimer = 2600
+            GAME.xpLockLevel = 2600
+            GAME.rankLimit = 8
+            TEXTS.rank:set("")
+
+            
+            GAME.refreshModIcon()
+            GAME.refreshRPC()
+        end,},
     { h = -26 },
     { text = 'b1.noAS', color = 'lB', cond = function() return GAME.mod.AS == 0 end },
     {
@@ -179,7 +207,7 @@ NegEvents = {
         color = 'lO',
         cond = function() return GAME.mod.AS >= 0 end,
         event = function()
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.AS = 0
             GAME.refreshModIcon()
@@ -207,7 +235,7 @@ NegEvents = {
         color = 'lO',
         cond = function() return GAME.mod.VL >= 0 end,
         event = function()
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.VL = 0
             GAME.refreshModIcon()
@@ -222,7 +250,7 @@ NegEvents = {
         cond = function() return GAME.mod.IN >= 0 end,
         event = function()
             GAME.dmgCycle = GAME.dmgCycle + 5
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.IN = 0
             RefreshBGM()
@@ -243,7 +271,7 @@ NegEvents = {
 
     -- B3: Underground Parking
     { h = -150 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
-    { event = { 'attackMul', -.5, 'timerMul', .25 } },
+    { event = { 'attackMul', 0, 'timerMul', .25 } },
     { h = -155 }, { text = 'b3.begin' },
     { h = -160 }, { text = 'b3.effStart' },
     { h = -165 },
@@ -290,7 +318,7 @@ NegEvents = {
         cond = function() return GAME.mod.GV >= 0 end,
         event = function()
             GAME.dmgDelay = GAME.dmgDelay + 16
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.GV = 0
             GAME.refreshModIcon()
@@ -335,7 +363,7 @@ NegEvents = {
     },
 
     -- B4: The Bunker
-    { h = -300 }, { event = { 'dmgDelay', 2, 'dmgCycle', .5 } },
+    { h = -300 }, { event = { 'dmgDelay', 2, 'dmgCycle', 0 } },
     { event = { 'attackMul', -.5, 'timerMul', .25 } },
     { h = -310 },
     { text = 'b4.begin' },
@@ -356,7 +384,7 @@ NegEvents = {
         cond = function() return GAME.mod.MS >= 0 end,
         event = function()
             GAME.extraQuestBase = GAME.extraQuestBase - 3
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.MS = 0
             GAME.sortCards()
@@ -374,7 +402,7 @@ NegEvents = {
             GAME.refreshPieceFstr()
         end
     },
-    { event = { 'attackMul', -.5 } },
+    { event = { 'attackMul', 0 } },
     { event = function() GAME.dmgWrong = math.min(GAME.dmgWrong, 0) end },
     { h = -460 }, { text = 'b5.begin' },
     { h = -470 }, { text = 'b5.effStart' },
@@ -393,7 +421,7 @@ NegEvents = {
         cond = function() return GAME.mod.DH >= 0 end,
         event = function()
             GAME.extraQuestVar = GAME.extraQuestVar - 3
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.DH = 0
             GAME.refreshModIcon()
@@ -430,7 +458,7 @@ NegEvents = {
         cond = function() return GAME.mod.NH >= 0 end,
         event = function()
             GAME.dmgHeal = GAME.dmgHeal + 12
-            GAME.attackMul = GAME.attackMul - .5
+            GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.NH = 0
             GAME.maxQuestCount = 1
@@ -514,18 +542,18 @@ NegEvents = {
             GAME.dmgTimerMul = 1e99
             GAME.height = -1650
             GAME.heightBonus = 0
-            GAME.attackMul = -1
+            GAME.attackMul = 0
             GAME.chain = 0
             GAME.maxQuestCount = 1
-            if GAME.rank > 8 then
-                GAME.rank = 38
-                GAME.xp = 32
+            if GAME.rank > 1 then
+                GAME.rank = 1
+                GAME.xp = 0
             end
             GAME.xpLockLevelMax = 2600
             GAME.xpLockTimer = 2600
             GAME.xpLockLevel = 2600
             GAME.rankLimit = 8
-            TEXTS.rank:set("R-" .. GAME.rank)
+            TEXTS.rank:set("")
 
             GAME.mod.EX = 0
             GAME.refreshModIcon()
