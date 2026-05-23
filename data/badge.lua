@@ -135,6 +135,9 @@ local d = {
         name = "Prestige VI",
         desc = "Reached Z-Lv30,000",
     },
+    {id = 'Lv35000',name = "Prestige VII",desc = "Reached Z-Lv35,000",},
+    {id = 'Lv40000',name = "Prestige VIII",desc = "Reached Z-Lv40,000",},
+    {id = 'Lv45000',name = "Prestige IX",desc = "Reached Z-Lv45,000",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -176,6 +179,7 @@ local d = {
         desc = "Entered Dekaspeed",
     },
     {id = 'termina', name = "TERMINASPEED?!", desc = "Entered Terminaspeed",},
+    {id = 'lumina', name = "LUMINASPEED??", desc = "Entered Luminaspeed",},
     {
         id = 'ascendant',
         name = "Ascendant",
@@ -216,6 +220,7 @@ local d = {
         name = "Transcension 30%",
         desc = "Gathered 150,000 Chakra Escence",
     },
+    {id = 'transcend4',name = "Transcension 40%",desc = "Gathered 200,000 Chakra Escence",},
 }
 
 for i = 1, #d do

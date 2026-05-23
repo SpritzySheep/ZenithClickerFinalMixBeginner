@@ -11,8 +11,7 @@ local gc_setAlpha, gc_setLineWidth = GC.setAlpha, GC.setLineWidth
 local gc_draw, gc_mDraw = GC.draw, GC.mDraw
 local gc_line = GC.line
 local spin = 0
-local allBadge = 43
-
+local allBadge = 48
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
     L = { COLOR.HEX '656565FF' },

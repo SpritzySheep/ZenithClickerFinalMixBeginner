@@ -46,6 +46,8 @@ local set = {
 local showMP, showFloor = true, true
 
 local widgetSet = {}
+local comboTimer = 0
+local combo = 0
 
 ---@class Record
 ---@field _list string[]
@@ -53,14 +55,16 @@ local widgetSet = {}
 ---@field _speedrun number
 ---@field _floor number
 ---@field _zp number
----@field _ultra? true
+---@field _ultra boolean?
 ---
----@field revQuad love.Quad | false
----@field comboText love.Text
----@field modsText love.Text
----@field floorText love.Text
----@field scoreText love.Text
----@field extraText love.Text
+---@alias love.Quad any
+---
+---@field revQuad love.Quad?
+---@field comboText string love.Text
+---@field modsText string love.Text
+---@field floorText string love.Text
+---@field scoreText string love.Text
+---@field extraText string love.Text
 
 ---@return Record?
 local function newRecord(list, isUltra)
@@ -89,7 +93,19 @@ local function newRecord(list, isUltra)
     local comboText = setStr == "" and [["QUICK PICK"]] or GAME.getComboName(list, 'record')
     ---@cast comboText string
     if isUltra then
-        if #setStr == 4 and M.DH == 2 then
+        if comboText:sub(1, 1) ~= "\"" and setStr:count('r') == 0 then
+            if comboText == "EASY" then
+                comboText = "UNEASY"
+            else
+                comboText = "UNEASY " .. comboText
+            end
+        elseif comboText:sub(2, 4) == "THE" and setStr:count('r') == 0 then
+            comboText = comboText:gsub("THE", "THE UNEASY", 1)
+        elseif comboText:sub(2, 5) == "EASY" and setStr:count('r') == 0 then
+            comboText = comboText:gsub("EASY", "UNEASY", 1)
+        elseif setStr:count('r') == 0 then
+            comboText = "\"UNEASY " .. comboText:sub(2)
+        elseif #setStr == 4 and M.DH == 2 then
             comboText = ComboData.gameEX[setStr].name
         elseif comboText:sub(1, 1) ~= "\"" then
             comboText = "ULTRA " .. comboText
@@ -108,7 +124,7 @@ local function newRecord(list, isUltra)
         _ultra = isUltra,
 
         comboText = GC.newText(FONT.get(50), comboText),
-        modsText = GC.newText(FONT.get(30), (isUltra and mods:gsub('r', 'u') or mods) .. (mp > 2 and "  [" .. mp .. "]" or "")),
+        modsText = GC.newText(FONT.get(30), (isUltra and mods:gsub('r', 'u') or mods) .. "  [" .. mp .. "]"),
         floorText = GC.newText(FONT.get(50), floorText),
         scoreText = GC.newText(FONT.get(50), scoreText),
         extraText = GC.newText(FONT.get(30), extraText),
@@ -157,6 +173,8 @@ local function query()
     for i = 1, #MD.deck do
         if set.sel[i] > 0 then
             table.insert(list, (set.sel[i] == 2 and 'r' or '') .. cardIDs[i])
+        elseif set.sel[i] == -1 then
+            table.insert(list, 'e' .. cardIDs[i])
         end
     end
     if set.match == 'exact' then
@@ -186,8 +204,8 @@ local function query()
                 end
 
                 -- mp check
-                if not (set.mpComp == '>' and set.mp == 1 or set.mpComp == '<' and set.mp == 18) then
-                    local mp = (#setStr - (ultra and 1 or 0) + setStr:count('r')) / 2
+                if not (set.mpComp == '>' and set.mp == -9 or set.mpComp == '<' and set.mp == 18) then
+                    local mp = setStr:count('r') - setStr:count('e')*2 + setStr:count('[A-Z]')/2
                     if
                         set.mpComp == '>' and mp < set.mp or
                         set.mpComp == '<' and mp > set.mp or
@@ -199,13 +217,13 @@ local function query()
 
                 -- combo check
                 if ultra then setStr = setStr:sub(2) end
-                local setL = {}; for m in setStr:gmatch('r?..') do table.insert(setL, m) end
+                local setL = {}; for m in setStr:gmatch('[re]?..') do table.insert(setL, m) end
                 local setS = TABLE.getValueSet(setL)
                 if set.match == 'include' then
                     if #setL < #list then break end
                     local notFound
                     for i = 1, #set.sel do
-                        if set.sel[i] > 0 and not setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
+                        if set.sel[i] ~= 0 and not setS[(set.sel[i] == 2 and 'r' or set.sel[i] == -1 and 'e' or '') .. cardIDs[i]] then
                             notFound = true
                             break
                         end
@@ -214,7 +232,7 @@ local function query()
                 elseif set.match == 'exclude' then
                     local found
                     for i = 1, #set.sel do
-                        if set.sel[i] > 0 and setS[(set.sel[i] == 2 and 'r' or '') .. cardIDs[i]] then
+                        if set.sel[i] ~= 0 and setS[(set.sel[i] == 2 and 'r' or set.sel[i] == -1 and 'e' or '') .. cardIDs[i]] then
                             found = true
                             break
                         end
@@ -224,7 +242,7 @@ local function query()
                     if #setL < #list then break end
                     local notFound
                     for i = 1, #set.sel do
-                        if set.sel[i] > 0 and not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                        if set.sel[i] ~= 0 and not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]] or setS['e' .. cardIDs[i]]) then
                             notFound = true
                             break
                         end
@@ -234,7 +252,7 @@ local function query()
                     if #setL + #list > 9 then break end
                     local found
                     for i = 1, #set.sel do
-                        if set.sel[i] > 0 and (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                        if set.sel[i] ~= 0 and (setS[cardIDs[i]] or setS['r' .. cardIDs[i]] or setS['e' .. cardIDs[i]]) then
                             found = true
                             break
                         end
@@ -244,7 +262,7 @@ local function query()
                     if #setL ~= #list then break end
                     local notMatch
                     for i = 1, #set.sel do
-                        if (set.sel[i] == 0) ~= not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]]) then
+                        if (set.sel[i] == 0) ~= not (setS[cardIDs[i]] or setS['r' .. cardIDs[i]] or setS['e' .. cardIDs[i]]) then
                             notMatch = true
                             break
                         end
@@ -309,12 +327,12 @@ end
 
 function scene.mouseMove(_, _, _, dy)
     if love.mouse.isDown(1, 2) then
-        scroll = clamp(scroll - dy * (1 + M.VL), 0, maxScroll)
+        scroll = clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
     end
 end
 
 function scene.touchMove(_, _, _, dy)
-    scroll = clamp(scroll - dy * (1 + M.VL), 0, maxScroll)
+    scroll = clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.mouseClick(x, y, k)
@@ -333,10 +351,15 @@ end
 
 function scene.touchClick(x, y) scene.mouseClick(x, y, 1) end
 
-local function setMod(i, rev)
+---@param i number index into cardIDs table 1 = EX, 2 = NH, etc
+---@param rev boolean Reversed
+---@param easy boolean Easy
+local function setMod(i, rev, easy)
     if GAME.completion[cardIDs[i]] > 0 then
         if rev then
             set.sel[i] = set.sel[i] == 0 and 2 or 0
+        elseif easy then
+            set.sel[i] = set.sel[i] == 0 and -1 or 0
         else
             set.sel[i] = (set.sel[i] + 1) % 3
         end
@@ -345,7 +368,7 @@ local function setMod(i, rev)
     end
     if set.sel[i] == 0 then
         SFX.play('card_slide_' .. math.random(4))
-    elseif set.sel[i] == 1 then
+    elseif set.sel[i] == 1 or set.sel[i] == -1 then
         SFX.play('card_select', .8)
     elseif set.sel[i] == 2 then
         SFX.play('card_select_reverse', 1)
@@ -355,15 +378,16 @@ end
 function scene.keyDown(key, isRep)
     if isRep then return true end
     local ctrl = love.keyboard.isDown('lctrl', 'rctrl')
+    local alt = love.keyboard.isDown('lalt', 'ralt')
     local bindID = TABLE.find(STAT.keybind, key)
     if bindID and bindID <= 18 then
         local i = bindID > 9 and bindID - 9 or bindID
-        setMod(i, ctrl)
+        setMod(i, ctrl, alt)
         refresh()
     elseif key == STAT.keybind[19] or key == 'return' then
         -- Confirm
         cd = min(cd, .01)
-    elseif key == STAT.keybind[20] then
+    elseif key == STAT.keybind[20] or key == 'f13' then
         -- Reset
         for i = 1, #set.sel do set.sel[i] = 0 end
         set.match = 'include'
@@ -375,6 +399,41 @@ function scene.keyDown(key, isRep)
         set.order = 'first'
         SFX.play('allclear')
         refresh()
+    elseif key == 'f14' then
+        local anyChange = false
+        for i = 1, #set.sel do 
+            if set.sel[i] == -1 then
+                set.sel[i] = 1 
+                anyChange = true
+            elseif set.sel[i] == 1 then
+                set.sel[i] = -1 
+                anyChange = true
+            end
+        end
+        if anyChange then
+            SFX.play('card_select', .8)
+            refresh()
+        else
+            local buttonRemoved = false
+            if combo == 0 then
+                SFX.play('no')
+            elseif combo < 16 then
+                SFX.play('combo_' .. combo)
+            else
+                SFX.play('combo_16')
+                scene.widgetList.easy.x = -100
+                scene.widgetList.easy:resetPos()
+                if ACHV.could_you_not then
+                    MSG("dark", "COULD YOU NOT?",10)
+                else
+                    IssueAchv('could_you_not')
+                end
+                buttonRemoved = true
+            end
+            if not buttonRemoved then MSG("dark", "Select upright mods to make Easy first!", 3) end
+            combo = combo + 1
+            comboTimer = 3
+        end
     elseif key == 'tab' then
         set.mode =
             set.mode == 'altitude' and 'speedrun' or
@@ -423,7 +482,7 @@ function scene.keyDown(key, isRep)
 end
 
 function scene.wheelMove(_, dy)
-    scroll = clamp(scroll - dy * 100 * (1 + M.VL), 0, maxScroll)
+    scroll = clamp(scroll - dy * 100 * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.resize()
@@ -431,6 +490,10 @@ function scene.resize()
 end
 
 function scene.update(dt)
+    comboTimer = comboTimer - dt
+    if comboTimer <= 0 then
+        combo = 0
+    end
     local y0 = scroll1
     if math.abs(y0 - scroll) > .1 then
         scroll1 = MATH.expApproach(scroll1, scroll, dt * 26)
@@ -520,6 +583,11 @@ function scene.draw()
     for i = 1, #CD do
         if set.sel[i] == 2 then
             gc_draw(TEXTURE.recRevLight, -120 + 100 * cardPos[i], 100 - 60)
+        end
+    end
+    for i = 1, #CD do
+        if set.sel[i] == -1 then
+            gc_draw(TEXTURE.recEasyLight, -120 + 100 * cardPos[i], 100 - 60)
         end
     end
 
@@ -656,9 +724,9 @@ for i = 1, #CD do
         textColor = { COLOR.lerp(MD.textColor[cardIDs[i]], COLOR.LL, .26) },
         text = cardIDs[i], sound_off = false, sound_on = false,
         x = baseX - 60 + 100 * i, y = baseY + 100,
-        disp = function() return set.sel[i] > 0 end,
+        disp = function() return set.sel[i] ~= 0 end,
         code = function(k)
-            setMod(i, k == 2 or love.keyboard.isDown('lctrl', 'rctrl'))
+            setMod(i, k == 2 or love.keyboard.isDown('lctrl', 'rctrl'), k == -1 or love.keyboard.isDown('lalt', 'ralt'))
             refresh()
         end,
     })
@@ -730,7 +798,7 @@ widgetSet.mp = {
     WIDGET.new {
         type = 'slider',
         x = baseX + 40, y = baseY + 206, w = 480,
-        axis = { 0, 18, 1 },
+        axis = { -9, 18, 1 },
         frameColor = 'dD', fillColor = clr.D,
         disp = function() return set.mp end,
         code = function(value)
@@ -833,9 +901,8 @@ widgetSet.other = {
         color = clr.btn1,
         sound_hover = 'menutap',
         fontSize = 30, text = "    RESET", textColor = clr.btn2,
-        onClick = function() love.keypressed(STAT.keybind[20]) end,
-    },
-    -- Hint
+        onClick = function() love.keypressed('f13') end,
+    },    -- Hint
     WIDGET.new {
         name = 'help', type = 'hint',
         pos = { 1, 0 }, x = -50, y = 126, w = 80, cornerR = 40,
@@ -852,6 +919,14 @@ widgetSet.other = {
             Press allspin keybinds to toggle mods (hold Ctrl for reverse)
             Press Shift to cycle through mod filter modes
     ]],
+    },
+    WIDGET.new {
+    name = 'easy', type = 'button',
+    pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
+    color = { .15, .75, .15 },
+    sound_hover = 'menutap',
+    fontSize = 30, text = "    EASY", textColor = 'DG',
+    onClick = function() love.keypressed('f14') end,
     },
 }
 

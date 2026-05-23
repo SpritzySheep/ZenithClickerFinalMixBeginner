@@ -24,8 +24,10 @@ RonnaMusicReq = 29
 QuettaMusicReq = 32
 DekaMusicReq = 35
 TerminaMusicReq = 38
+LuminaMusicReq = 41
 
 GravityTimer = {
+    [-1] = { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 },
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },
     { 3.2, 3.0, 2.8, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0 },
 }
@@ -38,6 +40,17 @@ PieceData = {
     { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T },  popup = { COLOR.lM, "T - Invisible UI" } },
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O },  popup = { COLOR.lY, "O - Invisible Card" } },
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
+        -- Trevor Smithy
+    { id = 'enightcore', text = { COLOR.lR, "eZ", }, piece = { COLOR.lR, CHAR.brik.C }, popup = { COLOR.lR, "eZ - Nightcore+" } },
+    { id = 'eslowmo',    text = { COLOR.lG, "eS", }, piece = { COLOR.lG, CHAR.brik.C }, popup = { COLOR.lG, "eS - Slow-mo+" } },
+    { id = 'eglassCard', text = { COLOR.lB, "eJ", }, piece = { COLOR.lB, CHAR.brik.C }, popup = { COLOR.lB, "eJ - Glass Card+" } },
+    { id = 'efastLeak',  text = { COLOR.lO, "eL", }, piece = { COLOR.lO, CHAR.brik.C }, popup = { COLOR.lO, "eL - Slow Leak" } },
+    { id = 'einvisUI',   text = { COLOR.lM, "eT", }, piece = { COLOR.lM, CHAR.brik.C }, popup = { COLOR.lM, "eT - Transparent UI" } },
+    { id = 'einvisCard', text = { COLOR.lY, "eO", }, piece = { COLOR.lY, CHAR.brik.C }, popup = { COLOR.lY, "eO - Transparent Card" } },
+    { id = 'ecloseCard', text = { COLOR.lC, "eI", }, piece = { COLOR.lC, CHAR.brik.I3 }, popup = { COLOR.lC, "eI - Closer Card" } },
+    --
+    { id = 'allclear',  text = { COLOR.LL, "-", }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
+
     { id = 'allclear',  text = { COLOR.LL, "-" }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
 }
 
@@ -601,3 +614,4 @@ Achievements = require 'data/achievement'
 BadgeData = require 'data/badge'
 DevScore = require 'data/devscore'
 DevCommentary = require 'data/devcommentary'
+DevCommentaryLink = require 'data/devCommentaryLink'

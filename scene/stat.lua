@@ -98,6 +98,7 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalQuetta * 0.9)
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
+    cr = cr + MATH.floor(STAT.totalLumina)
     level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.ZP = STAT.PeakZP
@@ -106,8 +107,8 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalQuest / 50)
     cr = cr + MATH.floor(STAT.totalFlip / 100)
     cr = cr + MATH.floor(STAT.totalPerfect / 50)
-    cr = cr + MATH.floor(STAT.totalHeight / 2000)
-    cr = cr + MATH.floor(STAT.totalBonus / 1000)
+    cr = cr + MATH.floor(MATH.min(STAT.totalHeight / 2000,10000))
+    cr = cr + MATH.floor(MATH.min(STAT.totalBonus / 1000,10000))
     cr = cr + MATH.floor(STAT.totalFloor / 5)
     cr = cr + MATH.floor(STAT.totalAttack / 200)
     cr = cr + MATH.floor(STAT.maxHeight / 10)
@@ -299,7 +300,7 @@ function RefreshProfile()
         if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
         for i = 1, MATH.floor((rating-30000)/10000) do clickerLV = clickerLV + 1 end
         if rating >= 25000 then clickerLV = clickerLV + 1 end
-        for i = 0, clickerLV - 1 do
+        for i = 0, (clickerLV - 1) or 20 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
     end
@@ -357,7 +358,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 6)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 9)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -492,12 +493,12 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
-        { k = "Total Height",   v = { scoreColor, MATH.floor(STAT.totalHeight / 2000) },                      x = 26, y = 333, d = 200 },
-        { k = "Total Bonus",    v = { scoreColor, MATH.floor(STAT.totalBonus / 1000) },                      x = 26, y = 358, d = 200 },
+        { k = "Total Height",   v = { scoreColor, MATH.floor(MATH.min(STAT.totalHeight / 2000,10000)) },                      x = 26, y = 333, d = 200 },
+        { k = "Total Bonus",    v = { scoreColor, MATH.floor(MATH.min(STAT.totalBonus / 1000,10000)) },                      x = 26, y = 358, d = 200 },
         { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 383, d = 200 },
         { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 408, d = 200 },
         { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 433, d = 200 },
@@ -510,7 +511,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 260)
+    GC.rectangle('fill', 0, 0, 254, 285)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -524,6 +525,7 @@ function RefreshProfile()
         { k = "Quettaspeed",  v = { scoreColor, STAT.totalQuetta }, x = 26, y = 183, d = 160 },
         { k = "Dekaspeed",  v = { scoreColor, STAT.totalDeka }, x = 26, y = 208, d = 160 },
         { k = "Terminaspeed",  v = { scoreColor, STAT.totalTermina }, x = 26, y = 233, d = 160 },
+        { k = "Luminaspeed",  v = { scoreColor, STAT.totalLumina }, x = 26, y = 258, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

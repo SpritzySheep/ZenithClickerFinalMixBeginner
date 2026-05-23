@@ -10,6 +10,15 @@ local clr = {
     T = { COLOR.HEX '6FAC82FF' },
 }
 local colorRev = false
+local MetricSpeedName = {
+    [0] = "",
+    "peta",
+    "exa",
+    "zetta",
+    "yotta",
+    "ronna",
+    "quetta",
+}
 
 AchvText = GC.newText(FONT.get(30))
 local Achievements = Achievements
@@ -26,7 +35,7 @@ OverDevProgressText = "Open ACHV page to refresh the over-dev progress."
 ---@field desc string
 ---@field descWidth number
 ---@field rank number
----@field wreath? number
+---@field wreath number?
 ---@field progress number
 ---@field score table
 ---@field type string
@@ -53,7 +62,9 @@ local overallProgress = {
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
+local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
+
     overallProgress.rank = TABLE.new(0, 5)
     overallProgress.rank[0] = 0
     overallProgress.wreath = TABLE.new(0, 6)
@@ -61,10 +72,11 @@ function RefreshAchvList(canShuffle)
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
     TABLE.clear(achvList)
-    local odCount, odCap = 0, 0
+    local odCount, odCap, countSinceLastTitle = 0, 0, 0
     for i = 1, #Achievements do
         local A = Achievements[i]
         if not A.id then
+            countSinceLastTitle = 0
             table.insert(achvList, { title = A.hide() and "???" or A.title and A.title:upper() })
         else
             local rank, score, progress, wreath, overDev
@@ -100,6 +112,8 @@ function RefreshAchvList(canShuffle)
             AchvText:set(A.desc)
             local hidden = A.hide() and not ACHV[A.id]
             local descWidth = hidden and 26 or AchvText:getWidth()
+            if not hidden or not A.realHide() then 
+                countSinceLastTitle = countSinceLastTitle + 1
             table.insert(achvList, {
                 id = A.id,
                 name = hidden and "???" or A.name:upper(),
@@ -113,6 +127,10 @@ function RefreshAchvList(canShuffle)
                 hidden = A.hide ~= FALSE,
                 overDev = overDev,
             })
+            elseif countSinceLastTitle % 2 == 1 then
+                table.insert(achvList, {id = '', name = ''})
+                countSinceLastTitle = countSinceLastTitle + 1
+            end
             if overDev then
                 odCount = odCount + 1
             end
@@ -235,23 +253,30 @@ local function refreshAchivement()
         setStr = setStr:gsub('^u', '')
         submit(setStr, h)
         local revCount = STRING.count(setStr, 'r')
-        local count = (#setStr - revCount) / 2
+        local easyCount = STRING.count(setStr, 'e')
+        local count = (#setStr - revCount - easyCount) / 2
         local len_noDP = count - (setStr:find('DP') and not setStr:find('rDP') and 1 or 0)
         if len_noDP >= 7 then
-            for i = len_noDP, 7, -1 do
-                if revCount > 0 then swFin = SubmitAchv(sw[i - 6] .. '_plus', h, swFin) or swFin end
-                swFin = SubmitAchv(sw[i - 6], h, swFin) or swFin
+            for i = len_noDP, 14, -1 do
+                if revCount > 0 and easyCount == 0 then swFin = SubmitAchv(sw[i - 6] .. '_plus', h, swFin) or swFin end
+                if easyCount == 0 then swFin = SubmitAchv(sw[i - 6], h, swFin) or swFin end
             end
         end
-        local mp = count + revCount
-        if revCount >= 2 and mp >= 8 then
+        local mp = count + revCount - (easyCount * 2)
+        if revCount >= 2 and mp >= 8 and easyCount == 0 then
             for m = mp, 8, -1 do
                 submit(RevSwampName[min(m, #RevSwampName)]:sub(2, -2):lower(), h, m < mp)
             end
         end
+        if mp <= -3 then
+            submit(tostring(mp), h)
+        end
         maxMMP = max(maxMMP, h * mp)
         local l = {}
-        for m in setStr:gmatch('r?%w%w') do l[m] = true end
+        for m in setStr:gmatch('[re]?%w%w') do l[m] = true end
+        if GAME.getComboZP(l) >= 1 and easyCount == 0 then 
+            maxZP = max(maxZP, h * GAME.getComboZP(l))
+        end
         maxZP = max(maxZP, h * GAME.getComboZP(l))
     end
     submit('multitasker', maxMMP)
@@ -296,6 +321,61 @@ local function refreshAchivement()
         end
     end
 
+    if ACHV.roll and ACHV.programmer_gamer and (BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top) and not (STAT.rold or ACHV.rold_smythy) and not GAME.playing then
+        TASK.new(
+            function()
+                SubmitAchv('rold_smythy', 100)
+                TASK.yieldT(5)
+                MSG("bright","Secret Dev Commentary Available", 3.5)
+                SFX.play('combo_1',1,0,-2)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,3)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                TASK.yieldT(0.25)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,0)
+                SFX.play('combo_1',1,0,3)
+                SFX.play('combo_1',1,0,7)
+                TASK.yieldT(0.75)
+                SFX.play('combo_1',1,0,-2)
+                SFX.play('combo_1',1,0,2)
+                SFX.play('combo_1',1,0,5)
+                TASK.yieldT(1)
+                if SCN.cur ~= 'about' then 
+                    SFX.play('social_invite')
+                    MSG("bright","Check ABOUT", 10) 
+                end
+                STAT.rold = true
+            end
+        )
+    elseif ACHV.roll and ACHV.programmer_gamer and BEST.highScore.eDHeDPeGVeINeMSeNH and not (STAT.rold or ACHV.rold_smythy) and not GAME.playing then
+        SubmitAchv('rold_smythy', 1)
+        TASK.new(
+            function()
+                TASK.yieldT(1)
+                MSG("bright", "Secret Achievement Available")
+                AchvNotice['rold_smythy'] = true
+                SFX.play('social_invite')
+                STAT.rold = true
+            end
+        )
+    elseif ACHV.roll and ACHV.programmer_gamer and not (STAT.rold or BEST.highScore.eDHeDPeGVeINeMSeNH > Floors[9].top or ACHV.rold_smythy) and not GAME.playing then
+        TASK.new(
+            function()
+                TASK.yieldT(1)
+                MSG("bright", "Secret Achievement Available")
+                AchvNotice['rold_smythy'] = true
+                SFX.play('social_invite')
+                STAT.rold = true
+            end
+        )
+    end
     RefreshAchvList()
 end
 
@@ -303,11 +383,11 @@ local achvIconInit
 function scene.load()
     if not achvIconInit then
         achvIconInit = true
-        TEXTURE.achievement.icons = GC.initCanvas(4096, 2560, function()
+        TEXTURE.achievement.icons = GC.initCanvas(4096, 4096, function()
             GC.setShader(GC.newShader [[
                 vec4 effect(vec4 color, sampler2D tex, vec2 texCoord, vec2 scrCoord) {
                     vec4 t = texture2D(tex, texCoord);
-                    return vec4(1, 1, 1, (t.r+t.g+t.b)/3);
+                    return vec4(1, 1, 1, (t.r+t.g+t.b)/3.0);
                 }
             ]])
             GC.draw(TEXTURE.achievement.icons)
@@ -345,12 +425,12 @@ end
 
 function scene.mouseMove(_, _, _, dy)
     if love.mouse.isDown(1, 2) then
-        scroll = MATH.clamp(scroll - dy * (1 + M.VL), 0, maxScroll)
+        scroll = MATH.clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
     end
 end
 
 function scene.touchMove(_, _, _, dy)
-    scroll = MATH.clamp(scroll - dy * (1 + M.VL), 0, maxScroll)
+    scroll = MATH.clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.keyDown(key, isRep)
@@ -364,7 +444,7 @@ function scene.keyDown(key, isRep)
 end
 
 function scene.wheelMove(_, dy)
-    scroll = MATH.clamp(scroll - dy * 100 * (1 + M.VL), 0, maxScroll)
+    scroll = MATH.clamp(scroll - dy * 100 * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.update(dt)
@@ -381,7 +461,27 @@ function scene.update(dt)
             local r = math.random(94, 126)
             TEXTURE.achievement.iconQuad[name]:setViewport(
                 MATH.rand(.5, 15.5) * 256 - r, MATH.rand(.5, 5.5) * 256 - r,
-                2 * r, 2 * r, 4096, 2560
+                2 * r, 2 * r, 4096, 4096
+            )
+        end
+    end
+    -- for i = 1, 6 do
+    --    if TASK.lock('metricspeed_icon_' .. i, 0.26 / i^1.262) then
+    --        local name = MetricSpeedName[i]:sub(2, -2):lower()
+    --        local r = math.random(-10-i*2, 10+i*2)
+    --        local r2 = math.random(-i*2, i*2)
+    --        TEXTURE.achievement.iconQuad[name]:setViewport(
+    --            (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 4096, 4096
+    --        )
+    --    end
+    --end
+    for i = -3, -9, -1 do
+        if TASK.lock('negmp_icon_' .. tostring(i), 1.26 / (10+i)^1.262) then
+            local f = 10+i
+            local r = math.random(-f*2, f*2)
+            local r2 = math.random(-f*2, f*2) + 10
+            TEXTURE.achievement.iconQuad[tostring(i)]:setViewport(
+                (2 - 1) % 16 * 256 - r, (3 - 1) % 16 * 256 - r2, 256, 256, 4096, 4096
             )
         end
     end
@@ -453,6 +553,11 @@ function scene.draw()
                     if colorRev then
                         gc_print(a.title, 10, 134, 0, 1.8, -1.8)
                     else
+                        if a.title:sub(1, 4) == "EASY" then
+                            gc_setColor(COLOR.G)
+                        elseif a.title:sub(1, 6) == "UNEASY" then
+                            gc_setColor(COLOR.dR)
+                        end
                         gc_print(a.title, 10, 62, 0, 1.8)
                     end
                     gc_ucs_back()
@@ -466,7 +571,7 @@ function scene.draw()
                 else
                     gc_ucs_move(i % 2 == 1 and -626 or 26, floor((i - 1) / 2) * 140)
                 end
-
+                if a.id ~= '' then
                 -- Bottom rectangle
                 if hyper then
                     if overallProgress.countStart == 6 then
@@ -530,7 +635,11 @@ function scene.draw()
                     else
                         gc_setColor(1, 1, 1, .26)
                     end
-                    gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
+                    if a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
+                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, math.pi, .24)
+                        else
+                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
+                        end
                 end
 
                 -- Wreath
@@ -567,7 +676,19 @@ function scene.draw()
 
                 -- Dev
                 if a.overDev then
-                    gc_setColor(1, 1, 1, .1)
+                    if a.id == 'programmer_gamer' or a.id == 'one_of_mine' or a.id == 'ggbw' or a.id == 'perfect_speedrun_plus' or a.id == 'perfectly_balanced' or a.id == 'peasant_revolution' 
+                        or a.id == 'holy_ascention' or a.id == 'stabilized_entropy' or a.id == 'restrained_collapse' or a.id == 'restored_volition' or a.id == 'disproven_blasphemy' 
+                        or a.id == 'solved_paradox' or a.id == 'demystified_grimoire' or a.id == 'restored_eden' or a.id == 'your_too_fast' 
+                        or a.id == 'eEX' or a.id == 'eNH' or a.id == 'eMS' or a.id == 'eGV' or a.id == 'eVL' or a.id == 'eDH' or a.id == 'eIN' or a.id == 'eAS' or a.id == 'eDP'
+                        or a.id == 'emperor_development' or a.id == 'quest_feast' or a.id == 'best_friends' or a.id == 'humble_pupil' or a.id == 'shameless_cashgrab' 
+                        or a.id == 'overweight_gamer' or a.id == 'clean_gamer' or a.id == 'clean_break' or a.id == 'professional_cleaner' or a.id == 'rold_smythy' 
+                        or a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
+                            gc_setColor(0, 1, 0, .1)
+                        elseif a.id == 'ueEX' or a.id == 'ueEXeNH' or a.id == 'ueEXeMS' or a.id == 'ueEXeGV' or a.id == 'ueEXeVL' or a.id == 'ueEXeDH' or a.id == 'ueEXeIN' or a.id == 'ueEXeAS' or a.id == 'ueEXeDP' then
+                            gc_setColor(1, 0, 0, .2)
+                        else
+                            gc_setColor(1, 1, 1, .1)
+                        end
                     gc_mDraw(texture.overDev, 565, 75, 0, .26)
                 end
 
@@ -590,7 +711,7 @@ function scene.draw()
                     gc_setAlpha(M.IN * (.3 + .1 * sin(ceil(i / 2) * 1.2 - t * 2.6)))
                     gc_rectangle('fill', 0, 0, 600, 130)
                 end
-
+            end
                 gc_ucs_back()
             end
         end

@@ -32,11 +32,11 @@ ABOUT = {
 }
 
 for d = .5, 2.5, .5 do
-    addText({ COLOR.LD, "FINAL MIX" }, 40 + d, 20 + d)
-    addText({ COLOR.LD, "BEGINNER" }, 80 + d, 95 + d)
+    addText({ COLOR.LD, "EASY MODE" }, 90 + d, 20 + d)
+    addText({ COLOR.LD, "F-MIX BEGINNER" }, 130 + d, 95 + d)
 end
-addText("FINAL MIX", 40, 20)
-addText("BEGINNER", 80, 95)
+addText("EASY MODE", 90, 20)
+addText("F-MIX BEGINNER", 130, 95)
 
 addSection(220)
 
@@ -143,9 +143,9 @@ addSection(1450)
 
 addText({ COLOR.O, "FINAL MIX BEGINNER MOD BY" }, 0, 20, .3)
 
-addMajorCredit(0, 50, { COLOR.HEX 'FF82F0' }, "Spritzy Lunabright", "F-MixB Dev")
+addMajorCredit(0, 50, { COLOR.HEX 'FF82F0' }, "Spritzy Lunabright", "EM F-MixB Dev")
 
-addText({ COLOR.O, "WITH HELP FROM" }, 0, 110, .3)
+addText({ COLOR.O, "BASE EASY MODE MOD BY" }, 0, 110, .3)
 
 addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, "Trevor Smithy", "ZCEM Dev")
 
@@ -221,6 +221,9 @@ addRank(200, 1950, { COLOR.HEX 'EF3D82' }, "J+", "140k CE")
 addRank(-200, 2050, { COLOR.HEX 'F6478D' }, "N-", "150k CE")
 addRank(0, 2050, { COLOR.HEX 'EF3D46' }, "N", "160k CE")
 addRank(200, 2050, { COLOR.HEX 'FF2973' }, "N+", "170k CE")
+addRank(-200, 2150, { COLOR.HEX 'FF5F33' }, "H-", "180k CE")
+addRank(0, 2150, { COLOR.HEX 'FFA333' }, "H", "190k CE")
+addRank(200, 2150, { COLOR.HEX 'FFE733' }, "H+", "200k CE")
 local timer
 function scene.load()
     MSG.clear()

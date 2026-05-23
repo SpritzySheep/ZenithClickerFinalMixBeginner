@@ -32,17 +32,17 @@ local function q(oy, n, size)
     return GC.newQuad(
         n * size, oy,
         size, size,
-        2178, 1663
+        2178*2, 1663
     )
 end
 local function q2(ox, oy, w, h)
     return GC.newQuad(
         ox, oy,
         w, h,
-        2178, 1663
+        2178*2, 1663
     )
 end
-local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256, 256, 256, 4096, 2560) end
+local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256, 256, 256, 4096, 4096) end
 TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
@@ -53,7 +53,7 @@ TEXTURE = {
         throb_a = assets 'panel/throb-a.png',
         throb_b = assets 'panel/throb-b.png',
     },
-    modIcon = assets 'mod_icon.png',
+    modIcon = assets 'mod_icon_easy.png',
     modQuad_ig = {
         VL = q(0, 0, 225),
         NH = q(0, 1, 225),
@@ -73,6 +73,29 @@ TEXTURE = {
         rDP = q(225, 6, 242),
         rDH = q(225, 7, 242),
         rAS = q(225, 8, 242),
+                -- Trevor Smithy
+        eVL = q(0, 9, 225),
+        eNH = q(0, 10, 225),
+        eMS = q(0, 11, 225),
+        eIN = q(0, 12, 225),
+        eGV = q(0, 13, 225),
+        eEX = q(0, 14, 225),
+        eDP = q(0, 15, 225),
+        eDH = q(0, 16, 225),
+        eAS = q(0, 17, 225),
+        ueEX = q2(3303, 233, 225, 225),
+        --
+    },
+    modQuad_uneasy_ig = {
+        eVL = q2(2178, 233, 225, 225),
+        eNH = q2(2178+225, 233, 225, 225),
+        eMS = q2(2178+225*2, 233, 225, 225),
+        eIN = q2(2178+225*3, 233, 225, 225),
+        eGV = q2(2178+225*4, 233, 225, 225),
+        eEX = q2(3303, 233, 225, 225),
+        eDP = q2(2178+225*6, 233, 225, 225),
+        eDH = q2(2178+225*7, 233, 225, 225),
+        eAS = q2(2178+225*8, 233, 225, 225),
     },
     modQuad_res = {
         VL = q(467, 0, 183),
@@ -93,6 +116,17 @@ TEXTURE = {
         rDP = q(650, 6, 183),
         rDH = q(650, 7, 183),
         rAS = q(650, 8, 183),
+        -- Trevor Smithy
+        eVL = q(467, 9, 183),
+        eNH = q(467, 10, 183),
+        eMS = q(467, 11, 183),
+        eIN = q(467, 12, 183),
+        eGV = q(467, 13, 183),
+        eEX = q(467, 14, 183),
+        eDP = q(467, 15, 183),
+        eDH = q(467, 16, 183),
+        eAS = q(467, 17, 183),
+        ueEX = q(650, 14, 183),
     },
     modQuad_ultra_res = {
         rVL = q(833, 0, 183),
@@ -139,6 +173,7 @@ TEXTURE = {
     oort = assets 'tower/oort.png',
     oort2 = assets 'tower/oort2.png',
     stars = assets 'tower/stars.png',
+    warning = assets 'finalwarning.png',
 
     revive = {
         norm = assets 'revive/norm.png',
@@ -221,6 +256,7 @@ TEXTURE = {
             [0] = assets 'rank/ii.png',
             assets 'rank/j-.png', assets 'rank/j.png', assets 'rank/j+.png',
             assets 'rank/n-.png', assets 'rank/n.png', assets 'rank/n+.png',
+            assets 'rank/h-.png', assets 'rank/h.png', assets 'rank/h+.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -397,6 +433,91 @@ TEXTURE = {
             dark_force = aq(3, 1),
             return_to_the_light = aq(5, 5),
             smooth_dismount = aq(4, 1),
+            -- Trevor Smithy
+            programmer_gamer = aq(7, 11), -- smithy ball
+            one_of_mine = aq(10, 6),
+            ggbw = aq(6, 11),  -- fan
+            perfect_speedrun_plus = aq(15, 5),
+            perfectly_balanced = aq(8, 11), -- thanos knife
+            peasant_revolution = aq(15, 1),
+            holy_ascention = aq(11, 1),
+            stabilized_entropy = aq(12, 1),
+            restrained_collapse = aq(10, 1),
+            restored_volition = aq(9, 1),
+            disproven_blasphemy = aq(16, 1),
+            solved_paradox = aq(13, 1),
+            demystified_grimoire = aq(14, 1),
+            restored_eden = aq(7, 7),
+            your_too_fast = aq(10, 11), --scared jackenstein
+            your_long = aq(9, 11), --jackenstein
+            cheat_death = aq(5, 5),
+            trip_to_hell = aq(5, 7),
+            -- easy mods
+            eEX = aq(3, 3),
+            eNH = aq(7, 3),
+            eMS = aq(8, 3),
+            eGV = aq(6, 3),
+            eVL = aq(5, 3),
+            eDH = aq(4, 3),
+            eIN = aq(1, 4),
+            eAS = aq(2, 4),
+            eDP = aq(3, 4),
+            -- Uneasy Mods (v1.1) (No CR)
+            ueEX = aq(15, 1),
+            ueEXeNH = aq(11, 1),
+            ueEXeMS = aq(12, 1),
+            ueEXeGV = aq(10, 1),
+            ueEXeVL = aq(9, 1),
+            ueEXeDH = aq(16, 1),
+            ueEXeIN = aq(13, 1),
+            ueEXeAS = aq(14, 1),
+            ueEXeDP = aq(7, 7),
+            -- Easy Mode - Special (v1.1) (No CR)
+            humble_pupil = aq(6, 4),
+            overweight_gamer = aq(4, 6),
+            best_friends = aq(8, 5),
+            shameless_cashgrab = aq(4, 4),
+            clean_break = aq(5, 4),
+            emperor_development = aq(7, 4),
+            professional_cleaner = aq(8, 4),
+            rold_smythy = aq(1, 7),
+            quest_feast = aq(2, 7),
+            clean_gamer = aq(1, 5),
+            -- Easy Mode - Why (v1.1) (No CR)
+            ["-3"] = aq(0,0),
+            ["-4"] = aq(0,0),
+            ["-5"] = aq(0,0),
+            ["-6"] = aq(0,0),
+            ["-7"] = aq(0,0),
+            ["-8"] = aq(0,0),
+            ["-9"] = aq(0,0),
+            -- Easy Mode - Issued (v1.1) (No CR)
+            inefficiency = aq(15, 6),
+            could_you_not = aq(3, 2),
+            oh_no_you_dont = aq(10, 2),
+            uneasy = aq(6, 5),
+            roll = aq(9,4),
+            alleyoop = aq(3, 12),
+            slamdunk = aq(3, 12),
+            www = aq(4, 12),
+            peta = aq(0, 0),
+            exa = aq(0, 0),
+            zetta = aq(0, 0),
+            yotta = aq(0, 0),
+            ronna = aq(0, 0),
+            quetta = aq(0, 0),
+            -- Easy Mode - Issued (v1.2) (No CR)
+            patience_is_a_virtue = aq(10, 6),
+            multiple_pieces = aq(1,3),
+            hyperplonk = aq(14, 11),
+            gigaplonk = aq(15, 11),
+            the_windup = aq(16, 11),
+            what_have_you_done = aq(11, 11),
+            music_man = aq(12, 11),
+            im_gonna_be = aq(6, 7),
+            lazy_bastard = aq(13, 11),
+            easy_name = aq(16, 1),
+            biased = aq(2, 12),
 
             EXNH = aq(3, 5),
             EXMS = aq(2, 7),
@@ -440,6 +561,7 @@ TEXTURE = {
             Quetta = aq(7, 9),
             Deka = aq(8, 9),
             Termina = aq(9, 9),
+            Lumina = aq(2, 11),
 
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
@@ -447,6 +569,7 @@ TEXTURE = {
             powerleveling4 = aq(11, 10),
             powerleveling5 = aq(12, 10),
             powerleveling6 = aq(16, 10),
+            powerleveling7 = aq(14, 9),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -470,7 +593,11 @@ TEXTURE = {
             DPEXVL = aq(15, 10),
             DHEXIN = aq(7, 1),
             ASDHEX = aq(3, 8), DHDPEX = aq(12, 4), ASEXIN = aq(7, 5), DPEXIN = aq(15, 4), ASDPEX = aq(9, 4),
-            GVMSNH = aq(6, 7), MSNHVL = aq(16, 9), INMSNH = aq(5, 4),
+            GVMSNH = aq(6, 7), MSNHVL = aq(16, 9), INMSNH = aq(5, 4), ASMSNH = aq(11, 8), DPMSNH = aq(15, 9),
+            GVNHVL = aq(4, 4), DHGVNH = aq(5, 5), GVINNH = aq(10, 2), ASGVNH = aq(8, 1), DPGVNH = aq(7, 10),
+            DPGVNH = aq(6, 6), DHNHVL = aq(8, 8), INNHVL = aq(13, 9), ASNHVL = aq(12, 9), DPNHVL = aq(11, 4),
+            DHINNH = aq(11, 8), ASDHNH = aq(5, 10), DHDPNH = aq(3, 6), ASINNH = aq(11, 9), DPINNH = aq(10, 9),
+            ASDPNH = aq(1, 11), GVMSVL = aq(7, 10), DHGVMS = aq(3, 11), GVINMS = aq(4, 11), ASGVMS = aq(5, 11),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -501,8 +628,9 @@ TEXTURE = {
         overDev = assets 'achievements/verified-halfmod.png',
     },
 
-    logo = assets 'icon.png',
+    logo = assets 'iconZCEM.png',
     logo_old = assets 'icon_old.png',
+    programmingsmithy = assets 'programmingsmithy.png',
 }
 TEXTURE = TABLE.linkSource({}, TEXTURE, function(path)
     if type(path) ~= 'string' then return path end
@@ -604,6 +732,8 @@ do
     local w = 13
     local d1 = 20
     local d2 = 16
+    local d3 = 30
+    local d4 = 15
     TEXTURE.windupText = {
         GC.initCanvas(128, 128, function()
             GC.clear(1, 1, 1, 0)
@@ -623,14 +753,19 @@ do
         GC.initCanvas(128, 128, function()
             local w = w - 2
             GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.rectangle('fill', 64 - w / 2 - 19, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - 19, 64 + 31, w, -w)
-            GC.print("?", 53, 5, 0, 1.1, 1.26) -- Not very fitting, but this is not used
+            GC.rectangle('fill', 64 - w / 2 - d1 - 1, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d1 - 1, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 - d4 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d4 / 2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d4 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d4 / 2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d1 + 1, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d1 + 1, 64 + 31, w, -w)
         end),
         GC.initCanvas(128, 128, function()
+            w = 12
             GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.print("?", 39, 6, 0, 1.26) -- Not very fitting, but this is not used
+            GC.rectangle('fill', 64 - w / 2 - d3, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d3, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 - d4, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d4, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + 00, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + 00, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d4, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d4, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d3, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d3, 64 + 31, w, -w)
         end),
     }
 end
@@ -643,6 +778,13 @@ end)
 TEXTURE.recRevLight = GC.initCanvas(165, 120, function()
     GC.clear(1, .1, .1, 0)
     GC.setColor(1, .1, .1)
+    GC.blurCircle(-.2, 60, 60, 60)
+    GC.blurCircle(-.6, 105, 60, 60)
+end)
+
+TEXTURE.recEasyLight = GC.initCanvas(165, 120, function()
+    GC.clear(1, .1, .1, 0)
+    GC.setColor(.1, 1, .1)
     GC.blurCircle(-.2, 60, 60, 60)
     GC.blurCircle(-.6, 105, 60, 60)
 end)
@@ -672,6 +814,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     zpChange   = GC.newText(FONT.get(30)),
     dcBest     = GC.newText(FONT.get(30)),
     dcTimer    = GC.newText(FONT.get(30)),
+    srTimer    = GC.newText(FONT.get(30)),
     title      = GC.newText(FONT.get(50), "EXPERT GAMEPLAY"),
     load       = GC.newText(FONT.get(50), "LOAD"),
     pb         = GC.newText(FONT.get(50)),
@@ -686,6 +829,8 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     chain      = GC.newText(FONT.get(50)),
     chain2     = GC.newText(FONT.get(50, 'led')),
     b2b        = GC.newText(FONT.get(30), "Chain"),
+    comboText  = GC.newText(FONT.get(50), "COMBO"),
+    combo      = GC.newText(FONT.get(50)),
     spike      = GC.newText(FONT.get(50)),
     gigaspeed  = GC.newText(FONT.get(50), {
         COLOR.dR, "G", COLOR.dO, "I", COLOR.dY, "G",
@@ -742,15 +887,24 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
         COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
     }),
+    luminaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "L", COLOR.O, "U", COLOR.Y, "M",
+        COLOR.K, "I", COLOR.G, "N", COLOR.J, "A",
+        COLOR.C, "S", COLOR.S, "P", COLOR.B, "E",
+        COLOR.V, "E", COLOR.M, "D", COLOR.W, "?",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
-    slogan     = GC.newText(FONT.get(30), "FINAL MIX BEGINNER"),
-    slogan_EX  = GC.newText(FONT.get(30), "FINAL MIX BEGINNER EXTRA"),
-    slogan_rEX = GC.newText(FONT.get(30), "FINAL MIX BEGINNER FINAL"),
+    slogan     = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER"),
+    slogan_EX  = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER EXTRA"),
+    slogan_rEX = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER FINAL"),
     forfeit    = GC.newText(FONT.get(50), "KEEP HOLDING TO FORFEIT"),
-    credit     = GC.newText(FONT.get(30), "Almost all assets from TETR.IO, Original game by Mr. Z"),
+    credit     = GC.newText(FONT.get(30), "Easy Mode by Trevor Smithy, F-Mix Beginner by Spritzy"),
     test       = GC.newText(FONT.get(50), "TEST"),
+    easyTitle  = GC.newText(FONT.get(50), "EASY GAMEPLAY"),
+    uneasyTitle= GC.newText(FONT.get(50), "UNEASY GAMEPLAY"),
+    easyModeVersion = GC.newText(FONT.get(30)),
     theA       = GC.newText(FONT.get(50), "A"),
     theM       = GC.newText(FONT.get(50), "M"),
 }
@@ -776,6 +930,9 @@ STAT = {
     mod = 'finalmixbeg',
     version = nil, -- will be set after loading
     system = SYSTEM,
+    modTime = os.time(),
+        srTimer_life = 0,
+        srTimer_game = 0,
     joinDate = os.date("%b %Y"),
     hid = os.date("%d%S%m%M%y%H") .. math.random(26000, 42000) .. math.random(42000, 62000),
     uid = "ANON-" .. os.date("%d_") .. math.random(2600, 6200),
@@ -821,6 +978,7 @@ STAT = {
     totalQuetta = 0,
     totalDeka = 0,
     totalTermina = 0,
+    totalLumina = 0,
     totalF10 = 0,
     badges = 0,
     AP = 0,
@@ -840,6 +998,15 @@ STAT = {
     oldHitbox = false,
     ExtraSpeed = false,
     MouseGirl = false,
+    easyName = false,
+    imperial = false,
+    promotion = true,
+    stacker = false,
+    rold = false,
+    oldTransparentCard = false,
+    unlockAll = false,
+    easyModeClicker = false,
+    greenClicker = false,
 }
 
 
@@ -853,18 +1020,26 @@ INIT_DATA()
 
 TestMode = false
 
-function SaveBest() if not TestMode then love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST)) end end
+function SaveBest()
+    if TestMode then return end
+    love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST))
+end
+function SaveStat()
+    if TestMode then return end
+    STAT.modTime = os.time()
+    love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT))
+end
 
-function SaveStat() if not TestMode then love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT)) end end
-
-function SaveAchv() if not TestMode then love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV)) end end
-
+function SaveAchv()
+    if TestMode then return end
+    love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV))
+end
 local msgTime = 0
 local bufferedMsg = {}
 
 local saveAchvTimer = false ---@type number | false
 function IssueAchv(id, silent)
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     local A = Achievements[id]
     if not A or ACHV[id] then return end
 
@@ -896,9 +1071,9 @@ local wreathName = {
     [5] = "T5-",
     [6] = "T3-",
 }
----@return true? success
+---@return boolean? true = success
 function SubmitAchv(id, score, silent, realSilent)
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     local A = Achievements[id]
     if not A then return end
     local oldScore = ACHV[id] or A.noScore or 0
@@ -943,7 +1118,7 @@ function IssueSecret(id, silent)
 end
 
 function ReleaseAchvBuffer()
-    if TestMode then return end
+    if TestMode or GAME.multiplePiecesActive then return end
     for i = 1, #bufferedMsg do
         local msg = bufferedMsg[i]
         msgTime = TASK.lock('achv_bulk', 1) and 6.2 or msgTime + 2.6
@@ -1035,7 +1210,7 @@ MSG.addCategory('dark', COLOR.D, COLOR.L)
 MSG.addCategory('bright', COLOR.L, COLOR.D)
 for i = 0, 6 do MSG.addCategory(AchvData[i].id, AchvData[i].bg, COLOR.L, TEXTURE.achievement.frame[i]) end
 for i = 1, 6 do MSG.addCategory("wreath_" .. i, AchvData[5].bg, COLOR.L, GC.load { w = 256, { 'draw', TEXTURE.achievement.frame[5] }, { 'draw', TEXTURE.achievement.wreath[i] } }) end
-
+MSG.addCategory('achv_badTime', {.126, 0, 0}, COLOR.L, TEXTURE.achievement.frame[6])
 SCN.addSwapStyle('warp', require 'module/warp_swap')
 
 SCN.add('joining', require 'scene/joining')
@@ -1047,6 +1222,7 @@ SCN.add('badge', require 'scene/badge')
 SCN.add('conf', require 'scene/conf')
 SCN.add('about', require 'scene/about')
 SCN.add('ending', require 'scene/ending')
+SCN.add('zcem', require 'scene/zcem')
 ZENITHA.setFirstScene('joining')
 
 local gc = love.graphics
@@ -1147,18 +1323,18 @@ function RevMusicMode()
         GAME.anyUltra and GAME.comboZP >= 1.2  -- ultra run with 1.2x ZP
 end
 
----@param name ZC.bgmName
+---@param name string ZC.bgmName
 ---@param force? boolean speedrun or music player
 function PlayBGM(name, force)
     if GAME.teramusic and not force then return end
 
     local last = BgmPlaying
 
-    if GAME.playing and RevMusicMode() then name = name .. 'r' end
+     if GAME.playing and (RevMusicMode() or GAME.forceRev) then name = name .. 'r' end
     if name == 'fomgr' then name = 'fomg' end
-    if name == 'f0r' then
+    if name:sub(1, 2) == 'f0' then
         BgmPlaying = 'f0'
-    elseif name == 'f1r' then -- Note: 'f1ex' is only a track name, not musicID
+    elseif name:sub(1, 2) == 'f1' and name:sub(1, 3) ~= 'f10' then
         BgmPlaying = 'f1'
     else
         BgmPlaying = name
@@ -1204,7 +1380,6 @@ end
 local normalHelp = {
     COLOR.LL, "Welcome to ", COLOR.LF, "Zenith Clicker", COLOR.LL, "! Choose the required tarot cards and send players to scale the tower.\n",
     "The higher you go in the tower, the more tricky players you'll encounter!\n",
-    "There's a leaderboard for daily challenge, how high can you reach?\n",
     "[DYNAMIC TEXT]",
 }
 local ultraHelp = {
@@ -1233,11 +1408,11 @@ function RefreshHelpText()
         s.help2.text = "?"
         local hand = GAME.getHand(true)
         local lastLine = (
-            #hand == 0 and "Without any mods, " or
-            #hand == 1 and "With this mod, " or
-            "With this combo, "
-        ) .. "ZP earn starts from 0%% at %.0fm, to 100%% at %.0fm"
-        s.help2.floatText = "Each mod will multiply ZP gain with a certain rate.\n" .. lastLine:format(STAT.zp / 26 / GAME.comboZP, STAT.zp / 16 / GAME.comboZP)
+            #hand == 0 and "" or
+            #hand == 1 and "" or
+            ""
+        ) .. "%.0fm, %.0fm"
+        s.help2.floatText = "Each mod will multiply ZP gain with a certain rate.\nRegardless of height, ZP earn is 100%.\nGain more ZP to reach higher Zenith Levels!\nHere's some fun numbers: " .. lastLine:format(STAT.zp / 26 / GAME.comboZP, STAT.zp / 16 / GAME.comboZP)
     end
     s.help:reset()
     s.help2:reset()
@@ -1245,24 +1420,40 @@ end
 
 function RefreshBGM(mode)
     if not BGM.isPlaying() then return end
-    local pitch = M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1
-    if GAME.slowmo then pitch = pitch / 2 end
-    if GAME.nightcore then pitch = pitch * 2 end
+    local zp = GAME.getComboZP(GAME.getHand(not GAME.playing))
+    local modifiedZP = (((zp >= 1.95 and zp or 0) * (GAME.mod.AS > 0 and 1.41 or 1)--[[ * (GAME.mod.DP > 0 and 1.26 or 1)]]))/10.1
+    local uneasy = (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and not GAME.anyRev and not GAME.playing
+    local uneasyMusic = uneasy and modifiedZP > 0
+    local pitch = M.GV < 0 and 2^(-1/2) or M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1 
+    if uneasy then
+        pitch = pitch * 1.0145
+    end
+    if not GAME.manualBGMPitch or GAME.height >= 1650 or not GAME.playing or not GAME.uneasyModIconSelected or not GAME.teramusic then
+        if GAME.slowmo then pitch = pitch / 2 end
+        if GAME.nightcore then pitch = pitch * 2 end
+        -- Trevor Smithy
+        if GAME.eslowmo and not (GAME.badTime and GAME.playing) then pitch = pitch * 2^(-1/2) end
+        if GAME.enightcore and not (GAME.badTime and GAME.playing) then pitch = pitch * 2 end
+        --
+    else
+        pitch = GAME.nightcore and GAME.manualBGMPitch or GAME.slowmo and 1/GAME.manualBGMPitch or pitch
+    end
     local justBegin = BGM.tell() < 1
     BGM.set('all', 'pitch', pitch, justBegin and 0 or .26)
-    BGM.set('all', 'highgain', M.IN == 0 and 1 or M.IN == 1 and .8 or not URM and .626 or .55, justBegin and 0 or .626)
+    BGM.set('all', 'highgain', (M.IN == 0 or GAME.fallout) and 1 or (M.IN == 1 or M.IN == -1) and .8 or not URM and .626 or .55, justBegin and 0 or .626)
     if BgmPlaying == 'f0' then
-        local revMode = mode == 'f0r' or RevMusicMode()
-        BGM.set('all', 'volume', revMode and 0 or 1, 2.6)
-        BGM.set('expert', 'volume', M.EX > 0 and 1 or 0, .26)
-        BGM.set('piano', 'volume', M.NH == 0 and 1 or M.NH == 1 and .26 or 0)
+        local revMode = mode == 'f0r' or RevMusicMode() or GAME.forceRev
+        BGM.set('all', 'volume', revMode and 0 or uneasyMusic and MATH.max(MATH.min((1-(modifiedZP/0.7)), 1),0) or 1, 2.6)
+        -- Trevor Smithy > to ~=
+        BGM.set('expert', 'volume', M.EX > 0 and 1 or uneasyMusic and MATH.max(MATH.min(modifiedZP/0.7, 1),0) or 0, .26)
+        BGM.set('piano', 'volume', (M.NH == 0 or GAME.fallout) and 1 or (M.NH == 1 or M.NH == -1) and .26 or 0)
         BGM.set('piano2', 'pitch', 2 * pitch, 0)
-        BGM.set('piano2', 'volume', (M.DP > 0 or VALENTINE and not revMode) and .626 or 0, .26)
+        BGM.set('piano2', 'volume', (M.DP ~= 0 or VALENTINE and not revMode) and .626 or 0, .26)
         BGM.set('violin', 'volume', M.DP == 2 and 1 or 0, .26)
         BGM.set('violin2', 'volume', M.DP == 2 and 1 or 0, .26)
-        BGM.set('rev', 'volume', revMode and (M.DP > 0 and .5 or .7) or 0, revMode and 1.6 or 2.6)
+        BGM.set('rev', 'volume', revMode and (M.DP ~= 0 and .5 or .7) or uneasyMusic and MATH.max(MATH.min(modifiedZP, 1),0) or 0, revMode and 1.6 or 2.6)
     elseif BgmPlaying == 'f1' then
-        local revMode = mode == 'f1r' or RevMusicMode()
+        local revMode = mode == 'f1r' or RevMusicMode() or GAME.forceRev
         BGM.set('f1', 'volume', 1)
         BGM.set('f1ex', 'volume', M.EX > 0 and 1 or 0, 0)
         BGM.set('f1rev', 'volume', revMode and 1 or 0, 0)
@@ -1415,8 +1606,10 @@ function ReloadTexts()
     for _, W in next, SCN.scenes.conf.widgetList do W:reset() end
     for _, W in next, SCN.scenes.about.widgetList do W:reset() end
     for _, W in next, SCN.scenes.records.widgetList do W:reset() end
+    for _, W in next, SCN.scenes.zcem.widgetList do W:reset() end
     AchvText:setFont(FONT.get(30))
     AboutText:setFont(FONT.get(70))
+    BadgeText:setFont(FONT.get(70))
     DevNoteText:setFont(FONT.get(30))
     EndText:setFont(FONT.get(70))
     EndText2:setFont(FONT.get(70))
@@ -1479,7 +1672,7 @@ function RefreshDaily()
             end
         end
         -- assert(table.concat(DAILY, ' ')~="rEX rDP","Appears after "..x.." days later")
-        LOG('info', "Today's Daily Challenge: " .. table.concat(DAILY, ' '))
+        LOG('info', "E")
     end
 
     local isV = os.date('!%d') == '14'
@@ -1618,6 +1811,8 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
     end
 end
 
+function ZENITHA.globalEvent.quit() SaveStat() end
+
 do -- Auto mute when unfocused
     local function task_autoSoundOff()
         coroutine.yield()
@@ -1690,6 +1885,16 @@ function WIDGET._prototype.button:draw()
     -- Drawable
     gc.setColor(self.textColor)
     WIDGET._alignDraw(self, self._text, 0, 0, 0, 1.2, 1.2 - 2.4 * GAME.revTimer)
+    if self._image then
+        local startX = self.alignX == 'center' and 0 or self.alignX == 'left' and -w * .5 + self.marginX or w * .5 - self.marginX
+        local startY = self.alignY == 'center' and 0 or self.alignY == 'top' and -h * .5 + self.marginY or h * .5 - self.marginY
+        gc.setColor(self.imageColor)
+        if self.quad then
+            WIDGET._alignDrawQ(self, self._image, self.quad, startX, startY)
+        else
+            WIDGET._alignDraw(self, self._image, startX, startY)
+        end
+    end
 
     -- Highlight
     if self._hoverTime > 0 then
@@ -1893,6 +2098,11 @@ function Daemon_Fast()
 
         local dt = yield()
 
+         -- Speedrun timer
+        if STAT.srTimer_life then
+            STAT.srTimer_life = STAT.srTimer_life + dt
+        end
+
         -- Mouse holding animation
         if not STAT.syscursor then
             pressValue = msIsDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
@@ -1980,8 +2190,7 @@ RefreshDaily()
 TABLE.update(TextColor, BaseTextColor)
 TABLE.update(ShadeColor, BaseShadeColor)
 GAME.refreshCurrentCombo()
-TEXTS.version:set(SYSTEM .. (STAT.oldHitbox and " T" or " V") .. (require 'version'.verStr))
-
+TEXTS.version:set(SYSTEM .. (STAT.oldHitbox and " eT" or " eV") .. (require 'version'.verStr))
 if SYSTEM == 'Web' then
     _G[('DiscordRPC')] = { update = NULL, setEnable = NULL }
 else
@@ -1989,22 +2198,12 @@ else
     DiscordRPC.setAppID('1341822039253712989')
     DiscordRPC.setEnable(true)
     DiscordRPC.update {
-        details = "FM BEGINNER",
+        details = "EM FM BEGINNER",
         state = "In Menu",
     }
 end
 
-if not ACHV.return_to_the_light then
-    if not FontLoaded then
-        FILE.save('' .. os.time(), 'serifQuit')
-    else
-        local lastTime = tonumber(FILE.safeLoad('serifQuit') or false)
-        if os.time() - (lastTime or 0) <= 26 then
-            IssueAchv('return_to_the_light')
-            FILE.delete('serifQuit')
-        end
-    end
-end
+
 
 -- Debug
 for i = 1, 4 do SCN.scenes._console.widgetList[i].textColor = COLOR.D end

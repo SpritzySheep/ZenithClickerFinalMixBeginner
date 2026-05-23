@@ -32,6 +32,7 @@ function scene.update(dt)
                     GAME[PieceData[i].id] = false
                 end
                 INIT_DATA()
+                LoadSave()
                 URM = false
                 GAME.refreshLockState()
                 Initialize(true)
@@ -41,13 +42,15 @@ function scene.update(dt)
                 BGM.setMaxSources(42)
                 BGM.load(FILE.load('data/bgm.lua', '-luaon'))
                 SFX.load('assets/sfx.ogg', FILE.load('data/sfx.lua', '-luaon'))
-                SFX.load('garbagewindup_5', 'assets/windup_5.ogg')
+                for i = 1, 9 do
+                SFX.load('garbagewindup_'..i, 'assets/windup_'..i..'.ogg')
+            end
                 TASK.new(Daemon_Slow)
                 TASK.new(Daemon_Fast)
                 TEXTS.load:set("LOAD OK")
 
                 ---@diagnostic disable-next-line
-                local _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
+                local _, _, _, _ = TEXTURE.panel.glass_a, TEXTURE.panel.glass_b, TEXTURE.panel.throb_a, TEXTURE.panel.throb_b
                 for i = 2, 9 do TEXTURE.towerBG[i]:setWrap('mirroredrepeat', 'mirroredrepeat') end
                 TEXTURE.towerBG[1]:setWrap('mirroredrepeat', 'clampzero')
                 TEXTURE.towerBG[10]:setWrap('mirroredrepeat', 'clampzero')

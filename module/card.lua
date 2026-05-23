@@ -10,21 +10,22 @@ local M = GAME.mod
 local CD = Cards
 
 ---@class Card
----@field burn false | number
+---@field burn number?
 local Card = {}
 Card.__index = Card
 function Card.new(d)
-    ---@class Card
+    
     local obj = setmetatable({
         initOrder = d.initOrder,
         tempOrder = d.initOrder,
         id = d.id,
         lockfull = d.lockfull,
 
-        lock = true,
+        lock = STAT.unlockAll and false or true,
         active = false,
         front = true,
         upright = true,
+        easy = false,
 
         x = 0,
         y = 0,
@@ -45,6 +46,7 @@ function Card.new(d)
         required2 = false,
         inLastCommit = false,
         charge = 0,
+        assistPenalty = 5,
     }, Card)
     return obj
 end
@@ -63,14 +65,34 @@ local function task_refreshBGM()
     TASK.yieldT(.1)
     RefreshBGM()
 end
+
+---@param card Card
+local function fixCard(card)
+    local otherCardActivated
+    if not card.active and card.required or card.active and not card.required then --if not active and needed, activate. if active and not needed, deactivate. if active and needed, don't do anything. if not active and not needed, don't do anything.
+        card.active = not card.active
+        otherCardActivated = true
+        card.assistPenalty = card.active and min(card.assistPenalty, 1) or 5
+    end
+    return otherCardActivated
+end
+
+---@param self Card 
+---@param auto boolean i.e. was not manually selected
+---@param key number? 1 or nil = active/inactive 2 = reverse 3 = easy
 function Card:setActive(auto, key)
-    if TASK.getLock('cannotFlip') or GAME.playing and M.NH == 1 and not auto and self.active then
+    local eNHBlocksFaults = M.NH == -1 and true or false
+    if not auto then
+        GAME.spinCheck = false
+        GAME.rollCheck = false
+    end
+    if TASK.getLock('cannotFlip') or GAME.playing and M.NH == 1 and not auto and self.active or (not GAME.playing and GAME.badTime) then
         self:flick()
         SFX.play('no')
         return
     end
-    if M.VL == 1 then
-        if not self.active and not auto then
+    if (M.VL == 1 and not self.active) or (M.NH == -1 and (GAME.playing or (M.VL == 2 and not GAME.playing)) and self.active) then
+        if not auto then
             self.charge = self.charge + 1
             SFX.play('clearline', .42)
             if self.charge < 1.2 then
@@ -100,6 +122,9 @@ function Card:setActive(auto, key)
             SFX.play('combo_4', .626, 0, Tone(0))
         end
         self.charge = 0
+        -- Trevor Smithy
+    elseif M.VL == -1 then
+        SFX.play('combo_4', .626, 0, Tone(0))
     end
 
     if GAME.currentTask then
@@ -120,9 +145,51 @@ function Card:setActive(auto, key)
     if not auto then
         GAME.lastFlip = self.id
     end
+if not auto and not self.active and GAME.comboStr == 'eASeNH' and GAME.playing then
+        GAME.noManualActivate = false
+    end
+    -- Trevor Smithy
+    self.active = not self.active -- the main flip
+    --Closer Card
+    if GAME.ecloseCard and GAME.playing and not auto then
+        self.active = not self.active
+        if not GAME.achv_noManualFlipH then
+            GAME.achv_noManualFlipH = GAME.roundHeight
+            if GAME.totalQuest >= 3 then SFX.play('btb_break') end
+        end
+        local leftCard
+        local rightCard
+        local maxCardDistance = 1 + max((M.EX == 2 and URM and 2 or M.EX == 2 and 1 or M.EX == 1 and 1 or 0) - abs(M.VL) + (GAME.closeCard and 1 or 0),0)
+        local otherCardActivated = false
+        for i = 1, maxCardDistance do
+            if self.tempOrder > i then leftCard = CD[self.tempOrder - i] end
+            if leftCard then
+                if fixCard(leftCard) then otherCardActivated = true end
+            end
+            if self.tempOrder < 10-i then rightCard = CD[self.tempOrder + i] end
+            if rightCard then
+                if fixCard(rightCard) then otherCardActivated = true end
+            end
+        end
+        if not self.active and self.required then --if not active and needed, activate. if active and not needed, deactivate. if active and needed, don't do anything. if not active and not needed, don't do anything.
+            self.active = not self.active
+            self.assistPenalty = 0
+        elseif self.active and not self.required then
+            self.active = not self.active
+            self.assistPenalty = 5
+        elseif self.active and self.required and (self.touchCount == 0 or M.NH == -1 and self.touchCount <= 1) then
+            --don't deselect a correct card
+            self.assistPenalty = 0
+        elseif not otherCardActivated then
+            self.active = not self.active
+            self.assistPenalty = 5
+            if not eNHBlocksFaults then
+                GAME.fault = true
+            end
+        end
+    end
 
-    self.active = not self.active
-    local noSpin, revOn
+    local noSpin, revOn, easyOn
     if GAME.playing then
         if not auto then
             self.touchCount = self.touchCount + 1
@@ -135,44 +202,93 @@ function Card:setActive(auto, key)
                 if (self.required or self.required2) and not GAME.hardMode then
                     GAME.addXP(M.VL == 1 and 2 or 1)
                 end
-            elseif not GAME.fault and not self.burn then
+                 if (self.required or self.required2) then
+                    -- Trevor Smithy
+                    GAME.addXP(M.VL == -1 and 2 or 0)
+                end
+            elseif not GAME.fault and not self.burn and not (eNHBlocksFaults) then
                 GAME.fault = true
             end
         end
-        if M.DP > 0 and not auto and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
+        if M.DP ~= 0 and not auto and self.id == 'DP' and self.active and not (URM and M.DP == 2) then
             if GAME.swapControl() then
                 SFX.play('party_ready', .8)
             end
         end
         if not auto then
-            if M.GV > 0 and not GAME.gravTimer then
+            -- Trevor Smithy
+            if M.GV ~= 0 and not GAME.gravTimer then
                 GAME.gravTimer = GAME.gravDelay
             end
             if M.AS > 0 then
                 if self.burn then
+                    if URM and M.NH == -1 then GAME.OSPActivated = true end
                     self.burn = false
                     TASK.removeTask_code(GAME.task_cancelAll)
                     local p = TABLE.find(CD, self) or 0
                     local l = { -3, -2, -1, 1, 2, 3 }
+                    local coinFlip = rnd(1,2)
+                    if M.NH ~= -1 then
                     CD[(p + table.remove(l, rnd(4, 6)) - 1) % #CD + 1]:setActive(true)
                     CD[(p + table.remove(l, rnd(1, 3)) - 1) % #CD + 1]:setActive(true)
+                    elseif M.NH == -1 and coinFlip == 1 then
+                        CD[(p + table.remove(l, rnd(4, 6)) - 1) % #CD + 1]:setActive(true)
+                    elseif M.NH == -1 and coinFlip == 2 then
+                        CD[(p + table.remove(l, rnd(1, 3)) - 1) % #CD + 1]:setActive(true)
+                    end
                     GAME.achv_escapeBurnt = true
                     if M.AS == 2 then
+                        if M.NH ~= -1 then
                         CD[(p + table.remove(l, rnd(3, 4)) - 1) % #CD + 1]:setActive(true)
                         CD[(p + table.remove(l, rnd(1, 2)) - 1) % #CD + 1]:setActive(true)
+                    elseif M.NH == -1 and coinFlip == 1 then
+                            CD[(p + table.remove(l, rnd(1, 2)) - 1) % #CD + 1]:setActive(true)
+                        elseif M.NH == -1 and coinFlip == 2 then
+                            CD[(p + table.remove(l, rnd(3, 4)) - 1) % #CD + 1]:setActive(true)
+                        end
                         if GAME.floor < 10 and GAME.gigaspeed then GAME.achv_felMagicBurnt = true end
-                        if URM then return GAME.takeDamage(1e99, 'wrong') end
+                        if not GAME.OSPActivated then
+                            if URM then return GAME.takeDamage(1e99, 'wrong') end
+                        else
+                            GAME.takeDamage(GAME.fullHealth-(GAME.dmgWrong+0.1), 'wrong') 
+                            GAME.fault = true
+                            GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth + 3
+                            GAME.dmgTimerMul = GAME.dmgTimerMul + 1
+                            GAME.OSPActivated = false
+                            for i = 1, #Cards do
+                                if Cards[i].burn then
+                                    Cards[i].burn = 8/9 + (GAME.floor)/9
+                                end
+                            end
+                            if GAME[GAME.getLifeKey()] > 0.01 then
+                                TEXT:add {
+                                    text = 'CAREFUL THERE!',
+                                    x = 800, y = 265, fontSize = 30, k = 1.5,
+                                    style = 'score', duration = 5,
+                                    inPoint = .1, outPoint = .26,
+                                    color = 'lM',
+                                }
+                                IssueAchv('cheat_death')
+                            end
+                        end
                     end
                     SFX.play('wound')
-                else
-                    self.burn = M.AS == 1 and 3 + GAME.floor / 2 or 1e99
+                 else
+                    if M.NH == -1 then
+                        self.burn = (M.AS == 1 and 1.5 + GAME.floor / 4) or (M.AS == 2 and not URM and 3 + GAME.floor / 2) or 1e99
+                    else
+                        self.burn = M.AS == 1 and 3 + GAME.floor / 2 or 1e99
+                    end
                 end
             end
         end
     else
         TASK.unlock('cannotStart')
-        revOn = self.active and (key == 2 or KBIsDown('lctrl', 'lalt', 'rctrl', 'ralt'))
-        if revOn and completion[self.id] == 0 then
+         -- Trevor Smithy
+        easyOn = self.active and (key == 3 or KBIsDown('lalt', 'ralt'))
+        --
+        revOn = self.active and (key == 2 or KBIsDown('lctrl', 'rctrl'))
+        if revOn and completion[self.id] == 0 and not STAT.unlockAll then
             revOn = false
             noSpin = true
             self.active = false
@@ -184,7 +300,11 @@ function Card:setActive(auto, key)
             return
         end
         local wasRev = M[self.id] == 2
-        M[self.id] = self.active and (revOn and 2 or 1) or 0
+        local wasEasy = M[self.id] == -1
+        --M[self.id] = self.active and (revOn and 2 or 1) or 0
+        -- Trevor Smithy
+        M[self.id] = self.active and (revOn and 2 or easyOn and -1 or 1) or 0
+        --
         -- if revOn then -- Limit only one Rev mod can be selected
         --     for _, C in ipairs(Cards) do
         --         if C.active and C ~= self then
@@ -192,18 +312,35 @@ function Card:setActive(auto, key)
         --         end
         --     end
         -- end
-        self.upright = not (self.active and revOn)
+        -- Trevor Smithy
+        --self.upright = not (self.active and revOn)
+        self.upright = not (self.active and revOn or self.active and easyOn)
+        self.easy = self.active and easyOn and not revOn
+        --
         if revOn or wasRev then GAME.refreshRev() end
         TASK.removeTask_code(task_refreshBGM)
         TASK.new(task_refreshBGM)
         if wasRev and not revOn then self:spin() end
+        -- Trevor Smithy
         if self.id == 'EX' then
-            TWEEN.new(tween_expertOn):setDuration(M.EX > 0 and .26 or .1):run()
+            TWEEN.new(tween_expertOn):setDuration(M.EX ~= 0 and .26 or .1):run()
             TABLE.clear(HoldingButtons)
         elseif self.id == 'IN' then
             for _, C in ipairs(CD) do C:flip() end
-            noSpin = M.IN == 1
+        noSpin = (M.IN == 1 or M.IN == -1)
         end
+        -- Trevor Smithy
+        if easyOn or wasEasy then GAME.refreshEasy() end
+        if wasEasy and not easyOn then self:spin() end
+        
+        --if self.id == 'EX' then
+        --    TWEEN.new(tween_expertOn):setDuration(M.EX > 0 and .26 or .1):run()
+        --    TABLE.clear(HoldingButtons)
+        --elseif self.id == 'IN' then
+        --    for _, C in ipairs(CD) do C:flip() end
+        --    noSpin = M.IN == 1
+        --end
+        --
         SCN.scenes.tower.widgetList.reset:setVisible(not GAME.zenithTraveler)
         GAME.hardMode = M.EX > 0 or GAME.anyRev and not URM
         GAME.refreshPBText()
@@ -220,7 +357,7 @@ function Card:setActive(auto, key)
     if self.active then
         local postfix = revOn and '_reverse' or ''
         SFX.play(
-            GAME.glassCard and 'harddrop' or 'card_select' .. postfix, 1, 0,
+            GAME.glassCard or GAME.eglassCard and 'harddrop' or 'card_select' .. postfix, 1, 0,
             key and clampInterpolate(-200, -4.2, 200, 4.2, self.y - MY) or MATH.rand(-2.6, 2.6)
         )
         local toneName = 'card_tone_' .. ModData.name[self.id]
@@ -236,7 +373,14 @@ function Card:setActive(auto, key)
                 end)
             end
         else
-            SFX.play(toneName, toneVol, 0, Tone(0))
+            if M.EX == -1 and URM and not GAME.anyRev and self.easy and not GAME.playing then
+                TASK.new(function()
+                    SFX.play(toneName, toneVol*.8, 0, Tone(-3))
+                    SFX.play(toneName, toneVol*.8, 0, Tone(-0))
+                end)
+            else
+                SFX.play(toneName, toneVol, 0, Tone(0))
+            end
         end
         if revOn then
             self:revJump()
@@ -264,13 +408,17 @@ end
 function Card:spin()
     TWEEN.tag_kill('shake_' .. self.id)
     local animFunc, ease
-    local re = (GAME.playing or self.upright) and 0 or 3.1416
-    if M.IN ~= 1 then
+    local re = (GAME.playing or self.upright or self.easy) and 0 or 3.1416
+
+    if M.IN ~= 1 and M.IN ~= -1 then
         -- Normal
         ease = 'OutQuart'
         function animFunc(t)
+            if self.easy then
+                self.kx = -self.kx
+            end
             self.ky = .9 + .1 * cos(t * 6.2832)
-            self.r = t * 6.2832
+            self.r = t * (self.easy and -6.2832 or 6.2832)
             self.kx = cos((M.AS + 1) * t * 6.2832)
             if not self.front then
                 self.kx = -self.kx
@@ -339,7 +487,7 @@ function Card:revJump()
                     b = (color[3] - .26) * .8,
                     x = self.x,
                     y = self.y,
-                    t = 1,
+                    t = GAME.fallout and 2.6 or 1,
                 })
                 GAME.revDeckSkin = true
                 GAME.bgXdir = MATH.coin(-1, 1)
@@ -421,7 +569,7 @@ local gc_translate, gc_scale = gc.translate, gc.scale
 local gc_rotate, gc_shear = gc.rotate, gc.shear
 local gc_setColor, gc_setAlpha = gc.setColor, GC.setAlpha
 local gc_setShader, gc_setLineWidth = GC.setShader, gc.setLineWidth
-local gc_draw, gc_mDraw, gc_mRect = gc.draw, GC.mDraw, GC.mRect
+local gc_draw, gc_mDraw, gc_mRect, gc_circle = gc.draw, GC.mDraw, GC.mRect, GC.circle
 local gc_blurCircle, gc_setBlendMode = GC.blurCircle, GC.setBlendMode
 
 local iconFrame
@@ -471,7 +619,7 @@ function Card:draw()
     gc_push('transform')
     gc_translate(self.x, self.y + self.visY1)
     gc_rotate(self.r)
-    if not playing and not self.upright then gc_rotate(3.1416) end
+    if not playing and not (self.upright or self.easy) then gc_rotate(3.1416) end
     gc_scale(abs(self.size * self.kx), self.size * self.ky)
 
     if self == CD[FloatOnCard] then
@@ -495,6 +643,13 @@ function Card:draw()
                 if self.required or self.required2 then
                     if self.required then
                         r1, g1, b1 = 1, .26, 0
+                        if STAT.easyName then
+                            if not (URM and self.id == 'EX' and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+                                r1, g1, b1 = 0, 1, 0          -- Green
+                            else
+                                r1, g1, b1 = 0.626, 0, 0      -- Dark Red (for Uneasy)
+                            end
+                        end
                         a1 = .6 + .4 * self.float
                     end
                     if self.required2 then
@@ -517,6 +672,11 @@ function Card:draw()
                         elseif M.IN == 1 then
                             if GAME.hardMode then qt = qt * .626 end
                             a1 = -.1 + .4 * sin(3.1416 + qt * 3)
+                            -- Trevor Smithy
+                        elseif M.IN == -1 then
+                            qt = qt + 1.5
+                            a1 = clampInterpolate(1, 0, 2, .4, qt) +
+                                clampInterpolate(1.2, 0, 2.6, .2, qt) * sin(qt * 26 - self.x * .0026) + 0.2
                         end
                     end
                     if self.required2 then
@@ -528,6 +688,11 @@ function Card:draw()
                         elseif M.IN == 1 then
                             if GAME.hardMode then qt = qt * .626 end
                             a2 = -.1 + .2 * sin(3.1416 + qt * 3)
+                            -- Trevor Smithy
+                        elseif M.IN == -1 then
+                            r2, g2, b2 = .942, .626, .872
+                            qt = qt + 1.5
+                            a2 = clampInterpolate(1, 0, 2, .2, qt) + 0.2
                         end
                     end
                 end
@@ -540,7 +705,13 @@ function Card:draw()
         end
     else
         if self.active then
-            if not self.upright then
+            if self.easy then
+                if not (URM and self.id == 'EX' and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+                    r1, g1, b1 = 0, 1, 0          -- Green
+                else
+                    r1, g1, b1 = 0.626, 0, 0          -- Dark Red (for Uneasy)
+                end
+            elseif not self.upright then
                 r1, g1, b1 = 0, .5, .7        -- Reversed
             elseif self.id ~= 'DP' then
                 r1, g1, b1 = 1, .26, 0        -- Orange
@@ -556,7 +727,7 @@ function Card:draw()
         end
     end
 
-    if GAME.glassCard then
+    if (GAME.glassCard or GAME.eglassCard) and not (GAME.einvisCard) then
         local w, h = 240, 330
         gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
         gc_setAlpha((STAT.cardBrightness / 100) ^ 2 * .872)
@@ -600,7 +771,7 @@ function Card:draw()
         end
     else
         -- Card
-        if not GAME.invisCard then
+        if not GAME.invisCard and not (GAME.glassCard or GAME.eglassCard) then
             if self.burn then
                 if URM and M.AS == 2 then
                     gc_setColor(1, .42, .26)
@@ -615,13 +786,61 @@ function Card:draw()
                 local b = STAT.cardBrightness / 100
                 gc_setColor(b, b, b)
             end
+            if GAME.einvisCard then
+                local b = STAT.cardBrightness / 100
+                gc_setColor(b,b,b,(STAT.cardBrightness / 100) ^ 2 * 0.26)
+            end
             gc_draw(img, -img:getWidth() / 2, -img:getHeight() / 2)
             if img2 then
                 gc_draw(img2, -img2:getWidth() / 2, -img2:getHeight() / 2)
             end
+            elseif GAME.glassCard or GAME.eglassCard then
+            local w, h = 240, 330
+            gc_setColor((faceUp and ModData.textColor or ModData.color)[self.id])
+            gc_setAlpha((STAT.cardBrightness / 100) ^ 2 * .26)
+            gc_mRect('fill', 0, 0, w * 2, h * 2, 26)
+
+            if self.burn then
+                if URM and M.AS == 2 then
+                    gc_setColor(1, .42, .26)
+                else
+                    gc_setColor(GAME.time % .16 < .08 and COLOR.lF or COLOR.Y)
+                end
+            else
+                gc_setColor(1, 1, 1)
+            end
+
+            FONT.set(50)
+            if faceUp then
+                GC.scale(2.6)
+                GC.mStr(self.id, 0, -42)
+                GC.scale(1 / 2.6)
+            else
+                GC.scale(2)
+                GC.mStr("TETR.IO", 0, -42)
+                GC.scale(1 / 2)
+            end
         end
 
         -- Outline (draw)
+        if STAT.oldTransparentCard then
+            if GAME.einvisCard then
+                gc_setLineWidth(20)
+                local temp = M.IN == 1 and 2 or M.IN == 2 and not URM and 3 or M.IN == 2 and URM and 4 or 1
+                if self.required then 
+                    gc_setColor(ModData.textColor[self.id]) 
+                    if M.IN > 0 then
+                        gc_setAlpha(1.26/temp + sin(love.timer.getTime() * 5.2/temp)/temp)
+                    end
+                    if STAT.oldHitbox and MOBILE then
+                        gc_circle('fill', 0, 0, 40)
+                    end
+                else
+                    gc_setColor(1,1,1)
+                    gc_setAlpha(0.26/temp)
+                end
+                gc_mRect('line', 0, 0, 240 * 2 + 10, 330 * 2 + 10, 10)
+            end
         if a1 then
             gc_setColor(r1, g1, b1, a1)
             gc_draw(activeFrame, 0, 0, 0, sign(self.kx), 1, frame1W, frame1H)
@@ -630,7 +849,80 @@ function Card:draw()
             gc_setColor(r2, g2, b2, a2)
             gc_draw(activeFrame2, 0, 0, 0, sign(self.kx), 1, frame2W, frame2H)
         end
-
+else
+            if GAME.einvisCard then
+                local temp = M.IN == 1 and 2 or M.IN == 2 and not URM and 3 or M.IN == 2 and URM and 4 or 1
+                local width = 40
+                local hand = TABLE.sort(GAME.getHand(false))
+                local stackQuest = GAME.questStack[1] and TABLE.sort(GAME.questStack[1].combo)
+                local q1 = GAME.quests[1] and TABLE.sort(GAME.quests[1].combo)
+                local q2 = M.DP ~= 0 and GAME.quests[2] and TABLE.sort(GAME.quests[2].combo)
+                local q3 = M.DP == -1 and GAME.quests[3] and TABLE.sort(GAME.quests[3].combo)
+                if self.required then 
+                    gc_setColor(ModData.textColor[self.id]) 
+                    if not self.active then
+                        gc_setAlpha(1.26/temp + sin(love.timer.getTime() * 5.2/temp)/temp)
+                        width = (9-temp)*5
+                    end
+                    if self.active and GAME.playing then
+                        if (stackQuest and TABLE.equal(hand, stackQuest)) or (not stackQuest and q1 and TABLE.equal(hand, q1)) then
+                            gc_setColor(0.26,1,0)
+                        else
+                            gc_setColor(1,1,0)
+                        end
+                        gc_setAlpha(min(1, 2/temp))
+                        width = (9-temp)*5
+                    end
+                    if STAT.oldHitbox and MOBILE then
+                        gc_circle('fill', 0, 0, 40)
+                    end
+                    gc_setLineWidth(width)
+                    gc_mRect('line', 0, 0, 240 * 2 + width/2, 330 * 2 + width/2, width)
+                elseif not self.required and self.active and GAME.playing and not ((q2 and TABLE.equal(hand, q2)) or (q3 and TABLE.equal(hand, q3))) then               
+                    gc_setColor(1,0,0)
+                    gc_setAlpha(min(1, 2/temp))
+                    width = (9-temp)*5
+                    gc_setLineWidth(width)
+                    gc_mRect('line', 0, 0, 240 * 2 + width/2, 330 * 2 + width/2, width)
+                end
+                if self.required2 then
+                    gc_setColor(1, 0.62, 0.9) 
+                    if not self.active then
+                        gc_setAlpha(1.26/temp + sin(love.timer.getTime() * 5.2/temp)/(2*temp))
+                    end
+                    if self.active and GAME.playing then
+                        if (q2 and TABLE.equal(hand, q2)) or (M.DP == -1 and GAME[GAME.getLifeKey(true)] > 0 and M.NH < 2 and q3 and q1 and TABLE.equal(hand, q3) and TABLE.equal(hand, q1)) then
+                            gc_setColor(0.13,1,0)
+                        else
+                            gc_setColor(1,1,0)
+                        end
+                        gc_setAlpha(min(1, 3/temp))
+                    elseif GAME.playing and (M.DP == -1 and GAME[GAME.getLifeKey(true)] > 0 and M.NH < 2 and q3 and q1 and TABLE.equal(hand, q3) and TABLE.equal(hand, q1)) then
+                        gc_setColor(0.13,1,0)
+                    end
+                    gc_setLineWidth(width/2)
+                    gc_mRect('line', 0, 0, 240 * 2 - width-2, 330 * 2 - width-2, width/2-2)
+                end
+                if q3 and TABLE.find(q3, self.id) and self.active and GAME.playing then
+                    if (q3 and TABLE.equal(hand, q3)) then
+                        gc_setColor(0, 1, 0)
+                    else
+                        gc_setColor(1, 1, 0)
+                    end
+                    gc_setAlpha(min(1, 2/temp))
+                    gc_setLineWidth(width/2)
+                    gc_mRect('line', 0, 0, 240 * 2 - width*2-4, 330 * 2 - width*2-4, width/2-4)
+                end
+            end
+            if a1 and not (GAME.einvisCard and GAME.playing) then
+                gc_setColor(r1, g1, b1, a1)
+                gc_draw(activeFrame, 0, 0, 0, sign(self.kx), 1, frame1W, frame1H)
+            end
+            if a2 and not (GAME.einvisCard and GAME.playing) then
+                gc_setColor(r2, g2, b2, a2)
+                gc_draw(activeFrame2, 0, 0, 0, sign(self.kx), 1, frame2W, frame2H)
+            end
+        end
         -- Menu UI
         if not playing then
             gc_push('transform')
@@ -646,7 +938,7 @@ function Card:draw()
             -- Star
             if completion[self.id] > 0 then
                 img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star2' or 'star1') or 'star0']
-                local t = self.upright and self.float or 1
+                local t = (self.upright or self.easy) and self.float or 1
                 local blur = (FloatOnCard == self.initOrder or not self.upright) and 0 or -.2
                 local x = lerp(155, 0, t)
                 local y = lerp(-370, -330, t)
@@ -655,7 +947,7 @@ function Card:draw()
                 local ang = -t * 6.2832
                 gc_scale(abs(1 / self.kx * self.ky), 1)
                 -- Base star
-                if self.upright then
+                if self.upright or self.easy then
                     gc_setColor(.26, .26, .26)
                     gc_setBlendMode('add')
                     gc_blurCircle(blur, x, y, cr)
@@ -694,9 +986,9 @@ function Card:draw()
 
     -- Icon cover
     if faceUp then
-        gc_setColor((GAME.glassCard and ModData.color or ModData.textColor)[self.id])
+        gc_setColor(((GAME.glassCard or GAME.eglassCard) and ModData.color or ModData.textColor)[self.id])
         local active = playing and self.inLastCommit or not playing and self.active
-        if M.EX == 0 then
+        if M.EX <= 0 then
             if active then
                 gc_setLineWidth(6)
                 gc.polygon('line', iconFrame)

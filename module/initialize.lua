@@ -14,9 +14,6 @@ elseif SYSTEM == "Android" then
         f:close()
     end
 end
-if SupportCurl then
-    ASYNC.runCmd('checkUpdate', UPDCMD)
-end
 if FILE.exist('data.luaon') then
     if not FILE.exist('best.luaon') then
         love.filesystem.write('best.luaon', love.filesystem.read('data.luaon'))
@@ -24,13 +21,25 @@ if FILE.exist('data.luaon') then
     love.filesystem.remove('data.luaon')
 end
 if FILE.exist('conf.luaon') then love.filesystem.remove('conf.luaon') end
-TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
-TABLE.update(STAT, FILE.safeLoad('stat.luaon', '-luaon') or NONE)
-TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
 if FILE.exist('avatar') then
     local suc, res = pcall(GC.newImage, 'avatar')
     if suc then AVATAR = res end
 end
+
+function LoadSave()
+    local stat = FILE.safeLoad('stat.luaon', '-luaon')
+    if stat then
+        TABLE.update(STAT, stat)
+        if not stat.srTimer_life then
+            STAT.srTimer_life, STAT.srTimer_game = nil, nil
+        end
+    end
+    TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
+    TABLE.update(ACHV, FILE.safeLoad('achv.luaon', '-luaon') or NONE)
+end
+
+LoadSave()
+
 function Initialize(save)
     if STAT.totalF10 == 0 and STAT.totalGiga > 0 then STAT.totalF10 = math.floor(STAT.totalGiga * 0.872) end
     if STAT.totalBonus == 0 and STAT.totalGame > 2.6 then STAT.totalBonus = STAT.totalHeight * 0.5 end
@@ -44,6 +53,7 @@ function Initialize(save)
     if STAT.totalQuetta == not STAT.totalQuetta then STAT.totalQuetta = 0 end
     if STAT.totalDeka == not STAT.totalDeka then STAT.totalDeka = 0 end
     if STAT.totalTermina == not STAT.totalTermina then STAT.totalTermina = 0 end
+    if STAT.totalLumina == not STAT.totalLumina then STAT.totalLumina = 0 end
     if STAT.mousegirl == not STAT.mousegirl then STAT.mousegirl = false end
     if STAT.achv == not STAT.achv then STAT.achv = 0 end
     if STAT.badges == not STAT.badges then STAT.badges = 0 end
@@ -78,6 +88,7 @@ function Initialize(save)
         STAT.version = 168
     end
     if STAT.version == 168 or STAT.version == 169 then
+        if ACHV.patience_is_a_virtue and ACHV.patience_is_a_virtue > 0 and ACHV.talentless == ACHV.patience_is_a_virtue then ACHV.patience_is_a_virtue = nil end
         ACHV.mastery = nil
         ACHV.terminal_velocity = nil
         ACHV.false_god = nil
@@ -250,7 +261,7 @@ function Initialize(save)
         STAT.timeDate = "NO DATE"
     end
     for setStr in next, BEST.highScore do
-        setStr = setStr:gsub('[ur]', '')
+        setStr = setStr:gsub('[ure]', '')
         local illegal
         for i = 1, #setStr, 2 do
             if not GAME.completion[setStr:sub(i, i + 1)] then
