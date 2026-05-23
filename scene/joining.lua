@@ -34,7 +34,6 @@ function scene.update(dt)
                 INIT_DATA()
                 LoadSave()
                 URM = false
-                GAME.refreshLockState()
                 Initialize(true)
                 GAME.clearResultStat()
             end
