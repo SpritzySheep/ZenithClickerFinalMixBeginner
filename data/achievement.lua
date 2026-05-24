@@ -2146,7 +2146,7 @@ local d = {
     { -- music_man (1.1.2)
         id = 'music_man',
         name = "Music Man!!!",
-        desc = [[Enable the Music Player in ZCEM]],
+        desc = [[Click the GAME PLAY button in ZCEM]],
         quote = [["Wait, why is "GAME PLAY" a button? Also, isn't it just one word?"]],
         credit = "@TrevorSmithy",
         hide = TRUE,
@@ -2369,6 +2369,14 @@ local d = {
     {id = 'powerleveling7',name = "Tera Leveling", desc = [[Zenith Level (30,000-35,000)]],
         quote = [[You are the universe.]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(30000, 31000, 32000, 33000, 34000, 35000, 39999), hide = function() return STAT.level < 30000 end,
+    },
+    {id = 'powerleveling8',name = "Peta Leveling", desc = [[Zenith Level (35,000-40,000)]],
+        quote = [[You ate the universe.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(35000, 36000, 37000, 38000, 39000, 40000, 44999), realHide = function() return STAT.level < 35000 end,
+    },
+    {id = 'powerleveling9',name = "Exa Leveling", desc = [[Zenith Level (40,000-45,000)]],
+        quote = [[You've attained enough power to neutralize even the most supermassive black holes!]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(40000, 41000, 42000, 43000, 44000, 45000, 49999), realHide = function() return STAT.level < 35000 end,
     },
 
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},

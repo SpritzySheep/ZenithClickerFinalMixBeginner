@@ -615,3 +615,29 @@ BadgeData = require 'data/badge'
 DevScore = require 'data/devscore'
 DevCommentary = require 'data/devcommentary'
 DevCommentaryLink = require 'data/devCommentaryLink'
+
+MetricSpeedName = {
+    [["PETA"]],
+    [["EXA"]],
+    [["ZETTA"]],
+    [["YOTTA"]],
+    [["RONNA"]],
+    [["QUETTA"]],
+}
+
+LifeLeakMessages = {
+    {time = 30, text = "YOU FEEL THE IMPENDING DOOM", desc = "30 Seconds Remain", duration = 12},
+    {time = 15, text = "DIE!", desc = "15 Seconds Remain", duration = 4},
+    {time = 10, text = "DIE!", desc = "10 Seconds Remain", duration = 0.5},
+    {time = 9,  text = "DIE!", desc = "9 Seconds Remain",  duration = 0.5},
+    {time = 8,  text = "DIE!", desc = "8 Seconds Remain",  duration = 0.5},
+    {time = 7,  text = "DIE!", desc = "7 Seconds Remain",  duration = 0.5},
+    {time = 6,  text = "DIE!", desc = "6 Seconds Remain",  duration = 0.5},
+    {time = 5,  text = "DIE!", desc = "5 Seconds Remain",  duration = 0.5},
+    {time = 4,  text = "DIE!", desc = "4 Seconds Remain",  duration = 0.5},
+    {time = 3,  text = "DIE!", desc = "3 Seconds Remain",  duration = 0.5},
+    {time = 2,  text = "DIE!", desc = "2 Seconds Remain",  duration = 0.5},
+    {time = 1,  text = "DIE!", desc = "1 Seconds Remain",  duration = 0.5},
+    {time = 0.1,  text = "MWAHAHAHA!", desc = "CEASE!",  duration = 26, color = 'lR'},
+    {time = -1},
+}

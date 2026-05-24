@@ -111,7 +111,7 @@ local function calculateRating()
     cr = cr + MATH.floor(MATH.min(STAT.totalBonus / 1000,10000))
     cr = cr + MATH.floor(STAT.totalFloor / 5)
     cr = cr + MATH.floor(STAT.totalAttack / 200)
-    cr = cr + MATH.floor(STAT.maxHeight / 10)
+    cr = cr + MATH.min(MATH.floor(STAT.maxHeight / 10),93999)
     cr = cr + MATH.floor(STAT.maxFloor * 100)
 
     -- ACHV Wreath (competitive achievement count)
@@ -136,6 +136,9 @@ local function calculateRating()
     if cr >= 90000 then IssueSecret('ascension5', true) end
     if cr >= 100e3 then IssueSecret('transcend', true) end
     if cr >= 150e3 then IssueSecret('transcend2', true) end
+    if cr >= 200e3 then IssueSecret('transcend4', true) end
+    if cr >= 250e3 then IssueSecret('transcend5', true) end
+    if cr >= 300e3 then IssueSecret('transcend6', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -143,6 +146,9 @@ local function calculateRating()
     if level >= 20e3 then IssueSecret('Lv20000', true) end
     if level >= 25e3 then IssueSecret('Lv25000', true) end
     if level >= 30e3 then IssueSecret('Lv30000', true) end
+    if level >= 35e3 then IssueSecret('Lv35000', true) end
+    if level >= 40e3 then IssueSecret('Lv40000', true) end
+    if level >= 45e3 then IssueSecret('Lv45000', true) end
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     wreaths = maxi
@@ -300,9 +306,16 @@ function RefreshProfile()
         if MATH.sumAll(GAME.completion) == 18 then clickerLV = clickerLV + 1 end
         for i = 1, MATH.floor((rating-30000)/10000) do clickerLV = clickerLV + 1 end
         if rating >= 25000 then clickerLV = clickerLV + 1 end
+        if clickerLV < 20 then
         for i = 0, (clickerLV - 1) or 20 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
+    else
+        for i = 0, 19 do
+            GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
+        end
+    end
+        if clickerLV > 20 then clickerLV = 20 end
     end
 
     -- Introduction
@@ -358,7 +371,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 9)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 19)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -485,7 +498,7 @@ function RefreshProfile()
     GC.setColor(lblColor)
     GC.print("CE BREAKDOWN", 7, 2, 0, .8)
     for _, l in next, {
-        { k = "Maximal Height",    v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2))+MATH.floor(STAT.maxHeight / 10) }, x = 26,  y = 33, d = 200 },
+        { k = "Maximal Height",    v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(50, 6200, STAT.maxHeight), 6.2))+MATH.min(MATH.floor(STAT.maxHeight / 10),93999) }, x = 26,  y = 33, d = 200 },
         { k = "Fastest Time",  v = { scoreColor, MATH.floor(6000 * norm(MATH.icLerp(420, 76.2, STAT.minTime), -.5)) },  x = 26,  y = 58, d = 200 },
         { k = "Single Mod Ascent",    v = { scoreColor, MATH.floor(3600 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.f10), .62)) },  x = 26,  y = 83, d = 200 },
         { k = "Single Mod Speed",    v = { scoreColor, MATH.floor(2400 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)) },  x = 26, y = 108, d = 200 },

@@ -221,6 +221,8 @@ local d = {
         desc = "Gathered 150,000 Chakra Escence",
     },
     {id = 'transcend4',name = "Transcension 40%",desc = "Gathered 200,000 Chakra Escence",},
+    {id = 'transcend5',name = "Transcension 50%",desc = "Gathered 250,000 Chakra Escence",},
+    {id = 'transcend6',name = "Transcension 60%",desc = "Gathered 300,000 Chakra Escence",},
 }
 
 for i = 1, #d do

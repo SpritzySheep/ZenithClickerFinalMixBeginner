@@ -10,16 +10,6 @@ local clr = {
     T = { COLOR.HEX '6FAC82FF' },
 }
 local colorRev = false
-local MetricSpeedName = {
-    [0] = "",
-    "peta",
-    "exa",
-    "zetta",
-    "yotta",
-    "ronna",
-    "quetta",
-}
-
 AchvText = GC.newText(FONT.get(30))
 local Achievements = Achievements
 local M = GAME.mod
@@ -465,16 +455,16 @@ function scene.update(dt)
             )
         end
     end
-    -- for i = 1, 6 do
-    --    if TASK.lock('metricspeed_icon_' .. i, 0.26 / i^1.262) then
-    --        local name = MetricSpeedName[i]:sub(2, -2):lower()
-    --        local r = math.random(-10-i*2, 10+i*2)
-    --        local r2 = math.random(-i*2, i*2)
-    --        TEXTURE.achievement.iconQuad[name]:setViewport(
-    --            (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 4096, 4096
-    --        )
-    --    end
-    --end
+     for i = 1, 6 do
+        if TASK.lock('metricspeed_icon_' .. i, 0.26 / i^1.262) then
+           local name = MetricSpeedName[i]:sub(2, -2):lower()
+            local r = math.random(-10-i*2, 10+i*2)
+            local r2 = math.random(-i*2, i*2)
+            TEXTURE.achievement.iconQuad[name]:setViewport(
+                (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 4096, 4096
+            )
+        end
+    end
     for i = -3, -9, -1 do
         if TASK.lock('negmp_icon_' .. tostring(i), 1.26 / (10+i)^1.262) then
             local f = 10+i

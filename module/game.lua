@@ -347,7 +347,7 @@ function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
     local zp = 0
     if STAT.MouseGirl then
-    zp = 1 + ((STAT.totalQuest/100)*((STAT.totalQuest/10000)^2))
+    zp = 1 + ((STAT.totalQuest/100))
     else
     zp = 1 + (STAT.totalQuest/1000)
     end
@@ -364,16 +364,25 @@ function GAME.getComboZP(list)
     if m.rEX and m.rVL then zp = zp * 1.4 end
     if m.rDH and m.rIN then zp = zp * 1.8 end
     if m.rEX and m.rDP then zp = zp * 0.92 end
-    if (m.rEX or m.eEX) and m.rDP then zp = zp * 0.84 end
+    if (m.rEX or m.eEX) and m.rDP then zp = zp * 0.6 end
+    if m.eEX then zp = zp *0.2 end
+    if m.eNH then zp = zp *0.55 end
+    if m.eMS then zp = zp *0.6 end
+    if m.eGV then zp = zp *0.3 end
+    if m.eVL then zp = zp *0.6 end
+    if m.eDH then zp = zp *0.4 end
+    if m.eIN then zp = zp *0.6 end
+    if m.eAS then zp = zp *0.65 end
+    if m.eDP then zp = zp *0.5 end
 
     if m.eMS and (m.eAS or m.AS or m.rAS) and not m.eIN then zp = zp * 1.06875 end
-    if m.eDP and m.eDH then zp = zp * 17/18 end
+    if m.eDP and m.eDH then zp = zp * 12/18 end
 
-    if GAME.enightcore then zp = zp * .9 end
-    if GAME.eslowmo then zp = zp * .826 end
-    if GAME.eglassCard then zp = zp * .9 end
-    if GAME.efastLeak then zp = zp * .75 end
-    if GAME.einvisUI then zp = zp * .826 end
+    if GAME.enightcore then zp = zp * .7 end
+    if GAME.eslowmo then zp = zp * .6 end
+    if GAME.eglassCard then zp = zp * .7 end
+    if GAME.efastLeak then zp = zp * .65 end
+    if GAME.einvisUI then zp = zp * .6 end
     if GAME.einvisCard and not STAT.oldTransparentCard then
         zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.83 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
     end
@@ -1912,6 +1921,8 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('powerleveling5', STAT.level,true,true)
     SubmitAchv('powerleveling6', STAT.level,true,true)
     SubmitAchv('powerleveling7', STAT.level,true,true)
+    SubmitAchv('powerleveling8', STAT.level,true,true)
+    SubmitAchv('powerleveling9', STAT.level,true,true)
     SubmitAchv('Tera', STAT.totalTera,true,true)
     SubmitAchv('Peta', STAT.totalPeta,true,true)
     SubmitAchv('Exa', STAT.totalExa,true,true)
@@ -3826,14 +3837,14 @@ function GAME.finish(reason)
         W:reset()
     end
 
-    if GAME.smithyMode and (GAME.teramusic or GAME.teraLostHeight or GAME.teraComplete) then
+    if GAME.gspeedlv > 2 then
         local smithyModeHeight = GAME.roundHeight
         if GAME.teraLostHeight > 0 then
             smithyModeHeight = GAME.teraLostHeight
         end
         SubmitAchv('programmer_gamer', smithyModeHeight)
     end
-    if (GAME.teramusic or GAME.teraLostHeight or GAME.teraComplete) and M.EX == -1 and M.GV == 2 and URM and M.DH == -1 and M.AS == -1 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 0 and M.DP == 0 and GAME.enightcore then
+    if GAME.gspeedlv > 2 and M.EX == -1 and M.GV == 2 and URM and M.DH == -1 and M.AS == -1 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 0 and M.DP == 0 and GAME.enightcore then
         SubmitAchv('one_of_mine', GAME.achv_noManualCommitH or GAME.roundHeight) 
     end
     -- Perfectly Balanced
@@ -4240,6 +4251,8 @@ function GAME.finish(reason)
         SubmitAchv('powerleveling5', STAT.level,true,true)
         SubmitAchv('powerleveling6', STAT.level,true,true)
         SubmitAchv('powerleveling7', STAT.level,true,true)
+        SubmitAchv('powerleveling8', STAT.level,true,true)
+        SubmitAchv('powerleveling9', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -4406,6 +4419,8 @@ function GAME.finish(reason)
         SubmitAchv('powerleveling5', STAT.level,true,true)
         SubmitAchv('powerleveling6', STAT.level,true,true)
         SubmitAchv('powerleveling7', STAT.level,true,true)
+        SubmitAchv('powerleveling8', STAT.level,true,true)
+        SubmitAchv('powerleveling9', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
@@ -4793,11 +4808,13 @@ function GAME.update(dt)
         if GAME.height < 0 and (M.NH == -1 or M.MS == -1 or M.GV == -1 or M.VL == -1 or M.DH == -1 or M.AS == -1 or M.DP == -1) then
         GAME.height = 0
     end
-if STAT.MouseGirl then
+            if M.EX < 2 then
+            if STAT.MouseGirl then
             GAME.height = GAME.height + GAME.rank / 0.3 * dt
             else
             GAME.height = GAME.height + GAME.rank / 3 * dt
             end
+        end
 
     GAME.roundHeight = floor(GAME.height * 10) / 10
 
