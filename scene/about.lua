@@ -61,7 +61,7 @@ addMajorCredit(0000, 060, { COLOR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCE
 addMajorCredit(-160, 160, { COLOR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
 addMajorCredit(0160, 160, { COLOR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
 addMajorCredit(-320, 260, { COLOR.HEX 'DDFF80' }, "DJ  ASRIEL", "GRAPHICS", "Background Reconstruction & Game Icon")
-addMajorCredit(0000, 260, { COLOR.HEX '77DD66' }, "CREEPERCRAFTYT", "GRAPHICS", "Mod Icons")
+addMajorCredit(0000, 260, { COLOR.HEX '77DD66' }, "RODINIA", "GRAPHICS", "Mod Icons")
 addMajorCredit(0320, 260, { COLOR.HEX '5792FF' }, "ZYRIXIA", "GRAPHICS", "Rank Icons")
 addMajorCredit(-320, 360, { COLOR.HEX 'DD99FF' }, "OSK", "FOUNDER & LEAD PRODUCER", "of the Original Game: TETR.IO")
 addMajorCredit(0000, 360, { COLOR.HEX 'FF99CC' }, "DOKTOROCELOT", "AUDIO & MUSIC", "of both TETR.IO and Zenith Clicker")
@@ -107,7 +107,7 @@ addText({
         "5HAN",
         "ADRIAN FRUTIGER",
         "BARON",
-        "CREEPERCRAFTYT",
+        "addText({ COLOR.O, 'BASE EASY MODE MOD BY' }, 0, 110, .3)addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, 'Trevor Smithy', 'ZCEM Dev')",
         "DELAPOUITE",
         "DJ ASRIEL",
         "DOKTOROCELOT",
@@ -149,12 +149,16 @@ addText({ COLOR.O, "BASE EASY MODE MOD BY" }, 0, 110, .3)
 
 addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, "Trevor Smithy", "ZCEM Dev")
 
+addText({ COLOR.O, "SPECIAL THANKS" }, 0, 200, .3)
+
+addMajorCredit(0, 220, { COLOR.HEX '94B1FF' }, "Rodinia ", "TETR.IO RANKS 2.0 Font")
+
 -- addSection(1650)
 -- addText({ COLOR.O, "CHAKRA ESCENCE BREAKDOWN" }, 0, 20, 1)
 -- addText({ COLOR.A, "MAXIMAL HEIGHT" }, -200, 80, .5)
 -- addText({ COLOR.A, ABOUT.CEheight }, 200, 80, .5)
 
-addSection(1650)
+addSection(1750)
 
 addText({ COLOR.O, "RANK ALMANAC" }, 0, 20, .3)
 addText({ COLOR.O, "WARNING: THIS SHOWS ALL RANKS, SPOILERS AHEAD" }, 0, 40, .3)
@@ -234,6 +238,11 @@ addRank(-200, 2350, { COLOR.HEX '19FFFD' }, "Q", "270k CE")
 addRank(0, 2350, { COLOR.HEX '19BCFF' }, "Q+", "280k CE")
 addRank(200, 2350, { COLOR.HEX '1977FF' }, "Q++", "290k CE")
 addRank(400, 2350, { COLOR.HEX '1932FF' }, "QQ", "300k CE")
+addRank(-400, 2450, { COLOR.HEX '461BFF' }, "&-", "310k CE")
+addRank(-200, 2450, { COLOR.HEX '8B1BFF' }, "&", "320k CE")
+addRank(0, 2450, { COLOR.HEX 'CF1BFF' }, "&+", "330k CE")
+addRank(200, 2450, { COLOR.HEX 'FF1BEC' }, "&++", "340k CE")
+addRank(400, 2450, { COLOR.HEX 'FF1BAE' }, "&&", "350k CE")
 local timer
 function scene.load()
     MSG.clear()

@@ -347,7 +347,7 @@ function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
     local zp = 0
     if STAT.MouseGirl then
-    zp = 1 + ((STAT.totalQuest/100))
+    zp = 1 + ((STAT.totalQuest/1000))
     else
     zp = 1 + (STAT.totalQuest/1000)
     end
@@ -777,8 +777,6 @@ function GAME.anim_setMenuHide(t)
     w.conf:resetPos()
     w.about.x = cLerp(-60, 90, t * 1.5)
     w.about:resetPos()
-    w.zcem.x = cLerp(-60, 90, t * 1.5)
-    w.zcem:resetPos()
     MSG.setSafeY(75 * (1 - GAME.uiHide))
 end
 
@@ -921,7 +919,7 @@ function GAME.genQuest()
         end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize-2))
         if STAT.MouseGirl then questCount = 1 end
-        if M.DP == -1 then
+        if M.DP == -1 and not STAT.MouseGirl then
             if questCount == 1 then
                 pool.DP = pool.DP * .2
                 if #GAME.questStack then
@@ -931,9 +929,9 @@ function GAME.genQuest()
         elseif questCount == 1 or STAT.MouseGirl then
             -- Prevent 1-mod quest being DP
             if not STAT.MouseGirl then
-            pool.DP = 24
+            pool.DP = 12
             else
-            pool.DP = 2048
+            pool.DP = 2e9
             end
         elseif M.DH == 2 then
             -- Reduce DP on rDH
@@ -1005,6 +1003,7 @@ function GAME.genQuest()
     if STAT.ExtraSpeed and GAME.height > -10 then
         if GAME.rank <  (1 + (MATH.floor(STAT.achv/50))) then
             GAME.rank = (1 + (MATH.floor(STAT.achv/50)))
+            GAME.xp = 1
         end
     end
     GAME.questTime = 0
@@ -1279,11 +1278,13 @@ function GAME.addXP(xp, falseCommit)
     end
     GAME.xp = GAME.xp + xp
     if GAME.rankupLast and GAME.xp >= 2 * GAME.rank then GAME.xpLockLevel = GAME.xpLockLevelMax end
+    if GAME.height < 10 and STAT.ExtraSpeed then GAME.xpLockTimer = 5
+     end
 
     local oldRank = GAME.rank
     local oldLockTimer = GAME.xpLockTimer
     while GAME.xp >= GAME.rank do
-        GAME.xp = GAME.xp - 4 * GAME.rank
+        GAME.xp = GAME.xp - GAME.rank
         GAME.rank = GAME.rank + 1
         GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
 
@@ -1291,7 +1292,7 @@ function GAME.addXP(xp, falseCommit)
         if GAME.xp >= GAME.rank then
             GAME.xpLockLevel = GAME.xpLockLevelMax
             if GAME.xp >= 2 * GAME.rank then
-                GAME.rank = GAME.rank + floor(GAME.xp/2)
+                GAME.rank = GAME.rank + floor(GAME.xp/2222)
             end
         end
     end
@@ -1786,7 +1787,7 @@ function GAME.upFloor()
                 SCN.scenes.achv.unload()
                 SCN.scenes.achv.load()
             end
-            if GAME.zettaspeed then
+            if GAME.zetaspeed then
                 IssueAchv('zetta') 
                 SCN.scenes.achv.unload()
                 SCN.scenes.achv.load()
@@ -3104,7 +3105,11 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
 
             -- B2B
             if correct == 1 or (correct == 2 and M.DP == -1 and not allyWasDead) then
+                if not STAT.MouseGirl then
                 GAME.chain = GAME.chain + 1
+                else
+                GAME.chain = GAME.chain + (1 + (MATH.floor(STAT.achv/50)))
+                end
                 if GAME.chain < 4 then
                 elseif GAME.chain < 8 then
                     if GAME.chain == 4 then SFX.play('b2bcharge_start', .8) end
@@ -3170,7 +3175,7 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
         if GAME.chain >= 4 and not falseCommit then
             local chainCap = 6 * (max(GAME.floor, GAME.negFloor) + 2) ^ 2
             if GAME.chain > chainCap then
-                GAME.chain = chainCap
+                GAME.chain = GAME.chain
                 if M.AS == -1 then attack = attack + 1 end
                 IssueSecret('sc_cap')
             end
@@ -4581,7 +4586,7 @@ function GAME.update(dt)
         if KBisDown('backspace') and TASK.lock("test_freezeTimer", 1 / 26) then GAME.dmgTimer = GAME.dmgDelay end
         if KBisDown('rshift') and GAME.gravTimer then GAME.gravTimer = GAME.gravDelay end
         if KBisDown('\\') and TASK.lock("test_charge", 1 / 26) then
-            GAME.chain = GAME.chain + 1
+            GAME.chain = GAME.chain + (1 + (MATH.floor(STAT.achv/50)))
             if M.AS < 2 then
                 TEXTS.chain:set(tostring(GAME.chain))
             else
@@ -4799,22 +4804,26 @@ function GAME.update(dt)
                     MSG("bright", "YOU DID A THING!")
                 end
             end
-        end
         else
             
-            GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
+         GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
+        end
         if GAME.height < -10 then GAME.rank = 1 end
         end
         if GAME.height < 0 and (M.NH == -1 or M.MS == -1 or M.GV == -1 or M.VL == -1 or M.DH == -1 or M.AS == -1 or M.DP == -1) then
         GAME.height = 0
     end
-            if M.EX < 2 then
-            if STAT.MouseGirl then
-            GAME.height = GAME.height + GAME.rank / 0.3 * dt
-            else
-            GAME.height = GAME.height + GAME.rank / 3 * dt
+        if M.EX < 2 then
+            if not GAME.badTime then
+                if STAT.MouseGirl then
+                    GAME.height = GAME.height + GAME.rank / 0.3 * dt
+                    --if GAME.height > 1e5 then GAME.height = 1e5 end
+                else
+                    GAME.height = GAME.height + GAME.rank / 3 * dt
+                end
             end
         end
+        if GAME.badTime and GAME.height > -10 then GAME.height = -10 end
 
     GAME.roundHeight = floor(GAME.height * 10) / 10
 
@@ -4829,12 +4838,12 @@ function GAME.update(dt)
         GAME.xpLockTimer = GAME.xpLockTimer - dt
     else
         local closerCardLeakSpeedMod = (GAME.ecloseCard and GAME.height > 0) and min((1+(GAME.height/1000000)), 2) or 1
-        GAME.xp = GAME.xp - dt * GAME.leakSpeed * closerCardLeakSpeedMod * GAME.rank / (GAME.rank + 1) / 60
+        GAME.xp = GAME.xp - dt * GAME.leakSpeed * closerCardLeakSpeedMod * GAME.rank / 10
         if GAME.xp <= 0 then
             GAME.xp = 0
             if GAME.rank > 1 then
                 GAME.rank = GAME.rank - 1
-                GAME.xp = 4 * GAME.rank
+                GAME.xp = GAME.rank - 1
                 GAME.rankupLast = false
                 if GAME.gigaspeed then
                     if GAME.rank < GigaSpeedReq - 1 then

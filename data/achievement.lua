@@ -1481,7 +1481,7 @@ local d = {
         credit = "@The_111thBlitzer",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
     },
-    { title = "Easy Mode (v1.0) (No CR)" },
+    { title = "Easy Mode (v1.0)" },
     { -- Programmer & Pro Gamer
         ex = true,
         id = 'programmer_gamer',
@@ -1646,7 +1646,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
     },
-    { title = "Easy Mods (v1.1) (No CR)" },
+    { title = "Easy Mods (v1.1)" },
     { -- eEX
         id = 'eEX',
         name = "Soft",
@@ -1719,7 +1719,7 @@ local d = {
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
          
     },
-    { title = "Uneasy Mods (v1.1) (No CR)", hide = function() return not ACHV.uneasy end},
+    { title = "Uneasy Mods (v1.1)", hide = function() return not ACHV.uneasy end},
     { -- ueEX
         id = 'ueEX',
         name = "Lethargy",
@@ -1837,7 +1837,7 @@ local d = {
         hide = function() return not ACHV.uneasy or not ACHV.eDP end,
          
     },
-    { title = "Easy Mode - Special (v1.1) (No CR)" },
+    { title = "Easy Mode - Special (v1.1)" },
     { -- emperor_development
         --id = 'eDHEXeNH',
         id = 'emperor_development',
@@ -1937,7 +1937,7 @@ local d = {
         realHide = function() return (not ACHV.roll) or (not ACHV.programmer_gamer) end,
          
     },
-    { title = "Easy Mode - Why (v1.1) (No CR)", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end},
+    { title = "Easy Mode - Why (v1.1)", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end},
     { -- -3
         id = '-3',
         name = "Respite",
@@ -2097,7 +2097,7 @@ local d = {
     { -- zettaspeed
         id = 'zetta',
         name = "Light Speed!!!",
-        desc = [[Reach F10 while maintaining ZETTASPEED]],
+        desc = [[Reach F10 while maintaining ZETASPEED]],
         quote = [["Well find them! Catch them!" "Yes sir! Prepare ship for light speed!"]],
         credit = "@Trevor Smithy",
         hide = TRUE,
@@ -2670,6 +2670,26 @@ local d = {
     AchieveFromCombo('DHGVMS', "Double Down", [[HFD with MS GV DH]], [[Reaper Flat Arial S-Droptwist Double Back-to-Back x15 Combo x12 All Clear #6]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('GVINMS', "Burrata", [[HFD with MS GV IN]], [[New Super Burrito Bros. WEEHEE]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASGVMS', "Rough Sketch", [[HFD with MS GV AS]], [[We don't have PN here, but we do have dizziness]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPGVMS', "Torn Apart", [[HFD with MS GV DP]], [[When you walk away, you don't hear me say...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHMSVL', "Utter Trash", [[HFD with MS VL DH]], [[One mouse's trash is another mouse's trash, unless they don't live together.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('INMSVL', "Starstruck", [[HFD with MS VL IN]], [[Dude WTF we needed that star.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASMSVL', "Cream Cheese", [[HFD with MS VL AS]], [[Vanilla]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPMSVL', "Couples Therapy", [[HFD with MS VL DP]], [[Everytime I count, it's different, you know?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHINMS', "The Stealth Ninja", [[HFD with MS DH IN]], [[Ninjas aren't real.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHMS', "The Artsy Escapist", [[HFD with MS DH AS]], [[Instead of escaping artists, we have artistic escapes! Wait...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHDPMS', "Drillers' Squad", [[HFD with MS DH DP]], [[DH wanted to be pink.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASINMS', "Abstraction", [[HFD with MS IN AS]], [[You gotta see the beauty in things.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPINMS', "Miscommunications", [[HFD with MS IN DP]], [[ewlfmnewfnearknjeirerivericfgterbjgdvpvy]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPMS', "Paintball Fight", [[HFD with MS AS DP]], [[I'm gonna getya. I don't know.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHGVVL', "Temptation", [[HFD with GV VL DH]], [[Romance are temporary. Zenith is forever.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('GVINVL', "Paranoia", [[HFD with GV VL IN]], [[AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASGVVL', "The Gladiator", [[HFD with GV VL AS]], [[WTF how did you get here this is ancient rome]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPGVVL', "Diner Date", [[HFD with GV VL DP]], [[Dinners, Diners, Drivers, Drive-Ins, and Dods]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHGVIN', "The Drunk Driver", [[HFD with GV DH IN]], [[DUI]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHGV', "The Texting Driver", [[HFD with GV DH AS]], [[TUI]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHDPGV', "Race You There", [[HFD with GV DH DP]], [[This isn't a race, dingus]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASGVIN', "The Spinmaster", [[HFD with GV IN AS]], [[BANANA ROTATO]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPGV', "Bronze Anniversary", [[HFD with GV AS DP]], [[How does a bronze anniversary even work]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

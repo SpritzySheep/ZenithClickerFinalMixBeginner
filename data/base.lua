@@ -40,6 +40,8 @@ PieceData = {
     { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T },  popup = { COLOR.lM, "T - Invisible UI" } },
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O },  popup = { COLOR.lY, "O - Invisible Card" } },
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
+        -- Final Mix
+    { id = 'big', text = { COLOR.A, "F", }, piece = { COLOR.A, CHAR.brik.F }, popup = { COLOR.A, "F - Big Cards" } },
         -- Trevor Smithy
     { id = 'enightcore', text = { COLOR.lR, "eZ", }, piece = { COLOR.lR, CHAR.brik.C }, popup = { COLOR.lR, "eZ - Nightcore+" } },
     { id = 'eslowmo',    text = { COLOR.lG, "eS", }, piece = { COLOR.lG, CHAR.brik.C }, popup = { COLOR.lG, "eS - Slow-mo+" } },

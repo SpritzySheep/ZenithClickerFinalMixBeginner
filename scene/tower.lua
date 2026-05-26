@@ -148,6 +148,7 @@ local function keyTrigger(key)
                 C:setActive()
                 GAME.refreshLayout()
             else
+                if GAME.badTime then GAME.badTime = false end
                 C:flick()
                 SFX.play('no')
             end
@@ -200,6 +201,7 @@ local function keyTrigger(key)
         elseif key == '`' then
             if GAME.playing or GAME.badTime then
                 SFX.play('no')
+                if GAME.badTime then GAME.badTime = false end
             else
                 if URM and M.VL == 2 and not UltraVlCheck('stat') then return end
                 SFX.play('menuhit1')
@@ -211,6 +213,7 @@ local function keyTrigger(key)
         elseif key == 'tab' then
             if GAME.playing or GAME.badTime then
                 SFX.play('no')
+                if GAME.badTime then GAME.badTime = false end
             else
                 if URM and M.VL == 2 and not UltraVlCheck('achv') then return end
                 SFX.play('menuhit1')
@@ -222,6 +225,7 @@ local function keyTrigger(key)
         elseif key == 'f1' then
             if GAME.playing or GAME.badTime then
                 SFX.play('no')
+                if GAME.badTime then GAME.badTime = false end
             else
                 if URM and M.VL == 2 and not UltraVlCheck('conf') then return end
                 SFX.play('menuhit1')
@@ -233,6 +237,7 @@ local function keyTrigger(key)
         elseif key == 'f2' then
             if GAME.playing or GAME.badTime then
                 SFX.play('no')
+                if GAME.badTime then GAME.badTime = false end
             else
                 if URM and M.VL == 2 and not UltraVlCheck('reset') then return end
                 SFX.play('menuhit1')
@@ -1749,7 +1754,7 @@ function scene.overDraw()
         elseif GAME.DPlock then
             gc_setAlpha(.26/eTAlpha)
         end
-        gc_mRect('fill', 800, 965, 420 * GAME.xp / (4 * rank), 3 * clamp(GAME.xpLockLevel, 1, 5))
+        gc_mRect('fill', 800, 965, 420 * GAME.xp / (rank), 15)
 
         -- Height & Time
         local height = GAME.height
@@ -1825,13 +1830,17 @@ function scene.overDraw()
     -- Cards
     gc_replaceTransform(SCR.xOy)
     gc_setColor(1, 1, 1)
+    if GAME.big then gc_scale(1.3)
+    gc_translate(-185,-170)
+    end
     if FloatOnCard then
         for i = #Cards, 1, -1 do
             if i ~= FloatOnCard then Cards[i]:draw() end
         end
         Cards[FloatOnCard]:draw()
     else
-        for i = #Cards, 1, -1 do Cards[i]:draw() end
+        for i = #Cards, 1, -1 do
+            Cards[i]:draw() end
     end
 
     if not GAME.invisUI then

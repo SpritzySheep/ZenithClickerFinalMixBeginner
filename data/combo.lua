@@ -222,7 +222,28 @@ d.menu = {
     { set = "MS GV VL",           name = "Survival"},
     { set = "MS GV DH",           name = "Double Down"},
     { set = "MS GV IN",           name = "Burrata"},
+    { set = "MS GV AS",           name = "Rough Sketch"},
+    { set = "MS GV DP",           name = "Torn Apart"},
+    { set = "MS VL DH",           name = "Utter Trash"},
+    { set = "MS VL IN",           name = "Starstruck"},
+    { set = "MS VL AS",           name = "Cream Cheese"},
+    { set = "MS VL DP",           name = "Couples Therapy"},
+    { set = "MS DH IN",           name = "The Stealth Ninja"},
+    { set = "MS DH DP",           name = "Drillers' Squad"},
+    { set = "MS IN AS",           name = "Abstraction"},
+    { set = "MS IN DP",           name = "Miscommunications"},
+    { set = "MS AS DP",           name = "Paintball Fight"},
+    { set = "GV VL DH",           name = "Temptation"},
+    { set = "GV VL IN",           name = "Paranoia"},
+    { set = "GV VL AS",           name = "The Gladator"},
+    { set = "GV VL DP",           name = "Diner Date"},
+    { set = "GV DH IN",           name = "The Drunk Driver"},
+    { set = "GV DH AS",           name = "The Texting Driver"},
+    { set = "GV DH DP",           name = "Race You There"},
+    { set = "GV IN AS",           name = "The Spinmaster"},
+    { set = "GV AS DP",           name = "Bronze Anniversary"},
 }
+
 
 d.game = {
     { set = "NH GV",       name = "A Modern Classic" },

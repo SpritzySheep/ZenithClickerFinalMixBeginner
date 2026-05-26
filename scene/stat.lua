@@ -16,6 +16,7 @@ local setup = { stencil = true, card }
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
 local level = 0
+local bpage = 1
 local crProgress = {
     f10 = 0,
     sr = 0,
@@ -139,6 +140,7 @@ local function calculateRating()
     if cr >= 200e3 then IssueSecret('transcend4', true) end
     if cr >= 250e3 then IssueSecret('transcend5', true) end
     if cr >= 300e3 then IssueSecret('transcend6', true) end
+    if cr >= 350e3 then IssueSecret('transcend7', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -149,8 +151,13 @@ local function calculateRating()
     if level >= 35e3 then IssueSecret('Lv35000', true) end
     if level >= 40e3 then IssueSecret('Lv40000', true) end
     if level >= 45e3 then IssueSecret('Lv45000', true) end
+    if level >= 50e3 then IssueSecret('Lv50000', true) end
+    if level >= 55e3 then IssueSecret('Lv55000', true) end
+    if level >= 60e3 then IssueSecret('Lv60000', true) end
+    if level >= 65e3 then IssueSecret('Lv65000', true) end
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
+    if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap
@@ -259,6 +266,7 @@ function RefreshProfile()
     FONT.set(50)
     GC.setColor(COLOR.L)
     GC.print(STAT.uid .. " Lv" .. STAT.level, 30, 18, 0, 1.2)
+    GC.print((scroll + 1) .. "/" .. (bpage + 1), 30, 130, 0, 1.2)
 
     -- Time
     GC.ucs_move(1065, 165)
@@ -281,14 +289,18 @@ function RefreshProfile()
     end)
     for i = 1, #badges do
         local id = badges[i]
-        if TEXTURE.stat.badges[id] then
-            badgeCount = badgeCount + 1
-            GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) + scroll, 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
-            local bd = BadgeData[id] or BadgeData[0]
-            scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
-            scene.widgetList[badgeCount]:reset()
-            scene.widgetList[i]:setVisible(true)
-        end
+        
+            if TEXTURE.stat.badges[id] then
+                badgeCount = badgeCount + 1
+                if i > (scroll*50) and i <= 50+(scroll*50) then
+                GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) - (scroll*2500), 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+                end
+                local bd = BadgeData[id] or BadgeData[0]
+                scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
+                scene.widgetList[badgeCount]:reset()
+                scene.widgetList[i]:setVisible(true)
+                bpage = floor(badgeCount/50)
+            end
     end
     STAT.badges = badgeCount
     for i = badgeCount + 1, totalBadges do
@@ -371,7 +383,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 19)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 24)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -600,6 +612,8 @@ function scene.update(dt)
 end
 
 function scene.draw()
+    if scroll < 0 then scroll = 0 end
+    if scroll > bpage then scroll = bpage end
     SCN.scenes.tower.draw()
     GC.replaceTransform(SCR.xOy)
     WIDGET.draw(SCN.scenes.tower.widgetList)
@@ -678,13 +692,13 @@ scene.widgetList = {
 function scene.keyDown(key, isRep)
     local timer = 30
     if isRep then return true end
-    if key == 'a' then
-            scroll = scroll + 0
+    if key == 'a' and scroll > 0 then
+            scroll = scroll - 1
             scene.widgetList.link:resetPos()
             RefreshProfile()
     end
-    if key == 'd' then
-            scroll = scroll - 0
+    if key == 'd' and scroll < bpage then
+            scroll = scroll + 1
             scene.widgetList.link:resetPos()
             RefreshProfile()
     end
@@ -692,14 +706,16 @@ function scene.keyDown(key, isRep)
         SFX.play('menuclick')
         SCN.back('none')
     end
+    if scroll < 0 then scroll = 0 end
+    if scroll > bpage then scroll = bpage end
     ZENITHA._cursor.active = true
     return true
 end
 for i = 1, totalBadges do
-    table.insert(scene.widgetList, i, WIDGET.new {
+    table.insert(scene.widgetList, (i+(scroll*50)), WIDGET.new {
         name = 'link', type = 'hint',
         text = "",
-        pos = { .5, .5 }, x = (-850 + 33.5 * (i - 1)), y = -320, w = 35,
+        pos = { .5, .5 }, x = (-850 + 33.5 * (i - 1)), y = -32000, w = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         floatFontSize = 30,

@@ -602,6 +602,7 @@ function Card:draw()
     local playing = GAME.playing
     local img, img2
     local faceUp
+    --if GAME.big then gc_scale(1.5) end
     if self.lock and self.lockfull then
         img = texture.lock
     else
@@ -1003,7 +1004,7 @@ else
             gc.polygon('fill', iconFrame)
         end
     end
-
+    --if GAME.big then gc_scale(1/1.5) end
     gc_pop()
 end
 
