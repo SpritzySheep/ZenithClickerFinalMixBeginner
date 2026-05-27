@@ -296,6 +296,11 @@ local M = GAME.mod
 local MD = ModData
 local CD = Cards
 
+if GAME.crit then
+    GAME.fullHealth = 15
+    GAME.startingHealth = 15
+end
+
 ---Unsorted, like {'rEX','NH',...}
 ---@param real boolean current mod setting or literally selected cards
 function GAME.getHand(real)
@@ -347,10 +352,11 @@ function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
     local zp = 0
     if STAT.MouseGirl then
-    zp = 1 + ((STAT.totalQuest/1000))
+    zp = 1 + ((STAT.totalQuest/100))
     else
     zp = 1 + (STAT.totalQuest/1000)
     end
+    if GAME.crit then zp = zp * 26 end
     if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
     if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
     if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
@@ -881,6 +887,9 @@ function GAME.genQuest()
         if STAT.MouseGirl then
         base = .25 + GAME.floor ^ .15 / 2 + GAME.extraQuestBase + icLerp(12400, 20000, GAME.height)
         end
+        if GAME.crit then
+        base = .75 + GAME.floor ^ .4 / 5 + GAME.extraQuestBase + icLerp(1650, 6200, GAME.height)
+        end
 
         GAME.atkBuffer = GAME.atkBuffer + r
         if GAME.atkBuffer > GAME.atkBufferCap then
@@ -918,7 +927,8 @@ function GAME.genQuest()
             end
         end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize-2))
-        if STAT.MouseGirl then questCount = 1 end
+        if GAME.crit then questCount = MATH.clamp(MATH.roundRnd(r), 2, MATH.max(1,GAME.maxQuestSize+1)) end
+        if STAT.MouseGirl and not GAME.crit then questCount = 1 end
         if M.DP == -1 and not STAT.MouseGirl then
             if questCount == 1 then
                 pool.DP = pool.DP * .2
@@ -1000,7 +1010,7 @@ function GAME.genQuest()
             a = 0,
         })
     until #GAME.quests >= 3
-    if STAT.ExtraSpeed and GAME.height > -10 then
+    if STAT.ExtraSpeed and GAME.height > -10 and not GAME.crit then
         if GAME.rank <  (1 + (MATH.floor(STAT.achv/50))) then
             GAME.rank = (1 + (MATH.floor(STAT.achv/50)))
             GAME.xp = 1
@@ -1159,7 +1169,11 @@ end
 function GAME.takeDamage(dmg, reason, toAlly)
     if GAME.currentTask then
         GAME.incrementPrompt('dmg_time')
-        GAME.incrementPrompt('dmg_amount', dmg)
+        if not GAME.crit then
+            GAME.incrementPrompt('dmg_amount', dmg)
+        else
+            GAME.incrementPrompt('dmg_amount', dmg * 2)
+        end
         if reason == 'time' then GAME.incrementPrompt('timedmg_time') end
     end
 
@@ -1227,15 +1241,21 @@ function GAME.addHeight(h, realHeight)
     GAME.heightBonus = GAME.heightBonus + h
     if not STAT.MouseGirl then
         if GAME.height > 2050 then
-        GAME.height = GAME.height + h
+            GAME.height = GAME.height + h
         else
-        GAME.heightBuffer = GAME.heightBuffer + h
+            GAME.heightBuffer = GAME.heightBuffer + h
+        end
+    elseif GAME.crit then
+        if GAME.height > 2050 then
+            GAME.height = GAME.height + (h/2)
+        else
+            GAME.heightBuffer = GAME.heightBuffer + (h/2)
         end
     else
-    if GAME.height > 2050 then
-        GAME.height = GAME.height + (h*2)
+        if GAME.height > 2050 then
+            GAME.height = GAME.height + (h*2)
         else
-        GAME.heightBuffer = GAME.heightBuffer + h
+            GAME.heightBuffer = GAME.heightBuffer + (h*2)
         end
     end
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
@@ -1283,7 +1303,7 @@ function GAME.addXP(xp, falseCommit)
 
     local oldRank = GAME.rank
     local oldLockTimer = GAME.xpLockTimer
-    while GAME.xp >= GAME.rank do
+    while GAME.xp >= GAME.rank and not GAME.crit do
         GAME.xp = GAME.xp - GAME.rank
         GAME.rank = GAME.rank + 1
         GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
@@ -1293,6 +1313,19 @@ function GAME.addXP(xp, falseCommit)
             GAME.xpLockLevel = GAME.xpLockLevelMax
             if GAME.xp >= 2 * GAME.rank then
                 GAME.rank = GAME.rank + floor(GAME.xp/2222)
+            end
+        end
+    end
+    while GAME.xp * 6 >= GAME.rank and GAME.crit do
+        GAME.xp = GAME.xp - (6 *GAME.rank)
+        GAME.rank = GAME.rank + 1
+        GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
+
+        -- Rank skip
+        if GAME.xp >= GAME.rank then
+            GAME.xpLockLevel = GAME.xpLockLevelMax
+            if GAME.xp >= 12 * GAME.rank then
+                GAME.rank = GAME.rank + floor(GAME.xp/15000)
             end
         end
     end
@@ -1323,6 +1356,8 @@ function GAME.addXP(xp, falseCommit)
             GAME.refreshRPC()
         end
         if GAME.gspeedlv < 3 and GAME.rank >= TeraMusicReq and GAME.rank < PetaMusicReq then
+            if GAME.comboStr == 'eASeEXeVL' then GAME.smithyMode = true end
+            GAME.teraLostHeight = 0
             GAME.startTeraAnim()
             GAME.refreshRPC()
         end
@@ -3105,10 +3140,12 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
 
             -- B2B
             if correct == 1 or (correct == 2 and M.DP == -1 and not allyWasDead) then
-                if not STAT.MouseGirl then
-                GAME.chain = GAME.chain + 1
-                else
-                GAME.chain = GAME.chain + (1 + (MATH.floor(STAT.achv/50)))
+                if not GAME.crit then
+                    if not STAT.MouseGirl then
+                        GAME.chain = GAME.chain + 1
+                    else
+                        GAME.chain = GAME.chain + (1 + (MATH.floor(STAT.achv/50)))
+                    end
                 end
                 if GAME.chain < 4 then
                 elseif GAME.chain < 8 then
@@ -3842,16 +3879,12 @@ function GAME.finish(reason)
         W:reset()
     end
 
-    if GAME.gspeedlv > 2 then
-        local smithyModeHeight = GAME.roundHeight
-        if GAME.teraLostHeight > 0 then
-            smithyModeHeight = GAME.teraLostHeight
-        end
-        SubmitAchv('programmer_gamer', smithyModeHeight)
-    end
-    if GAME.gspeedlv > 2 and M.EX == -1 and M.GV == 2 and URM and M.DH == -1 and M.AS == -1 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 0 and M.DP == 0 and GAME.enightcore then
-        SubmitAchv('one_of_mine', GAME.achv_noManualCommitH or GAME.roundHeight) 
-    end
+    if (GAME.gspeedlv > 2 or GAME.teraLostHeight) and GAME.smithyMode then
+    SubmitAchv('programmer_gamer', GAME.teraLostHeight > 0 and GAME.teraLostHeight or GAME.roundHeight)
+end
+if GAME.gspeedlv > 2 and URM and GAME.comboStr == "eASeDHeEXrGV" and GAME.enightcore then
+    SubmitAchv('one_of_mine', GAME.achv_noManualCommitH or GAME.roundHeight) 
+end
     -- Perfectly Balanced
     if GAME.comboMP == 4 then
         local revCount = GAME.comboStr:count('r')
@@ -4818,6 +4851,8 @@ function GAME.update(dt)
                 if STAT.MouseGirl then
                     GAME.height = GAME.height + GAME.rank / 0.3 * dt
                     --if GAME.height > 1e5 then GAME.height = 1e5 end
+                elseif GAME.crit then
+                    GAME.height = GAME.height + GAME.rank / 7 * dt
                 else
                     GAME.height = GAME.height + GAME.rank / 3 * dt
                 end
@@ -4988,9 +5023,10 @@ function GAME.update(dt)
     -- Trevor Smithy
     local dmgTimerMulMod = 1 + (M.GV == -1 and 0.25 or 0) + (GAME.eslowmo and 0.25 or 0)
     GAME.dmgTimer = GAME.dmgTimer - dt / (GAME.dmgTimerMul * dmgTimerMulMod)
+    if GAME.crit then GAME.dmgTimer = (GAME.dmgTimer - dt / (GAME.dmgTimerMul * dmgTimerMulMod)*3) end
     if GAME.dmgTimer <= 0 then
         GAME.dmgTimer = GAME.dmgCycle
-        GAME.takeDamage(GAME.dmgTime, 'time')
+        GAME.takeDamage((GAME.dmgTime * 2), 'time')
     end
 end
 

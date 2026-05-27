@@ -2689,7 +2689,12 @@ local d = {
     AchieveFromCombo('ASDHGV', "The Texting Driver", [[HFD with GV DH AS]], [[TUI]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('DHDPGV', "Race You There", [[HFD with GV DH DP]], [[This isn't a race, dingus]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASGVIN', "The Spinmaster", [[HFD with GV IN AS]], [[BANANA ROTATO]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPGV', "Bronze Anniversary", [[HFD with GV AS DP]], [[How does a bronze anniversary even work]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPGVIN', "Bronze Anniversary", [[HFD with GV IN DP]], [[How does a bronze anniversary even work]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPGV', "The Trapeze Artists", [[HFD with GV AS DP]], [[Fun fact: this achievement had the wrong name and icon in 0.55.15.1e1.2.2 Trinity]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHINVL', "The Flickering Spirit", [[HFD with VL DH IN]], [[DON'T LET THE FLAMES DIE OUT!!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHVL', "Forbidden Sorcery", [[HFD with VL DH AS]], [[Can you describe a fish person?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHDPVL', "Yuri", [[HFD with VL DH DP]], [[GAAAAAME]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASINVL', "Eccentric Recluse", [[HFD with VL IN AS]], [[Or the undertale under the ears]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

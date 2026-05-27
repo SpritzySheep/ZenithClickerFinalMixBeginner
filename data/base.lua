@@ -42,6 +42,7 @@ PieceData = {
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
         -- Final Mix
     { id = 'big', text = { COLOR.A, "F", }, piece = { COLOR.A, CHAR.brik.F }, popup = { COLOR.A, "F - Big Cards" } },
+    { id = 'crit', text = { COLOR.R, "X", }, piece = { COLOR.R, CHAR.brik.X }, popup = { COLOR.R, "X - Critical" } },
         -- Trevor Smithy
     { id = 'enightcore', text = { COLOR.lR, "eZ", }, piece = { COLOR.lR, CHAR.brik.C }, popup = { COLOR.lR, "eZ - Nightcore+" } },
     { id = 'eslowmo',    text = { COLOR.lG, "eS", }, piece = { COLOR.lG, CHAR.brik.C }, popup = { COLOR.lG, "eS - Slow-mo+" } },
@@ -51,8 +52,6 @@ PieceData = {
     { id = 'einvisCard', text = { COLOR.lY, "eO", }, piece = { COLOR.lY, CHAR.brik.C }, popup = { COLOR.lY, "eO - Transparent Card" } },
     { id = 'ecloseCard', text = { COLOR.lC, "eI", }, piece = { COLOR.lC, CHAR.brik.I3 }, popup = { COLOR.lC, "eI - Closer Card" } },
     --
-    { id = 'allclear',  text = { COLOR.LL, "-", }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
-
     { id = 'allclear',  text = { COLOR.LL, "-" }, piece = { COLOR.LL, CHAR.brik.O1 }, popup = { COLOR.LL, "All Clear" } },
 }
 

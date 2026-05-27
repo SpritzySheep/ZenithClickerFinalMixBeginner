@@ -241,7 +241,12 @@ d.menu = {
     { set = "GV DH AS",           name = "The Texting Driver"},
     { set = "GV DH DP",           name = "Race You There"},
     { set = "GV IN AS",           name = "The Spinmaster"},
-    { set = "GV AS DP",           name = "Bronze Anniversary"},
+    { set = "GV IN DP",           name = "Bronze Anniversary"},
+    { set = "GV AS DP",           name = "The Trapeze Artists"},
+    { set = "VL DH IN",           name = "The Flickering Spirit"},
+    { set = "VL DH AS",           name = "Forbidden Sorcery"},
+    { set = "VL DH DP",           name = "Yuri"},
+    { set = "VL IN AS",           name = "Eccentric Recluse"},
 }
 
 

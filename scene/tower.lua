@@ -1534,7 +1534,7 @@ function scene.overDraw()
                 gc_scale(GAME.uiHide)
                 local baseThickness = 6
                 local radius = 60
-                local colorList = {COLOR.R, COLOR.Y, COLOR.G, COLOR.B, COLOR.V, COLOR.lM }
+                local colorList = {COLOR.R, COLOR.F, COLOR.O, COLOR.Y, COLOR.A, COLOR.K, COLOR.G, COLOR.J, COLOR.C, COLOR.I, COLOR.S, COLOR.B, COLOR.P, COLOR.V, COLOR.M, COLOR.W, COLOR.L, COLOR.T, COLOR.D, COLOR.lR, COLOR.lF, COLOR.lO, COLOR.lY, COLOR.lA, COLOR.lK, COLOR.lG, COLOR.lJ, COLOR.lC, COLOR.lI, COLOR.lS, COLOR.lB, COLOR.lP, COLOR.lV, COLOR.lM, COLOR.lW, COLOR.lL, COLOR.lT, COLOR.lD }
                 local colorIndex = 1
                 local rank = GAME.rank
                 local xp = (M.VL == 2 and URM) and (5+GAME.chain) or GAME.commit(false, true)
@@ -1546,13 +1546,13 @@ function scene.overDraw()
                         for i = 1, floor(revolutions) do
                             gc_setColor(colorList[colorIndex])
                             gc_circle('fill', 0, 0, radius)
-                            if colorIndex == 6 then
+                            if colorIndex == 38 then
                                 colorIndex = 1
                             else
                                 colorIndex = colorIndex + 1
                             end
                             tempRevolutions = tempRevolutions - 1
-                            radius = radius - (revolutions <= 10 and 6 or revolutions <= 12 and 5 or revolutions <= 15 and 4 or revolutions <= 20 and 3 or revolutions <= 30 and 2 or 1)
+                            radius = radius - (revolutions <= 10 and 6 or revolutions <= 12 and 5 or revolutions <= 15 and 4 or revolutions <= 20 and 3 or revolutions <= 30 and 2 or revolutions <= 50 and 1 or 0)
                         end
                     end
                     gc_setColor(colorList[colorIndex])
@@ -1754,7 +1754,11 @@ function scene.overDraw()
         elseif GAME.DPlock then
             gc_setAlpha(.26/eTAlpha)
         end
-        gc_mRect('fill', 800, 965, 420 * GAME.xp / (rank), 15)
+        if not GAME.crit then
+            gc_mRect('fill', 800, 965, 420 * GAME.xp / (rank), 15)
+        else
+            gc_mRect('fill', 800, 965, 420 * GAME.xp / (6 * rank), 15)
+        end
 
         -- Height & Time
         local height = GAME.height

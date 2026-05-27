@@ -606,7 +606,8 @@ TEXTURE = {
             DPGVMS = aq(12, 4), DHMSVL = aq(7, 12), INMSVL = aq(7, 6), ASMSVL = aq(14, 8), DPMSVL = aq(2, 10),
             DHINMS = aq(8, 12), ASDHMS = aq(1, 5), DHDPMS = aq(9, 12), ASINMS = aq(10, 12), DPINMS = aq(11, 12),
             ASDPMS = aq(12, 12), DHGVVL = aq(2, 8), GVINVL = aq(4, 2), ASGVVL = aq(13, 12), DPGVVL = aq(14, 12),
-            DHGVIN = aq(15, 12), ASDHGV = aq(15, 12), DHDPGV = aq(8, 5), ASGVIN = aq(9, 4), ASDPGV = aq(16, 12),
+            DHGVIN = aq(15, 12), ASDHGV = aq(15, 12), DHDPGV = aq(8, 5), ASGVIN = aq(9, 4), DPGVIN = aq(16, 12),
+            ASDPGV = aq(8, 6), DHINVL = aq(1, 13), ASDHVL = aq(11, 9), DHDPVL = aq(1, 2), ASINVL = aq(1, 11),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
