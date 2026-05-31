@@ -379,15 +379,15 @@ function scene.keyDown(key, isRep)
     if isRep then return true end
     local ctrl = love.keyboard.isDown('lctrl', 'rctrl')
     local alt = love.keyboard.isDown('lalt', 'ralt')
-    local bindID = TABLE.find(STAT.keybind, key)
+    local bindID = TABLE.find(CONF.keybind, key)
     if bindID and bindID <= 18 then
         local i = bindID > 9 and bindID - 9 or bindID
         setMod(i, ctrl, alt)
         refresh()
-    elseif key == STAT.keybind[19] or key == 'return' then
+    elseif key == CONF.keybind[19] or key == 'return' then
         -- Confirm
         cd = min(cd, .01)
-    elseif key == STAT.keybind[20] or key == 'f13' then
+    elseif key == CONF.keybind[20] or key == 'f13' then
         -- Reset
         for i = 1, #set.sel do set.sel[i] = 0 end
         set.match = 'include'
@@ -901,7 +901,7 @@ widgetSet.other = {
         color = clr.btn1,
         sound_hover = 'menutap',
         fontSize = 30, text = "    RESET", textColor = clr.btn2,
-        onClick = function() love.keypressed('f13') end,
+        onClick = function() love.keyspressed('f13') end,
     },    -- Hint
     WIDGET.new {
         name = 'help', type = 'hint',

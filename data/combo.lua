@@ -249,6 +249,8 @@ d.menu = {
     { set = "VL IN AS",           name = "Eccentric Recluse"},
     { set = "VL IN DP",           name = "Online Dating"},
     { set = "DH IN AS",           name = "The Libertine"},
+    { set = "DH IN DP",           name = "Speration Anxiety"},
+    { set = "IN AS DP",           name = "Blindfolded Collaboration" },
 }
 
 
@@ -605,10 +607,10 @@ d.gameEX = {
     { set = "EX VL DH IN DP", name = "False Allies" },
     { set = "EX VL DH AS DP", name = "Hello BPM Year" },
     { set = "EX VL IN AS DP", name = "Oblivious Spider" },
-    { set = "EX DH IN AS DP", name = "Professional Bodybuilder" },
+    { set = "EX DH IN AS DP", name = "Spinning Contraptions" },
     { set = "NH MS GV VL DH", name = "Quintuple threat" },
     { set = "NH MS GV VL IN", name = "The Guardian of Change" },
-    { set = "NH MS GV VL AS", name = "Dreadlock" },
+    { set = "NH MS GV VL AS", name = "Dreadlock"},
     { set = "NH MS GV VL DP", name = "Reminiscence Therapy" },
     { set = "NH MS GV DH IN", name = "Misdrop Haven" },
     { set = "NH MS GV DH AS", name = "A Classic Escape" },

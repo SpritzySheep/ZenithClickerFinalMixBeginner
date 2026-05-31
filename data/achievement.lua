@@ -587,7 +587,7 @@ local d = {
         quote = [[Put your blood, sweat, and tears into the climb, or fall.]],
         credit = "@Tizago",
         rank = floorRank(1, 3, 4, 5, 6, 7, 8),
-        hide = function() return GAME.completion.EX == 0 end,
+        hide = function() return GAME.completion.EX == 0 or GAME.completion.VL == 0 end,
     },
     { -- ASGVrDPrMS
         ex = true,
@@ -895,6 +895,7 @@ local d = {
         quote = [[Three steps forward, two steps back. Six steps forward, five steps back.]],
         scoreSimp = function(kill) return kill .. " Entries" end,
         rank = numberRank(0, 2, 3, 3, 4, 4, 5),
+        hide = function() return STAT.totalGiga == 0 end,
     },
     { -- under_the_radar
         ex = true,
@@ -2702,6 +2703,9 @@ local d = {
     AchieveFromCombo('DPINVL', "Online Dating", [[HFD with VL IN DP]], [[A true Lovers' Day over here.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASDPVL', "The Exes", [[HFD with VL AS DP]], [[The result of cheating.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASDHIN', "The Libertine", [[HFD with DH IN AS]], [[Librarian Any% Speedrun]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DHDPIN', "Speration Anxiety", [[HFD with DH IN DP]], [[No... Don't go...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHDP', "A Mutual Friendship", [[HFD with DH AS DP]], [[Bro stop adding your extra card to everything.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPIN', "Blindfolded Collaboration", [[HFD with IN AS DP]], [[Can I order some chuggets?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {

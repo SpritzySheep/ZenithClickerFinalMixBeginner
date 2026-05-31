@@ -32,12 +32,13 @@ local combo = 0
 local scene = {}
 
 local function switchVisitor(bool)
-    if not GAME.playing and GAME.zenithTraveler ~= bool and STAT.bg then
+    if not GAME.playing and GAME.zenithTraveler ~= bool and CONF.bg then
         SFX.play(bool and 'pause_exit' or 'pause_start', 1, 0, Tone(-2))
         GAME.zenithTraveler = bool
         love.mouse.setRelativeMode(bool)
         ZENITHA._cursor.active = not bool
         for _, W in next, scene.widgetList do W:setVisible(not bool) end
+        scene.widgetList.help2:setVisible()
         if usingTouch then scene.widgetList.help:setVisible(true) end
         if bool then IssueAchv('zenith_traveler') end
         TABLE.clear(HoldingButtons)
@@ -48,7 +49,7 @@ local function MouseOnCard(x, y)
     if FloatOnCard and Cards[FloatOnCard]:mouseOn(x, y) then
         return FloatOnCard
     end
-    if FloatOnCard and not usingTouch or STAT.oldHitbox then
+    if FloatOnCard and not usingTouch or CONF.oldHitbox then
         local cid, dist = 0, 1e99
         for i = 1, #Cards do
             if Cards[i]:mouseOn(x, y) then
@@ -70,7 +71,7 @@ local function MouseOnCard(x, y)
 end
 
 function SetMouseVisible(bool)
-    if STAT.syscursor then
+    if CONF.syscursor then
         love.mouse.setVisible(bool)
     else
         CursorHide = not bool
@@ -134,7 +135,7 @@ local function applyCombo(set)
 end
 
 local function keyTrigger(key)
-    local bindID = TABLE.find(STAT.keybind, key)
+    local bindID = TABLE.find(CONF.keybind, key)
     if bindID and bindID <= 18 and (M.AS ~= 0 or (not GAME.playing and (bindID == 8 or bindID == 17))) then
         if bindID > 9 then bindID = bindID - 9 end
         local C = Cards[bindID]
@@ -495,7 +496,7 @@ function scene.load()
     end
     RevUnlocked = TABLE.countAll(GAME.completion, 0) < 9 or STAT.unlockAll
 
-    for i = 1, #MD.deck do CardHintText[i]:set(STAT.keybind[i]:upper()) end
+    for i = 1, #MD.deck do CardHintText[i]:set(CONF.keybind[i]:upper()) end
 
     GAME.refreshDailyChallengeText()
     TASK.unlock('sure_quit')
@@ -546,8 +547,8 @@ local function getBtnPressed()
     if msIsDown(4) then btnPressed = btnPressed + 1 end
     if msIsDown(5) then btnPressed = btnPressed + 1 end
     if msIsDown(6) then btnPressed = btnPressed + 1 end
-    if kbIsDown(STAT.keybind[21]) then btnPressed = btnPressed + 1 end
-    if kbIsDown(STAT.keybind[22]) then btnPressed = btnPressed + 1 end
+    if kbIsDown(CONF.keybind[21]) then btnPressed = btnPressed + 1 end
+    if kbIsDown(CONF.keybind[22]) then btnPressed = btnPressed + 1 end
     return btnPressed
 end
 
@@ -852,7 +853,7 @@ function DrawBG(brightness, showRuler)
     gc_replaceTransform(SCR.origin)
     if GAME.bgH > -50 then
         local bgFloor = GAME.calculateFloor(GAME.bgH)
-        if STAT.bg and not (GAME.invisUI or GAME.einvisUI) then
+        if CONF.bg and not (GAME.invisUI or GAME.einvisUI) then
             if bgFloor < 10 then
                 gc_setColor(1, 1, 1)
                 local bottom = Floors[bgFloor - 1].top
@@ -1037,7 +1038,7 @@ function scene.draw()
         drawPBline(STAT.maxHeight, true)
         return
     else
-        DrawBG(STAT.bgBrightness, true)
+        DrawBG(CONF.bgBrightness, true)
     end
 
     if not (GAME.invisUI or GAME.einvisUI) then
@@ -1917,14 +1918,12 @@ function scene.overDraw()
         end
 
         -- Speedrun Timer
-        if STAT.srTimer_life then
-            gc_replaceTransform(SCR.xOy_dl)
-            setFont(30)
-            gc_setColor(TextColor)
-            gc_setAlpha(.42)
-            TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time_simp(STAT.srTimer_life))
-            gc_draw(TEXTS.srTimer, 7, -70 + GAME.uiHide * 30)
-        end
+        gc_replaceTransform(SCR.xOy_dl)
+        setFont(30)
+        gc_setColor(TextColor)
+        gc_setAlpha(.42)
+        --TEXTS.srTimer:set(STRING.time(STAT.srTimer_game) .. "/ " .. STRING.time(STAT.srTimer_life,2))
+        gc_draw(TEXTS.srTimer, 7, -70 + GAME.uiHide * 30)
 
         -- Card Info
         if not GAME.playing and FloatOnCard then
@@ -2395,19 +2394,19 @@ scene.widgetList = {
                     SFX.play('no')
                 end
             else
-                PieceSFXID = (PieceSFXID or 0) % #PieceData + 1
-                if PieceSFXID < #PieceData then
-                    local piece = ('zsjltoi'):sub(PieceSFXID, PieceSFXID)
+                GAME.pieceEffectID = GAME.pieceEffectID % #PieceData + 1
+                if GAME.pieceEffectID < #PieceData then
+                    local piece = ('zsjltoi'):sub(GAME.pieceEffectID, GAME.pieceEffectID)
                     SFX.play(piece, 1, 0, Tone(6))
-                    if PieceSFXID > 7 then
-                        SFX.play('combo_'..(PieceSFXID - 7)..'_power', 1, 0, Tone(0))
+                    if GAME.pieceEffectID > 7 then
+                        SFX.play('combo_'..(GAME.pieceEffectID - 7)..'_power', 1, 0, Tone(0))
                     end
                 else
                     SFX.play('allclear')
                 end
 
                 for i = 1, #PieceData - 1 do
-                    GAME[PieceData[i].id] = PieceSFXID == i
+                    GAME[PieceData[i].id] = GAME.pieceEffectID == i
                 end
 
                 GAME.refreshLayout()
@@ -2418,7 +2417,7 @@ scene.widgetList = {
                 GAME.multiplePiecesActive = false
                 MSG({
                     cat = 'dark',
-                    str = PieceData[PieceSFXID].popup,
+                    str = PieceData[GAME.pieceEffectID].popup,
                     time = 1.2
                 })
             end

@@ -166,7 +166,7 @@ local GAME = {
     bgLastH = 0,
     lifeShow = 0,
     lifeShow2 = 0,
-    prevPB = -260,
+    prevPB = -2600,
     modIB = GC.newSpriteBatch(TEXTURE.modIcon),
     resIB = GC.newSpriteBatch(TEXTURE.modIcon),
     comboMP = 0,
@@ -225,6 +225,7 @@ local GAME = {
     windupAnim = {}, ---@type Windup[]
 
     zenithTraveler = false,
+    pieceEffectID = 0,
     nightcore = false,
     slowmo = false,
     glassCard = false,
@@ -283,6 +284,7 @@ GAME.floorTime = 0
 GAME.f10Time = love.timer.getTime()
 GAME.reviveTime = false
 GAME.floor = 1
+GAME.negFloor = 1
 GAME.rank = 1
 GAME.xp = 0
 GAME.height = 0
@@ -3966,24 +3968,23 @@ end
                     GAME.completion[k] = v
                 end
             end
-            if unlockRev > 0 or not GAME.anyRev and MATH.roll(.1) and TABLE.countAll(GAME.completion, 2) == 0 then
+            if (unlockRev > 0 or TABLE.countAll(GAME.completion, 1) > 0 and not GAME.anyRev and MATH.roll(.1)) and TABLE.countAll(GAME.completion, 2) == 0 then
                 local hintText
                 if unlockRev == 0 then
                     hintText = "You've already unlocked REVERSED MOD!\n"
                 else
                     hintText = "You've already unlocked " .. (unlockRev == 1 and "a new REVERSED MOD!\n" or unlockRev .. " new REVERSED MODS!\n")
                 end
-                hintText = hintText .. (
-                    MOBILE and
-                    STRING.trimIndent [[
+                if MOBILE then
+                    hintText = hintText .. [[
                         To activate it, press and hold the blue area at the left side,
                         then click on a card that has a star on it.
-                    ]] or
-                    STRING.trimIndent [[
-                        Activate it by right-clicking on a card that has a star on it.
                     ]]
-                )
-                MSG('dark', hintText, 6.26)
+                else
+                    hintText = hintText .. "\nActivate it by right-clicking on a card that has a star on it."
+                end
+
+                MSG('dark', STRING.trimIndent(hintText), 6.26)
                 SFX.play('notify')
             end
             if GAME.height >= 12600 then
@@ -4505,7 +4506,7 @@ end
     GAME.prevPB = max(GAME.prevPB, GAME.height)
 
     if URM and GAME.height < -10 then
-        PieceSFXID = 0
+        GAME.pieceEffectID = 0
         GAME.nightcore = false
         GAME.slowmo = false
         GAME.glassCard = false
@@ -4654,7 +4655,7 @@ function GAME.update(dt)
     end
 
     -- Timers
-    if STAT.srTimer_life then STAT.srTimer_game = STAT.srTimer_game + dt end
+    --STAT.srTimer_game = STAT.srTimer_game + dt
     local timerMulMod = 1 * (GAME.eslowmo and not GAME.badTime and 0.75 or 1) * (GAME.ecloseCard and not GAME.badTime and 2 or 1)
     GAME.time = GAME.time + dt * (GAME.timerMul * timerMulMod)
     local r = min(GAME.rank, 62)
