@@ -352,7 +352,7 @@ function GAME.getComboZP(list)
     local m = TABLE.getValueSet(list)
     local zp = 0
     if STAT.MouseGirl then
-    zp = 1 + ((STAT.totalQuest/100))
+    zp = 1 + ((STAT.totalQuest/1000))
     else
     zp = 1 + (STAT.totalQuest/1000)
     end
@@ -1356,7 +1356,11 @@ function GAME.addXP(xp, falseCommit)
             GAME.refreshRPC()
         end
         if GAME.gspeedlv < 3 and GAME.rank >= TeraMusicReq and GAME.rank < PetaMusicReq then
-            if GAME.comboStr == 'eASeEXeVL' then GAME.smithyMode = true end
+            if GAME.comboStr == 'eASeEXeVL' then GAME.smithyMode = true
+                if GAME.height < 1650 then
+                    playBGM('tera')
+                end
+            end
             GAME.teraLostHeight = 0
             GAME.startTeraAnim()
             GAME.refreshRPC()
@@ -1959,6 +1963,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('powerleveling7', STAT.level,true,true)
     SubmitAchv('powerleveling8', STAT.level,true,true)
     SubmitAchv('powerleveling9', STAT.level,true,true)
+    SubmitAchv('powerleveling10', STAT.level,true,true)
     SubmitAchv('Tera', STAT.totalTera,true,true)
     SubmitAchv('Peta', STAT.totalPeta,true,true)
     SubmitAchv('Exa', STAT.totalExa,true,true)
@@ -4291,6 +4296,7 @@ end
         SubmitAchv('powerleveling7', STAT.level,true,true)
         SubmitAchv('powerleveling8', STAT.level,true,true)
         SubmitAchv('powerleveling9', STAT.level,true,true)
+        SubmitAchv('powerleveling10', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -4459,6 +4465,7 @@ end
         SubmitAchv('powerleveling7', STAT.level,true,true)
         SubmitAchv('powerleveling8', STAT.level,true,true)
         SubmitAchv('powerleveling9', STAT.level,true,true)
+        SubmitAchv('powerleveling10', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end

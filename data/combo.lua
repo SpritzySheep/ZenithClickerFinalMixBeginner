@@ -247,6 +247,8 @@ d.menu = {
     { set = "VL DH AS",           name = "Forbidden Sorcery"},
     { set = "VL DH DP",           name = "Yuri"},
     { set = "VL IN AS",           name = "Eccentric Recluse"},
+    { set = "VL IN DP",           name = "Online Dating"},
+    { set = "DH IN AS",           name = "The Libertine"},
 }
 
 

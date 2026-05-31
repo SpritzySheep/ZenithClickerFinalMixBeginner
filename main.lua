@@ -575,6 +575,7 @@ TEXTURE = {
             powerleveling7 = aq(14, 9),
             powerleveling8 = aq(5, 12),
             powerleveling9 = aq(6, 12),
+            powerleveling10 = aq(2, 13),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -608,6 +609,7 @@ TEXTURE = {
             ASDPMS = aq(12, 12), DHGVVL = aq(2, 8), GVINVL = aq(4, 2), ASGVVL = aq(13, 12), DPGVVL = aq(14, 12),
             DHGVIN = aq(15, 12), ASDHGV = aq(15, 12), DHDPGV = aq(8, 5), ASGVIN = aq(9, 4), DPGVIN = aq(16, 12),
             ASDPGV = aq(8, 6), DHINVL = aq(1, 13), ASDHVL = aq(11, 9), DHDPVL = aq(1, 2), ASINVL = aq(1, 11),
+            DPINVL = aq(8, 7), ASDPVL = aq(12, 4), ASDHIN = aq(3, 13),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',

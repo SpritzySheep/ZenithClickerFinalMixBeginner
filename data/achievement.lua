@@ -2378,6 +2378,10 @@ local d = {
         quote = [[You've attained enough power to neutralize even the most supermassive black holes!]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(40000, 41000, 42000, 43000, 44000, 45000, 49999), realHide = function() return STAT.level < 35000 end,
     },
+    {id = 'powerleveling10',name = "Zeta Leveling", desc = [[Zenith Level (45,000-50,000)]],
+        quote = [[You ARE supermassive!]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(45000, 46000, 47000, 48000, 49000, 50000, 54999), realHide = function() return STAT.level < 35000 end,
+    },
 
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},
 
@@ -2695,6 +2699,9 @@ local d = {
     AchieveFromCombo('ASDHVL', "Forbidden Sorcery", [[HFD with VL DH AS]], [[Can you describe a fish person?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('DHDPVL', "Yuri", [[HFD with VL DH DP]], [[GAAAAAME]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
     AchieveFromCombo('ASINVL', "Eccentric Recluse", [[HFD with VL IN AS]], [[Or the undertale under the ears]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('DPINVL', "Online Dating", [[HFD with VL IN DP]], [[A true Lovers' Day over here.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDPVL', "The Exes", [[HFD with VL AS DP]], [[The result of cheating.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('ASDHIN', "The Libertine", [[HFD with DH IN AS]], [[Librarian Any% Speedrun]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
 }
 
 local compFunc = {
