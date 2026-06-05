@@ -1752,7 +1752,7 @@ function GAME.awardKO(id1, id2, valid, toOppo)
         toOppo = toOppo,
     })
     if toOppo then
-        GAME.koCount = GAME.koCount + 1
+        if not id2:match("^GHOST%-") then GAME.koCount = GAME.koCount + 1 end
         SFX.play('elim', .5)
     end
 end
@@ -4555,7 +4555,7 @@ end
             SubmitAchv('guardian_angel', GAME.achv_maxReviveH or 0)
             if M.DP > 0 then SubmitAchv('carried', GAME.achv_carriedH or GAME.roundHeight) end
             if M.DP == 2 then
-                SubmitAchv('the_unreliable_one', GAME.killCount)
+                SubmitAchv('the_unreliable_one', GAME.koAlly)
                 if GAME.floor < 10 and GAME.time >= 600 and GAME.fatigueSet == Fatigue.rDP and not GAME.einvisUI then
                     IssueSecret('rDP_meta')
                 end
@@ -4771,7 +4771,7 @@ function GAME.update(dt)
 
     if not GAME.playing then return end
 
-    GAME.koCharge = max(GAME.koCharge, 0)
+    GAME.koCharge = max(GAME.koCharge - dt * min(abs(GAME.height), 6200) / 2600, 0)
     while GAME.koCharge > 26 do
         GAME.koCharge = GAME.koCharge - 26
         local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
