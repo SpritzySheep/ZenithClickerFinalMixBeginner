@@ -250,7 +250,10 @@ d.menu = {
     { set = "VL IN DP",           name = "Online Dating"},
     { set = "DH IN AS",           name = "The Libertine"},
     { set = "DH IN DP",           name = "Speration Anxiety"},
-    { set = "IN AS DP",           name = "Blindfolded Collaboration" },
+    { set = "IN AS DP",           name = "Blindfolded Collaboration"},
+
+    { set = "rEX NH",             name = "The Benevolent Dictator"},
+    { set = "rEX MS",             name = "Haphazard Regime"},
 }
 
 
@@ -566,7 +569,7 @@ d.gameEX = {
     { set = "EX NH GV DH DP", name = "The hanged down pair" },
     { set = "EX NH GV IN AS", name = "Paragon" },
     { set = "EX NH GV IN DP", name = "Golden Anniversary" },
-    { set = "EX NH GV AS DP", name = "Thirty Lives" },
+    { set = "EX NH GV AS DP", name = "Panic Button" },
     { set = "EX NH VL DH IN", name = "Spoiled Milk" },
     { set = "EX NH VL DH AS", name = "Loss of Control" },
     { set = "EX NH VL DH DP", name = "The Forbidden Fruit" },
@@ -628,7 +631,7 @@ d.gameEX = {
     { set = "NH GV VL DH AS", name = "Demonic Possession" },
     { set = "NH GV VL DH DP", name = "Duality" },
     { set = "NH GV VL IN AS", name = "Ergosphere" },
-    { set = "NH GV VL IN DP", name = "Dual Black Hole System" },
+    { set = "NH GV VL IN DP", name = "Echo Location" },
     { set = "NH GV VL AS DP", name = "Forced Evolution" },
     { set = "NH GV DH IN AS", name = "Cheat Code" },
     { set = "NH GV DH IN DP", name = "Living in the Past" },

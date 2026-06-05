@@ -281,6 +281,7 @@ TEXTURE = {
             garbage_offensive = aq(3, 1),
             tower_climber = aq(8, 2),
             tower_regular = aq(8, 2),
+            what_ever_it_takes = aq(1, 3),
             speed_player = aq(5, 2),
             plonk = aq(6, 2),
             zenith_explorer = aq(2, 3),
@@ -378,6 +379,7 @@ TEXTURE = {
             psychokinesis = aq(8, 6),
             divine_rejection = aq(7, 6),
             moon_struck = aq(7, 6),
+            slayer_of_the_tower = aq(1, 3),
             lovers_promise = aq(8, 7),
 
             hardcore_beginning = aq(16, 5),
@@ -555,6 +557,17 @@ TEXTURE = {
             DPIN = aq(11, 8),
             ASDP = aq(14, 5),
 
+            uEX = aq(5, 13),
+            uNH = aq(6, 13),
+            uMS = aq(7, 13),
+            uGV = aq(8, 13),
+            uVL = aq(9, 13),
+            uDH = aq(10, 13),
+            uIN = aq(11, 13),
+            uAS = aq(12, 13),
+            uDP = aq(13, 13),
+            mina_the_hollower = aq(14, 13),
+
             Tera = aq(1, 9),
             Peta = aq(2, 9),
             Exa = aq(3, 9),
@@ -611,6 +624,8 @@ TEXTURE = {
             ASDPGV = aq(8, 6), DHINVL = aq(1, 13), ASDHVL = aq(11, 9), DHDPVL = aq(1, 2), ASINVL = aq(1, 11),
             DPINVL = aq(8, 7), ASDPVL = aq(12, 4), ASDHIN = aq(3, 13), DHDPIN = aq(13, 4), ASDHDP = aq(14, 5),
             ASDPIN = aq(10, 9),
+
+            NHrEX = aq(9, 6), MSrEX = aq(4, 13),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1005,6 +1020,8 @@ STAT = {
     totalTermina = 0,
     totalLumina = 0,
     totalF10 = 0,
+    totalKO = 0,
+    totalRevive = 0,
     badges = 0,
     AP = 0,
     badge = {},

@@ -224,6 +224,7 @@ event = function()
             GAME.attackMul = GAME.attackMul
             GAME.dmgTimerMul = GAME.dmgTimerMul + .1
             GAME.mod.AS = 0
+            TEXTS.chain:set(tostring(GAME.chain))
             GAME.refreshModIcon()
             GAME.refreshRPC()
         end,
@@ -587,9 +588,10 @@ event = function()
             GAME.height = -1800
             FloatOnCard = nil
             GAME.refreshLayout()
+            local firstClear = not STAT.clicker
             STAT.clicker = true
             SFX.play('warp')
-            SCN.go('ending', "warp")
+            SCN.go('ending', "warp", firstClear)
         end
     },
     { h = -1e99 },
@@ -609,6 +611,7 @@ end
 
 ModData = require 'data/mod'
 ComboData = require 'data/combo'
+UsernameData = require 'data/username'
 Fatigue = require 'data/fatigue'
 RevivePrompts = require 'data/revive'
 Achievements = require 'data/achievement'

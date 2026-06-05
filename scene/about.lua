@@ -134,8 +134,10 @@ addText({
         "SPRITZY SHEEP",
         "THE_111THBLITZER",
         "TIZAGO",
+        "TREVOR_SMITHY",
         "WAH",
         "ZYRIXIA",
+        "MINA THE HOLLOWER",
     }, ",  ")
 }, 0, 60, .26)
 

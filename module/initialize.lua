@@ -82,6 +82,19 @@ function Initialize(save)
                 end
             end
             STAT.version = 192
+        if STAT.version == 192 then
+            if STAT.srTimer_game > STAT.srTimer_life then
+                STAT.srTimer_game, STAT.srTimer_life = STAT.srTimer_life, STAT.srTimer_game
+            end
+            STAT.version = 193
+        end
+        if STAT.version == 193 then
+            if STAT.totalHeight > 0 and STAT.totalKO == 0 then
+                STAT.totalKO = math.floor(STAT.totalHeight * (6 / 2000))
+                STAT.totalRevive = ((ACHV.the_responsible_one or 0) + (ACHV.the_unreliable_one or 0)) * 6
+            end
+            STAT.version = 194
+        end
     end
 
     -- Some initialization

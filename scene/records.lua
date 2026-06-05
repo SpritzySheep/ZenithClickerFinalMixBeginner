@@ -107,12 +107,8 @@ local function newRecord(list, isUltra)
             comboText = "\"UNEASY " .. comboText:sub(2)
         elseif #setStr == 4 and M.DH == 2 then
             comboText = ComboData.gameEX[setStr].name
-        elseif comboText:sub(1, 1) ~= "\"" then
-            comboText = "ULTRA " .. comboText
-        elseif comboText:sub(2, 4) == "THE" then
-            comboText = comboText:gsub("THE", "ULTRA", 1)
         else
-            comboText = "\"ULTRA " .. comboText:sub(2)
+            comboText = GAME.ultrafyComboName(comboText)
         end
     end
     return {
