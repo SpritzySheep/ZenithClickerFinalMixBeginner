@@ -1782,21 +1782,21 @@ local page4 = {
         frameColor = ZCEMclr.cbFrame,
         textColor = ZCEMclr.T, text = "PROMOTION GAUGE",
         x = baseX + 40, y = baseY + 60 + 80,
-        disp = function() return STAT.promotion end,
+        disp = function() return CONF.promotion end,
         code = function()
             local multiple = GAME.multiplePiecesActive
             MSG.clear()
-            STAT.promotion = not STAT.promotion
-            MSG('dark', "Rank Promotion Gauge: " .. (STAT.promotion and "ON" or "OFF"))
-            if STAT.stacker and STAT.promotion then
-                STAT.stacker = false
-                MSG('dark', "STACKER and PROMOTION GAUGE are MUTUALLY EXCLUSIVE!")
+            CONF.promotion = not CONF.promotion
+            MSG('dark', "Rank Promotion Gauge: " .. (CONF.promotion and "ON" or "OFF"))
+            if CONF.stacker and CONF.promotion then
+                MSG('dark', "STACKER AND PROMOTION GAUGE ARE INCOMPATIBLE WITH EACHOTHER\nSTACKER HAS BEEN TURNED OFF")
                 SFX.play('no')
+                CONF.stacker = false
             else
                 SFX.play('social_dm')
             end
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },
@@ -1806,15 +1806,15 @@ local page4 = {
         frameColor = ZCEMclr.cbFrame,
         textColor = ZCEMclr.T, text = "IMPERIAL UNITS",
         x = baseX + 500, y = baseY + 60 + 240,
-        disp = function() return STAT.imperial end,
+        disp = function() return CONF.imperial end,
         code = function()
             local multiple = GAME.multiplePiecesActive
             MSG.clear()
-            STAT.imperial = not STAT.imperial
+            CONF.imperial = not CONF.imperial
             SFX.play('social_dm')
-            MSG('dark', "Imperial Units: " .. (STAT.imperial and "ON" or "OFF"))
+            MSG('dark', "Imperial Units: " .. (CONF.imperial and "ON" or "OFF"))
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },
@@ -1824,15 +1824,15 @@ local page4 = {
         frameColor = ZCEMclr.cbFrame,
         textColor = ZCEMclr.T, text = "OLD TRANSPARENT CARD",
         x = baseX + 40, y = baseY + 60 + 160,
-        disp = function() return STAT.oldTransparentCard end,
+        disp = function() return CONF.oldTransparentCard end,
         code = function()
             local multiple = GAME.multiplePiecesActive
             MSG.clear()
-            STAT.oldTransparentCard = not STAT.oldTransparentCard
+            CONF.oldTransparentCard = not CONF.oldTransparentCard
             SFX.play('social_dm')
-            MSG('dark', "Transparent Card: " .. (STAT.oldTransparentCard and "V1.0/1.1" or "V1.2+"))
+            MSG('dark', "Transparent Card: " .. (CONF.oldTransparentCard and "V1.0/1.1" or "V1.2+"))
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },
@@ -1850,7 +1850,7 @@ local page4 = {
             MSG('dark', "Force old hitbox: " .. (CONF.oldHitbox and "ON" or "OFF"))
             SFX.play(CONF.oldHitbox and 'social_online' or 'social_offline')
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },
@@ -1860,15 +1860,15 @@ local page4 = {
         frameColor = ZCEMclr.cbFrame,
         textColor = ZCEMclr.T, text = "USE EASY NAMES",
         x = baseX + 40, y = baseY + 60 + 240,
-        disp = function() return STAT.easyName end,
+        disp = function() return CONF.easyName end,
         code = function()
             local multiple = GAME.multiplePiecesActive
             MSG.clear()
-            STAT.easyName = not STAT.easyName
+            CONF.easyName = not CONF.easyName
             SFX.play('social_dm')
-            MSG('dark', "Easy Names In-Game: " .. (STAT.easyName and "ON" or "OFF"))
+            MSG('dark', "Easy Names In-Game: " .. (CONF.easyName and "ON" or "OFF"))
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },
@@ -1878,21 +1878,21 @@ local page4 = {
         frameColor = ZCEMclr.cbFrame,
         textColor = ZCEMclr.T, text = "STACKER MODE",
         x = baseX + 500, y = baseY + 60 + 80,
-        disp = function() return STAT.stacker end,
+        disp = function() return CONF.stacker end,
         code = function()
             local multiple = GAME.multiplePiecesActive
             MSG.clear()
-            STAT.stacker = not STAT.stacker
-            MSG('dark', "Stacker Mode: " .. (STAT.stacker and "ON" or "OFF"))
-            if STAT.stacker and STAT.promotion then
-                STAT.promotion = false
+            CONF.stacker = not CONF.stacker
+            MSG('dark', "Stacker Mode: " .. (CONF.stacker and "ON" or "OFF"))
+            if CONF.stacker and CONF.promotion then
+                MSG('dark', "STACKER AND PROMOTION GAUGE ARE INCOMPATIBLE WITH EACHOTHER\nPROMOTION GAUGE HAS BEEN TURNED OFF")
                 SFX.play('no')
-                MSG('dark', "STACKER and PROMOTION GAUGE are MUTUALLY EXCLUSIVE!")
+                CONF.promotion = false
             else
                 SFX.play('social_dm')
             end
             GAME.multiplePiecesActive = false
-            SaveStat()
+            SaveConf()
             if multiple then GAME.multiplePiecesActive = true end
         end,
     },

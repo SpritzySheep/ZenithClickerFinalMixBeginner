@@ -10,6 +10,7 @@ local clr = {
     T = { COLOR.HEX '6FAC82FF' },
 }
 local colorRev = false
+
 AchvText = GC.newText(FONT.get(30))
 local Achievements = Achievements
 local M = GAME.mod
@@ -34,6 +35,10 @@ OverDevProgressText = "Open ACHV page to refresh the over-dev progress."
 
 ---@type (AchvItem | EmptyAchv)[]
 local achvList = {}
+local achvListZCEM = {}
+local achvListMISC = {}
+local achvList2MP = {}
+local achvList3MP = {}
 local scroll, scroll1 = 0, 0
 local maxScroll = 0
 local timer = 0
@@ -49,10 +54,16 @@ local overallProgress = {
     ptText = "0/0 Pts",
 }
 
+local page = 1
+local maxPage = 5
+local ZCEMpage = 2
+local MISCpage = 3
+local MP2page = 4
+local MP3page = 5
+
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
 
-local SPACER = { hide = FALSE }
 function RefreshAchvList(canShuffle)
 
     overallProgress.rank = TABLE.new(0, 5)
@@ -62,12 +73,16 @@ function RefreshAchvList(canShuffle)
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
     TABLE.clear(achvList)
+    TABLE.clear(achvListZCEM)
+    TABLE.clear(achvListMISC)
+    TABLE.clear(achvList2MP)
+    TABLE.clear(achvList3MP)
     local odCount, odCap, countSinceLastTitle = 0, 0, 0
     for i = 1, #Achievements do
         local A = Achievements[i]
         if not A.id then
-            countSinceLastTitle = 0
-            table.insert(achvList, { title = A.hide() and "???" or A.title and A.title:upper() })
+            if page >= ZCEMpage then countSinceLastTitle = 0 end
+            table.insert((A.mod == "3MP" and achvList3MP or A.mod == "2MP" and achvList2MP or A.mod == "MISC" and achvListMISC or A.mod == "ZCEM" and achvListZCEM or achvList), { title = A.hide() and "???" or A.title and A.title:upper() })
         else
             local rank, score, progress, wreath, overDev
             if TestMode or not ACHV[A.id] then
@@ -103,23 +118,24 @@ function RefreshAchvList(canShuffle)
             local hidden = A.hide() and not ACHV[A.id]
             local descWidth = hidden and 26 or AchvText:getWidth()
             if not hidden or not A.realHide() then 
-                countSinceLastTitle = countSinceLastTitle + 1
-            table.insert(achvList, {
-                id = A.id,
-                name = hidden and "???" or A.name:upper(),
-                desc = hidden and "???" or A.desc,
-                descWidth = descWidth,
-                rank = floor(rank),
-                wreath = wreath,
-                progress = progress,
-                score = score,
-                type = A.type,
-                hidden = A.hide ~= FALSE,
-                overDev = overDev,
-            })
-            elseif countSinceLastTitle % 2 == 1 then
-                table.insert(achvList, {id = '', name = ''})
-                countSinceLastTitle = countSinceLastTitle + 1
+                if A.mod == not "ZC" then countSinceLastTitle = countSinceLastTitle + 1 end
+                table.insert((A.mod == "3MP" and achvList3MP or A.mod == "2MP" and achvList2MP or A.mod == "MISC" and achvListMISC or A.mod == "ZCEM" and achvListZCEM or achvList), {
+                    id = A.id,
+                    name = hidden and "???" or A.name:upper(),
+                    desc = hidden and "???" or A.desc,
+                    descWidth = descWidth,
+                    rank = floor(rank),
+                    wreath = wreath,
+                    progress = progress,
+                    score = score,
+                    type = A.type,
+                    hidden = A.hide ~= FALSE,
+                    overDev = overDev,
+                })
+            elseif A.mod == not "ZC" and countSinceLastTitle % 2 == 1 then  
+                table.insert(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM, {id = '', name = ''})
+            elseif A.mod == "MISC" and countSinceLastTitle % 2 == 1 then  
+                table.insert(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM, {id = '', name = ''})
             end
             if overDev then
                 odCount = odCount + 1
@@ -130,78 +146,32 @@ function RefreshAchvList(canShuffle)
     if odCount >= odCap * .26 then IssueSecret('exceed_dev_half', true) end
     OverDevProgressText = "ACHV scores better than Dev: " .. odCount .. "/" .. odCap
     if canShuffle then
-        if M.NH == 2 then
-            TABLE.foreach(achvList, function(v) return not v.id end, true)
-        end
-
-        if M.DH == 1 then
-            for i = 1, #achvList do
-                if achvList[i].name and #achvList[i].name > 4.2 then
-                    local newStr
-                    repeat
-                        local cList = achvList[i].name:atomize()
-
-                        local mode = math.random(3)
-                        if mode == 1 or MATH.roll(.26) then
-                            -- Swap 2
-                            local r1, r2 = math.random(2, #cList - 1), math.random(2, #cList - 1)
-                            cList[r1], cList[r2] = cList[r2], cList[r1]
-                        end
-                        if mode == 2 or MATH.roll(.26) then
-                            -- Delete 20%
-                            for _ = 1, floor(#cList * 0.20) do
-                                table.remove(cList, math.random(2, #cList - 1))
-                            end
-                        end
-                        if mode == 3 or MATH.roll(.26) then
-                            -- Repeat 2
-                            for _ = 1, #cList <= 8 and 2 or 1 do
-                                local r = math.random(2, #cList - 1)
-                                table.insert(cList, r, cList[r])
-                            end
-                        end
-                        newStr = table.concat(cList)
-                    until achvList[i].name ~= newStr
-                    achvList[i].name = newStr
-                end
-            end
-        elseif M.DH == 2 then
-            for i = 1, #achvList do
-                if achvList[i].name then
-                    local a = achvList[i]
-                    a.name =
-                        a.name:sub(1, 1) ..
-                        table.concat(TABLE.shuffle(a.name:sub(2, -2):atomize())) ..
-                        a.name:sub(-1)
-                end
-            end
-        end
 
         local s, e
-        for i = 1, #achvList do
+        for i = 1, #(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList) do
             if not s then
-                if achvList[i].id then
+                if (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[i].id then
                     s = i
                 end
             elseif not e then
-                if not achvList[i].id then
+                if not (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[i].id then
                     e = i - 1
-                elseif i == #achvList then
+                elseif i == #(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList) then
                     e = i
                 end
             end
             if e then
-                local buffer = TABLE.sub(achvList, s, e)
+                local buffer = TABLE.sub(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList, s, e)
                 if M.MS > 0 then TABLE.shuffle(buffer) end
                 if M.GV > 0 then table.sort(buffer, M.GV == 1 and nameSortLT or nameSortGT) end
-                for j, a2 in next, buffer do achvList[s + j - 1] = a2 end
+                for j, a2 in next, buffer do (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[s + j - 1] = a2 end
                 s, e = nil, nil
             end
         end
     end
 
     if not TestMode then
-        overallProgress.ptText = overallProgress.ptGet  .. " AP"
+        overallProgress.ptText = overallProgress.ptGet .. "AP"
         if overallProgress.ptGet < overallProgress.ptAll then
             for i = 0, 5 do
                 if overallProgress.rank[i] > 0 then
@@ -218,7 +188,6 @@ function RefreshAchvList(canShuffle)
             end
         end
     end
-    print(TABLE.dump(overallProgress))
 end
 
 local function submit(id, score, silent, realSilent)
@@ -267,7 +236,6 @@ local function refreshAchivement()
         if GAME.getComboZP(l) >= 1 and easyCount == 0 then 
             maxZP = max(maxZP, h * GAME.getComboZP(l))
         end
-        maxZP = max(maxZP, h * GAME.getComboZP(l))
     end
     submit('multitasker', maxMMP)
     submit('effective', maxZP)
@@ -295,8 +263,6 @@ local function refreshAchivement()
     _t = 0
     for id in next, MD.name do _t = _t + BEST.highScore['r' .. id] end
     submit('divine_challenger', _t, true)
-
-    if not ACHV.false_god and MATH.sumAll(GAME.completion) >= 2 * #MD.deck then issue('false_god', ACHV.subjugation) end
 
     if not ACHV.the_harbinger then
         local allRevF5 = true
@@ -377,7 +343,7 @@ function scene.load()
             GC.setShader(GC.newShader [[
                 vec4 effect(vec4 color, sampler2D tex, vec2 texCoord, vec2 scrCoord) {
                     vec4 t = texture2D(tex, texCoord);
-                    return vec4(1, 1, 1, (t.r+t.g+t.b)/3.0);
+                    return vec4(1., 1., 1., (t.r+t.g+t.b)/3.);
                 }
             ]])
             GC.draw(TEXTURE.achievement.icons)
@@ -403,7 +369,7 @@ function scene.load()
 
     RefreshAchvList(true)
 
-    maxScroll = max(ceil((#achvList - 12) / 2) * 140, 0)
+    maxScroll = max(ceil(((page == MP3page and #achvList3MP or page == MP2page and #achvList2MP or page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
     clearNotice = false
 end
 
@@ -428,6 +394,12 @@ function scene.keyDown(key, isRep)
     if key == 'escape' or key == 'tab' then
         SFX.play('menuclick')
         SCN.back('none')
+    elseif MATH.between(tonumber(key) or 0, 1, maxPage) then
+        local p = tonumber(key)
+        if p and p ~= page then
+            page = p
+            SFX.play('menuclick')
+        end
     end
     ZENITHA._cursor.active = true
     return true
@@ -455,11 +427,12 @@ function scene.update(dt)
             )
         end
     end
-     for i = 1, 6 do
+    for i = 1, 6 do
         if TASK.lock('metricspeed_icon_' .. i, 0.26 / i^1.262) then
-           local name = MetricSpeedName[i]:sub(2, -2):lower()
+            local name = MetricSpeedName[i]:sub(2, -2):lower()
             local r = math.random(-10-i*2, 10+i*2)
             local r2 = math.random(-i*2, i*2)
+            --(10 - 1) % 16 * 256, (4 - 1) % 16 * 256, 256, 256, 4096, 2048
             TEXTURE.achievement.iconQuad[name]:setViewport(
                 (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 4096, 4096
             )
@@ -494,6 +467,7 @@ function scene.draw()
 
     FONT.set(30)
     if whenItsReady then
+        whenItsReady = not whenItsReady
         gc_replaceTransform(SCR.xOy)
         gc_translate(60, 0)
         gc_setColor(clr.D)
@@ -531,8 +505,8 @@ function scene.draw()
         local texture = TEXTURE.achievement
         local notAllRank5 = overallProgress.ptGet < overallProgress.ptAll
         gc_translate(0, -420 - scroll1)
-        for i = 1 + 2 * max(floor(scroll1 / 140) - 1, 0), min(2 * (floor(scroll1 / 140) + 8), #achvList) do
-            local a = achvList[i]
+        for i = 1 + 2 * max(floor(scroll1 / 140) - 1, 0), min(2 * (floor(scroll1 / 140) + 8), (page == MP3page and #achvList3MP or page == MP2page and #achvList2MP or page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList)) do
+            local a = (page == MP3page and achvList3MP[i] or page == MP2page and achvList2MP[i] or page == MISCpage and achvListMISC[i] or page == ZCEMpage and achvListZCEM[i] or achvList[i])
             if not a.id then
                 if a.title then
                     gc_ucs_move(i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
@@ -562,111 +536,111 @@ function scene.draw()
                     gc_ucs_move(i % 2 == 1 and -626 or 26, floor((i - 1) / 2) * 140)
                 end
                 if a.id ~= '' then
-                -- Bottom rectangle
-                if hyper then
-                    if overallProgress.countStart == 6 then
-                        gc_setColor(COLOR.rainbow_dark(i / 2.6 - t * 2.6, .42))
-                    elseif a.type == 'competitive' and (notAllRank5 and a.rank or a.wreath) == overallProgress.countStart then
-                        gc_setColor(.26 + .1 * sin(t * 2.6 + ceil(i / 2) * 1.2), 0, 0, .626)
+                    -- Bottom rectangle
+                    if hyper then
+                        if overallProgress.countStart == 6 then
+                            gc_setColor(COLOR.rainbow_dark(i / 2.6 - t * 2.6, .42))
+                        elseif a.type == 'competitive' and (notAllRank5 and a.rank or a.wreath) == overallProgress.countStart then
+                            gc_setColor(.26 + .1 * sin(t * 2.6 + ceil(i / 2) * 1.2), 0, 0, .626)
+                        else
+                            gc_setColor(0, 0, 0, .626)
+                        end
                     else
                         gc_setColor(0, 0, 0, .626)
                     end
-                else
-                    gc_setColor(0, 0, 0, .626)
-                end
-                gc_rectangle('fill', 0, 0, 600, 130)
-
-                -- Flashing notice
-                if AchvNotice[a.id] then
-                    gc_setColor(1, 1, 1, .1 + .1 * sin(t * (6.2 + M.VL * 4.2)))
                     gc_rectangle('fill', 0, 0, 600, 130)
-                end
 
-                -- Badge base
-                gc_setColor(1, 1, 1)
-                gc_mDraw(texture.frame[a.rank], 65, 65, 0, .42)
-
-                -- Progress ring
-                if a.progress > 0 then
-                    if colorRev then gc_setColor(COLOR.lR) end
-                    if a.progress < 1 then
-                        gc_stc_setComp()
-                        gc_stc_arc('pie', 65, 65,
-                            ea + -2.0944,
-                            ea + -2.0944 + ka * a.progress,
-                            63, 26)
-                        gc_stc_arc('pie', 65, 65,
-                            ea + 1.0472,
-                            ea + 1.0472 + ka * a.progress,
-                            63, 26)
+                    -- Flashing notice
+                    if AchvNotice[a.id] then
+                        gc_setColor(1, 1, 1, .1 + .1 * sin(t * (6.2 + M.VL * 4.2)))
+                        gc_rectangle('fill', 0, 0, 600, 130)
                     end
-                    gc_mDraw(texture.ring, 65, 65, 0, .42)
-                    gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
-                    gc_stc_stop()
-                end
 
-                -- Glint
-                if a.rank >= 1 then
-                    gc_setBlendMode('add')
-                    gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.1))
-                    gc_mDraw(texture.glint_1, 65, 65, 0, .42)
-                    gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.3))
-                    gc_mDraw(texture.glint_2, 65, 65, 0, .42)
-                    gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.6))
-                    gc_mDraw(texture.glint_3, 65, 65, 0, .42)
-                    gc_setBlendMode('alpha')
-                end
+                    -- Badge base
+                    gc_setColor(1, 1, 1)
+                    gc_mDraw(texture.frame[a.rank], 65, 65, 0, .42)
 
-                -- Icon
-                local slice = texture.iconQuad[a.id]
-                if slice and (a.rank > 0 or a.progress > 0) then
-                    if a.rank > 0 then
-                        gc_setColor(0, 0, 0, .872)
-                    else
-                        gc_setColor(1, 1, 1, .26)
+                    -- Progress ring
+                    if a.progress > 0 then
+                        if colorRev then gc_setColor(COLOR.lR) end
+                        if a.progress < 1 then
+                            gc_stc_setComp()
+                            gc_stc_arc('pie', 65, 65,
+                                ea + -2.0944,
+                                ea + -2.0944 + ka * a.progress,
+                                63, 26)
+                            gc_stc_arc('pie', 65, 65,
+                                ea + 1.0472,
+                                ea + 1.0472 + ka * a.progress,
+                                63, 26)
+                        end
+                        gc_mDraw(texture.ring, 65, 65, 0, .42)
+                        gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
+                        gc_stc_stop()
                     end
-                    if a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
+
+                    -- Glint
+                    if a.rank >= 1 then
+                        gc_setBlendMode('add')
+                        gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.1))
+                        gc_mDraw(texture.glint_1, 65, 65, 0, .42)
+                        gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.3))
+                        gc_mDraw(texture.glint_2, 65, 65, 0, .42)
+                        gc_setColor(1, 1, 1, .1 + .2 * sin(i * 2.6 + t * 2.6))
+                        gc_mDraw(texture.glint_3, 65, 65, 0, .42)
+                        gc_setBlendMode('alpha')
+                    end
+
+                    -- Icon
+                    local slice = texture.iconQuad[a.id]
+                    if slice and (a.rank > 0 or a.progress > 0) then
+                        if a.rank > 0 then
+                            gc_setColor(0, 0, 0, .872)
+                        else
+                            gc_setColor(1, 1, 1, .26)
+                        end
+                        if a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
                             gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, math.pi, .24)
                         else
                             gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
                         end
-                end
+                    end
 
-                -- Wreath
-                if a.wreath > 0 then
-                    gc_setColor(1, 1, 1)
-                    gc_mDraw(texture.wreath[a.wreath], 65, 65, 0, .42)
-                end
+                    -- Wreath
+                    if a.wreath > 0 then
+                        gc_setColor(1, 1, 1)
+                        gc_mDraw(texture.wreath[a.wreath], 65, 65, 0, .42)
+                    end
 
-                -- Credit
-                gc_setColor(colorRev and COLOR.dR or COLOR.LD)
-                gc_printf(A.credit, 65, 113, 130 / .37, 'center', 0, .37, .37, 65 / .37)
+                    -- Credit
+                    gc_setColor(colorRev and COLOR.dR or COLOR.LD)
+                    gc_printf(A.credit, 65, 113, 130 / .37, 'center', 0, .37, .37, 65 / .37)
 
-                -- Tags
-                local x = 600 - 15
-                if A.ex then
-                    gc_mDraw(texture.extra, x, 15, 0, .42)
-                    x = x - 30
-                end
-                if a.hidden then
-                    gc_mDraw(texture.hidden, x, 15, 0, .2)
-                    x = x - 30
-                end
-                if A.type == 'event' then
-                    gc_mDraw(texture.event, x, 15, 0, .2)
-                    x = x - 30
-                end
-                if A.type == 'competitive' then
-                    gc_mDraw(texture.competitive, x, 15, 0, .2)
-                    x = x - 30
-                else
-                    gc_mDraw(texture.unranked, x, 15, 0, .2)
-                    x = x - 30
-                end
+                    -- Tags
+                    local x = 600 - 15
+                    if A.ex then
+                        gc_mDraw(texture.extra, x, 15, 0, .42)
+                        x = x - 30
+                    end
+                    if a.hidden then
+                        gc_mDraw(texture.hidden, x, 15, 0, .2)
+                        x = x - 30
+                    end
+                    if A.type == 'event' then
+                        gc_mDraw(texture.event, x, 15, 0, .2)
+                        x = x - 30
+                    end
+                    if A.type == 'competitive' then
+                        gc_mDraw(texture.competitive, x, 15, 0, .2)
+                        x = x - 30
+                    else
+                        gc_mDraw(texture.unranked, x, 15, 0, .2)
+                        x = x - 30
+                    end
 
-                -- Dev
-                if a.overDev then
-                    if a.id == 'programmer_gamer' or a.id == 'one_of_mine' or a.id == 'ggbw' or a.id == 'perfect_speedrun_plus' or a.id == 'perfectly_balanced' or a.id == 'peasant_revolution' 
+                    -- Dev
+                    if a.overDev then
+                        if a.id == 'programmer_gamer' or a.id == 'one_of_mine' or a.id == 'ggbw' or a.id == 'perfect_speedrun_plus' or a.id == 'perfectly_balanced' or a.id == 'peasant_revolution' 
                         or a.id == 'holy_ascention' or a.id == 'stabilized_entropy' or a.id == 'restrained_collapse' or a.id == 'restored_volition' or a.id == 'disproven_blasphemy' 
                         or a.id == 'solved_paradox' or a.id == 'demystified_grimoire' or a.id == 'restored_eden' or a.id == 'your_too_fast' 
                         or a.id == 'eEX' or a.id == 'eNH' or a.id == 'eMS' or a.id == 'eGV' or a.id == 'eVL' or a.id == 'eDH' or a.id == 'eIN' or a.id == 'eAS' or a.id == 'eDP'
@@ -679,29 +653,29 @@ function scene.draw()
                         else
                             gc_setColor(1, 1, 1, .1)
                         end
-                    gc_mDraw(texture.overDev, 565, 75, 0, .26)
-                end
+                        gc_mDraw(texture.overDev, 565, 75, 0, .26)
+                    end
 
-                -- Texts
-                gc_setColor(AchvData[a.rank].fg2)
-                gc_print(a.score, 130, 35, 0)
-                gc_setColor(colorRev and COLOR.LR or COLOR.L)
-                gc_print(a.name, 130, 7, 0, .7)
-                if a.descWidth < 1050 then
-                    gc_print(a.desc, 130, 77, 0, min(400 / a.descWidth, .4), .4)
-                else
-                    gc_printf(a.desc, 130, 73, 1050, 'left', 0, .4)
-                end
-                gc_setColor(colorRev and COLOR.dR or COLOR.LD)
-                gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
+                    -- Texts
+                    gc_setColor(AchvData[a.rank].fg2)
+                    gc_print(a.score, 130, 35, 0)
+                    gc_setColor(colorRev and COLOR.LR or COLOR.L)
+                    gc_print(a.name, 130, 7, 0, .7)
+                    if a.descWidth < 1050 then
+                        gc_print(a.desc, 130, 77, 0, min(400 / a.descWidth, .4), .4)
+                    else
+                        gc_printf(a.desc, 130, 73, 1050, 'left', 0, .4)
+                    end
+                    gc_setColor(colorRev and COLOR.dR or COLOR.LD)
+                    gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
 
-                -- Hidden covering
-                if M.IN > 0 then
-                    gc_setColor(clr.D)
-                    gc_setAlpha(M.IN * (.3 + .1 * sin(ceil(i / 2) * 1.2 - t * 2.6)))
-                    gc_rectangle('fill', 0, 0, 600, 130)
+                    -- Hidden covering
+                    if M.IN > 0 then
+                        gc_setColor(clr.D)
+                        gc_setAlpha(M.IN * (.3 + .1 * sin(ceil(i / 2) * 1.2 - t * 2.6)))
+                        gc_rectangle('fill', 0, 0, 600, 130)
+                    end
                 end
-            end
                 gc_ucs_back()
             end
         end
@@ -767,6 +741,65 @@ scene.widgetList = {
         sound_hover = 'menutap',
         fontSize = 30, text = "    BACK", textColor = 'DL',
         onClick = function() love.keypressed('escape') end,
+    },
+    WIDGET.new {
+        name = 'zc', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 140, w = 160, h = 60,
+        color = { COLOR.HEX '383838' },
+        fontSize = 30, text = " ZC    ", textColor = 'DL',
+        onClick = function() 
+            love.keypressed('1') 
+            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
+    },
+    WIDGET.new {
+        name = 'zcem', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 200, w = 160, h = 60,
+        color = 'DG',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "ZCEM   ", textColor = { .15, .75, .15 },
+        onClick = function()
+            love.keypressed(tostring(ZCEMpage))
+            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
+    },
+    WIDGET.new {
+        name = 'misc', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 260, w = 160, h = 60,
+        color = 'D',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "MISC   ", textColor = { 1, 1, 1 },
+        onClick = function()
+            love.keypressed(tostring(MISCpage))
+            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
+    },
+    WIDGET.new {
+        name = 'mp2', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
+        color = 'A',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "02MP   ", textColor = { 0, 0, 0 },
+        onClick = function()
+            love.keypressed(tostring(MP2page))
+            maxScroll = max(ceil(((#achvList2MP) - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
+    },
+    WIDGET.new {
+        name = 'mp3', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 380, w = 160, h = 60,
+        color = 'Y',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "03MP   ", textColor = { 0, 0, 0 },
+        onClick = function()
+            love.keypressed(tostring(MP3page))
+            maxScroll = max(ceil(((#achvList3MP) - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
     },
 }
 

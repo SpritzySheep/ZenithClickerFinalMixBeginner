@@ -272,6 +272,7 @@ local GAME = {
     achv_level19capH = nil,
     achv_totalResetCount = nil,
     achv_altFromSurge = nil,
+    uneasyMode = false,
 }
 
 GAME.playing = false
@@ -378,7 +379,8 @@ function GAME.getComboZP(list)
     if m.rMS and m.rGV then zp = zp * 1.2 end
     if m.rEX and m.rVL then zp = zp * 1.4 end
     if m.rDH and m.rIN then zp = zp * 1.8 end
-    if m.rEX and m.rDP then zp = zp * 0.92 end
+    if m.rEX and m.rDP then zp = zp * 0.99 end
+    if m.rDP then zp = zp * 1.75 end
     if (m.rEX or m.eEX) and m.rDP then zp = zp * 0.6 end
     if m.eEX then zp = zp *0.2 end
     if m.eNH then zp = zp *0.55 end
@@ -436,7 +438,7 @@ function GAME.getComboName(list, mode)
 
         -- Super set
         local comboText
-        if not GAME.anyRev and not TABLE.find(list, 'DP') and not STAT.easyName then
+        if not GAME.anyRev and not TABLE.find(list, 'DP') and not CONF.easyName then
             comboText = len == 8 and [["SWAMP WATER"]] or len == 7 and [["SWAMP WATER LITE"]]
             if comboText then
                 fstr = comboText:atomize()
@@ -448,7 +450,7 @@ function GAME.getComboName(list, mode)
         end
 
         -- Named combo
-        local combo = (M.DH == 2 and STAT.easyName and ComboData.gameeEX or M.DH == 2 and ComboData.gameEX or STAT.easyName and ComboData.menu or ComboData.game)[table.concat(STAT.easyName and TABLE.sort(easyList) or TABLE.sort(list), ' ')]
+        local combo = (M.DH == 2 and CONF.easyName and ComboData.gameeEX or M.DH == 2 and ComboData.gameEX or CONF.easyName and ComboData.menu or ComboData.game)[table.concat(CONF.easyName and TABLE.sort(easyList) or TABLE.sort(list), ' ')]
         if combo then
             fstr = combo.name:atomize()
             if URM and M.DH == 2 then
@@ -501,7 +503,7 @@ function GAME.getComboName(list, mode)
         if M.DH == 2 then
             TABLE.shuffle(list)
         else
-            table.sort(STAT.easyName and easyList or list, modNameSorter)
+            table.sort(CONF.easyName and easyList or list, modNameSorter)
             if M.DH == 1 and MATH.roll((#list - 1) / 6.26) then
                 local r1, r2 = rnd(#list), rnd(#list - 1)
                 if r2 >= r1 then r2 = r2 + 1 end
@@ -511,165 +513,33 @@ function GAME.getComboName(list, mode)
 
         local colorModNumber = 1
         local messyText = ""
+        local eINeMSAS = M.IN == -1 and M.MS == -1 and M.AS ~= 0 and not CONF.easyName
+        local modCodes = {'EX', 'NH', 'MS', 'GV', 'VL', 'DH', 'IN', 'AS', 'DP'}
         for i = 1, len - 1 do
-            if M.IN == -1 and M.MS == -1 and M.AS ~= 0 and not STAT.easyName then
-                --psuedocode: goal - get card order from CD[j].initOrder, use that to generate a new index for the MD.textColor  
-                -- forgive me lord for i have sinned        
-                if MD.name[list[i]] == 'expert' then
-                    --MSG('dark', "Current Card: " .. CD[1].initOrder)
-                    colorModNumber = CD[1].initOrder
-                elseif MD.name[list[i]] == 'nohold' then
-                    --MSG('dark', "Current Card: " .. CD[2].initOrder)
-                    colorModNumber = CD[2].initOrder
-                elseif MD.name[list[i]] == 'messy' then
-                    --MSG('dark', "Current Card: " .. CD[3].initOrder)
-                    colorModNumber = CD[3].initOrder
-                elseif MD.name[list[i]] == 'gravity' then
-                    --MSG('dark', "Current Card: " .. CD[4].initOrder)
-                    colorModNumber = CD[4].initOrder
-                elseif MD.name[list[i]] == 'volatile' then
-                    --MSG('dark', "Current Card: " .. CD[5].initOrder)
-                    colorModNumber = CD[5].initOrder
-                elseif MD.name[list[i]] == 'doublehole' then
-                    --MSG('dark', "Current Card: " .. CD[6].initOrder)
-                    colorModNumber = CD[6].initOrder
-                elseif MD.name[list[i]] == 'invisible' then
-                    --MSG('dark', "Current Card: " .. CD[7].initOrder)
-                    colorModNumber = CD[7].initOrder
-                elseif MD.name[list[i]] == 'allspin' then
-                    --MSG('dark', "Current Card: " .. CD[8].initOrder)
-                    colorModNumber = CD[8].initOrder
-                elseif MD.name[list[i]] == 'duo' then
-                    --MSG('dark', "Current Card: " .. CD[9].initOrder)
-                    colorModNumber = CD[9].initOrder
+            if eINeMSAS then 
+                for j = 1, #modCodes do
+                    if MD.name[list[i]] == MD.name[modCodes[j]] then
+                        colorModNumber = CD[j].initOrder
+                    end
                 end
-                if colorModNumber == 1 then
-                    ins(fstr, MD.textColor['EX'])
-                    messyText = "e"
-                elseif colorModNumber == 2 then
-                    ins(fstr, MD.textColor['NH'])
-                    messyText = "h"
-                elseif colorModNumber == 3 then
-                    ins(fstr, MD.textColor['MS'])
-                    messyText = "m"
-                elseif colorModNumber == 4 then
-                    ins(fstr, MD.textColor['GV'])
-                    messyText = "g"
-                elseif colorModNumber == 5 then
-                    ins(fstr, MD.textColor['VL'])
-                    messyText = "v"
-                elseif colorModNumber == 6 then
-                    ins(fstr, MD.textColor['DH'])
-                    messyText = "d"
-                elseif colorModNumber == 7 then
-                    ins(fstr, MD.textColor['IN'])
-                    messyText = "i"
-                elseif colorModNumber == 8 then
-                    ins(fstr, MD.textColor['AS'])
-                    messyText = "a"
-                elseif colorModNumber == 9 then
-                    ins(fstr, MD.textColor['DP'])
-                    messyText = "o"
-                end
-                --ins(fstr, {COLOR.HEX "C29F68FF"})
-                if STAT.easyName then
-                    ins(fstr, MD.adj[easyList[i]] .. " ")
-                else
-                    ins(fstr, MD.adj[list[i]] .. " ")
-                end
-                --ins(fstr, messyText .. MD.adj[list[i]] .. " ")
-                --MSG('dark', "Added mod to quest: " .. MD.name[list[i]])
+                ins(fstr, MD.textColor[modCodes[colorModNumber]])     
             else
-                if STAT.easyName then
-                    ins(fstr, MD.textColor[easyList[i]])
-                else
-                    ins(fstr, MD.textColor[list[i]])
-                end
-                if STAT.easyName then
-                    ins(fstr, MD.adj[easyList[i]] .. " ")
-                else
-                    ins(fstr, MD.adj[list[i]] .. " ")
-                end
+                ins(fstr, MD.textColor[CONF.easyName and easyList[i] or list[i]])
             end
+            ins(fstr, MD.adj[CONF.easyName and easyList[i] or list[i]] .. " ")
         end
-        if M.IN == -1 and M.MS == -1 and M.AS ~= 0 and not STAT.easyName then
-            --ins(fstr, {COLOR.HEX "C29F68FF"})
-            -- forgive me lord for i have sinned yet again
-            if MD.name[list[len]] == 'expert' then
-                --MSG('dark', "Current Card: " .. CD[1].initOrder)
-                colorModNumber = CD[1].initOrder
-            elseif MD.name[list[len]] == 'nohold' then
-                --MSG('dark', "Current Card: " .. CD[2].initOrder)
-                colorModNumber = CD[2].initOrder
-            elseif MD.name[list[len]] == 'messy' then
-                --MSG('dark', "Current Card: " .. CD[3].initOrder)
-                colorModNumber = CD[3].initOrder
-            elseif MD.name[list[len]] == 'gravity' then
-                --MSG('dark', "Current Card: " .. CD[4].initOrder)
-                colorModNumber = CD[4].initOrder
-            elseif MD.name[list[len]] == 'volatile' then
-                --MSG('dark', "Current Card: " .. CD[5].initOrder)
-                colorModNumber = CD[5].initOrder
-            elseif MD.name[list[len]] == 'doublehole' then
-                --MSG('dark', "Current Card: " .. CD[6].initOrder)
-                colorModNumber = CD[6].initOrder
-            elseif MD.name[list[len]] == 'invisible' then
-                --MSG('dark', "Current Card: " .. CD[7].initOrder)
-                colorModNumber = CD[7].initOrder
-            elseif MD.name[list[len]] == 'allspin' then
-                --MSG('dark', "Current Card: " .. CD[8].initOrder)
-                colorModNumber = CD[8].initOrder
-            elseif MD.name[list[len]] == 'duo' then
-                --MSG('dark', "Current Card: " .. CD[9].initOrder)
-                colorModNumber = CD[9].initOrder
+        if eINeMSAS then
+            for j = 1, #modCodes do
+                if MD.name[list[len]] == MD.name[modCodes[j]] then
+                    colorModNumber = CD[j].initOrder
+                end
             end
-            if colorModNumber == 1 then
-                ins(fstr, MD.textColor['EX'])
-                messyText = "e"
-            elseif colorModNumber == 2 then
-                ins(fstr, MD.textColor['NH'])
-                messyText = "h"
-            elseif colorModNumber == 3 then
-                ins(fstr, MD.textColor['MS'])
-                messyText = "m"
-            elseif colorModNumber == 4 then
-                ins(fstr, MD.textColor['GV'])
-                messyText = "g"
-            elseif colorModNumber == 5 then
-                ins(fstr, MD.textColor['VL'])
-                messyText = "v"
-            elseif colorModNumber == 6 then
-                ins(fstr, MD.textColor['DH'])
-                messyText = "d"
-            elseif colorModNumber == 7 then
-                ins(fstr, MD.textColor['IN'])
-                messyText = "i"
-            elseif colorModNumber == 8 then
-                ins(fstr, MD.textColor['AS'])
-                messyText = "a"
-            elseif colorModNumber == 9 then
-                ins(fstr, MD.textColor['DP'])
-                messyText = "o"
-            end
-            if STAT.easyName then
-                ins(fstr, MD.noun[easyList[len]])
-            else
-                ins(fstr, MD.noun[list[len]])
-            end
-            --ins(fstr, messyText .. MD.noun[list[len]])
-            --MSG('dark', "Added mod to quest: " .. MD.name[list[len]])
+            ins(fstr, MD.textColor[modCodes[colorModNumber]])
         else
-            if STAT.easyName then
-                ins(fstr, MD.textColor[easyList[len]])
-            else
-                ins(fstr, MD.textColor[list[len]])
-            end
-            if STAT.easyName then
-                ins(fstr, MD.noun[easyList[len]])
-            else
-                ins(fstr, MD.noun[list[len]])
-            end
+            ins(fstr, MD.textColor[CONF.easyName and easyList[len] or list[len]])
         end
+        ins(fstr, MD.noun[CONF.easyName and easyList[len] or list[len]])
+
         if M.IN > 0 then
             local r = rnd(0, 3)
             for i = 1, #fstr, 2 do
@@ -704,7 +574,7 @@ function GAME.getComboName(list, mode)
         -- Super Set
         if mode == 'button' and GAME.playing then
             local len_noDP = len - (TABLE.find(list, 'DP') and 1 or 0)
-            if len_noDP >= 7 and not STAT.easyName then
+            if len_noDP >= 7 and not CONF.easyName then
                 return len_noDP == 7 and [["SWAMP WATER LITE"]] or [["SWAMP WATER"]]
             end
         else
@@ -732,7 +602,7 @@ function GAME.getComboName(list, mode)
 
         -- Named Combo
         local combo
-        local cmbStr = table.concat(STAT.easyName and GAME.playing and TABLE.sort(easyList) or TABLE.sort(list), ' ')
+        local cmbStr = table.concat(CONF.easyName and GAME.playing and TABLE.sort(easyList) or TABLE.sort(list), ' ')
         if mode == 'record' then
             combo =
                 ComboData.menu[cmbStr] or
@@ -750,9 +620,9 @@ function GAME.getComboName(list, mode)
         else
             combo = (
                 (mode == 'rpc' or not GAME.playing) and ComboData.menu or
-                M.DH == 2 and STAT.easyName and ComboData.gameeEX or
+                M.DH == 2 and CONF.easyName and ComboData.gameeEX or
                 M.DH == 2 and ComboData.gameEX or 
-                STAT.easyName and ComboData.menu or
+                CONF.easyName and ComboData.menu or
                 ComboData.game
             )[cmbStr]
             if combo and GAME.rollCheck then 
@@ -769,12 +639,12 @@ function GAME.getComboName(list, mode)
         end
 
         -- General
-        table.sort(STAT.easyName and GAME.playing and M.DH ~= 2 and mode ~= 'rpc' and easyList or list, modNameSorter)
+        table.sort(CONF.easyName and GAME.playing and M.DH ~= 2 and mode ~= 'rpc' and easyList or list, modNameSorter)
         local str = ""
         for i = 1, len - 1 do 
-            str = str .. (STAT.easyName and GAME.playing and MD.adj[easyList[i]] or MD.adj[list[i]]) .. " " 
+            str = str .. (CONF.easyName and GAME.playing and MD.adj[easyList[i]] or MD.adj[list[i]]) .. " " 
         end
-        return str .. (STAT.easyName and GAME.playing and MD.noun[easyList[len]] or MD.noun[list[len]])
+        return str .. (CONF.easyName and GAME.playing and MD.noun[easyList[len]] or MD.noun[list[len]])
     end
 end
 
@@ -1032,7 +902,7 @@ function GAME.genQuest()
     GAME.gravTimer = false
     GAME.resetCount = 0
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
-    if STAT.stacker and GAME.questStack[1] then
+    if CONF.stacker and GAME.questStack[1] then
         for _, v in next, GAME.questStack[1].combo do CD[v].required = true end
     else
         for _, v in next, GAME.quests[1].combo do CD[v].required = true end
@@ -1278,10 +1148,10 @@ function GAME.easyXPModifiers(xp)
     if M.VL == -1 then
         xp = xp + 1
     end
-    if M.EX == -1 and GAME.rank > 1 and (GAME.rank <= 126 or GAME.dunk or GAME.bigDunk) and not (URM and GAME.comboStr:count('r') == 0) then
-        xp = xp * (1 + (GAME.rank - 1)/xpRankModifier)
-    elseif M.EX == -1 and GAME.rank > 1 and GAME.rank <= 126 then
+    if GAME.uneasyMode and GAME.rank > 1 then
         xp = xp * (1 + (GAME.rank - 1)/(xpRankModifier*3))
+    elseif M.EX == -1 and GAME.rank > 1 and (GAME.dunk or GAME.bigDunk) then
+        xp = xp * (1 + (GAME.rank - 1)/xpRankModifier)
     end
     if GAME.ecloseCard then
         xp = roundUnit(xp * max((1-(GAME.height/1000000)), 0), 0.01)
@@ -1316,8 +1186,8 @@ function GAME.addXP(xp, falseCommit)
     while GAME.xp >= GAME.rank and not GAME.crit do
         GAME.xp = GAME.xp - GAME.rank
         GAME.rank = GAME.rank + 1
-        GAME.xpLockLevel = max(GAME.xpLockLevel + 1, 1)
-        GAME.xpLockTimer = 2 -  max((GAME.rank/100), 1)
+        GAME.xpLockLevel = max(GAME.xpLockLevel - 1, 1)
+        -- GAME.xpLockTimer = 2 -  max((GAME.rank/100), 1)
 
         -- Rank skip
         if GAME.xp >= GAME.rank then
@@ -1689,7 +1559,7 @@ function GAME.showWindup(lv)
     local attempt = 0
     local x, y
     while true do
-        x, y = (62 + 26 * attempt) * MATH.rand(-1, 1), MATH.rand(-20, 20) - (STAT.stacker and GAME.questStack[1] and 70 or 0)
+        x, y = (62 + 26 * attempt) * MATH.rand(-1, 1), MATH.rand(-20, 20) - (CONF.stacker and GAME.questStack[1] and 70 or 0)
         for i = 1, #GAME.windupAnim do
             local w = GAME.windupAnim[i]
             if MATH.distance(x, y, w.x, w.y) < 62 then
@@ -1712,6 +1582,51 @@ function GAME.showWindup(lv)
         y = y,
     }
     ins(GAME.windupAnim, w)
+end
+
+---@author: Trevor Smithy 2026-06-04
+---@param lyricSet table lyric table, see lyric.lua for example
+---@param dx number? X Offset, default is 0
+---@param dy number? Y Offset, default is 0
+---@param timeOffset number? Time offset, in seconds
+function GAME.showLyric(lyricSet, dx, dy, timeOffset)
+    local height = dy
+    local lyric = ''
+    local hlyric = ''
+    local t = love.timer.getTime()
+    local time = BGM.tell() + timeOffset
+    for _, l in next, lyricSet.lyrics do
+        if (time >= l.start and time < l.finish) or l.start2 and (time >= l.start2 and time < l.finish2) then
+            if l.harmony then 
+                hlyric = l.text 
+            else 
+                if l.start2 and time >= l.start2 and l.text2 then
+                    lyric = l.text2
+                else
+                    lyric = l.text
+                end
+            end
+            if l.dyStart then
+                if l.dyFinish then
+                    if l.start2 and time >= l.start2 then
+                        height = height + l.dyStart + (l.dyFinish)*(time-l.start2)/(l.finish2-l.start2)
+                    else
+                        height = height + l.dyStart + (l.dyFinish)*(time-l.start)/(l.finish-l.start)
+                    end
+                else
+                    height = height + l.dyStart
+                end
+            end
+        end
+    end
+    FONT.set(SCN.cur == 'conf' and 30 or lyricSet.fontSize or 45)
+    if lyricSet.color then
+        GC.setColor(lyricSet.color)
+    else
+        GC.setColor(COLOR.rainbow_light(2.6 * t))
+    end
+    GC.mStr(lyric, SCN.cur == 'conf' and 400 or dx or 0, height)
+    GC.mStr(hlyric, SCN.cur == 'conf' and 400 or dx or 0, height - 40)
 end
 
 function GAME.pieceCount()
@@ -1741,6 +1656,10 @@ end
 function GAME.awardKO(id1, id2, valid, toOppo)
     if GAME.playing and valid then 
         GAME.addHeight((M.EX == 2 and 10 or 30) * .26 * GAME.attackMul) 
+        if id2:match("MINA_THE_HOLLOWER") and GAME.playing then 
+            IssueSecret("mina")
+            MSG('dark',"YOU DID A THING!")
+         end
     end
     ins(GAME.koAnim, 1, {
         id1 = GC.newText(FONT.get(30), id1),
@@ -1856,52 +1775,15 @@ function GAME.upFloor()
                 IssueAchv('blazing_speed')
                 GAME.finishTera = true
             end
-            if GAME.petaspeed then
-                IssueSecret('peta')
-                GAME.finishTera = true
-            end
-            if GAME.exaspeed then
-                IssueSecret('exa')
-                GAME.finishTera = true
-            end
-            
+                        if GAME.petaspeed then IssueAchv('peta') end
+            if GAME.exaspeed then IssueAchv('exa') end
+            if GAME.zettaspeed then IssueAchv('zetta') end
+            if GAME.yottaspeed then IssueAchv('yotta') end
+            if GAME.ronnaspeed then IssueAchv('ronna') end
+            if GAME.quettaspeed then IssueAchv('quetta') end
+            if not GAME.smithyMode then GAME.stopTeraspeed('f10') end -- don't stop my cover until we get to fomg
 
-            if GAME.petaspeed then
-                IssueAchv('peta')
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load()
-            end
-            if GAME.exaspeed then
-                IssueAchv('exa') 
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load()
-            end
-            if GAME.zetaspeed then
-                IssueAchv('zetta') 
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load()
-            end
-            if GAME.yottaspeed then
-                IssueAchv('yotta') 
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load()
-            end
-            if GAME.ronnaspeed then
-                IssueAchv('ronna')
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load() 
-            end
-            if GAME.quettaspeed then
-                IssueAchv('quetta')
-                SCN.scenes.achv.unload()
-                SCN.scenes.achv.load() 
-            end
-            if not GAME.smithyMode then 
-                -- don't stop my cover until we get to fomg
-                GAME.stopTeraspeed('f10')
-            end
-
-            local setStr = ((GAME.anyUltra or (URM and M.EX == -1 and GAME.comboStr:count('r') == 0)) and 'u' or '') .. GAME.comboStr
+            local setStr = ((GAME.anyUltra or GAME.uneasyMode) and 'u' or '') .. GAME.comboStr
             local t = BEST.speedrun[setStr]
             SFX.play('applause', GAME.time < t and t < 1e99 and 1 or .42)
             if GAME.time < t then
@@ -1949,31 +1831,30 @@ function GAME.upFloor()
             end
         end
         local comboName
-        if not STAT.easyName then
+        if not CONF.easyName then
             comboName = GAME.getComboName(GAME.getHand(true), 'button')
         else
-            STAT.easyName = false
+            CONF.easyName = false
             comboName = GAME.getComboName(GAME.getHand(true), 'button')
-            STAT.easyName = true
+            CONF.easyName = true
         end
-        if (URM and M.EX == -1 and GAME.comboStr:count('r') == 0) then
-            --MSG("bright", comboName)
-            if comboName == 'EASY' then SubmitAchv('ueEX', roundTime)
-            elseif comboName == 'EASY MODERATION' and GAME.glassCard then
+        if GAME.uneasyMode then
+            if GAME.comboStr == 'eEX' then SubmitAchv('ueEX', roundTime)
+            elseif GAME.comboStr == 'eEXeNH' and GAME.glassCard then
                 SubmitAchv('ueEXeNH', roundTime)
-            elseif comboName == 'EASY TIDINESS' and GAME.slowmo then
+            elseif GAME.comboStr == 'eEXeMS' and GAME.slowmo then
                 SubmitAchv('ueEXeMS', roundTime)
-            elseif comboName == 'EASY LIFT' and GAME.slowmo then
+            elseif GAME.comboStr == 'eEXeGV' and GAME.slowmo then
                 SubmitAchv('ueEXeGV', roundTime)
-            elseif comboName == 'EASY TRANQUILITY' and GAME.closeCard then
+            elseif GAME.comboStr == 'eEXeVL' and GAME.closeCard then
                 SubmitAchv('ueEXeVL', roundTime)
-            elseif comboName == 'EASY SALVATION' and GAME.nightcore then
+           elseif GAME.comboStr == 'eEXeDH' and GAME.nightcore then
                 SubmitAchv('ueEXeDH', roundTime)
-            elseif comboName == 'EASY VISIBILITY' and GAME.invisCard then
+            elseif GAME.comboStr == 'eEXeIN' and GAME.invisCard then
                 SubmitAchv('ueEXeIN', roundTime)
-            elseif comboName == 'EASY SPIN' and GAME.fastLeak then
+            elseif GAME.comboStr == 'eEXeAS' and GAME.fastLeak then
                 SubmitAchv('ueEXeAS', roundTime)
-            elseif comboName == 'EASY FRIEND' and GAME.invisUI then
+            elseif GAME.comboStr == 'eEXeDP' and GAME.invisUI then
                 SubmitAchv('ueEXeDP', roundTime)
             end
         end
@@ -2196,8 +2077,7 @@ function GAME.refreshModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
-    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
-    if uneasyMode then
+    if GAME.uneasyMode then
         for i = 1, #hand do
             if hand[i] == 'eEX' then hand[i] = 'ueEX' end
         end
@@ -2316,147 +2196,50 @@ function GAME.anim_uneasyModIcon()
 end
 
 --------------------------------------------------------------
+function GAME.secretComboName(comboStr)
+    for _, c in next, (GAME.anyUltra and Secret.combos.ultra or GAME.uneasyMode and Secret.combos.uneasy or Secret.combos.other) do
+        if GAME.uneasyMode then IssueAchv('uneasy') end
+        local failed = false
+        if comboStr == c.set then
+            if c.checks then
+                for i = 1, #c.checks, 2 do
+                    if GAME[c.checks[i]] ~= c.checks[i+1] then failed = true end
+                end
+            end
+            if not failed then
+                if c.customUltraCombo then GAME.customUltraCombo = true end
+                if c.peasantRevolution then GAME.peasantRevolution = true end
+                if c.forceRev and GAME.pieceCount() < 2 then GAME.forceRev = true end
+                if c.name == '"BAD TIME"' then
+                    SCN.scenes.tower.widgetList.reset:setVisible(false)
+                    SCN.scenes.tower.widgetList.help:setVisible(false)
+                    SCN.scenes.tower.widgetList.help2:setVisible(false)
+                    SCN.scenes.tower.widgetList.daily:setVisible(false)
+                end
+                return c.name
+            end
+        end
+    end
+end
 
 function GAME.refreshCurrentCombo()
         GAME.forceRev = false
     local hand = GAME.getHand(not GAME.playing)
     local comboName = GAME.getComboName(hand, 'button')
-    if not GAME.playing and (M.EX == -1 and M.VL == -1 and M.AS == -1 and (M.NH == 0 and M.MS == 0 and M.GV == 0 and M.DH == 0 and M.IN == 0 and M.DP == 0)) then GAME.smithyMode = true else 
-        if not GAME.playing then GAME.smithyMode = false end
+    if not GAME.playing and GAME.anyUltra and #hand > 0 then
+        comboName = GAME.ultrafyComboName(comboName)
     end
     local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
     GAME.peasantRevolution = false
-    -- SECRET COMBOS
-    if comboName == "EASY BELIEVED DECEPTIVE TRANQUIL ASCENDANT DAMNED COLLAPSED PIERCING SPIN" then
-        comboName = '"THE OVERWHELMED SMITHY"'
-    elseif comboName == "EASY INVISIBLE MESSY TRANQUIL HOLDLESS DOUBLE HOLE GRAVITY SPUN DUO" then
-        comboName = '"THE SWAMPED SMITHY"'
-    end
-    --if comboName == "DECEPTIVE TYRANNY" then
-    --    comboName = '"THE HOLLOWER"'
-    --    GAME.customUltraCombo = true
-    --end
-    if not GAME.playing and GAME.anyUltra and #hand > 0 then
-           -- SPECIAL - Trevor Smithy
-        if --[[comboName == '"PEASANT REVOLUTION"' or]] comboName == '"HOLY ASCENSION"' or comboName == '"STABILIZED ENTROPY"'
-        or comboName == '"RESTRAINED COLLAPSE"' or comboName == '"RESTORED VOLITION"' or comboName == '"DISPROVEN BLASPHEMY"'
-        or comboName == '"SOLVED PARADOX"' or comboName == '"DEMYSTIFIED GRIMOIRE"' or comboName == '"LASTING EDEN"' then  
-            GAME.customUltraCombo = true
-        elseif comboName == '"SUPER HARD BATH WATER"' or comboName == '"SUPER HARD BATH WITH A FRIEND"' then
-            comboName = comboName:gsub("SUPER", "ULTRA", 1)
-            GAME.customUltraCombo = false
-            if comboName == '"ULTRA HARD BATH WATER"' then
-                GAME.peasantRevolution = true
-                GAME.customUltraCombo = true
-            end
-            if comboName == "DECEPTIVE TYRANNY" then
-                comboName = '"THE HOLLOWER"'
-                GAME.customUltraCombo = true
-            end
-            if comboName == '"ULTRA HARD BATH WATER"' then
-                GAME.peasantRevolution = true
-                GAME.customUltraCombo = true
-            end
-        elseif comboName == '"BATH WITH AN EX"' then
-            comboName = '"BATH WITH A STALKER"'
-            GAME.customUltraCombo = false
-        elseif comboName == '"PATIENCE IS A VIRTUE"' then
-            if GAME.enightcore then
-                comboName = [["BUT IT ISN'T ONE OF MINE"]]
-                GAME.customUltraCombo = true
-            else
-                comboName = [["PATIENCE IS A VIRTUE..."]]
-                GAME.customUltraCombo = false
-            end
-        elseif comboName == '"THE OVERWHELMED SMITHY"' then
-            comboName = '"THE PARALYZED SMITHY"'
-        elseif GAME.badTime and not GAME.badTimeStarted then
-            SCN.scenes.tower.widgetList.reset:setVisible(false)
-            SCN.scenes.tower.widgetList.help:setVisible(false)
-            SCN.scenes.tower.widgetList.help2:setVisible(false)
-            SCN.scenes.tower.widgetList.daily:setVisible(false)
-            comboName = '"BAD TIME"'
-            GAME.customUltraCombo = true
-        -- SECRET ULTRA COMBOS (i.e. no Rev equivalent)
-        elseif comboName == 'VISIBLE TIDY MODERATE SAVED LIFTED FRIENDLY TYRANNICAL SPIN' and GAME.ecloseCard then
-            comboName = '"ULTRA HARD CRAMPED BATH WITH A FRIEND"'
-            GAME.customUltraCombo = false
-        elseif comboName == 'EASY VISIBLE TIDY ASCENDANT DAMNED LIFT' then
-            comboName = '"BLASPHEMOUS ASCENSION"'
-            GAME.forceRev = GAME.pieceCount() < 2
-            RefreshBGM()
-            GAME.customUltraCombo = true
-        elseif comboName == 'EASY BELIEVED DECEPTIVE MODERATE FRIENDLY SPIN' then
-            comboName = '"PARADOXICAL ENTROPY"'
-            GAME.forceRev = GAME.pieceCount() < 2
-            RefreshBGM()
-            GAME.customUltraCombo = true
-        elseif comboName == 'EASY TRANQUIL MODERATE OMNI-SPIN COLLAPSED FRIEND' then
-            comboName = '"DEPRAVED GALAXY"'
-            GAME.forceRev = GAME.pieceCount() < 2
-            RefreshBGM()
-            GAME.customUltraCombo = true
-            elseif comboName == 'DECEPTIVE TYRANNY' then
-            comboName = '"THE HOLLOWER"'
-            GAME.forceRev = GAME.pieceCount() < 2
-            RefreshBGM()
-            GAME.customUltraCombo = true
-        elseif comboName == 'EASY TIDY DESPERATE SAVED LIFTED HEARTACHE' then
-            comboName = '"SEVERED VOLITION"'
-            GAME.forceRev = GAME.pieceCount() < 2
-            RefreshBGM()
-            GAME.customUltraCombo = true
+    local secretComboName
+    if not GAME.playing then secretComboName = GAME.secretComboName(table.concat(TABLE.sort(hand))) end
+    if secretComboName then comboName = secretComboName end
+    if GAME.uneasyMode and comboName:count('BATH') == 1 and comboName:count('HARD') == 0 then
+        if M.DP == 0 or comboName == '"GAMER GIRL BATH WATER"' then
+            comboName = comboName:gsub("WATER", "WATER?", 1)
         else
-            GAME.customUltraCombo = false
-        ---@cast comboName string
-        comboName = comboName:gsub("([^\"])", "ULTRA %1", 1)
+           comboName = comboName:gsub("FRIEND", "FRIEND?", 1)
         end
-    else
-        if comboName == '"PATIENCE IS A VIRTUE"' and GAME.enightcore then
-            comboName = [["BUT IT ISN'T ONE OF MINE"]]
-        elseif uneasyMode then -- if Uneasy Mode
-            IssueAchv('uneasy')
-            if comboName == 'EASY HOLDLESS ALL-SPIN' then
-                comboName = '"THE PIXEL ARTIST"' -- Credit: LovelyStar
-            elseif comboName == '"THE SWAMPED SMITHY"' then
-                comboName = '"THE BOGGED-DOWN SMITHY"'
-            elseif comboName == '"BATH WATER"' or comboName == '"BATH WITH A FRIEND"' then
-                comboName = comboName:gsub("BATH", "HARD BATH", 1)
-            elseif comboName:count('BATH') == 1 then
-                if M.DP == 0 or comboName == '"GAMER GIRL BATH WATER"'then
-                    comboName = comboName:gsub("WATER", "WATER?", 1)
-                else
-                    comboName = comboName:gsub("FRIEND", "FRIEND?", 1)
-                end
-            elseif comboName:count('EASY') == 1 then 
-                comboName = comboName:gsub("EASY", "UNEASY", 1)
-            elseif not GAME.playing then
-                if GAME.smithyMode then
-                    comboName = comboName:gsub("PRO G", "UNEASY PRO G", 1)
-                elseif comboName == '"SPENDING SPREE"' and GAME.glassCard then
-                    comboName = '"PROFLIGACY"'
-                elseif comboName == '"BLOCK FEAST"' and GAME.slowmo then
-                    comboName = '"DIOGENES SYNDROME"'
-                elseif comboName == '"COMFY BED"' and GAME.slowmo then
-                    comboName = '"DYSANIA"'
-                elseif comboName == '"PROFESSIONAL WEIGHTLIFTER"' and GAME.closeCard then
-                    comboName = '"SUBLUXATION"'
-                elseif comboName == '"HEAVEN"' and GAME.nightcore then
-                    comboName = '"LIMBO"'
-                elseif comboName == '"PERFECT VISION"' and GAME.invisCard then
-                    comboName = '"PRESBYOPIA"'
-                elseif comboName == '"GAMING ADDICT"' and GAME.fastLeak then
-                    comboName = '"CARPAL TUNNEL"'
-                elseif comboName == '"BEST FRIENDS"' and GAME.invisUI then
-                    comboName = '"PROSOPAGNOSIA"'
-                elseif comboName == '"GOD GAMER"' then
-                    comboName = '"THE GAMER TRINITY"'
-                else 
-                    comboName = comboName:gsub("([^\"])", "UNEASY %1", 1)
-                end 
-            end
-        end
-        GAME.customUltraCombo = false 
     end
     TEXTS.mod:set(comboName)
     if not GAME.playing then
@@ -2544,7 +2327,7 @@ function GAME.unlockAll()
 end
 
 function GAME.refreshPBText()
-    local setStr = ((GAME.anyUltra or (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)) and 'u' or '') .. table.concat(TABLE.sort(GAME.getHand(true)))
+    local setStr = ((GAME.anyUltra or GAME.uneasyMode) and 'u' or '') .. table.concat(TABLE.sort(GAME.getHand(true)))
     local height = BEST.highScore[setStr]
     if height == 0 then
         TEXTS.pb:set("No score yet")
@@ -2639,9 +2422,16 @@ function GAME.refreshEasy()
         end
     end
 end
+
+function GAME.refreshUneasy()
+    GAME.refreshRev()
+    GAME.uneasyMode = URM and M.EX == -1 and not GAME.anyRev
+    return GAME.uneasyMode
+end
 --
 
 function GAME.refreshUltra()
+    GAME.refreshUneasy()
     GAME.anyUltra = URM and GAME.anyRev
 end
 
@@ -2652,7 +2442,7 @@ function GAME.refreshLifeState()
     if hp == GAME.fullHealth then
         newState = 'safe'
     else
-        local dangerDmg = max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime, STAT.stacker and GAME.dmgWrong * (#GAME.questStack-25)/10 or 0)
+        local dangerDmg = max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime, CONF.stacker and GAME.dmgWrong * (#GAME.questStack-25)/10 or 0)
         newState = hp <= dangerDmg and 'danger' or 'safe'
     end
     if oldState ~= newState then
@@ -2956,10 +2746,6 @@ function GAME.commit(auto, falseCommit)
             SFX.play('shatter', 1)
             GAME.bigDunk = true
         end
-        if not falseCommit then
-            GAME.alleyoopCheck = false
-            GAME.slamDunkCheck = false
-        end
     end
 
     if stackCorrect and not falseCommit then -- if stackerMode then
@@ -3033,7 +2819,7 @@ function GAME.commit(auto, falseCommit)
         GAME.questTime = 0
         GAME.gravTimer = GAME.gravDelay
         for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
-        if STAT.stacker and GAME.questStack[1] then
+        if CONF.stacker and GAME.questStack[1] then
             for _, v in next, GAME.questStack[1].combo do CD[v].required = true end
         else
             for _, v in next, GAME.quests[1].combo do CD[v].required = true end
@@ -3439,6 +3225,16 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
         attack = MATH.roundRnd(attack)
 
         
+        if not (GAME.DPlock or falseCommit) then
+            local kc = attack == 0 and 0 or dp and 6 or 1
+            if dblCorrect then kc = kc * 2 end
+            kc = kc + max(surge - 260 / surge, 0)
+            if oldAllyHP == 0 and M.DP ~= -1 then kc = kc / 2 end
+            kc = kc * (GAME.bigDunk and 9 or GAME.dunk and 3 or 1)
+            if CONF.stacker then kc = kc * (comboXPMul/(1 + (#GAME.questStack)/4))/2 end --Yes, i know that AttackMul would be more correct here, but you get way too many kills lol
+            if GAME.badTime then kc = kc / 3 end
+            GAME.koCharge = GAME.koCharge + kc
+        end
 
         if not falseCommit then
         GAME.incrementPrompt('send', attack)
@@ -3446,19 +3242,12 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
         GAME.totalSurge = GAME.totalSurge + surge
         end
 
+        if GAME.DPlock then attack = min(attack, URM and oldAllyHP * 2.6 or oldAllyHP * 4) end
+        if attack > 0 and not falseCommit then GAME.addHeight(attack * GAME.attackMul * comboAttackMul / (1 + (#GAME.questStack)/4) / (GAME.badTime and 3 or 1), false, oldAllyHP > 0) end
+
         
         if not falseCommit then
-            if GAME.DPlock then attack = min(attack, URM and oldAllyHP * 2.6 or oldAllyHP * 4) end
-        if attack > 0 then GAME.addHeight(attack * GAME.attackMul, false, oldAllyHP > 0) 
-        if not GAME.DPlock then
-            local kc = attack == 0 and 0 or 1
-            if dblCorrect then kc = kc * 2 end
-            kc = kc + max(surge - 260 / surge, 0)
-            if oldAllyHP == 0 then kc = kc / 2 end
-            GAME.koCharge = GAME.koCharge + kc
-            --MSG('dark', GAME.koCharge .. " / 26")
-        end
-        end
+        
             GAME.addXP((attack + xp) * comboXPMul)
                 rnad = MATH.rand(0,100)
             if rnad > 90 then 
@@ -3552,10 +3341,10 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
-                if GAME.comboStr == 'eEXeMS' and not URM and not STAT.stacker then 
+                if GAME.comboStr == 'eEXeMS' and not URM and not CONF.stacker then 
                     SubmitAchv('quest_feast', GAME.roundHeight)
                 end
-                if GAME.comboStr == 'EXeDHeNH' and not STAT.stacker then
+                if GAME.comboStr == 'EXeDHeNH' and not CONF.stacker then
                     --MSG('dark', "EMPEROR_DEVELOPMENT" .. GAME.rank == GAME.peakRank and GAME.rank + (GAME.xp/((GAME.rank+1))) or GAME.peakRank)
                     SubmitAchv('emperor_development', GAME.rank == GAME.peakRank and GAME.rank + (GAME.xp/((GAME.rank+1))) or GAME.peakRank) 
                 end
@@ -3588,6 +3377,11 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
         end
 
         if M.MS == 1 and GAME.floor >= 10 and GAME.totalQuest % 40 == 0 then GAME.readyShuffle(4) end
+    
+        if (GAME.dunk or GAME.bigDunk) and not stackCorrect then
+            GAME.dunk = false
+            GAME.bigDunk = false
+        end
     else
         if GAME.comboSFX > 3 then
             SFX.play('combobreak')
@@ -3607,7 +3401,7 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
             end
         end
         -- Stacker Mode - push to stack
-        if #hand == 0 and STAT.stacker and not auto then
+        if #hand == 0 and CONF.stacker and not auto then
             ins(GAME.questStack, 1, {combo = GAME.quests[1].combo, name = GC.newText(FONT.get(70), GAME.getComboName(TABLE.copy(GAME.quests[1].combo), 'ingame')), y = 330, k = 1, a = 1,})
             rem(GAME.quests, 1)
             GAME.genQuest()
@@ -3669,7 +3463,6 @@ function GAME.start()
     end
     if URM and M.VL == 2 and not UltraVlCheck('start') then return end
     TASK.removeTask_code(Task_MusicEnd)
-    MusicPlayer = false
 
     GAME.omega = false
     GAME.mars = false
@@ -3689,7 +3482,6 @@ function GAME.start()
     GAME.smithyMode = false
     GAME.OSPActivated = false
     GAME.finalFatigueOSPActivated = false
-    GAME.teraComplete = false
     GAME.teraLostHeight = 0
     GAME.achv_bestFriendQuest = 0
     GAME.achv_shamelessCashgrabQuest = 0
@@ -3714,7 +3506,7 @@ function GAME.start()
         GAME.badTimeStarted = true
         GAME.fallout = false
     end
-    if STAT.stacker then
+    if CONF.stacker then
         SCN.scenes.tower.widgetList.start.text = ''
         SCN.scenes.tower.widgetList.start:reset()
     end
@@ -3722,7 +3514,7 @@ function GAME.start()
 
     local attackMulMod = 1
     if GAME.eglassCard then attackMulMod = 0.5 end
-    GAME.attackMul = (GAME.isUltraRun and .62 or (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and 0.33 or 1) * attackMulMod
+    GAME.attackMul = (GAME.isUltraRun and .62 or GAME.uneasyMode and 0.33 or 1) * attackMulMod
     -- Trevor Smithy
     GAME.bonusRecoveryHealth = 0
     local slowMo = GAME.eslowmo and 0.5 or 0
@@ -3981,7 +3773,7 @@ function GAME.finish(reason)
         k.valid = false
     end
     
-    if STAT.stacker then
+    if CONF.stacker then
         local W = SCN.scenes.tower.widgetList.start
         W.text = M.DH ~= 0 and "COMMENCE" or "START"
         W:reset()
@@ -4068,11 +3860,11 @@ end
         IssueAchv('multiple_pieces')
     end
 
-    if M.DH == 2 and STAT.easyName then
+    if M.DH == 2 and CONF.easyName then
         IssueAchv('easy_name')
     end
 
-    if GAME.height >= 825000 and STAT.imperial then
+    if GAME.height >= 825000 and CONF.imperial then
         IssueAchv('im_gonna_be')
     end
 
@@ -4165,7 +3957,7 @@ end
 
         -- Easy Mode Version for records
         if not GAME.multiplePiecesActive then
-            if not STAT.imperial then
+            if not CONF.imperial then
                 TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
             else
                 TEXTS.easyModeVersion:set({ COLOR.LL, ("%.1fm"):format(GAME.roundHeight) })
@@ -4237,7 +4029,7 @@ end
 
         -- Best
         local hand = GAME.getHand(true)
-        local setStr = ((GAME.anyUltra or (URM and M.EX == -1 and GAME.comboStr:count('r') == 0)) and 'u' or '') .. GAME.comboStr
+         local setStr = ((GAME.anyUltra or GAME.uneasyMode) and 'u' or '') .. GAME.comboStr
         local oldPB = BEST.highScore[setStr]
         if GAME.roundHeight > oldPB then
             BEST.highScore[setStr] = GAME.roundHeight
@@ -4252,7 +4044,7 @@ end
                     size = GAME.comboMP == 18 and 2.6 or 1.626
                     duration = 12.6
                 else
-                    t = ((GAME.anyUltra or (URM and M.EX == -1 and GAME.comboStr:count('r') == 0)) and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
+                    t = ((GAME.anyUltra or GAME.uneasyMode) and "U-" or GAME.anyRev and "R-" or "") .. (#hand == 1 and "MOD" or "COMBO") .. " MASTERED"
                     size = 2.26
                     color = 'lC'
                     duration = 6.2
@@ -4280,17 +4072,23 @@ end
         local resStr = {}
         --for i = 1, 7 do
         -- Trevor Smithy
-        if STAT.stacker then
+        if CONF.stacker then
             TABLE.append(resStr, {COLOR.dI, "S"})
         end
-        if (M.EX == -1 and GAME.comboStr:count('r') == 0 and URM) or GAME.badTime then
+        if GAME.uneasyMode or GAME.badTime then
             TABLE.append(resStr, {COLOR.DR, "U"})
+        end
+        if STAT.ExtraSpeed  then
+            TABLE.append(resStr, {COLOR.A, "A"})
+        end
+        if STAT.MouseGirl  then
+            TABLE.append(resStr, {COLOR.M, "M"})
         end
         for i = 1, #PieceData - 1 do
             if GAME[PieceData[i].id] then TABLE.append(resStr, PieceData[i].text) end
         end
         if #resStr > 0 then ins(resStr, " ") end
-        if STAT.imperial then
+        if CONF.imperial then
             local height = GAME.height
             height = height * 3.2
             local miles = 0
@@ -4826,6 +4624,7 @@ function GAME.update(dt)
     -- Timers
     --STAT.srTimer_game = STAT.srTimer_game + dt
     local timerMulMod = 1 * (GAME.eslowmo and not GAME.badTime and 0.75 or 1) * (GAME.ecloseCard and not GAME.badTime and 2 or 1)
+    -- STAT.srTimer_game = STAT.srTimer_game + dt
     GAME.time = GAME.time + dt * (GAME.timerMul * timerMulMod)
     local r = min(GAME.rank, 62)
     GAME.rankTimer[r] = GAME.rankTimer[r] + dt
@@ -4851,11 +4650,12 @@ function GAME.update(dt)
         GAME.comboBounceTime = 0
     end
 
-    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
+    
     if ((GAME.slowmo and GAME.time >= 2.6) or (not GAME.slowmo and GAME.time >= 1)) and not GAME.uneasyModIconSelected then
-        if uneasyMode and #GAME.getHand(true) == 2 then
-            if PieceSFXID == 1 and M.DH == -1 or PieceSFXID == 2 and (M.MS == -1 or M.GV == -1) or PieceSFXID == 3 and M.NH == -1
-            or PieceSFXID == 4 and M.AS == -1 or PieceSFXID == 5 and M.DP == -1 or PieceSFXID == 6 and M.IN == -1 or PieceSFXID == 7 and M.VL == -1 then
+        if GAME.uneasyMode and #GAME.getHand(true) == 2 then
+            local p = GAME.pieceEffectID
+            if p == 1 and M.DH == -1 or p == 2 and (M.MS == -1 or M.GV == -1) or p == 3 and M.NH == -1
+            or p == 4 and M.AS == -1 or p == 5 and M.DP == -1 or p == 6 and M.IN == -1 or p == 7 and M.VL == -1 then
                 TASK.new(GAME.anim_uneasyModIcon)
             end
         end
@@ -4937,12 +4737,12 @@ function GAME.update(dt)
             GAME.maxQuestSize = GAME.maxQuestSize + 1
             SFX.play('warning', 1)
         end
-        if GAME.time >= 780 and GAME.maxQuestSize < (M.NH == 2 and 7 or 6) and M.NH >= 1 and STAT.easyName then
+        if GAME.time >= 780 and GAME.maxQuestSize < (M.NH == 2 and 7 or 6) and M.NH >= 1 and CONF.easyName then
             GAME.maxQuestSize = GAME.maxQuestSize + 1
             SFX.play('warning', 1)
         end
-        -- game.time >= 840 = 8 mod if stat.easyName, rDH, rNH and eT
-        if GAME.time >= 885 and GAME.maxQuestSize < 9 and M.NH == 2 and STAT.easyName then
+        -- game.time >= 840 = 8 mod if CONF.easyName, rDH, rNH and eT
+        if GAME.time >= 885 and GAME.maxQuestSize < 9 and M.NH == 2 and CONF.easyName then
             GAME.maxQuestSize = GAME.maxQuestSize + 1
         end
     end
@@ -4973,7 +4773,7 @@ function GAME.update(dt)
 
     -- Height change
     -- Trevor Smithy
-    local passiveClimbSpeedMod = (GAME.badTime and -1 + (-1 * GAME.attackMul)) or (GAME.enightcore and 2 or 1) * (GAME.eglassCard and 8 or 1) * (GAME.slowmo and uneasyMode and 1.26 or 1) * 1 --if uneasy, slightly counter slowmo's reduced passive climb speed
+    local passiveClimbSpeedMod = (GAME.badTime and -1 + (-1 * GAME.attackMul)) or (GAME.enightcore and 2 or 1) * (GAME.eglassCard and 8 or 1) * (GAME.slowmo and GAME.uneasyMode and 1.26 or 1) * 1 --if uneasy, slightly counter slowmo's reduced passive climb speed
     local releaseHeight = GAME.heightBuffer
     GAME.heightBuffer = max(MATH.expApproach(GAME.heightBuffer, 0, dt * 6.3216), GAME.heightBuffer - 6000 * dt)
     releaseHeight = releaseHeight - GAME.heightBuffer
@@ -4984,16 +4784,13 @@ function GAME.update(dt)
 
     if not GAME.DPlock then
         if M.EX == 2 then
+            if GAME.eglassCard then
+                GAME.height = GAME.height + GAME.rank / 4 * (passiveClimbSpeedMod * 0.6) * dt * (GAME.einvisUI and 1 or icLerp(0.5, 3, Floors[GAME.floor].top - GAME.height))
+            end
             if not URM then
-                GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20
-                if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
-                end
+                GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20  
                 GAME.height = max(GAME.height, Floors[GAME.floor - 1].top)
             else
-                if GAME.eglassCard then
-                    GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod*0.6 * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
-                end
                 if GAME.negFloor > 0 then
                     if GAME.negFloor >= 2 then
                         GAME.height = min(GAME.height, NegFloors[GAME.negFloor - 1].bottom)
@@ -5006,12 +4803,13 @@ function GAME.update(dt)
                     end
                     if GAME.height < NegFloors[GAME.negFloor].bottom and not GAME.einvisUI then GAME.downFloor() end
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
-                if GAME.height <= -1650 and GAME.badTime and BgmPlaying ~= "fomg" then
-                    PlayBGM('fomg', true)
-                end
-                if GAME.height <= -1800 and GAME.badTime and not STAT.greenClicker then 
-                    STAT.greenClicker = true 
-                    MSG("bright", "YOU DID A THING!")
+                -- Trevor Smithy (Bad Time)
+                if GAME.badTime then
+                    if GAME.height <= -1650 and BgmPlaying ~= "f10" then PlayBGM('f10', true) end
+                    if GAME.height <= -1800 and not STAT.greenClicker then 
+                        STAT.greenClicker = true 
+                        MSG("bright", "YOU DID A THING!")
+                    end
                 end
             end
         else

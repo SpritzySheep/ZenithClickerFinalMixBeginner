@@ -54,7 +54,8 @@ end
 ---@field rank? 'floor' | fun(score):number
 ---@field type? 'competitive' | 'unranked' | 'issued' | 'event'
 ---@field hide? fun():boolean
-local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc)
+---@field mod string?
+local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc, mod, typo)
         return {
             id = id,
             name = name,
@@ -62,6 +63,8 @@ local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc)
             quote = quote,
             rank = rankFunc,
             hide = hideFunc or FALSE,
+            mod = mod,
+            type = typo,
         }
     end
 ---@type Map<Achievement>
@@ -1490,7 +1493,7 @@ local d = {
         hide = TRUE,
         type = 'issued',
     },
-    { title = "Easy Mode Ex-Vanilla" },
+    { title = "Easy Mode Ex-Vanilla", mod = "ZCEM"},
     { -- patience_is_a_virtue
         ex = true,
         id = 'patience_is_a_virtue',
@@ -1499,8 +1502,9 @@ local d = {
         quote = [[Opportunities always favor those who are prepared and wait.]],
         credit = "@The_111thBlitzer",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
+        mod = "ZCEM",
     },
-    { title = "Easy Mode (v1.0)" },
+    { title = "Easy Mode (v1.0)", mod = "ZCEM" },
     { -- Programmer & Pro Gamer
         ex = true,
         id = 'programmer_gamer',
@@ -1509,6 +1513,7 @@ local d = {
         quote = [["WAH-BAAM!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- one_of_mine
@@ -1518,6 +1523,7 @@ local d = {
         quote = [["Ain't nobody got time for that!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- GGBW
@@ -1527,6 +1533,7 @@ local d = {
         quote = [["If only we could be together for real..."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- perfect_speedrun_plus
@@ -1539,6 +1546,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f quests/s", 864 / time) end,
         rank = numberRankRev(905, 800, 695, 590, 485, 380, 300),
         credit = "@TrevorSmithy",
+        mod = "ZCEM",
          
     },
     { -- perfectly_balanced
@@ -1548,6 +1556,7 @@ local d = {
         quote = [["As all things should be."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- uEX
@@ -1557,6 +1566,7 @@ local d = {
         quote = [["This psychotic sovereign shall rule no longer. All of us must fight!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        mod = "ZCEM",
          
     },
     { -- uNH
@@ -1566,6 +1576,7 @@ local d = {
         quote = [["The key to ascending is taking the quick and simple path, no?"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 4000),
+        mod = "ZCEM",
          
     },
     { -- uMS
@@ -1575,6 +1586,7 @@ local d = {
         quote = [["As your friend, I can be the light you need in times of disarray."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        mod = "ZCEM",
          
     },
     { -- uGV
@@ -1584,6 +1596,7 @@ local d = {
         quote = [["Hey, can we combine our magic to stop the galaxy from imploding?"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- uVL
@@ -1593,6 +1606,7 @@ local d = {
         quote = [["With careful planning and a timely execution, we can rise again."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- uDH
@@ -1602,6 +1616,7 @@ local d = {
         quote = [["Just stop trying to decipher the message and follow my lead, alright?"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 4000),
+        mod = "ZCEM",
          
     },
     { -- uIN
@@ -1611,6 +1626,7 @@ local d = {
         quote = [["Dude, I'm telling you, just a bit of simple magic clears it all up."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 4000),
+        mod = "ZCEM",
          
     },
     { -- uAS
@@ -1620,6 +1636,7 @@ local d = {
         quote = [["Moderation and meditation can reform even a degenerate magician like you."]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "ZCEM",
          
     },
     { -- uDP
@@ -1629,6 +1646,7 @@ local d = {
         quote = [["How about you just keep the place clean and quiet? Then we would be fine!"]],
         credit = "@TrevorSmithy",
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        mod = "ZCEM",
          
     },
     { -- your_too_fast
@@ -1639,6 +1657,7 @@ local d = {
         credit = "@TrevorSmithy",
         scoreSimp = function(rank) return "Rank " .. rank end,
         rank = numberRank(27, 47, 67, 87, 107, 127, 187),
+        mod = "ZCEM",
          
     },
     { -- your_long
@@ -1648,6 +1667,7 @@ local d = {
         quote = [["WHAT THE HEACK WAS THAT? THAT WAS SCAIRY!!!"]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- cheat_death
         id = 'cheat_death',
@@ -1656,6 +1676,7 @@ local d = {
         quote = [["CALL AN AMBULANCE! CALL AN AMBULANCE! But not for me!"]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- trip_to_hell
         id = 'trip_to_hell',
@@ -1664,14 +1685,16 @@ local d = {
         quote = [[Only those who DENY SALVATION can face the greatest challenge.]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
-    { title = "Easy Mods (v1.1)" },
+    { title = "Easy Mods (v1.1)", mod = "ZCEM" },
     { -- eEX
         id = 'eEX',
         name = "Soft",
         desc = [[HFD with the "Easy Mode" mod]],
         quote = [[An easier challenge, for beginners to start with.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        mod = "ZCEM",
          
     },
     { -- eNH
@@ -1680,6 +1703,7 @@ local d = {
         desc = [[HFD with the "Moderate Hold" mod]],
         quote = [[Life is easier when you've made up your mind.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eMS
@@ -1688,6 +1712,7 @@ local d = {
         desc = [[HFD with the "Tidiness" mod]],
         quote = [[The odds are always in your favor.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eGV
@@ -1696,6 +1721,7 @@ local d = {
         desc = [[HFD with the "Lift" mod]],
         quote = [[Do you imagine floating weightless?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eVL
@@ -1704,6 +1730,7 @@ local d = {
         desc = [[HFD with the "Tranquility" mod]],
         quote = [[you're safe, just right where you are.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eDH
@@ -1712,6 +1739,7 @@ local d = {
         desc = [[HFD with the "Salvation" mod]],
         quote = [[A liberating life, and a peaceful death.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eIN
@@ -1720,6 +1748,7 @@ local d = {
         desc = [[HFD with the "Visible" mod]],
         quote = [[You won't need to remember anything, if you're being honest.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eAS
@@ -1728,6 +1757,7 @@ local d = {
         desc = [[HFD with the "Spin" mod]],
         quote = [[Anything is possible from within the tips of your fingers.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
     { -- eDP
@@ -1736,9 +1766,10 @@ local d = {
         desc = [[HFD with the "Friend" mod]],
         quote = [[Two best pals, created for each other.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
+        mod = "ZCEM",
          
     },
-    { title = "Uneasy Mods (v1.1)", hide = function() return not ACHV.uneasy end},
+    { title = "Uneasy Mods (v1.1)", mod = "ZCEM" , hide = function() return not ACHV.uneasy end},
     { -- ueEX
         id = 'ueEX',
         name = "Lethargy",
@@ -1750,6 +1781,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eEX end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeNH
@@ -1763,6 +1795,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eNH end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeMS
@@ -1776,6 +1809,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eMS end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeGV
@@ -1789,6 +1823,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eGV end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeVL
@@ -1802,6 +1837,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eVL end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeDH
@@ -1815,6 +1851,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(720, 660, 600, 540, 480, 420, 360),
         hide = function() return not ACHV.uneasy or not ACHV.eDH end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeIN
@@ -1828,6 +1865,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eIN end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeAS
@@ -1841,6 +1879,7 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eAS end,
+        mod = "ZCEM",
          
     },
     { -- ueEXeDP
@@ -1854,9 +1893,10 @@ local d = {
         scoreFull = function(time) return string.format("%.2f m/s", 1650 / time) end,
         rank = numberRankRev(600, 540, 480, 420, 360, 300, 240),
         hide = function() return not ACHV.uneasy or not ACHV.eDP end,
+        mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Special (v1.1)" },
+    { title = "Easy Mode - Special (v1.1)", mod = "ZCEM" },
     { -- emperor_development
         --id = 'eDHEXeNH',
         id = 'emperor_development',
@@ -1865,6 +1905,7 @@ local d = {
         quote = [[Look at how much progress you've made in reforming your ways!]],
         scoreSimp = function(rank) return string.format("Rank %.2f", rank) end,
         rank = numberRank(9, 10, 11, 12, 13, 13.1, 13.2),
+        mod = "ZCEM",
          
     },
     { -- quest_feast
@@ -1877,6 +1918,7 @@ local d = {
         scoreSimp = function(roundHeight) return string.format("%.2fm", roundHeight) end,
         scoreFull = function(roundHeight) return string.format("%.2f meters/quest", roundHeight/40) end,
         rank = numberRankRev(600, 550, 500, 450, 400, 350, 300),
+        mod = "ZCEM",
          
     },
     { -- eDPeEX
@@ -1887,6 +1929,7 @@ local d = {
         quote = [["With the power of friendship, we will prevail!"]],
         scoreSimp = function(quest) return floor(quest) .. " Dunks" end,
         rank = numberRank(0, 15, 30, 50, 70, 85, 100),
+        mod = "ZCEM",
          
     }, 
     { -- eGVeIN
@@ -1894,10 +1937,9 @@ local d = {
         name = "The Humble Pupil",
         desc = [[Lowest quests per second (i.e. highest seconds per quest) without taking damage upon reaching floor 10 WUT "Lift" and "Visible" mods]],
         quote = [[Holding yourself back can be even harder then you think...]],
-        --comp = '<',
-        scoreSimp = function(spq) return string.format("%.2f seconds/quest", spq) end,
-        --scoreFull = function(qps) return string.format("%.2f quests/s", 40 / time) end,
-        rank = numberRank(0, 1, 2, 3, 3.5, 4, 4.5),
+        scoreSimp = function(qps) return string.format("%.2f quests/s", qps) end,
+        rank = numberRankRev(26, 1, 0.5, 0.34, 0.3, 0.26, 0.22),
+        mod = "ZCEM",
          
     },
     { -- eGVeNH
@@ -1907,6 +1949,7 @@ local d = {
         quote = [["Anything to please our shareholders!"]],
         scoreSimp = function(quest) return floor(quest) .. " Mistakes" end,
         rank = numberRank(0, 20, 40, 60, 80, 100, 125),
+        mod = "ZCEM",
          
     },
     { -- eASeNH
@@ -1916,6 +1959,7 @@ local d = {
         quote = [["Do you just sit there all day?"]],
         scoreSimp = function(quest) return floor(quest) .. " Broken Chairs" end,
         rank = numberRank(0, 10, 20, 30, 40, 50, 60),
+        mod = "ZCEM",
          
     },
     { -- eASeDHeMS
@@ -1925,6 +1969,7 @@ local d = {
         quote = [["Are we sure that's not an oxymoron?" "Not EVERY gamer is a total slob, y'know!"]],
         scoreSimp = function(quest) return floor(quest) .. " Saved Mice" end,
         rank = numberRank(0, 50, 100, 150, 200, 250, 300),
+        mod = "ZCEM",
          
     },
     { -- eDHeMSeNH
@@ -1934,6 +1979,7 @@ local d = {
         quote = [[A methodical, clean exit strategy does not rely on unecessary elements.]],
         scoreSimp = function(quest) return floor(quest) .. " Saved Keyboards" end,
         rank = numberRank(0, 50, 100, 150, 200, 250, 300),
+        mod = "ZCEM",
          
     },
     { -- eDHeEXeMSeVL
@@ -1943,6 +1989,7 @@ local d = {
         quote = [[A good cleaner is a thorough cleaner: not fast nor slow, but consistent.]],
         scoreSimp = function(quest) return floor(quest) .. " Cleaned Rooms" end,
         rank = numberRank(0, 20, 40, 55, 70, 85, 100),
+        mod = "ZCEM",
          
     },
     { -- eDHeDPeGVeINeMSeNH
@@ -1954,9 +2001,10 @@ local d = {
         rank = numberRank(0, 100, 200, 300, 400, 500, 650),
         hide = TRUE,
         realHide = function() return (not ACHV.roll) or (not ACHV.programmer_gamer) end,
+        mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Why (v1.1)", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end},
+    { title = "Easy Mode - Why (v1.1)", mod = "ZCEM" , hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end},
     { -- -3
         id = '-3',
         name = "Respite",
@@ -1964,6 +2012,7 @@ local d = {
         quote = [[You catch your breath, if but for a moment]],
         rank = floorRank(10, 2600, 2600*2, 2600*3, 2600*4, 2600*5, 2600*10),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -4
@@ -1973,6 +2022,7 @@ local d = {
         quote = [[You look like you need a break]],
         rank = floorRank(10, 2600*2, 2600*2*2, 2600*3*2, 2600*4*2, 2600*5*2, 2600*20),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -5
@@ -1982,6 +2032,7 @@ local d = {
         quote = [[A well earned time off]],
         rank = floorRank(10, 2600*3, 2600*2*3, 2600*3*3, 2600*4*3, 2600*5*3, 2600*30),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -6
@@ -1991,6 +2042,7 @@ local d = {
         quote = [[Take a nap]],
         rank = floorRank(10, 2600*4, 2600*2*4, 2600*3*4, 2600*4*4, 2600*5*4, 2600*40),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -7
@@ -2000,6 +2052,7 @@ local d = {
         quote = [[It's okay to doze off here]],
         rank = floorRank(10, 2600*5, 2600*2*5, 2600*3*5, 2600*4*5, 2600*5*5, 2600*50),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -8
@@ -2009,6 +2062,7 @@ local d = {
         quote = [[Have a nice warm bath]],
         rank = floorRank(10, 2600*6, 2600*2*6, 2600*3*6, 2600*4*6, 2600*5*6, 2600*60),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
     { -- -9
@@ -2018,9 +2072,10 @@ local d = {
         quote = [[Enjoy the spa with all its ammenities]],
         rank = floorRank(10, 2600*7, 2600*2*7, 2600*3*7, 2600*4*7, 2600*5*7, 2600*70),
         hide = function() return TABLE.countAll(GAME.completion, 0) > 7 end,
+        mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Issued (v1.1) (No CR)" },
+    { title = "Easy Mode - Issued (v1.1) (No CR)", mod = "ZCEM" },
     { -- www
         id = 'www',
         name = "WWW.",
@@ -2029,6 +2084,7 @@ local d = {
         credit = "@FCSplayz",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- roll
         id = 'roll',
@@ -2038,6 +2094,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- uneasy
         id = 'uneasy',
@@ -2047,6 +2104,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- inefficiency
         id = 'inefficiency',
@@ -2056,6 +2114,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- could_you_not
         id = 'could_you_not',
@@ -2065,6 +2124,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- oh_no_you_dont
         id = 'oh_no_you_dont',
@@ -2074,6 +2134,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- alleyoop
         id = 'alleyoop',
@@ -2083,6 +2144,7 @@ local d = {
         credit = "@Trevor Smithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- slamdunk
         id = 'slamdunk',
@@ -2092,6 +2154,7 @@ local d = {
         credit = "@Trevor Smithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- petaspeed
         id = 'peta',
@@ -2102,6 +2165,7 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.blazing_speed end,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- exaspeed
         id = 'exa',
@@ -2112,6 +2176,7 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.peta end,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- zettaspeed
         id = 'zetta',
@@ -2122,6 +2187,7 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.exa end,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- yottaspeed
         id = 'yotta',
@@ -2132,6 +2198,7 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.zetta end,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- ronnaspeed
         id = 'ronna',
@@ -2142,6 +2209,7 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.yotta end,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- quettaspeed
         id = 'quetta',
@@ -2152,8 +2220,9 @@ local d = {
         hide = TRUE,
         realHide = function() return not ACHV.ronna end,
         type = 'issued',
+        mod = "ZCEM",
     },
-    { title = "Easy Mode - Issued (v1.2) (No CR)" },
+    { title = "Easy Mode - Issued (v1.2) (No CR)", mod = "ZCEM" },
     { -- multiple_pieces (1.1.1)
         id = 'multiple_pieces',
         name = "Multiple Pieces???",
@@ -2161,6 +2230,7 @@ local d = {
         quote = [["YOU THINK YOU'RE CLEVER? JUST BECAUSE I CAN'T SEE DOWN THERE? FINE."]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- music_man (1.1.2)
         id = 'music_man',
@@ -2170,6 +2240,7 @@ local d = {
         credit = "@TrevorSmithy",
         hide = TRUE,
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- easy_name (1.1.3)
         id = 'easy_name',
@@ -2178,6 +2249,7 @@ local d = {
         quote = [["Please, I spent 5 straight nights writing these combos :sob:"]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- biased (1.1.3)
         id = 'biased',
@@ -2187,6 +2259,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- lazy_bastard (1.1.4)
         id = 'lazy_bastard',
@@ -2195,6 +2268,7 @@ local d = {
         quote = [["Fine, okay, everything is unlocked now."]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- what_have_you_done (1.1.5)
         id = 'what_have_you_done',
@@ -2204,6 +2278,7 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- hyperplonk
         id = 'hyperplonk',
@@ -2212,6 +2287,7 @@ local d = {
         quote = [["Haha Smithy Cannon go brrrrrrrrr"]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- gigaplonk
         id = 'gigaplonk',
@@ -2221,6 +2297,7 @@ local d = {
         credit = "@Taha",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
     { -- the_windup
         id = 'the_windup',
@@ -2229,6 +2306,7 @@ local d = {
         quote = [["WHY DO I HEAR BOSS MUSIC?!?!?"]],
         credit = "@TrevorSmithy",
         type = 'issued',
+        mod = "ZCEM",
     },
     { -- im_gonna_be
         id = 'im_gonna_be',
@@ -2238,9 +2316,10 @@ local d = {
         credit = "@TrevorSmithy",
         type = 'issued',
         hide = TRUE,
+        mod = "ZCEM",
     },
 
-    { title = "FINAL MIX BEGINNER - ULTRA MODS"},
+    { title = "FINAL MIX BEGINNER - ULTRA MODS", mod = "MISC"},
 
     { -- uEX
         id = 'uEX',
@@ -2249,6 +2328,7 @@ local d = {
         quote = [[His mind is gone... This is the end of the kingdom...]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.EX == 0 end,
+        mod = "MISC",
     },
     { -- uNH
         id = 'uNH',
@@ -2257,6 +2337,7 @@ local d = {
         quote = [[What even is there above heaven?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.NH == 0 end,
+        mod = "MISC",
     },
     { -- uMS
         id = 'uMS',
@@ -2265,6 +2346,7 @@ local d = {
         quote = [[THE HEAT DEATH OF THE UNIVERSE]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.MS == 0 end,
+        mod = "MISC",
     },
     { -- uGV
         id = 'uGV',
@@ -2273,6 +2355,7 @@ local d = {
         quote = [[Dude WTF don't eat the galaxy.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.GV == 0 end,
+        mod = "MISC",
     },
     { -- uVL
         id = 'uVL',
@@ -2281,6 +2364,7 @@ local d = {
         quote = [[Not even god can help you here.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.VL == 0 end,
+        mod = "MISC",
     },
     { -- uDH
         id = 'uDH',
@@ -2289,6 +2373,7 @@ local d = {
         quote = [[HELP A WEIRD SPIDER THING IS CHASING ME]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.DH == 0 end,
+        mod = "MISC",
     },
     { -- uIN
         id = 'uIN',
@@ -2297,6 +2382,7 @@ local d = {
         quote = [[The selfish ones are the ones who shall perish.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.IN == 0 end,
+        mod = "MISC",
     },
     { -- uAS
         id = 'uAS',
@@ -2305,6 +2391,7 @@ local d = {
         quote = [[All your runes are belong to us.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.AS == 0 end,
+        mod = "MISC",
     },
     { -- uDP
         id = 'uDP',
@@ -2313,6 +2400,7 @@ local d = {
         quote = [[The entire garden has left. Out of cawardice.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.DP == 0 end,
+        mod = "MISC",
     },
     { -- uEXuMS
         id = 'mina_the_hollower',
@@ -2321,9 +2409,10 @@ local d = {
         quote = [[WHO THE HELL USES BONES AS CURRENCY]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         hide = function() return GAME.completion.EX == 0 or GAME.completion.MS == 0 end,
+        mod = "MISC",
     },
 
-    { title = "FINAL MIX BEGINNER - SPEED MOUSE"},
+    { title = "FINAL MIX BEGINNER - SPEED MOUSE", mod = "MISC"},
 
     { -- Tera
         id = 'Tera',
@@ -2333,6 +2422,7 @@ local d = {
         scoreSimp = function(n) return n .. " TERAs" end,
         rank = numberRank(0, 20, 40, 70, 120, 200, 300),
         hide = function() return STAT.totalTera == 0 end,
+        mod = "MISC",
     },
     { -- Peta
         id = 'Peta',
@@ -2342,6 +2432,7 @@ local d = {
         scoreSimp = function(n) return n .. " PETAs" end,
         rank = numberRank(0, 19, 38, 66, 110, 190, 285),
         hide = function() return STAT.totalPeta == 0 end,
+        mod = "MISC",
     },
     { -- Exa
         id = 'Exa',
@@ -2351,6 +2442,7 @@ local d = {
         scoreSimp = function(n) return n .. " EXAs" end,
         rank = numberRank(0, 17, 34, 59, 99, 171, 256),
         hide = function() return STAT.totalExa == 0 end,
+        mod = "MISC",
     }, 
     { -- Zeta
         id = 'Zeta',
@@ -2360,6 +2452,7 @@ local d = {
         scoreSimp = function(n) return n .. " ZETAs" end,
         rank = numberRank(0, 14, 28, 50, 84, 145, 217),
         hide = function() return STAT.totalZeta == 0 end,
+        mod = "MISC",
     },
     { -- Yotta
         id = 'Yotta',
@@ -2369,6 +2462,7 @@ local d = {
         scoreSimp = function(n) return n .. " YOTTAs" end,
         rank = numberRank(0, 11, 23, 41, 69, 120, 180),
         hide = function() return STAT.totalYotta == 0 end,
+        mod = "MISC",
     }, 
     { -- Ronna
         id = 'Ronna',
@@ -2378,6 +2472,7 @@ local d = {
         scoreSimp = function(n) return n .. " RONNAs" end,
         rank = numberRank(0, 9, 18, 33, 56, 98, 147),
         hide = function() return STAT.totalRonna == 0 end,
+        mod = "MISC",
     },
     { -- Quetta
         id = 'Quetta',
@@ -2387,6 +2482,7 @@ local d = {
         scoreSimp = function(n) return n .. " QUETTAs" end,
         rank = numberRank(0, 7, 14, 26, 45, 79, 119),
         hide = function() return STAT.totalQuetta == 0 end,
+        mod = "MISC",
     },
     { -- Deka
         id = 'Deka',
@@ -2396,6 +2492,7 @@ local d = {
         scoreSimp = function(n) return n .. " DEKAs" end,
         rank = numberRank(0, 5, 11, 20, 36, 63, 95),
         hide = function() return STAT.totalDeka == 0 end,
+        mod = "MISC",
     }, 
     { -- Termina
         id = 'Termina',
@@ -2405,15 +2502,17 @@ local d = {
         scoreSimp = function(n) return n .. " TERMINAs" end,
         rank = numberRank(0, 3, 8, 15, 28, 49, 75),
         hide = function() return STAT.totalTermina == 0 end,
+        mod = "MISC",
     },
     { -- Lumina
         id = 'Lumina', name = "Fourth Dimensional", desc = [[Luminaspeed Entries]],
         quote = [["Behold... the tesseract!"]],
         scoreSimp = function(n) return n .. " LUMINAs" end,rank = numberRank(0, 2, 6, 12, 22, 39, 60),
         hide = function() return STAT.totalLumina == 0 end,
+        mod = "MISC",
     }, 
 
-   { title = "FINAL MIX BEGINNER - POWERLEVELING"},
+   { title = "FINAL MIX BEGINNER - POWERLEVELING", mod = "MISC"},
 
     { -- Lv0
         id = 'powerleveling',
@@ -2422,6 +2521,7 @@ local d = {
         quote = [[Nothing gained without experience.]],
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(100, 1000, 2000, 3000, 4000, 5000, 9999),
+        mod = "MISC",
     },
     { -- Lv5000
         id = 'powerleveling2',
@@ -2431,6 +2531,8 @@ local d = {
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(5000, 6000, 7000, 8000, 9000, 10000, 14999),
         hide = function() return STAT.level < 5000 end,
+        realHide = function() return STAT.level < 5000 end,
+        mod = "MISC",
     },
     { -- Lv10000
         id = 'powerleveling3',
@@ -2440,6 +2542,8 @@ local d = {
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(10000, 11000, 12000, 13000, 14000, 15000, 19999),
         hide = function() return STAT.level < 10000 end,
+        realHide = function() return STAT.level < 10000 end,
+        mod = "MISC",
     },
     { -- Lv15000
         id = 'powerleveling4',
@@ -2449,6 +2553,8 @@ local d = {
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(15000, 16000, 17000, 18000, 19000, 20000, 24999),
         hide = function() return STAT.level < 15000 end,
+        realHide = function() return STAT.level < 15000 end,
+        mod = "MISC",
     },
     { -- Lv20000
         id = 'powerleveling5',
@@ -2458,6 +2564,8 @@ local d = {
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(20000, 21000, 22000, 23000, 24000, 25000, 29999),
         hide = function() return STAT.level < 20000 end,
+        realHide = function() return STAT.level < 20000 end,
+        mod = "MISC",
     },
     { -- Lv25000
         id = 'powerleveling6',
@@ -2467,25 +2575,31 @@ local d = {
         scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(25000, 26000, 27000, 28000, 29000, 30000, 34999),
         hide = function() return STAT.level < 25000 end,
+        realHide = function() return STAT.level < 25000 end,
+        mod = "MISC",
     },
     {id = 'powerleveling7',name = "Tera Leveling", desc = [[Zenith Level (30,000-35,000)]],
         quote = [[You are the universe.]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(30000, 31000, 32000, 33000, 34000, 35000, 39999), hide = function() return STAT.level < 30000 end,
+        realHide = function() return STAT.level < 30000 end, mod = "MISC",
     },
     {id = 'powerleveling8',name = "Peta Leveling", desc = [[Zenith Level (35,000-40,000)]],
         quote = [[You ate the universe.]], scoreSimp = function(n) return "Lv" .. n end,
-        rank = numberRank(35000, 36000, 37000, 38000, 39000, 40000, 44999), realHide = function() return STAT.level < 35000 end,
+        rank = numberRank(35000, 36000, 37000, 38000, 39000, 40000, 44999), hide = function() return STAT.level < 35000 end
+        , realHide = function() return STAT.level < 35000 end, mod = "MISC",
     },
     {id = 'powerleveling9',name = "Exa Leveling", desc = [[Zenith Level (40,000-45,000)]],
         quote = [[You've attained enough power to neutralize even the most supermassive black holes!]], scoreSimp = function(n) return "Lv" .. n end,
-        rank = numberRank(40000, 41000, 42000, 43000, 44000, 45000, 49999), realHide = function() return STAT.level < 35000 end,
+        rank = numberRank(40000, 41000, 42000, 43000, 44000, 45000, 49999), hide = function() return STAT.level < 40000 end
+        , realHide = function() return STAT.level < 40000 end, mod = "MISC",
     },
     {id = 'powerleveling10',name = "Zeta Leveling", desc = [[Zenith Level (45,000-50,000)]],
         quote = [[You ARE supermassive!]], scoreSimp = function(n) return "Lv" .. n end,
-        rank = numberRank(45000, 46000, 47000, 48000, 49000, 50000, 54999), realHide = function() return STAT.level < 35000 end,
+        rank = numberRank(45000, 46000, 47000, 48000, 49000, 50000, 54999), hide = function() return STAT.level < 45000 end
+        , realHide = function() return STAT.level < 45000 end, mod = "MISC",
     },
 
-    { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos"},
+    { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos", mod = "2MP" },
 
     { -- EXNH
         id = 'EXNH',
@@ -2493,6 +2607,7 @@ local d = {
         desc = [[HFD WUT "Expert Mode" and "No Hold" mods]],
         quote = [[A ruler shall not favor only the rich.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- EXMS
         id = 'EXMS',
@@ -2500,6 +2615,7 @@ local d = {
         desc = [[HFD with EX MS]],
         quote = [[What do you mean I can't have two similar achievements?!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- EXGV
         id = 'EXGV',
@@ -2507,6 +2623,7 @@ local d = {
         desc = [[HFD WUT "Expert Mode" and "Gravity" mods]],
         quote = [[A new trial for those who've been trialed.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- EXVL
         id = 'EXVL',
@@ -2514,6 +2631,7 @@ local d = {
         desc = [[HFD with EX VL]],
         quote = [[Forget those wings of wax, use your real wings!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHEX
         id = 'DHEX',
@@ -2521,6 +2639,7 @@ local d = {
         desc = [[HFD with EX DH]],
         quote = [[NOT TODAY, SATAN!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- EXIN
         id = 'EXIN',
@@ -2528,6 +2647,7 @@ local d = {
         desc = [[HFD with EX IN]],
         quote = [[The Emperor's new clothes took on a whole other meaning.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASEX
         id = 'ASEX',
@@ -2535,6 +2655,7 @@ local d = {
         desc = [[HFD with EX AS]],
         quote = [[Even the queen needs some free time to keep her sanity.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- MSNH
         id = 'MSNH',
@@ -2542,6 +2663,7 @@ local d = {
         desc = [[HFD with NH MS]],
         quote = [[Just eat the entire poker table.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- NHVL
         id = 'NHVL',
@@ -2549,6 +2671,7 @@ local d = {
         desc = [[HFD with NH VL]],
         quote = [[What doesn't kill you doesn't kill you.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHNH
         id = 'DHNH',
@@ -2556,6 +2679,7 @@ local d = {
         desc = [[HFD with NH DH]],
         quote = [[Soda that kills.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- INNH
         id = 'INNH',
@@ -2563,6 +2687,7 @@ local d = {
         desc = [[HFD with NH IN]],
         quote = [[Genuinely don't even know who this is.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DPNH
         id = 'DPNH',
@@ -2570,6 +2695,7 @@ local d = {
         desc = [[HFD with NH DP]],
         quote = [[Should really pay Traverse Town a vist sometime.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- GVMS
         id = 'GVMS',
@@ -2578,6 +2704,7 @@ local d = {
         quote = [[A shaman's worst nightmare.]],
         credit = "Elisah",
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- MSVL
         id = 'MSVL',
@@ -2585,6 +2712,7 @@ local d = {
         desc = [[HFD with MS VL]],
         quote = [[Probably what those cheese coins are made of.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHMS
         id = 'DHMS',
@@ -2592,6 +2720,7 @@ local d = {
         desc = [[HFD with MS DH]],
         quote = [[Fill your belly!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- INMS
         id = 'INMS',
@@ -2599,6 +2728,7 @@ local d = {
         desc = [[HFD with MS IN]],
         quote = [[The gambler's folicy.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASMS
         id = 'ASMS',
@@ -2606,6 +2736,7 @@ local d = {
         desc = [[HFD with MS AS]],
         quote = [[The gambler's circular thingie.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DPMS
         id = 'DPMS',
@@ -2613,6 +2744,7 @@ local d = {
         desc = [[HFD with MS DP]],
         quote = [["Sweetie, did you eat the table again?"]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- GVVL
         id = 'GVVL',
@@ -2620,6 +2752,7 @@ local d = {
         desc = [[HFD with GV VL]],
         quote = [[For when you're feeling down and just need something to do.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHGV
         id = 'DHGV',
@@ -2627,6 +2760,7 @@ local d = {
         desc = [[HFD with GV DH]],
         quote = [[No, no, no! Wrong way!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASGV
         id = 'ASGV',
@@ -2634,6 +2768,7 @@ local d = {
         desc = [[HFD with GV AS]],
         quote = [[Look at he go]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DPGV
         id = 'DPGV',
@@ -2641,6 +2776,7 @@ local d = {
         desc = [[HFD with GV DP]],
         quote = [[Should probably get that checked out.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHVL
         id = 'DHVL',
@@ -2648,6 +2784,7 @@ local d = {
         desc = [[HFD with VL DH]],
         quote = [[Is Lucifer a super devil or something?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- INVL
         id = 'INVL',
@@ -2655,6 +2792,7 @@ local d = {
         desc = [[HFD with VL IN]],
         quote = [[You don't need to mermorize an entire tarot deck, don't worry.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASVL
         id = 'ASVL',
@@ -2662,6 +2800,7 @@ local d = {
         desc = [[HFD with VL AS]],
         quote = [[Water is but an enigma, consumed by all but fully understood by none.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DPVL
         id = 'DPVL',
@@ -2669,6 +2808,7 @@ local d = {
         desc = [[HFD with VL DP]],
         quote = [[Yeah! Let do this! Together!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHIN
         id = 'DHIN',
@@ -2676,6 +2816,7 @@ local d = {
         desc = [[HFD with DH IN]],
         quote = [[Truncation!]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASDH
         id = 'ASDH',
@@ -2683,6 +2824,7 @@ local d = {
         desc = [[HFD with DH AS]],
         quote = [[You know who ELSE made a deal with the devil?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DHDP
         id = 'DHDP',
@@ -2690,6 +2832,7 @@ local d = {
         desc = [[HFD with DH DP]],
         quote = [[oh god]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASIN
         id = 'ASIN',
@@ -2697,6 +2840,7 @@ local d = {
         desc = [[HFD with IN AS]],
         quote = [[Sometimes, abstraction is the most pure form.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- DPIN
         id = 'DPIN',
@@ -2704,6 +2848,7 @@ local d = {
         desc = [[HFD with IN DP]],
         quote = [[...is it?]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
     { -- ASIN
         id = 'ASDP',
@@ -2711,15 +2856,17 @@ local d = {
         desc = [[HFD with AS DP]],
         quote = [[We can do many great things if we work together.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        mod = "2MP",
     },
 
-    { title = "FINAL MIX BEGINNER - 3 Upright Mod Combos"},
+    { title = "FINAL MIX BEGINNER - 3 Upright Mod Combos", mod = "3MP"},
     { -- EXMSNH
         id = 'EXMSNH',
         name = "Online Gambling",
         desc = [[HFD with EX NH MS]],
         quote = [[-37/10, would not recommend.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 5580),
+        mod = "3MP",
     },
     { -- EXGVNH
         id = 'EXGVNH',
@@ -2727,90 +2874,92 @@ local d = {
         desc = [[HFD with EX NH GV]],
         quote = [[Despondent Vermin... May your death bring new life.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 5580),
+        mod = "3MP",
     },
-    AchieveFromCombo('EXNHVL', "Archangel", [[HFD with EX NH VL]], [[For when being a normal angel just isn't good enough.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXINNH', "The Friar", [[HFD with EX NH IN]], [[May you spare a coin?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASEXNH', "Indecision", [[HFD with EX NH AS]], [[JUST... CHOOSE... ONE!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPEXNH', "The Prudent Parliament", [[HFD with EX NH DP]], [[Two emperors and an unlikey alliance.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXGVMS', "Mining Operation", [[HFD with EX MS GV]], [[Maybe try deepslate level?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXMSVL', "The Wolf of Wall Street", [[HFD with EX MS VL]], [[I don't think they allow wolves on wall street.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHEXMS', "No Warning", [[HFD with EX MS DH]], [[Technically, ANYTHING could kill you.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXINMS', "Irrational", [[HFD with EX MS IN]], [[3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASEXMS', "The Rich Gambler", [[HFD with EX MS AS]], [[Gamble responsively.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPEXMS', "Grand Feast", [[HFD with EX MS DP]], [[Yum, yum, yum, yum!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXGVVL', "Relaxation", [[HFD with EX GV VL]], [[An expert at relaxing.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHEXGV', "The Daredevil", [[HFD with EX GV DH]], [[My core is trembling, man...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXGVIN', "The Super GM", [[HFD with EX GV IN]], [[YOU AER GRAND-MASTER!^3]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASEXGV', "Master of the T", [[HFD with EX GV AS]], [[T-Spin Triple 6-Combo Back-to-Back x23]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPEXGV', "Sinking", [[HFD with EX GV DP]], [[What are you thinking about?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHEXVL', "The Mad Lord", [[HFD with EX VL DH]], [[I don't wanna get political.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('EXINVL', "Bounty Hunter", [[HFD with EX VL IN]], [[Bootleg vigilante?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPEXVL', "Measures", [[HFD with EX VL DP]], [[Centimeters, Meters, Kilometers, Astronomical Units, and Light Years!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHEXIN', "The Architect", [[HFD with EX DH IN]], [[Only the best can build the greatest.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHEX', "Loki", [[HFD with EX DH AS]], [[Okie Dokie Lokie.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPEX', "Whispers of Sin", [[HFD with EX DH DP]], [[Don't give in... Don't listen to the nightmares...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASEXIN', "Expertise", [[HFD with EX IN AS]], [[XP from experience]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPEXIN', "Dominance", [[HFD with EX IN DP]], [[What do I even put here]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPEX', "Ballet Partners", [[HFD with EX AS DP]], [[A dainty dance for two, a mesmerizing dance for some.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVMSNH', "Atlas' Burden", [[HFD with NH MS GV]], [[One singular mouse can't hold up the entire world!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('MSNHVL', "The Glass Cannon", [[HFD with NH MS VL]], [[Not a very practical cannon, is it?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('INMSNH', "The False Prophet", [[HFD with NH MS IN]], [[Fake news.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASMSNH', "Unpredictable Outcome", [[HFD with NH MS AS]], [[No one ever expects anything.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPMSNH', "Blackjack", [[HFD with NH MS DP]], [[If ultra reveresed mods gave 3 MP, 21 MP would be possible.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVNHVL', "Traditional", [[HFD with NH GV VL]], [[Sbeve]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHGVNH', "Unstable Footing", [[HFD with NH GV DH]], [[Watch those feet of yours.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVINNH', "Evanescence", [[HFD with NH GV IN]], [[This is a band, apparently.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASGVNH', "A Modern Twist", [[HFD with NH GV AS]], [[WHAT DO YOU MEAN YOU CAN'T SPIN THE STUPID PIECE?!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPGVNH', "Nostalgia", [[HFD with NH GV DP]], [[The good times may be gone, but they're never forgotten.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHNHVL', "Judgement", [[HFD with NH VL DH]], [[Judge yourself, or be judged.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('INNHVL', "Justice", [[HFD with NH VL IN]], [[OBJECTION!!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASNHVL', "Bob Ross", [[HFD with NH VL AS]], [[A happy little accident.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPNHVL', "Insecure Neediness", [[HFD with NH VL DP]], [[Romantic Quantum Entanglement.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHINNH', "Blindside", [[HFD with NH DH IN]], [[What even is a 'Blindside'?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHNH', "Shapeshifter", [[HFD with NH DH AS]], [[HOLY MOLY I SMOKED MY OLD PB]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPNH', "Good and Evil", [[HFD with NH DH DP]], [[↻]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASINNH', "The Blind Artist", [[HFD with NH IN AS]], [[Bro, that's my fridge, not your canvas.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPINNH', "Left On Read", [[HFD with NH IN DP]], [[I sent you my T-Spin, please respond.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPNH', "Ecstatic Dance", [[HFD with NH AS DP]], [[Come on, step it up!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVMSVL', "Survival", [[HFD with MS GV VL]], [[Your game mode has been updated to Survival.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHGVMS', "Double Down", [[HFD with MS GV DH]], [[Reaper Flat Arial S-Droptwist Double Back-to-Back x15 Combo x12 All Clear #6]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVINMS', "Burrata", [[HFD with MS GV IN]], [[New Super Burrito Bros. WEEHEE]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASGVMS', "Rough Sketch", [[HFD with MS GV AS]], [[We don't have PN here, but we do have dizziness]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPGVMS', "Torn Apart", [[HFD with MS GV DP]], [[When you walk away, you don't hear me say...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHMSVL', "Utter Trash", [[HFD with MS VL DH]], [[One mouse's trash is another mouse's trash, unless they don't live together.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('INMSVL', "Starstruck", [[HFD with MS VL IN]], [[Dude WTF we needed that star.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASMSVL', "Cream Cheese", [[HFD with MS VL AS]], [[Vanilla]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPMSVL', "Couples Therapy", [[HFD with MS VL DP]], [[Everytime I count, it's different, you know?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHINMS', "The Stealth Ninja", [[HFD with MS DH IN]], [[Ninjas aren't real.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHMS', "The Artsy Escapist", [[HFD with MS DH AS]], [[Instead of escaping artists, we have artistic escapes! Wait...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPMS', "Drillers' Squad", [[HFD with MS DH DP]], [[DH wanted to be pink.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASINMS', "Abstraction", [[HFD with MS IN AS]], [[You gotta see the beauty in things.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPINMS', "Miscommunications", [[HFD with MS IN DP]], [[ewlfmnewfnearknjeirerivericfgterbjgdvpvy]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPMS', "Paintball Fight", [[HFD with MS AS DP]], [[I'm gonna getya. I don't know.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHGVVL', "Temptation", [[HFD with GV VL DH]], [[Romance are temporary. Zenith is forever.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('GVINVL', "Paranoia", [[HFD with GV VL IN]], [[AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASGVVL', "The Gladiator", [[HFD with GV VL AS]], [[WTF how did you get here this is ancient rome]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPGVVL', "Diner Date", [[HFD with GV VL DP]], [[Dinners, Diners, Drivers, Drive-Ins, and Dods]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHGVIN', "The Drunk Driver", [[HFD with GV DH IN]], [[DUI]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHGV', "The Texting Driver", [[HFD with GV DH AS]], [[TUI]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPGV', "Race You There", [[HFD with GV DH DP]], [[This isn't a race, dingus]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASGVIN', "The Spinmaster", [[HFD with GV IN AS]], [[BANANA ROTATO]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPGVIN', "Bronze Anniversary", [[HFD with GV IN DP]], [[How does a bronze anniversary even work]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPGV', "The Trapeze Artists", [[HFD with GV AS DP]], [[Fun fact: this achievement had the wrong name and icon in 0.55.15.1e1.2.2 Trinity]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHINVL', "The Flickering Spirit", [[HFD with VL DH IN]], [[DON'T LET THE FLAMES DIE OUT!!]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHVL', "Forbidden Sorcery", [[HFD with VL DH AS]], [[Can you describe a fish person?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPVL', "Yuri", [[HFD with VL DH DP]], [[GAAAAAME]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASINVL', "Eccentric Recluse", [[HFD with VL IN AS]], [[Or the undertale under the ears]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DPINVL', "Online Dating", [[HFD with VL IN DP]], [[A true Lovers' Day over here.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPVL', "The Exes", [[HFD with VL AS DP]], [[The result of cheating.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHIN', "The Libertine", [[HFD with DH IN AS]], [[Librarian Any% Speedrun]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('DHDPIN', "Speration Anxiety", [[HFD with DH IN DP]], [[No... Don't go...]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDHDP', "A Mutual Friendship", [[HFD with DH AS DP]], [[Bro stop adding your extra card to everything.]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
-    AchieveFromCombo('ASDPIN', "Blindfolded Collaboration", [[HFD with IN AS DP]], [[Can I order some chuggets?]], floorRank(1, 3, 5, 7, 9, 10, 5580)),
+    AchieveFromCombo('EXNHVL', "Archangel", [[HFD with EX NH VL]], [[For when being a normal angel just isn't good enough.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXINNH', "The Friar", [[HFD with EX NH IN]], [[May you spare a coin?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASEXNH', "Indecision", [[HFD with EX NH AS]], [[JUST... CHOOSE... ONE!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPEXNH', "The Prudent Parliament", [[HFD with EX NH DP]], [[Two emperors and an unlikey alliance.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXGVMS', "Mining Operation", [[HFD with EX MS GV]], [[Maybe try deepslate level?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXMSVL', "The Wolf of Wall Street", [[HFD with EX MS VL]], [[I don't think they allow wolves on wall street.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHEXMS', "No Warning", [[HFD with EX MS DH]], [[Technically, ANYTHING could kill you.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXINMS', "Irrational", [[HFD with EX MS IN]], [[3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASEXMS', "The Rich Gambler", [[HFD with EX MS AS]], [[Gamble responsively.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPEXMS', "Grand Feast", [[HFD with EX MS DP]], [[Yum, yum, yum, yum!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXGVVL', "Relaxation", [[HFD with EX GV VL]], [[An expert at relaxing.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHEXGV', "The Daredevil", [[HFD with EX GV DH]], [[My core is trembling, man...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXGVIN', "The Super GM", [[HFD with EX GV IN]], [[YOU AER GRAND-MASTER!^3]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASEXGV', "Master of the T", [[HFD with EX GV AS]], [[T-Spin Triple 6-Combo Back-to-Back x23]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPEXGV', "Sinking", [[HFD with EX GV DP]], [[What are you thinking about?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHEXVL', "The Mad Lord", [[HFD with EX VL DH]], [[I don't wanna get political.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('EXINVL', "Bounty Hunter", [[HFD with EX VL IN]], [[Bootleg vigilante?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPEXVL', "Measures", [[HFD with EX VL DP]], [[Centimeters, Meters, Kilometers, Astronomical Units, and Light Years!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHEXIN', "The Architect", [[HFD with EX DH IN]], [[Only the best can build the greatest.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHEX', "Loki", [[HFD with EX DH AS]], [[Okie Dokie Lokie.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPEX', "Whispers of Sin", [[HFD with EX DH DP]], [[Don't give in... Don't listen to the nightmares...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASEXIN', "Expertise", [[HFD with EX IN AS]], [[XP from experience]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPEXIN', "Dominance", [[HFD with EX IN DP]], [[What do I even put here]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPEX', "Ballet Partners", [[HFD with EX AS DP]], [[A dainty dance for two, a mesmerizing dance for some.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVMSNH', "Atlas' Burden", [[HFD with NH MS GV]], [[One singular mouse can't hold up the entire world!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('MSNHVL', "The Glass Cannon", [[HFD with NH MS VL]], [[Not a very practical cannon, is it?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('INMSNH', "The False Prophet", [[HFD with NH MS IN]], [[Fake news.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASMSNH', "Unpredictable Outcome", [[HFD with NH MS AS]], [[No one ever expects anything.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPMSNH', "Blackjack", [[HFD with NH MS DP]], [[If ultra reveresed mods gave 3 MP, 21 MP would be possible.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVNHVL', "Traditional", [[HFD with NH GV VL]], [[Sbeve]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHGVNH', "Unstable Footing", [[HFD with NH GV DH]], [[Watch those feet of yours.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVINNH', "Evanescence", [[HFD with NH GV IN]], [[This is a band, apparently.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASGVNH', "A Modern Twist", [[HFD with NH GV AS]], [[WHAT DO YOU MEAN YOU CAN'T SPIN THE STUPID PIECE?!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPGVNH', "Nostalgia", [[HFD with NH GV DP]], [[The good times may be gone, but they're never forgotten.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHNHVL', "Judgement", [[HFD with NH VL DH]], [[Judge yourself, or be judged.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('INNHVL', "Justice", [[HFD with NH VL IN]], [[OBJECTION!!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASNHVL', "Bob Ross", [[HFD with NH VL AS]], [[A happy little accident.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPNHVL', "Insecure Neediness", [[HFD with NH VL DP]], [[Romantic Quantum Entanglement.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHINNH', "Blindside", [[HFD with NH DH IN]], [[What even is a 'Blindside'?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHNH', "Shapeshifter", [[HFD with NH DH AS]], [[HOLY MOLY I SMOKED MY OLD PB]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPNH', "Good and Evil", [[HFD with NH DH DP]], [[↻]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASINNH', "The Blind Artist", [[HFD with NH IN AS]], [[Bro, that's my fridge, not your canvas.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPINNH', "Left On Read", [[HFD with NH IN DP]], [[I sent you my T-Spin, please respond.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPNH', "Ecstatic Dance", [[HFD with NH AS DP]], [[Come on, step it up!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVMSVL', "Survival", [[HFD with MS GV VL]], [[Your game mode has been updated to Survival.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHGVMS', "Double Down", [[HFD with MS GV DH]], [[Reaper Flat Arial S-Droptwist Double Back-to-Back x15 Combo x12 All Clear #6]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVINMS', "Burrata", [[HFD with MS GV IN]], [[New Super Burrito Bros. WEEHEE]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASGVMS', "Rough Sketch", [[HFD with MS GV AS]], [[We don't have PN here, but we do have dizziness]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPGVMS', "Torn Apart", [[HFD with MS GV DP]], [[When you walk away, you don't hear me say...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHMSVL', "Utter Trash", [[HFD with MS VL DH]], [[One mouse's trash is another mouse's trash, unless they don't live together.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('INMSVL', "Starstruck", [[HFD with MS VL IN]], [[Dude WTF we needed that star.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASMSVL', "Cream Cheese", [[HFD with MS VL AS]], [[Vanilla]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPMSVL', "Couples Therapy", [[HFD with MS VL DP]], [[Everytime I count, it's different, you know?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHINMS', "The Stealth Ninja", [[HFD with MS DH IN]], [[Ninjas aren't real.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHMS', "The Artsy Escapist", [[HFD with MS DH AS]], [[Instead of escaping artists, we have artistic escapes! Wait...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPMS', "Drillers' Squad", [[HFD with MS DH DP]], [[DH wanted to be pink.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASINMS', "Abstraction", [[HFD with MS IN AS]], [[You gotta see the beauty in things.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPINMS', "Miscommunications", [[HFD with MS IN DP]], [[ewlfmnewfnearknjeirerivericfgterbjgdvpvy]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPMS', "Paintball Fight", [[HFD with MS AS DP]], [[I'm gonna getya. I don't know.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHGVVL', "Temptation", [[HFD with GV VL DH]], [[Romance are temporary. Zenith is forever.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('GVINVL', "Paranoia", [[HFD with GV VL IN]], [[AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASGVVL', "The Gladiator", [[HFD with GV VL AS]], [[WTF how did you get here this is ancient rome]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPGVVL', "Diner Date", [[HFD with GV VL DP]], [[Dinners, Diners, Drivers, Drive-Ins, and Dods]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHGVIN', "The Drunk Driver", [[HFD with GV DH IN]], [[DUI]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHGV', "The Texting Driver", [[HFD with GV DH AS]], [[TUI]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPGV', "Race You There", [[HFD with GV DH DP]], [[This isn't a race, dingus]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASGVIN', "The Spinmaster", [[HFD with GV IN AS]], [[BANANA ROTATO]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPGVIN', "Bronze Anniversary", [[HFD with GV IN DP]], [[How does a bronze anniversary even work]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPGV', "The Trapeze Artists", [[HFD with GV AS DP]], [[Fun fact: this achievement had the wrong name and icon in 0.55.15.1e1.2.2 Trinity]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHINVL', "The Flickering Spirit", [[HFD with VL DH IN]], [[DON'T LET THE FLAMES DIE OUT!!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHVL', "Forbidden Sorcery", [[HFD with VL DH AS]], [[Can you describe a fish person?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPVL', "Yuri", [[HFD with VL DH DP]], [[GAAAAAME]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASINVL', "Eccentric Recluse", [[HFD with VL IN AS]], [[Or the undertale under the ears]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPINVL', "Online Dating", [[HFD with VL IN DP]], [[A true Lovers' Day over here.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPVL', "The Exes", [[HFD with VL AS DP]], [[The result of cheating.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHIN', "The Libertine", [[HFD with DH IN AS]], [[Librarian Any% Speedrun]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DHDPIN', "Speration Anxiety", [[HFD with DH IN DP]], [[No... Don't go...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDHDP', "A Mutual Friendship", [[HFD with DH AS DP]], [[Bro stop adding your extra card to everything.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('ASDPIN', "Blindfolded Collaboration", [[HFD with IN AS DP]], [[Can I order some chuggets?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('', "", [[]], [[]], floorRank(1e99, 3e99, 5e99, 7e99, 9e99, 10e99, 5580e99), FALSE, "3MP", 'issued'), -- Dummy Achievement to fix 3MP page
 
-    { title = "FINAL MIX BEGINNER - 1R1U Mod Combos"},
-    AchieveFromCombo('NHrEX', "The Benevolent Dictator", [[HFD with rEX NH]], [[You want 3,000 liters of water? Sure, go ahead.]], floorRank(1, 3, 5, 7, 9, 10, 5022)),
-    AchieveFromCombo('MSrEX', "Haphazard Regime", [[HFD with rEX MS]], [[Sir, the residents are revolting.]], floorRank(1, 3, 5, 7, 9, 10, 5022)),
+    { title = "FINAL MIX BEGINNER - 1R1U Mod Combos", mod = "3MP"},
+    AchieveFromCombo('NHrEX', "The Benevolent Dictator", [[HFD with rEX NH]], [[You want 3,000 liters of water? Sure, go ahead.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('MSrEX', "Haphazard Regime", [[HFD with rEX MS]], [[Sir, the residents are revolting.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
 }
 
 local compFunc = {
@@ -2820,18 +2969,59 @@ local compFunc = {
 
 do
     local i = 1
+    local zcem = 1
+    local misc = 1
+    local mp2 = 1
+    local mp3 = 1
     repeat
         local achv = d[i]
         if achv.title then
-            if i % 2 == 0 then
-                table.insert(d, i, {})
-                i = i + 1
+            if achv.mod == 'ZCEM' then
+                if zcem % 2 == 0 then
+                    table.insert(d, i, {mod = 'ZCEM'})
+                    i = i + 1
+                    zcem = zcem + 1
+                end
+                table.insert(d, i + 1, {mod = 'ZCEM'})
+            elseif achv.mod == 'MISC' then
+                if misc % 2 == 0 then
+                    table.insert(d, i, {mod = 'MISC'})
+                    i = i + 1
+                    misc = misc + 1
+                end
+                table.insert(d, i + 1, {mod = 'MISC'})
+            elseif achv.mod == '2MP' then
+                if mp2 % 2 == 0 then
+                    table.insert(d, i, {mod = '2MP'})
+                    i = i + 1
+                    mp2 = mp2 + 1
+                end
+                table.insert(d, i + 1, {mod = '2MP'})
+            elseif achv.mod == '3MP' then
+                if mp3 % 2 == 0 then
+                    table.insert(d, i, {mod = '3MP'})
+                    i = i + 1
+                    mp3 = mp3 + 1
+                end
+                table.insert(d, i + 1, {mod = '3MP'})
+            else
+                if i % 2 == 0 then
+                    table.insert(d, i, {})
+                    i = i + 1
+                end
+                table.insert(d, i + 1, {})
             end
-            table.insert(d, i + 1, {})
+             end
+        if achv.mod == 'ZCEM'  then
+            zcem = zcem + 1
+        end
+        if achv.mod == 'MISC'  then
+            misc = misc + 1
         end
         i = i + 1
     until i > #d
 end
+-- Format checks and auto-completions
 for i = 1, #d do
     local achv = d[i]
     local id = achv.id

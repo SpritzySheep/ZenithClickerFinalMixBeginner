@@ -106,6 +106,11 @@ local d = {
         desc = "Have a Dev score on 62% achievements",
     },
     {
+        id = 'mina',
+        name = "A Hollowing OOF",
+        desc = "KO Mina the Hollower",
+    },
+    {
         id = 'Lv5000',
         name = "Prestige",
         desc = "Reached Z-Lv5,000",

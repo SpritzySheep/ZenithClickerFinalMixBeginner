@@ -83,9 +83,7 @@ function Initialize(save)
             end
             STAT.version = 192
         if STAT.version == 192 then
-            if STAT.srTimer_game > STAT.srTimer_life then
-                STAT.srTimer_game, STAT.srTimer_life = STAT.srTimer_life, STAT.srTimer_game
-            end
+            
             STAT.version = 193
         end
         if STAT.version == 193 then

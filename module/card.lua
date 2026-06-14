@@ -332,6 +332,8 @@ if not auto and not self.active and GAME.comboStr == 'eASeNH' and GAME.playing t
         -- Trevor Smithy
         if easyOn or wasEasy then GAME.refreshEasy() end
         if wasEasy and not easyOn then self:spin() end
+
+        if easyOn or revOn or wasEasy or wasRev then GAME.refreshUneasy() end
         
         --if self.id == 'EX' then
         --    TWEEN.new(tween_expertOn):setDuration(M.EX > 0 and .26 or .1):run()
@@ -373,7 +375,7 @@ if not auto and not self.active and GAME.comboStr == 'eASeNH' and GAME.playing t
                 end)
             end
         else
-            if M.EX == -1 and URM and not GAME.anyRev and self.easy and not GAME.playing then
+            if GAME.uneasyMode and self.easy and not GAME.playing then
                 TASK.new(function()
                     SFX.play(toneName, toneVol*.8, 0, Tone(-3))
                     SFX.play(toneName, toneVol*.8, 0, Tone(-0))
@@ -644,8 +646,8 @@ function Card:draw()
                 if self.required or self.required2 then
                     if self.required then
                         r1, g1, b1 = 1, .26, 0
-                        if STAT.easyName then
-                            if not (URM and self.id == 'EX' and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+                        if CONF.easyName then
+                            if not (self.id == 'EX' and GAME.uneasyMode) then
                                 r1, g1, b1 = 0, 1, 0          -- Green
                             else
                                 r1, g1, b1 = 0.626, 0, 0      -- Dark Red (for Uneasy)
@@ -707,7 +709,7 @@ function Card:draw()
     else
         if self.active then
             if self.easy then
-                if not (URM and self.id == 'EX' and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+                if not (self.id == 'EX' and GAME.uneasyMode) then
                     r1, g1, b1 = 0, 1, 0          -- Green
                 else
                     r1, g1, b1 = 0.626, 0, 0          -- Dark Red (for Uneasy)

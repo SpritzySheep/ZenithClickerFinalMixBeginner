@@ -933,8 +933,8 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     easyTitle  = GC.newText(FONT.get(50), "EASY GAMEPLAY"),
     uneasyTitle= GC.newText(FONT.get(50), "UNEASY GAMEPLAY"),
     easyModeVersion = GC.newText(FONT.get(30)),
-    theA       = GC.newText(FONT.get(50), "A"),
-    theM       = GC.newText(FONT.get(50), "M"),
+    theA       = GC.newText(FONT.get(50), ""),
+    theM       = GC.newText(FONT.get(50), ""),
 }
 FONT.setDefaultFont('sans')
 
@@ -962,6 +962,13 @@ CONF = {
     bgm = 100,
     autoMute = false,
     oldHitbox = false,
+    -- Trevor Smithy
+    easyName = false,
+    imperial = false,
+    promotion = true,
+    stacker = false,
+    oldTransparentCard = false,
+    lyrics = false,
 }
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall
@@ -1034,9 +1041,7 @@ STAT = {
     promotion = true,
     stacker = false,
     rold = false,
-    oldTransparentCard = false,
     unlockAll = false,
-    easyModeClicker = false,
     greenClicker = false,
 }
 
@@ -1052,22 +1057,21 @@ InitProfile()
 TestMode = false
 
 function SaveBest()
-    if TestMode then return end
+    if (TestMode or GAME.multiplePiecesActive) then return end
     love.filesystem.write('best.luaon', 'return' .. TABLE.dumpDeflate(BEST))
 end
 function SaveStat()
-    if TestMode then return end
+    if (TestMode or GAME.multiplePiecesActive) then return end
     STAT.modTime = os.time()
     love.filesystem.write('stat.luaon', 'return' .. TABLE.dumpDeflate(STAT))
 end
-
 function SaveAchv()
-    if TestMode then return end
+    if (TestMode or GAME.multiplePiecesActive) then return end
     love.filesystem.write('achv.luaon', 'return' .. TABLE.dumpDeflate(ACHV))
 end
 
 function SaveConf()
-    if TestMode then return end
+    if (TestMode or GAME.multiplePiecesActive) then return end
     love.filesystem.write('conf.luaon', 'return' .. TABLE.dumpDeflate(CONF))
 end
 local msgTime = 0
@@ -1458,7 +1462,7 @@ function RefreshBGM(mode)
     if not BGM.isPlaying() then return end
     local zp = GAME.getComboZP(GAME.getHand(not GAME.playing))
     local modifiedZP = (((zp >= 1.95 and zp or 0) * (GAME.mod.AS > 0 and 1.41 or 1)--[[ * (GAME.mod.DP > 0 and 1.26 or 1)]]))/10.1
-    local uneasy = (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and not GAME.anyRev and not GAME.playing
+    local uneasy = GAME.refreshUneasy() and not GAME.playing
     local uneasyMusic = uneasy and modifiedZP > 0
     local pitch = M.GV < 0 and 2^(-1/2) or M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1 
     if uneasy then
@@ -2153,7 +2157,7 @@ function Daemon_Fast()
         local dt = yield()
 
          -- Speedrun timer
-        --STAT.srTimer_life = STAT.srTimer_life + dt
+        -- STAT.srTimer_life = STAT.srTimer_life + dt
 
         -- Mouse holding animation
         if not CONF.syscursor then
@@ -2198,7 +2202,7 @@ function Daemon_Fast()
                     changed = true
                 end
             end
-            if changed then
+            if changed and not (GAME.playing and CONF.stacker) then
                 local W = SCN.scenes.tower.widgetList.start
                 W.text = startBtnTexts[startBtnPtr]
                 W:reset()

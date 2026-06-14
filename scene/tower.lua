@@ -260,10 +260,7 @@ local function keyTrigger(key)
                     local hand = GAME.getHand(true)
                     local revCount = table.concat(hand):count('r')
                     local pitch = M.GV < 0 and -6 or M.GV > 0 and (URM and M.GV == 2 and 3 or M.GV) or 0
-                    local uneasy = (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and not GAME.anyRev
-                    if uneasy then
-                        pitch = pitch + 0.25
-                    end
+                    if GAME.uneasyMode then pitch = pitch + 0.25 end
                     if GAME.slowmo then pitch = pitch - 12 end
                     if GAME.nightcore then pitch = pitch + 12 end
                     -- Trevor Smithy
@@ -1210,7 +1207,7 @@ if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
     TABLE.clear(GAME.questStack)
     end
 
-    if STAT.stacker then stackerStartButtonColor() end
+    if CONF.stacker then stackerStartButtonColor() end
 end
 
 function scene.overDraw()
@@ -1533,7 +1530,7 @@ function scene.overDraw()
             end
 
             -- Promotion Gauge
-            if STAT.promotion then
+            if CONF.promotion then
                 gc_push('transform')
                 gc_translate(460, 290)
                 gc_scale(GAME.uiHide)
@@ -1614,9 +1611,9 @@ function scene.overDraw()
 
                 -- Short Text & Panel
                 gc_setColor(.3, .1, 0, .62/eTAlpha)
-                gc_mRect('fill', 800, 330 - (STAT.stacker and GAME.questStack[1] and 60 or 0), GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
+                gc_mRect('fill', 800, 330 - (CONF.stacker and GAME.questStack[1] and 60 or 0), GAME.currentTask.shortObj:getWidth() * 1.6 + 50, 75, 20)
                 gc_setColor(1, 1, 1)
-                gc_mDraw(GAME.currentTask.shortObj, 800, 330 - (STAT.stacker and GAME.questStack[1] and 60 or 0), 0, 1.6)
+                gc_mDraw(GAME.currentTask.shortObj, 800, 330 - (CONF.stacker and GAME.questStack[1] and 60 or 0), 0, 1.6)
             end
         end
 
@@ -1644,7 +1641,7 @@ function scene.overDraw()
                 gc_mDraw(text, 800, Q.y, 0, kx, ky)
             end
         end
-    if STAT.stacker and GAME.questStack[1] then
+    if CONF.stacker and GAME.questStack[1] then
             local Q = GAME.questStack[1]
             local text = Q.name
             local kx = min(Q.k, 800 / text:getWidth())
@@ -1666,7 +1663,7 @@ function scene.overDraw()
                 gc_mDraw(text, 800, Q.y, 0, kx, ky)
             end
         end
-        if STAT.stacker and GAME.comboBounceTime > 0 then
+        if CONF.stacker and GAME.comboBounceTime > 0 then
             gc_setColor(1, 1, 1)
             local alpha = 1
             local x, y = 215, 315
@@ -1769,7 +1766,7 @@ function scene.overDraw()
         local height = GAME.height
         local miles = 0
         local feet = 0
-        if STAT.imperial then
+        if CONF.imperial then
             altitudeText[3] = 'ft'
             height = height * 3.2
             if height >= 5280 then
@@ -1778,8 +1775,8 @@ function scene.overDraw()
             end
         else altitudeText[3] = 'm' 
         end
-        altitudeText[1] = ("%.1f"):format(STAT.imperial and height or GAME.roundHeight)
-        if STAT.imperial and miles > 0 then
+        altitudeText[1] = ("%.1f"):format(CONF.imperial and height or GAME.roundHeight)
+        if CONF.imperial and miles > 0 then
             altitudeText[1] = miles .. 'mi ' .. ("%.1f"):format(feet)
         end
         TEXTS.height:set(altitudeText)
@@ -1899,7 +1896,7 @@ function scene.overDraw()
             gc_setColor(TextColor)
             if M.EX ~= -1 then
                 gc_draw(TEXTS.title, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
-            elseif (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) then
+            elseif GAME.uneasyMode then
                 gc_draw(TEXTS.uneasyTitle, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
             else
                 gc_draw(TEXTS.easyTitle, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
@@ -1959,7 +1956,7 @@ function scene.overDraw()
                 )
                  -- Trevor Smithy
             elseif M[infoID] == -1 then
-                if (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and C.id == 'EX' then
+                if GAME.uneasyMode and C.id == 'EX' then
                     setFont(70)
                     gc_strokePrint('full', 6, COLOR.Black, nil, MD.uneasyName[infoID], 130, -150 + 4, 2600, 'center', 0, .9, 1)
                     gc_strokePrint('full', 4, COLOR.DarkRed, nil, MD.uneasyName[infoID], 130, -150 + 2, 2600, 'center', 0, .9, 1)
@@ -2343,7 +2340,7 @@ scene.widgetList = {
         onPress = function(k)
             if k == 3 then return end
             HoldingButtons.startBtn = true
-            if M.EX <= 0 or STAT.stacker then
+            if M.EX <= 0 or CONF.stacker then
                 SFX.play('move')
                 button_start()
             else
