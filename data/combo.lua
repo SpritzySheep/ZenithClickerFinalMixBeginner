@@ -254,6 +254,12 @@ d.menu = {
 
     { set = "rEX NH",             name = "The Benevolent Dictator"},
     { set = "rEX MS",             name = "Haphazard Regime"},
+    { set = "rEX GV",             name = "Iron Fist"},
+    { set = "rEX VL",             name = "The Mercurial Ruler"},
+    { set = "rEX DH",             name = "Satan's Orders"},
+    { set = "rEX IN",             name = "Inside Job"},
+    { set = "rEX AS",             name = "Dancing Tyrantess"},
+    { set = "rEX DP",             name = "Duadic Dominion"},
 }
 
 

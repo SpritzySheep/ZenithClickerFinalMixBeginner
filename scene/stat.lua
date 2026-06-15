@@ -100,6 +100,7 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
+    cr = cr + MATH.floor(STAT.totalSingula)
     level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.ZP = STAT.PeakZP
@@ -141,6 +142,9 @@ local function calculateRating()
     if cr >= 250e3 then IssueSecret('transcend5', true) end
     if cr >= 300e3 then IssueSecret('transcend6', true) end
     if cr >= 350e3 then IssueSecret('transcend7', true) end
+    if cr >= 400e3 then IssueSecret('transcend8', true) end
+    if cr >= 450e3 then IssueSecret('transcend9', true) end
+    if cr >= 500e3 then IssueSecret('finity', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -357,6 +361,7 @@ function RefreshProfile()
     GC.print("CHAKRA ESCENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
+        rating >= 500000 and "FINITY" or
         rating >= 100000 and "TRANSCENSION" or
         rating >= 90000 and "ASCENDED, PHASE 5" or
         rating >= 80000 and "ASCENDED, PHASE 4" or
@@ -383,7 +388,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 24)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 38)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -518,7 +523,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -536,7 +541,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 285)
+    GC.rectangle('fill', 0, 0, 254, 310)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -551,6 +556,7 @@ function RefreshProfile()
         { k = "Dekaspeed",  v = { scoreColor, STAT.totalDeka }, x = 26, y = 208, d = 160 },
         { k = "Terminaspeed",  v = { scoreColor, STAT.totalTermina }, x = 26, y = 233, d = 160 },
         { k = "Luminaspeed",  v = { scoreColor, STAT.totalLumina }, x = 26, y = 258, d = 160 },
+        { k = "Singulaspeed",  v = { scoreColor, STAT.totalSingula }, x = 26, y = 283, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

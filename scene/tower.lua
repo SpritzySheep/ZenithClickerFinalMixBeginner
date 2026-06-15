@@ -1273,9 +1273,15 @@ function scene.overDraw()
         end
 
         -- GigaSpeed Anim
+        -- Oh look at that the mouse has commited a mouse crime
         if GigaSpeed.textTimer then
             gc_setBlendMode('add')
             gc_setColor(.26, .26, .26)
+            if GAME.gspeedlv == 13 then
+                for p = -10, 10, 3 do
+                    gc_mDraw(TEXTS.singulaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
+                end
+            end
             if GAME.gspeedlv == 12 then
                 for p = -10, 10, 3 do
                     gc_mDraw(TEXTS.luminaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)

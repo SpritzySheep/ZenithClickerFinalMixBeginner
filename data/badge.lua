@@ -191,6 +191,7 @@ local d = {
     },
     {id = 'termina', name = "TERMINASPEED?!", desc = "Entered Terminaspeed",},
     {id = 'lumina', name = "LUMINASPEED??", desc = "Entered Luminaspeed",},
+    {id = 'singula', name = "SINGULASPEED?!?", desc = "Entered Singulaspeed",},
     {
         id = 'ascendant',
         name = "Ascendant",
@@ -235,6 +236,9 @@ local d = {
     {id = 'transcend5',name = "Transcension 50%",desc = "Gathered 250,000 Chakra Escence",},
     {id = 'transcend6',name = "Transcension 60%",desc = "Gathered 300,000 Chakra Escence",},
     {id = 'transcend7',name = "Transcension 70%",desc = "Gathered 350,000 Chakra Escence",},
+    {id = 'transcend8',name = "Transcension 80%",desc = "Gathered 400,000 Chakra Escence",},
+    {id = 'transcend9',name = "Transcension 90%",desc = "Gathered 450,000 Chakra Escence",},
+    {id = 'finity',name = "Finity",desc = "Gathered 500,000 Chakra Escence",},
 }
 
 for i = 1, #d do

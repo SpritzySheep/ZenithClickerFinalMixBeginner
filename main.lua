@@ -260,6 +260,8 @@ TEXTURE = {
             assets 'rank/w-.png', assets 'rank/w.png', assets 'rank/w+.png', assets 'rank/ww.png', assets 'rank/www.png',
             assets 'rank/q-.png', assets 'rank/q.png', assets 'rank/q+.png', assets 'rank/q++.png', assets 'rank/qq.png',
             assets 'rank/and-.png', assets 'rank/and.png', assets 'rank/and+.png', assets 'rank/and+2.png', assets 'rank/and2.png',
+            assets 'rank/$-.png', assets 'rank/$.png', assets 'rank/$+.png', assets 'rank/$+2.png', assets 'rank/$$.png',
+            assets 'rank/pound-.png', assets 'rank/pound.png', assets 'rank/pound+.png', assets 'rank/pound+2.png', assets 'rank/pound2.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -578,6 +580,7 @@ TEXTURE = {
             Deka = aq(8, 9),
             Termina = aq(9, 9),
             Lumina = aq(2, 11),
+            Singula = aq(2, 14),
 
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
@@ -589,6 +592,8 @@ TEXTURE = {
             powerleveling8 = aq(5, 12),
             powerleveling9 = aq(6, 12),
             powerleveling10 = aq(2, 13),
+            powerleveling11 = aq(16, 13),
+            powerleveling12 = aq(1, 14),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -625,7 +630,8 @@ TEXTURE = {
             DPINVL = aq(8, 7), ASDPVL = aq(12, 4), ASDHIN = aq(3, 13), DHDPIN = aq(13, 4), ASDHDP = aq(14, 5),
             ASDPIN = aq(10, 9),
 
-            NHrEX = aq(9, 6), MSrEX = aq(4, 13),
+            NHrEX = aq(9, 6), MSrEX = aq(4, 13), GVrEX = aq(15, 13), VLrEX = aq(3, 14),
+            DHrEX = aq(4, 14), INrEX = aq(5, 14), ASrEX = aq(6, 14), DPrEX = aq(7, 14),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -921,6 +927,12 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.C, "S", COLOR.S, "P", COLOR.B, "E",
         COLOR.V, "E", COLOR.M, "D", COLOR.W, "?",
     }),
+    singulaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "S", COLOR.O, "I", COLOR.Y, "N",
+        COLOR.K, "G", COLOR.G, "U", COLOR.J, "L",
+        COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
+        COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -1026,6 +1038,7 @@ STAT = {
     totalDeka = 0,
     totalTermina = 0,
     totalLumina = 0,
+    totalSingula = 0,
     totalF10 = 0,
     totalKO = 0,
     totalRevive = 0,

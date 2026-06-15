@@ -222,6 +222,7 @@ local GAME = {
     dekaspeedFloor = {},
     terminaspeedFloor = {},
     luminaspeedFloor = {},
+    singulaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
@@ -366,7 +367,7 @@ function GAME.getComboZP(list)
     else
     zp = 1 + (STAT.totalQuest/1000)
     end
-    if GAME.crit then zp = zp * 26 end
+    if GAME.crit then zp = zp * 2 end
     if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
     if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
     if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
@@ -1282,6 +1283,10 @@ function GAME.addXP(xp, falseCommit)
             GAME.startLuminaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 13 and GAME.rank >= SingulaMusicReq then
+            GAME.startSingulaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1304,6 +1309,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isDeka = false
         GigaSpeed.isTermina = false
         GigaSpeed.isLumina = false
+        GigaSpeed.isSingula = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1500,6 +1506,25 @@ function GAME.startLuminaAnim()
 end
 
 function GAME.stopLuminaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startSingulaAnim()
+    GAME.gspeedlv = 13
+    GAME.singulaspeed = true
+    GAME.singulaspeedFloor[GAME.floor] = true
+    GAME.singulaCount = GAME.singulaCount + 1
+    GigaSpeed.isLurmina = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopSingulaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1885,6 +1910,10 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('lumina')
                 GAME.finishTera = true
     end
+    if GAME.singulaCount >= 1 or STAT.totalSingula >= 1 then
+                IssueSecret('singula')
+                GAME.finishTera = true
+    end
     SubmitAchv('powerleveling', STAT.level,true,true)
     SubmitAchv('powerleveling2', STAT.level,true,true)
     SubmitAchv('powerleveling3', STAT.level,true,true)
@@ -1895,6 +1924,8 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('powerleveling8', STAT.level,true,true)
     SubmitAchv('powerleveling9', STAT.level,true,true)
     SubmitAchv('powerleveling10', STAT.level,true,true)
+    SubmitAchv('powerleveling11', STAT.level,true,true)
+    SubmitAchv('powerleveling12', STAT.level,true,true)
     SubmitAchv('Tera', STAT.totalTera,true,true)
     SubmitAchv('Peta', STAT.totalPeta,true,true)
     SubmitAchv('Exa', STAT.totalExa,true,true)
@@ -1905,6 +1936,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('Deka', STAT.totalDeka,true,true)
     SubmitAchv('Termina', STAT.totalTermina,true,true)
     SubmitAchv('Lumina', STAT.totalLumina,true,true)
+    SubmitAchv('Singula', STAT.totalSingula,true,true)
     
 end
 
@@ -3612,6 +3644,7 @@ function GAME.start()
     TABLE.clear(GAME.dekaspeedFloor)
     TABLE.clear(GAME.terminaspeedFloor)
     TABLE.clear(GAME.luminaspeedFloor)
+    TABLE.clear(GAME.singulaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -3623,6 +3656,7 @@ function GAME.start()
     GAME.dekaCount = 0
     GAME.terminaCount = 0
     GAME.luminaCount = 0
+    GAME.singulaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -3941,6 +3975,7 @@ end
         STAT.totalDeka = STAT.totalDeka + GAME.dekaCount
         STAT.totalTermina = STAT.totalTermina + GAME.terminaCount
         STAT.totalLumina = STAT.totalLumina + GAME.luminaCount
+        STAT.totalSingula = STAT.totalSingula + GAME.singulaCount
         STAT.totalKO = STAT.totalKO + GAME.koCount
         STAT.totalRevive = STAT.totalRevive + GAME.reviveCount
         if GAME.floor >= 10 then
@@ -4230,6 +4265,8 @@ end
         SubmitAchv('powerleveling8', STAT.level,true,true)
         SubmitAchv('powerleveling9', STAT.level,true,true)
         SubmitAchv('powerleveling10', STAT.level,true,true)
+        SubmitAchv('powerleveling11', STAT.level,true,true)
+        SubmitAchv('powerleveling12', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -4400,6 +4437,8 @@ end
         SubmitAchv('powerleveling8', STAT.level,true,true)
         SubmitAchv('powerleveling9', STAT.level,true,true)
         SubmitAchv('powerleveling10', STAT.level,true,true)
+        SubmitAchv('powerleveling11', STAT.level,true,true)
+        SubmitAchv('powerleveling12', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
@@ -4430,6 +4469,7 @@ end
     GAME.stopDekaspeed('fin')
     GAME.stopTerminaspeed('fin')
     GAME.stopLuminaspeed('fin')
+    GAME.stopSingulaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()

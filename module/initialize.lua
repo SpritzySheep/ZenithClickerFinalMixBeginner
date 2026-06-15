@@ -48,6 +48,7 @@ function Initialize(save)
     if STAT.totalDeka == not STAT.totalDeka then STAT.totalDeka = 0 end
     if STAT.totalTermina == not STAT.totalTermina then STAT.totalTermina = 0 end
     if STAT.totalLumina == not STAT.totalLumina then STAT.totalLumina = 0 end
+    if STAT.totalSingula == not STAT.totalSingula then STAT.totalSingula = 0 end
     if STAT.mousegirl == not STAT.mousegirl then STAT.mousegirl = false end
     if STAT.srTimer_life == not STAT.srTimer_life then STAT.srTimer_life = 0 end
     if STAT.achv == not STAT.achv then STAT.achv = 0 end

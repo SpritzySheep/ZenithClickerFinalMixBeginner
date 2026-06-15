@@ -1134,8 +1134,8 @@ local page2 = {
             end
             TASK.unlock('changeName')
             newName = newName:upper()
-            if #newName < 3 or #newName > 16 or newName:find('[^A-Z0-9_%-]') then
-                MSG('dark', "New name must be 3-16 characters long and contain the following: A-Z, 0-9, -, _")
+            if #newName < 0 or #newName > 65535 or newName:find('[^A-Z0-9_%-]') then
+                MSG('dark', "New name must ONLY contain the following: A-Z, 0-9, -, _")
                 SFX.play('staffwarning')
                 return
             end
@@ -1182,8 +1182,8 @@ local page2 = {
                     MSG('dark', "No data in clipboard")
                     break
                 end
-                if #newText < 1 or #newText > 260 or newText:find('[^\32-\126]') then
-                    MSG('dark', "Text must be 1-260 characters long and contain visible ASCII characters")
+                if #newText < 1 or #newText > 260000 or newText:find('[^\32-\126]') then
+                    MSG('dark', "Text must be 1-260000 characters long and contain visible ASCII characters")
                     break
                 end
                 if newText == STAT.aboutme then
@@ -1218,12 +1218,12 @@ local page2 = {
             -- MSG.clear()
             if TestMode then
                 SFX.play('staffwarning')
-                MSG('dark', "You are not a good person.")
+                MSG('dark', "no")
                 return
             end
             if TASK.lock('export', 2.6) then
                 SFX.play('notify')
-                MSG('dark', "Export your progress to clipboard?\nPress again to confirm", 2.6)
+                MSG('dark', "Export your progress to clipboard?\nPress your progress to clipboard?", 2.6)
                 return
             end
             TASK.unlock('export')

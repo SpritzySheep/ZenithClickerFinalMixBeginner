@@ -2341,7 +2341,7 @@ local d = {
     },
     { -- uMS
         id = 'uMS',
-        name = "Entorpy",
+        name = "Entropy",
         desc = [[HFD with uMS]],
         quote = [[THE HEAT DEATH OF THE UNIVERSE]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
@@ -2511,6 +2511,21 @@ local d = {
         hide = function() return STAT.totalLumina == 0 end,
         mod = "MISC",
     }, 
+    { -- Singula
+        id = 'Singula', name = "Journey into Innerspace", desc = [[Singulaspeed Entries]],
+        quote = [[The end...?]],
+        scoreSimp = function(n) return n .. " SINGULAs" end,rank = numberRank(0, 1, 5, 10, 19, 35, 54),
+        hide = function() return STAT.totalLSingula == 0 end,
+        mod = "MISC",
+    }, 
+    { -- Singula
+        id = '', name = "", desc = [[]],
+        quote = [[""]],
+        scoreSimp = function(n) return n .. " LUMINAs" end,rank = numberRank(1e99, 2e99, 6e99, 12e99, 22e99, 39e99, 60e99),
+        hide = function() return STAT.totalLumina == 0 end,
+        type = 'issued',
+        mod = "MISC",
+    }, 
 
    { title = "FINAL MIX BEGINNER - POWERLEVELING", mod = "MISC"},
 
@@ -2597,6 +2612,16 @@ local d = {
         quote = [[You ARE supermassive!]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(45000, 46000, 47000, 48000, 49000, 50000, 54999), hide = function() return STAT.level < 45000 end
         , realHide = function() return STAT.level < 45000 end, mod = "MISC",
+    },
+    {id = 'powerleveling11',name = "Yotta Leveling", desc = [[Zenith Level (50,000-55,000)]],
+        quote = [[Careful... some say even sentient celestial bodies struggle to reach levels this high!]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(50000, 51000, 52000, 53000, 54000, 55000, 59999), hide = function() return STAT.level < 50000 end
+        , realHide = function() return STAT.level < 50000 end, mod = "MISC",
+    },
+    {id = 'powerleveling12',name = "Ronna Leveling", desc = [[Zenith Level (55,000-60,000)]],
+        quote = [[Though others also say this isn't even the start.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(55000, 56000, 57000, 58000, 59000, 60000, 64999), hide = function() return STAT.level < 55000 end
+        , realHide = function() return STAT.level < 55000 end, mod = "MISC",
     },
 
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos", mod = "2MP" },
@@ -2960,6 +2985,12 @@ local d = {
     { title = "FINAL MIX BEGINNER - 1R1U Mod Combos", mod = "3MP"},
     AchieveFromCombo('NHrEX', "The Benevolent Dictator", [[HFD with rEX NH]], [[You want 3,000 liters of water? Sure, go ahead.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
     AchieveFromCombo('MSrEX', "Haphazard Regime", [[HFD with rEX MS]], [[Sir, the residents are revolting.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('GVrEX', "Iron Fist", [[HFD with rEX GV]], [[Fists of iron sure do weigh a lot.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('VLrEX', "The Mercurial Ruler", [[HFD with rEX VL]], [[Let us measure every temperature!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('DHrEX', "Satan's Orders", [[HFD with rEX DH]], [[Mice shouldn't give in to the dark arts.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('INrEX', "Inside Job", [[HFD with rEX IN]], [[THIS WAS THE WORST IDEA I'VE EVER HAD!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('ASrEX', "Dancing Tyrantess", [[HFD with rEX AS]], [[A dancer of death, but the momeraths outgrabe.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('DPrEX', "Duadic Dominion", [[HFD with rEX DP]], [[It's not easy, but we'll manage.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
 }
 
 local compFunc = {
@@ -3017,6 +3048,12 @@ do
         end
         if achv.mod == 'MISC'  then
             misc = misc + 1
+        end
+        if achv.mod == '2MP'  then
+            mp2 = mp2 + 1
+        end
+        if achv.mod == '3MP'  then
+            mp3 = mp3 + 1
         end
         i = i + 1
     until i > #d

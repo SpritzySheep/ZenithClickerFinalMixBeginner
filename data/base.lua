@@ -25,6 +25,7 @@ QuettaMusicReq = 32
 DekaMusicReq = 35
 TerminaMusicReq = 38
 LuminaMusicReq = 41
+SingulaMusicReq = 45
 
 GravityTimer = {
     [-1] = { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 },
