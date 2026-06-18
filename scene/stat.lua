@@ -145,6 +145,8 @@ local function calculateRating()
     if cr >= 400e3 then IssueSecret('transcend8', true) end
     if cr >= 450e3 then IssueSecret('transcend9', true) end
     if cr >= 500e3 then IssueSecret('finity', true) end
+    if cr >= 550e3 then IssueSecret('finity_02', true) end
+    if cr >= 600e3 then IssueSecret('finity_03', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -388,7 +390,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 38)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 48)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)

@@ -262,6 +262,9 @@ TEXTURE = {
             assets 'rank/and-.png', assets 'rank/and.png', assets 'rank/and+.png', assets 'rank/and+2.png', assets 'rank/and2.png',
             assets 'rank/$-.png', assets 'rank/$.png', assets 'rank/$+.png', assets 'rank/$+2.png', assets 'rank/$$.png',
             assets 'rank/pound-.png', assets 'rank/pound.png', assets 'rank/pound+.png', assets 'rank/pound+2.png', assets 'rank/pound2.png',
+            assets 'rank/dia_01.png', assets 'rank/dia_02.png', assets 'rank/dia_03.png', assets 'rank/dia_04.png',
+            assets 'rank/alpha_01.png', assets 'rank/alpha_02.png', assets 'rank/alpha_03.png', assets 'rank/alpha_04.png', assets 'rank/alpha_05.png',
+            assets 'rank/alpha_06.png', assets 'rank/alpha_07.png', assets 'rank/alpha_08.png', assets 'rank/alpha_09.png', assets 'rank/alpha_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')

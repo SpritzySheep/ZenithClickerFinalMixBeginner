@@ -894,6 +894,12 @@ function GAME.genQuest()
         if GAME.rank <  (1 + (MATH.floor(STAT.achv/50))) then
             GAME.rank = (1 + (MATH.floor(STAT.achv/50)))
             GAME.xp = 1
+            TEXTS.rank:set("Speed Lv"..(GAME.rank-1))
+        end
+        if GAME.height < 1 then
+            GAME.xpLockTimer = 2
+            GAME.xpLockLevel = GAME.xpLockLevelMax
+            GAME.xp = GAME.rank / 2
         end
     end
     GAME.questTime = 0
@@ -1179,8 +1185,11 @@ function GAME.addXP(xp, falseCommit)
     end
     GAME.xp = GAME.xp + xp
     if GAME.rankupLast and GAME.xp >= 2 * GAME.rank then GAME.xpLockLevel = GAME.xpLockLevelMax end
-    if GAME.height < 10 and STAT.ExtraSpeed then GAME.xpLockTimer = 5
-     end
+    if GAME.height < 1 and STAT.ExtraSpeed then 
+    GAME.xpLockTimer = 5
+    GAME.xpLockLevel = GAME.xpLockLevelMax
+    GAME.xp = (GAME.rank / 2)
+    end
 
     local oldRank = GAME.rank
     local oldLockTimer = GAME.xpLockTimer
@@ -3592,7 +3601,7 @@ function GAME.start()
 
     -- Rank
     GAME.rank = 1
-    TEXTS.rank:set("Speed Lv0")
+    TEXTS.rank:set("Speed Lv"..(GAME.rank-1))
     GAME.xp = 0
     GAME.rankupLast = false
     GAME.xpLockLevel = GAME.xpLockLevelMax
@@ -4114,7 +4123,7 @@ end
             TABLE.append(resStr, {COLOR.DR, "U"})
         end
         if STAT.ExtraSpeed  then
-            TABLE.append(resStr, {COLOR.A, "A"})
+            TABLE.append(resStr, {COLOR.A, "A"..MATH.floor(STAT.achv/50)})
         end
         if STAT.MouseGirl  then
             TABLE.append(resStr, {COLOR.M, "M"})
@@ -4854,7 +4863,7 @@ function GAME.update(dt)
             end
         else
             
-         GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
+         GAME.height = GAME.height + (GAME.rank + 4) / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
         end
         if GAME.height < -10 then GAME.rank = 1 end
         end

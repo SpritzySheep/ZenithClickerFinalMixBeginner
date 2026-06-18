@@ -1165,14 +1165,6 @@ if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
         gc_draw(TEXTS.endResult, -617+xOffset, 80, 0, .626)
         gc_draw(TEXTS.floorTime, -617+xOffset, 226 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -527+xOffset, 226 - GAME.uiHide * 150, 0, .38)
-        if STAT.ExtraSpeed then
-            gc_setColor(COLOR.A)
-            gc_mDraw(TEXTS.theA, -400, 90, 0, 1)
-        end
-        if STAT.MouseGirl then
-            gc_setColor(COLOR.M)
-            gc_mDraw(TEXTS.theM, 500, 135, 0, 4)
-        end
         gc_setColor(COLOR.L)
         gc_mDraw(TEXTS.endHeight, 0, 130, 0, 1.8)
         gc_draw(TEXTS.endResult, -616+xOffset, 78, 0, .626)
