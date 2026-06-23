@@ -147,6 +147,8 @@ local function calculateRating()
     if cr >= 500e3 then IssueSecret('finity', true) end
     if cr >= 550e3 then IssueSecret('finity_02', true) end
     if cr >= 600e3 then IssueSecret('finity_03', true) end
+    if cr >= 650e3 then IssueSecret('finity_04', true) end
+    if cr >= 700e3 then IssueSecret('finity_05', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -240,7 +242,7 @@ function RefreshProfile()
     -- github link
     FONT.set(50)
     GC.setColor(scoreColor)
-    GC.printf("↗  VIEW FULL RECORDS", 0, 1370, 1200, 'center')
+    GC.printf("↗  MOUSE CHANNEL", 0, 1370, 1200, 'center')
     -- bottom dark
     GC.setColor(0, 0, 0, .3)
     --GC.rectangle('fill', 0, 720, 1200, -3)
@@ -664,7 +666,7 @@ scene.widgetList = {
         onPress = function()
             if cardShow == 1 then
                 SFX.play('menuconfirm')
-                SCN.swapTo('records', 'none')
+                SCN.swapTo('chnl', 'none')
             end
         end,
     },
@@ -675,13 +677,13 @@ scene.widgetList = {
         onClick = function() love.keypressed('escape') end,
     },
     -- BADGES button
-    WIDGET.new {
-        name = 'BADGES', type = 'button',
-        fontSize = 30, textColor = COLOR.L, text = "BADGES",
-        pos = { .5, .5 }, x = -274, y = -436, w = 150, h = 50,
-        onClick = function() SCN.swapTo('badge', 'none') end,
-        color = COLOR.B,
-    },
+    --WIDGET.new {
+    --    name = 'BADGES', type = 'button',
+    --    fontSize = 30, textColor = COLOR.L, text = "BADGES",
+    --    pos = { .5, .5 }, x = -274, y = -436, w = 150, h = 50,
+    --    onClick = function() SCN.swapTo('badge', 'none') end,
+    --    color = COLOR.B,
+    --},
     -- Inside the profile card
     WIDGET.new {
         name = 'protect', type = 'button_invis',

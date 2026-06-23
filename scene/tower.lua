@@ -216,11 +216,11 @@ local function keyTrigger(key)
                 SFX.play('no')
                 if GAME.badTime then GAME.badTime = false end
             else
-                if URM and M.VL == 2 and not UltraVlCheck('achv') then return end
+                if URM and M.VL == 2 and not UltraVlCheck('chnl') then return end
                 SFX.play('menuhit1')
-                SCN.go('achv', 'none')
+                SCN.go('chnl', 'none')
             end
-            local W = scene.widgetList.achv
+            local W = scene.widgetList.chnl
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
         elseif key == 'f1' then
@@ -921,6 +921,7 @@ function DrawBG(brightness, showRuler)
                 gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.2 * BgScale, 0, .2 * BgScale)
                 gc_mDraw(TEXTURE.oort, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2 * BgScale, 0, .3 * BgScale)
                 gc_mDraw(TEXTURE.oort2, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2.1 * BgScale, 0, .3 * BgScale)
+                gc_mDraw(TEXTURE.nothing, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2000) * 0.01 * BgScale, 0, 1 * BgScale)
                 gc_setBlendMode('alpha')
 
                 -- Tower
@@ -1332,7 +1333,7 @@ function scene.overDraw()
         end
 
         -- Spike counter
-        if GAME.spikeCounter >= 8 and GAME.spikeTimer > 0 then
+        if GAME.spikeCounter >= 0 and GAME.spikeTimer > 0 then
             gc_push('transform')
             gc_translate(1226, 300)
             local _t = GAME.questTime
@@ -1342,7 +1343,10 @@ function scene.overDraw()
             gc_setColor(1, 1, 1, GAME.spikeTimer * .62/eTAlpha)
             gc_strokeDraw('full', 2, TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
             gc_setColor(0, 0, 0, GAME.spikeTimer * 2.6/eTAlpha)
+            gc_setBlendMode('subtract')
             gc_draw(TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
+            gc_draw(TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
+            gc_setBlendMode('alpha')
             gc_pop()
         end
 
@@ -2293,11 +2297,11 @@ scene.widgetList = {
         onClick = function() love.keyreleased('`') end,
     },
     WIDGET.new {
-        name = 'achv', type = 'button',
+        name = 'chnl', type = 'button',
         pos = { 0, 0 }, x = 60, y = 320, w = 160, h = 60,
         color = { COLOR.HEX '1F4E2C' },
         sound_hover = 'menutap',
-        fontSize = 30, text = "    ACHV", textColor = { COLOR.HEX '73E284' },
+        fontSize = 30, text = "   MOUSE", textColor = { COLOR.HEX '73E284' },
         onPress = function() love.keypressed('tab') end,
         onClick = function() love.keyreleased('tab') end,
     },

@@ -159,6 +159,10 @@ TEXTURE = {
     IN = { lock = '_lockfull_7', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
     AS = { lock = '_lockfull_8', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
     DP = { lock = '_lockover_?', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
+    ch_achievements = assets 'channel/achievements.jpg',
+    ch_records = assets 'channel/me.jpg',
+    ch_splits = assets 'channel/players.jpg',
+    ch_leaderboard = assets 'channel/leaderboard.jpg',
     lockfull = assets 'card/lockfull.png',
     lockover = assets 'card/lockover.png',
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
@@ -172,6 +176,7 @@ TEXTURE = {
     keiper = assets 'tower/keiper.png',
     oort = assets 'tower/oort.png',
     oort2 = assets 'tower/oort2.png',
+    nothing = assets 'tower/f11.png',
     stars = assets 'tower/stars.png',
     warning = assets 'finalwarning.png',
 
@@ -265,6 +270,8 @@ TEXTURE = {
             assets 'rank/dia_01.png', assets 'rank/dia_02.png', assets 'rank/dia_03.png', assets 'rank/dia_04.png',
             assets 'rank/alpha_01.png', assets 'rank/alpha_02.png', assets 'rank/alpha_03.png', assets 'rank/alpha_04.png', assets 'rank/alpha_05.png',
             assets 'rank/alpha_06.png', assets 'rank/alpha_07.png', assets 'rank/alpha_08.png', assets 'rank/alpha_09.png', assets 'rank/alpha_10.png',
+            assets 'rank/beta_01.png', assets 'rank/beta_02.png', assets 'rank/beta_03.png', assets 'rank/beta_04.png', assets 'rank/beta_05.png',
+            assets 'rank/beta_06.png', assets 'rank/beta_07.png', assets 'rank/beta_08.png', assets 'rank/beta_09.png', assets 'rank/beta_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -635,6 +642,8 @@ TEXTURE = {
 
             NHrEX = aq(9, 6), MSrEX = aq(4, 13), GVrEX = aq(15, 13), VLrEX = aq(3, 14),
             DHrEX = aq(4, 14), INrEX = aq(5, 14), ASrEX = aq(6, 14), DPrEX = aq(7, 14),
+            EXrNH = aq(8, 14), EXrMS = aq(9, 14), EXrGV = aq(12, 2), EXrVL = aq(9, 6),
+            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1279,6 +1288,7 @@ SCN.add('conf', require 'scene/conf')
 SCN.add('about', require 'scene/about')
 SCN.add('ending', require 'scene/ending')
 SCN.add('zcem', require 'scene/zcem')
+SCN.add('chnl', require 'scene/chnl')
 ZENITHA.setFirstScene('joining')
 
 local gc = love.graphics

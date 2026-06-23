@@ -655,8 +655,8 @@ function GAME.anim_setMenuHide(t)
     ---@cast w -nil
     w.stat.x = cLerp(60, -90, t * 1.5 - .5)
     w.stat:resetPos()
-    w.achv.x = cLerp(60, -90, t * 1.5)
-    w.achv:resetPos()
+    w.chnl.x = cLerp(60, -90, t * 1.5)
+    w.chnl:resetPos()
     w.easy.x = cLerp(60, -90, t * 1.5)
     w.easy:resetPos()
     w.conf.x = cLerp(-60, 90, t * 1.5 - .5)
@@ -1689,7 +1689,15 @@ end
 
 function GAME.awardKO(id1, id2, valid, toOppo)
     if GAME.playing and valid then 
-        GAME.addHeight((M.EX == 2 and 10 or 30) * .26 * GAME.attackMul) 
+        if valid then
+        if GAME.playing then
+            GAME.addHeight((M.EX == 2 and 10 or 30) * .26 * GAME.attackMul)
+        end
+        if toOppo then
+            if not id2:match("^GHOST%-") then GAME.koCount = GAME.koCount + 1 end
+            SFX.play('elim', .5)
+        end
+    end 
         if id2:match("MINA_THE_HOLLOWER") and GAME.playing then 
             IssueSecret("mina")
             MSG('dark',"YOU DID A THING!")
@@ -1798,7 +1806,7 @@ function GAME.upFloor()
         GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed and #GAME.getHand(true) == 0 and GAME.pieceCount() == 0 and GAME.totalQuest <= 7 then IssueAchv('hyperplonk') end
         if GAME.gigaspeed or GAME.smithyMode then
-            if GAME.time < STAT.minTime then
+            if roundTime < STAT.minTime then
                 STAT.minTime = roundTime
                 STAT.timeDate = os.date("%y.%m.%d %H:%M%p")
                 SaveStat()
@@ -5038,8 +5046,11 @@ function GAME.update(dt)
         GAME.fullHealth = GAME.fullHealth - dt * GAME.timerMul * GAME.lifeLeak * leakMod
         GAME.life = min(GAME.life, GAME.fullHealth)
         GAME.life2 = min(GAME.life2, GAME.fullHealth)
-        if GAME.life <= 0 then
+        if GAME.fullHealth <= 0 then
             GAME.takeDamage(1e99, 'wrong')
+        else
+            GAME.life = min(GAME.life, GAME.fullHealth)
+            GAME.life2 = min(GAME.life2, GAME.fullHealth)
         end
     end
 

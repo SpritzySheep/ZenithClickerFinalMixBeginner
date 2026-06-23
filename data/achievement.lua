@@ -2991,6 +2991,13 @@ local d = {
     AchieveFromCombo('INrEX', "Inside Job", [[HFD with rEX IN]], [[THIS WAS THE WORST IDEA I'VE EVER HAD!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
     AchieveFromCombo('ASrEX', "Dancing Tyrantess", [[HFD with rEX AS]], [[A dancer of death, but the momeraths outgrabe.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
     AchieveFromCombo('DPrEX', "Duadic Dominion", [[HFD with rEX DP]], [[It's not easy, but we'll manage.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
+    AchieveFromCombo('EXrNH', "Top Player", [[HFD with EX rNH]], [[I eat top players for breakfast.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrMS', "The Swindler", [[HFD with EX rMS]], [[Swaggle me eyes! They're all bilgerats by the looks of them!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrGV', "The Fallen", [[HFD with EX rGV]], [[May their sacrifice not be in vain.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrVL', "Struggling Professional", [[HFD with EX rVL]], [[May their sacrifice not be in vain.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrDH', "Fatal Finesse", [[HFD with EX rDH]], [[One misdrop is all it takes...]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrIN', "No", [[HFD with EX rIN]], [[no]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('EXrDP', "Surging King", [[HFD with EX rDP]], [["Hey, Einstein! I'm on your side!" - Birdman]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
 }
 
 local compFunc = {

@@ -3,6 +3,6 @@ return {
     ["apkCode"] = 011401,
     ["verCode"] = 011401,
 
-    ["appVer"] = "233.16.5e2.5_01 Squeak",
-    ["verStr"] = "233.16.5e2.5_01 Squeak",
+    ["appVer"] = "377.17.3e2.5 Limit",
+    ["verStr"] = "377.17.3e2.5 Limit",
 }

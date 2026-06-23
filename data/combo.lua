@@ -260,6 +260,13 @@ d.menu = {
     { set = "rEX IN",             name = "Inside Job"},
     { set = "rEX AS",             name = "Dancing Tyrantess"},
     { set = "rEX DP",             name = "Duadic Dominion"},
+    { set = "EX rNH",             name = "Top Player"},
+    { set = "EX rMS",             name = "The Swindler"},
+    { set = "EX rGV",             name = "The Fallen"},
+    { set = "EX rVL",             name = "Struggling Professional"},
+    { set = "EX rDH",             name = "Fatal Finesse"},
+    { set = "EX rIN",             name = "no"},
+    { set = "EX rDP",             name = "Surging King"},
 }
 
 
