@@ -2998,6 +2998,7 @@ local d = {
     AchieveFromCombo('EXrDH', "Fatal Finesse", [[HFD with EX rDH]], [[One misdrop is all it takes...]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('EXrIN', "No", [[HFD with EX rIN]], [[no]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('EXrDP', "Surging King", [[HFD with EX rDP]], [["Hey, Einstein! I'm on your side!" - Birdman]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('MSrNH', "Turbulent Rise", [[HFD with rNH MS]], [[Mice are typically very light and thus prone to being blowwn away.\n Try to keep your feet on the ground!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
 }
 
 local compFunc = {

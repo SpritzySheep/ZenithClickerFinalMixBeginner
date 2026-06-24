@@ -2434,7 +2434,7 @@ function GAME.refreshRev()
         W = SCN.scenes.tower.widgetList.stat
         W.fillColor[1], W.fillColor[2] = W.fillColor[2], W.fillColor[1]
         W.textColor[1], W.textColor[2] = W.textColor[2], W.textColor[1]
-        W = SCN.scenes.tower.widgetList.chnl
+        W = SCN.scenes.tower.widgetList.chnl 
         W.fillColor[1], W.fillColor[2] = W.fillColor[2], W.fillColor[1]
         W.textColor[1], W.textColor[2] = W.textColor[2], W.textColor[1]
         W = SCN.scenes.tower.widgetList.conf

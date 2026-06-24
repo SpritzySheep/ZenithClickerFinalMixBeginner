@@ -304,9 +304,9 @@ function RefreshProfile()
                 GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) - (scroll*2500), 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
                 end
                 local bd = BadgeData[id] or BadgeData[0]
-                scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
-                scene.widgetList[badgeCount]:reset()
-                scene.widgetList[i]:setVisible(true)
+                --scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
+                --scene.widgetList[badgeCount]:reset()
+                --scene.widgetList[i]:setVisible(true)
                 bpage = floor(badgeCount/50)
             end
     end
@@ -392,7 +392,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 48)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 58)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -704,12 +704,12 @@ function scene.keyDown(key, isRep)
     if isRep then return true end
     if key == 'a' and scroll > 0 then
             scroll = scroll - 1
-            scene.widgetList.link:resetPos()
+            --scene.widgetList.link:resetPos()
             RefreshProfile()
     end
     if key == 'd' and scroll < bpage then
             scroll = scroll + 1
-            scene.widgetList.link:resetPos()
+            --scene.widgetList.link:resetPos()
             RefreshProfile()
     end
     if key == 'escape' or key == 'f2' then
@@ -721,17 +721,17 @@ function scene.keyDown(key, isRep)
     ZENITHA._cursor.active = true
     return true
 end
-for i = 1, totalBadges do
-    table.insert(scene.widgetList, (i+(scroll*50)), WIDGET.new {
-        name = 'link', type = 'hint',
-        text = "",
-        pos = { .5, .5 }, x = (-850 + 33.5 * (i - 1)), y = -32000, w = 35,
-        color = COLOR.X,
-        labelPos = 'topRight',
-        floatFontSize = 30,
-        floatText = "", -- Dynamic text
-
-    })
-end
+--for i = 1, totalBadges do
+--    table.insert(scene.widgetList, (i+(scroll*50)), WIDGET.new {
+--        name = 'link', type = 'hint',
+--        text = "",
+--        pos = { .5, .5 }, x = (-850 + 33.5 * (i - 1)), y = -32000, w = 35,
+--        color = COLOR.X,
+--        labelPos = 'topRight',
+--        floatFontSize = 30,
+--        floatText = "", -- Dynamic text
+--
+--    })
+--end
 
 return scene

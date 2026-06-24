@@ -643,7 +643,7 @@ TEXTURE = {
             NHrEX = aq(9, 6), MSrEX = aq(4, 13), GVrEX = aq(15, 13), VLrEX = aq(3, 14),
             DHrEX = aq(4, 14), INrEX = aq(5, 14), ASrEX = aq(6, 14), DPrEX = aq(7, 14),
             EXrNH = aq(8, 14), EXrMS = aq(9, 14), EXrGV = aq(12, 2), EXrVL = aq(9, 6),
-            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14),
+            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14), MSrNH = aq(14, 6),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',

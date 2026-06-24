@@ -897,7 +897,7 @@ widgetSet.other = {
         color = clr.btn1,
         sound_hover = 'menutap',
         fontSize = 30, text = "    RESET", textColor = clr.btn2,
-        onClick = function() love.keyspressed('f13') end,
+        onClick = function() love.keypressed('f13') end,
     },    -- Hint
     WIDGET.new {
         name = 'help', type = 'hint',
