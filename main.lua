@@ -643,7 +643,9 @@ TEXTURE = {
             NHrEX = aq(9, 6), MSrEX = aq(4, 13), GVrEX = aq(15, 13), VLrEX = aq(3, 14),
             DHrEX = aq(4, 14), INrEX = aq(5, 14), ASrEX = aq(6, 14), DPrEX = aq(7, 14),
             EXrNH = aq(8, 14), EXrMS = aq(9, 14), EXrGV = aq(12, 2), EXrVL = aq(9, 6),
-            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14), MSrNH = aq(14, 6),
+            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14), MSrNH = aq(14, 6), GVrNH = aq(13, 14),
+            VLrNH = aq(14, 14), DHrNH = aq(4, 14), INrNH = aq(15, 14), ASrNH = aq(16, 14), DPrNH = aq(14, 14),
+            NHrMS = aq(1, 15),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1895,7 +1897,7 @@ function ZENITHA.globalEvent.keyDown(key, isRep)
     end
 end
 
-function ZENITHA.globalEvent.quit() SaveStat() end
+function ZENITHA.globalEvent.quit() SaveStat() SaveConf() end
 
 do -- Auto mute when unfocused
     local function task_autoSoundOff()
@@ -2186,6 +2188,7 @@ function Daemon_Fast()
         -- STAT.srTimer_life = STAT.srTimer_life + dt
 
         -- Mouse holding animation
+        ApplySettings()
         if not CONF.syscursor then
             pressValue = msIsDown(1, 2) and 1 or expApproach(pressValue, 0, dt * 12)
         end

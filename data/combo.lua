@@ -268,6 +268,13 @@ d.menu = {
     { set = "EX rIN",             name = "no"},
     { set = "EX rDP",             name = "Surging King"},
     { set = "rNH MS",             name = "Turbulent Rise"},
+    { set = "rNH GV",             name = "Levitation"},
+    { set = "rNH VL",             name = "Enlightened"},
+    { set = "rNH DH",             name = "The Wretch's Redemption"},
+    { set = "rNH IN",             name = "Imperceptible"},
+    { set = "rNH AS",             name = "The Dying Artist"},
+    { set = "rNH DP",             name = "Guardian Angel"},
+    { set = "NH rMS",             name = "High Stakes"},
 }
 
 

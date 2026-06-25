@@ -304,16 +304,10 @@ function RefreshProfile()
                 GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) - (scroll*2500), 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
                 end
                 local bd = BadgeData[id] or BadgeData[0]
-                --scene.widgetList[badgeCount].floatText = bd.name .. "\n" .. bd.desc
-                --scene.widgetList[badgeCount]:reset()
-                --scene.widgetList[i]:setVisible(true)
                 bpage = floor(badgeCount/50)
             end
     end
     STAT.badges = badgeCount
-    for i = badgeCount + 1, totalBadges do
-        scene.widgetList[i]:setVisible(false)
-    end
 
     -- Clicker Badge
     if STAT.clicker then

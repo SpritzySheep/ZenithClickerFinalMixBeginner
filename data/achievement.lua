@@ -2999,6 +2999,13 @@ local d = {
     AchieveFromCombo('EXrIN', "No", [[HFD with EX rIN]], [[no]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('EXrDP', "Surging King", [[HFD with EX rDP]], [["Hey, Einstein! I'm on your side!" - Birdman]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('MSrNH', "Turbulent Rise", [[HFD with rNH MS]], [[Mice are typically very light and thus prone to being blowwn away.\n Try to keep your feet on the ground!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('GVrNH', "Levitation", [[HFD with rNH GV]], [[Wing guard I am, leave me-oh ,so.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('VLrNH', "Enlightened", [[HFD with rNH VL]], [[The divine is not infintely far...]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('DHrNH', "The Wretch's Redemption", [[HFD with rNH DH]], [[Oh no, Done is the name of the dog.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('INrNH', "Imperceptible", [[HFD with rNH IN]], [[Imperception is NOT reality.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('ASrNH', "The Dying Artist", [[HFD with rNH AS]], [[Real art is t be appriecated even after the artist's death.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('DPrNH', "Guardian Angel", [[HFD with rNH DP]], [[Promise you'll stay with me?]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
+    AchieveFromCombo('NHrMS', "High Stakes", [[HFD with NH rMS]], [[Dude, don't put your tail on the line, you need that.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
 }
 
 local compFunc = {
