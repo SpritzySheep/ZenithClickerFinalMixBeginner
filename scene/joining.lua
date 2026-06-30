@@ -18,6 +18,33 @@ function scene.update(dt)
     elseif t1 > 0 then
         t1 = t1 - dt
         if t1 <= 0 then
+            for i = 1, #Cards do
+                local f10 = Floors[9].top
+                local id = Cards[i].id
+                local rid = 'r' .. id
+                if BEST.highScore[rid] >= f10 then
+                   GAME.completion[id] = 2
+                else
+                for setStr, h in next, BEST.highScore do
+                if h >= f10 and setStr:find(rid) then
+                    GAME.completion[id] = 2
+                    break
+                end
+            end
+        end
+        if GAME.completion[id] ~= 2 then
+            if BEST.highScore[id] >= f10 then
+                GAME.completion[id] = 1
+            else
+                for setStr, h in next, BEST.highScore do
+                    if h >= f10 and (setStr:gsub('^u', ''):gsub('r', ''):find(id) or 0) % 2 == 1 then
+                        GAME.completion[id] = 1
+                        break
+                    end
+                end
+            end
+        end
+    end
             if SCN.args[1] then
                 GAME.bgH, GAME.height = 0, 0
                 GAME.prevPB = -2600

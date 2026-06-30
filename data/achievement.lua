@@ -2518,12 +2518,11 @@ local d = {
         hide = function() return STAT.totalLSingula == 0 end,
         mod = "MISC",
     }, 
-    { -- Singula
-        id = '', name = "", desc = [[]],
-        quote = [[""]],
-        scoreSimp = function(n) return n .. " LUMINAs" end,rank = numberRank(1e99, 2e99, 6e99, 12e99, 22e99, 39e99, 60e99),
-        hide = function() return STAT.totalLumina == 0 end,
-        type = 'issued',
+    { -- Univa
+        id = 'Univa', name = "Beyond", desc = [[Univaspeed Entries]],
+        quote = [["Time to see what's really out there..."]],
+        scoreSimp = function(n) return n .. " UNIVAs" end,rank = numberRank(0, 1, 4, 8, 17, 31, 48),
+        hide = function() return STAT.totalUniva == 0 end,
         mod = "MISC",
     }, 
 
@@ -2622,6 +2621,11 @@ local d = {
         quote = [[Though others also say this isn't even the start.]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(55000, 56000, 57000, 58000, 59000, 60000, 64999), hide = function() return STAT.level < 55000 end
         , realHide = function() return STAT.level < 55000 end, mod = "MISC",
+    },
+    {id = 'powerleveling13',name = "Quetta Leveling", desc = [[Zenith Level (60,000-65,000)]],
+        quote = [[You're well beyond normality now.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(60000, 61000, 62000, 63000, 64000, 65000, 69999), hide = function() return STAT.level < 60000 end
+        , realHide = function() return STAT.level < 60000 end, mod = "MISC",
     },
 
     { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos", mod = "2MP" },
@@ -3006,6 +3010,13 @@ local d = {
     AchieveFromCombo('ASrNH', "The Dying Artist", [[HFD with rNH AS]], [[Real art is t be appriecated even after the artist's death.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('DPrNH', "Guardian Angel", [[HFD with rNH DP]], [[Promise you'll stay with me?]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.NH == 0 end, "3MP"),
     AchieveFromCombo('NHrMS', "High Stakes", [[HFD with NH rMS]], [[Dude, don't put your tail on the line, you need that.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
+    AchieveFromCombo('NHrGV', "Clutch Play", [[HFD with NH rGV]], [[Ennea Clutch!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.GV == 0 end, "3MP"),
+    AchieveFromCombo('NHrVL', "Machina", [[HFD with NH rVL]], [[Some guy used a giant robot and died.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.VL == 0 end, "3MP"),
+    AchieveFromCombo('NHrDH', "I needed that piece...", [[HFD with NH rDH]], [[No you didn't.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
+    AchieveFromCombo('NHrIN', "Renunciation", [[HFD with NH rIN]], [["DID ANY OF Y'ALL GET ANY OF THAT?!" - General Peppy Hare]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.IN == 0 end, "3MP"),
+    AchieveFromCombo('NHrAS', "Pristine", [[HFD with NH rAS]], [[Squeaky!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.AS == 0 end, "3MP"),
+    AchieveFromCombo('NHrDP', "Moving On", [[HFD with NH rDP]], [[ROADTRIP!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
+    AchieveFromCombo('GVrMS', "Illusory Perpetuity", [[HFD with rMS GV]], [[The machine's still going right? RIGHT?!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
 }
 
 local compFunc = {

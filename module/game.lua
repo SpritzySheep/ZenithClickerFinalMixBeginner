@@ -223,6 +223,7 @@ local GAME = {
     terminaspeedFloor = {},
     luminaspeedFloor = {},
     singulaspeedFloor = {},
+    univaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
@@ -1124,7 +1125,7 @@ end
 
 function GAME.addHeight(h, realHeight, bypassDPlock)
     if GAME.DPlock and not bypassDPlock then return end
-    h = h * (realHeight and 1 or (GAME.rank / 3) - 1)
+    h = h * (realHeight and 1 or ((GAME.rank + 3) / 3) - 1)
     GAME.heightBonus = GAME.heightBonus + h
     if not STAT.MouseGirl then
         if GAME.height > 2050 then
@@ -1246,6 +1247,7 @@ function GAME.addXP(xp, falseCommit)
             GAME.setGigaspeedAnim(true)
             GAME.refreshRPC()
         end
+        -- Look, it's a mouse crime
         if GAME.gspeedlv < 3 and GAME.rank >= TeraMusicReq and GAME.rank < PetaMusicReq then
             if GAME.comboStr == 'eASeEXeVL' then GAME.smithyMode = true
                 if GAME.height < 1650 then
@@ -1296,6 +1298,10 @@ function GAME.addXP(xp, falseCommit)
             GAME.startSingulaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 14 and GAME.rank >= UnivaMusicReq then
+            GAME.startUnivaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1319,6 +1325,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isTermina = false
         GigaSpeed.isLumina = false
         GigaSpeed.isSingula = false
+        GigaSpeed.isUniva = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1508,7 +1515,7 @@ function GAME.startLuminaAnim()
     GAME.luminaspeed = true
     GAME.luminaspeedFloor[GAME.floor] = true
     GAME.luminaCount = GAME.luminaCount + 1
-    GigaSpeed.isLurmina = true
+    GigaSpeed.isLumina = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
@@ -1527,13 +1534,32 @@ function GAME.startSingulaAnim()
     GAME.singulaspeed = true
     GAME.singulaspeedFloor[GAME.floor] = true
     GAME.singulaCount = GAME.singulaCount + 1
-    GigaSpeed.isLurmina = true
+    GigaSpeed.isSingula = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
     SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopSingulaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startUnivaAnim()
+    GAME.gspeedlv = 14
+    GAME.univaspeed = true
+    GAME.univaspeedFloor[GAME.floor] = true
+    GAME.univaCount = GAME.univaCount + 1
+    GigaSpeed.isUniva = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopUnivaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1931,6 +1957,10 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('singula')
                 GAME.finishTera = true
     end
+    if GAME.univaCount >= 1 or STAT.totalUniva >= 1 then
+                IssueSecret('univa')
+                GAME.finishTera = true
+    end
     SubmitAchv('powerleveling', STAT.level,true,true)
     SubmitAchv('powerleveling2', STAT.level,true,true)
     SubmitAchv('powerleveling3', STAT.level,true,true)
@@ -1943,6 +1973,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('powerleveling10', STAT.level,true,true)
     SubmitAchv('powerleveling11', STAT.level,true,true)
     SubmitAchv('powerleveling12', STAT.level,true,true)
+    SubmitAchv('powerleveling13', STAT.level,true,true)
     SubmitAchv('Tera', STAT.totalTera,true,true)
     SubmitAchv('Peta', STAT.totalPeta,true,true)
     SubmitAchv('Exa', STAT.totalExa,true,true)
@@ -1954,6 +1985,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('Termina', STAT.totalTermina,true,true)
     SubmitAchv('Lumina', STAT.totalLumina,true,true)
     SubmitAchv('Singula', STAT.totalSingula,true,true)
+    SubmitAchv('Univa', STAT.totalUniva,true,true)
     
 end
 
@@ -2311,6 +2343,7 @@ end
 function GAME.refreshLayout()
     -- Trevor Smithy
     local baseDist = 110 + (M.EX > 0 and (URM and M.EX == 2 and -30 or -10) or 0) + abs(M.VL) * 20 + (GAME.closeCard and -30 or 0) + (GAME.ecloseCard and -50 or 0)
+    if GAME.rando then baseDist = baseDist + MATH.rand(-50,50) end
     local baseL, baseR = 800 - 4 * baseDist - 70, 800 + 4 * baseDist + 70
     local baseY = 726 + (URM and M.GV == 2 and 50 or 15 * M.GV)
     if FloatOnCard then
@@ -3662,6 +3695,7 @@ function GAME.start()
     TABLE.clear(GAME.terminaspeedFloor)
     TABLE.clear(GAME.luminaspeedFloor)
     TABLE.clear(GAME.singulaspeedFloor)
+    TABLE.clear(GAME.univaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -3674,6 +3708,7 @@ function GAME.start()
     GAME.terminaCount = 0
     GAME.luminaCount = 0
     GAME.singulaCount = 0
+    GAME.univaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -3993,6 +4028,7 @@ end
         STAT.totalTermina = STAT.totalTermina + GAME.terminaCount
         STAT.totalLumina = STAT.totalLumina + GAME.luminaCount
         STAT.totalSingula = STAT.totalSingula + GAME.singulaCount
+        STAT.totalUniva = STAT.totalUniva + GAME.univaCount
         STAT.totalKO = STAT.totalKO + GAME.koCount
         STAT.totalRevive = STAT.totalRevive + GAME.reviveCount
         if GAME.floor >= 10 then
@@ -4284,6 +4320,7 @@ end
         SubmitAchv('powerleveling10', STAT.level,true,true)
         SubmitAchv('powerleveling11', STAT.level,true,true)
         SubmitAchv('powerleveling12', STAT.level,true,true)
+        SubmitAchv('powerleveling13', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         _t = 0
@@ -4456,6 +4493,7 @@ end
         SubmitAchv('powerleveling10', STAT.level,true,true)
         SubmitAchv('powerleveling11', STAT.level,true,true)
         SubmitAchv('powerleveling12', STAT.level,true,true)
+        SubmitAchv('powerleveling13', STAT.level,true,true)
         -- SubmitAchv('tera', STAT.totalTera, true, true)
         -- SubmitAchv('peta', STAT.totalPeta, true, true)
         if GAME.fullHealth <= 5 then IssueSecret('cardiac_arrest') end
@@ -4487,6 +4525,7 @@ end
     GAME.stopTerminaspeed('fin')
     GAME.stopLuminaspeed('fin')
     GAME.stopSingulaspeed('fin')
+    GAME.stopUnivaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -4627,8 +4666,8 @@ function GAME.update(dt)
     if not GAME.playing then return end
 
     GAME.koCharge = max(GAME.koCharge - dt * min(abs(GAME.height), 6200) / 2600, 0)
-    while GAME.koCharge > 26 do
-        GAME.koCharge = GAME.koCharge - 26
+    while GAME.koCharge > 150 do
+        GAME.koCharge = GAME.koCharge - 150
         local t = MATH.lerp(.62, 2.6, math.random() ^ 2)
         ins(GAME.koBuffer, {
             uid = GAME.getRandomUID(),
@@ -4884,9 +4923,9 @@ function GAME.update(dt)
                     GAME.height = GAME.height + GAME.rank / 0.3 * dt
                     --if GAME.height > 1e5 then GAME.height = 1e5 end
                 elseif GAME.crit then
-                    GAME.height = GAME.height + GAME.rank / 7 * dt
+                    GAME.height = GAME.height + (GAME.rank + 7) / 7 * dt
                 else
-                    GAME.height = GAME.height + GAME.rank / 3 * dt
+                    GAME.height = GAME.height + (GAME.rank + 3) / 3 * dt
                 end
             end
         end

@@ -26,6 +26,7 @@ DekaMusicReq = 35
 TerminaMusicReq = 38
 LuminaMusicReq = 41
 SingulaMusicReq = 45
+UnivaMusicReq = 51
 
 GravityTimer = {
     [-1] = { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 },
@@ -42,8 +43,9 @@ PieceData = {
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O },  popup = { COLOR.lY, "O - Invisible Card" } },
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
         -- Final Mix
-    { id = 'big', text = { COLOR.A, "F", }, piece = { COLOR.A, CHAR.brik.F }, popup = { COLOR.A, "F - Big Cards" } },
+    { id = 'big', text = { COLOR.A, "F", }, piece = { COLOR.A, CHAR.brik.F }, popup = { COLOR.A, "F - Big Card" } },
     { id = 'crit', text = { COLOR.R, "X", }, piece = { COLOR.R, CHAR.brik.X }, popup = { COLOR.R, "X - Critical" } },
+    { id = 'rando', text = { COLOR.lO, "W", }, piece = { COLOR.lO, CHAR.brik.W }, popup = { COLOR.lO, "W - Random Spread" } },
         -- Trevor Smithy
     { id = 'enightcore', text = { COLOR.lR, "eZ", }, piece = { COLOR.lR, CHAR.brik.C }, popup = { COLOR.lR, "eZ - Nightcore+" } },
     { id = 'eslowmo',    text = { COLOR.lG, "eS", }, piece = { COLOR.lG, CHAR.brik.C }, popup = { COLOR.lG, "eS - Slow-mo+" } },

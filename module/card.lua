@@ -606,7 +606,7 @@ function Card:draw()
     local faceUp
     --if GAME.big then gc_scale(1.5) end
     if self.lock and self.lockfull then
-        img = texture.lock
+        img = texture.front
     else
         if M.IN == 2 then
             img = texture.back
@@ -615,7 +615,7 @@ function Card:draw()
             img = faceUp and texture.front or texture.back
         end
         if self.lock then
-            img2 = texture.lock
+            img2 = texture.front
         end
     end
 

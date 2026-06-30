@@ -34,6 +34,7 @@ end
 
 LoadSave()
 TABLE.update(CONF, FILE.safeLoad('conf.luaon', '-luaon') or NONE)
+TABLE.update(BEST, FILE.safeLoad('best.luaon', '-luaon') or NONE)
 function Initialize(save)
     if STAT.totalF10 == 0 and STAT.totalGiga > 0 then STAT.totalF10 = math.floor(STAT.totalGiga * 0.872) end
     if STAT.totalBonus == 0 and STAT.totalGame > 2.6 then STAT.totalBonus = STAT.totalHeight * 0.5 end
@@ -49,6 +50,7 @@ function Initialize(save)
     if STAT.totalTermina == not STAT.totalTermina then STAT.totalTermina = 0 end
     if STAT.totalLumina == not STAT.totalLumina then STAT.totalLumina = 0 end
     if STAT.totalSingula == not STAT.totalSingula then STAT.totalSingula = 0 end
+    if STAT.totalUniva == not STAT.totalUniva then STAT.totalUniva = 0 end
     if STAT.mousegirl == not STAT.mousegirl then STAT.mousegirl = false end
     if STAT.srTimer_life == not STAT.srTimer_life then STAT.srTimer_life = 0 end
     if STAT.achv == not STAT.achv then STAT.achv = 0 end

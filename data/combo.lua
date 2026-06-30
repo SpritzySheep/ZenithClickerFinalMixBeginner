@@ -275,6 +275,13 @@ d.menu = {
     { set = "rNH AS",             name = "The Dying Artist"},
     { set = "rNH DP",             name = "Guardian Angel"},
     { set = "NH rMS",             name = "High Stakes"},
+    { set = "NH rGV",             name = "Clutch Play"},
+    { set = "NH rVL",             name = "Machina"},
+    { set = "NH rDH",             name = "I needed that piece..."},
+    { set = "NH rIN",             name = "Renunciation"},
+    { set = "NH rAS",             name = "Pristine"},
+    { set = "NH rDP",             name = "Moving On"},
+    { set = "rMS GV",             name = "Illusory Perpetuity"},
 }
 
 

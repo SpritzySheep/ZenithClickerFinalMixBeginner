@@ -7,7 +7,7 @@ local scene = {}
 -- 3. Album
 -- 4. ZCEM
 local page = 1
-local maxPage = 4
+local maxPage = 5
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
 
 local anonUser
@@ -116,6 +116,14 @@ local ZCEMclr = {
     LT = { COLOR.HEX 'B0EBCCFF' },
     cbFill = { COLOR.HEX '0B0E17FF' },
     cbFrame = { COLOR.HEX '6A82A7FF' },
+}
+local FMixclr = {
+    D = COLOR.DV,
+    L = { .45, .15, .75 },
+    T = { COLOR.HEX 'FFFFFFFF' },
+    LT = { COLOR.HEX 'AAAAFFFF' },
+    cbFill = { COLOR.HEX '0000FFFF' },
+    cbFrame = { COLOR.HEX 'AA88FFFF' },
 }
 local bpmMode = false
 local comboTimer = 0
@@ -861,24 +869,24 @@ function scene.draw()
     gc_setAlpha(GAME.einvisUI and 0.626 or 1)
     FONT.set(50)
     if GAME.anyRev then
-        gc_print(page == 4 and "ZCEM SETTINGS" or "CONFIG", 15, 68, 0, 1, -1)
+        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "FINAL MIX CONFIGURATION" or "CONFIG", 15, 68, 0, 1, -1)
     else
-        gc_print(page == 4 and "ZCEM SETTINGS" or "CONFIG", 15, 0)
+        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "FINAL MIX CONFIGURATION" or "CONFIG", 15, 0)
     end
 
     -- Bottom bar & text
     gc_replaceTransform(SCR.xOy_d)
-    gc_setColor(page == 4 and ZCEMclr.D or clr.D)
+    gc_setColor(page == 4 and ZCEMclr.D or page==5 and FMixclr.D or clr.D)
     gc_setAlpha(GAME.einvisUI and 0.626 or 1)
     gc_rectangle('fill', -1300, 0, 2600, -50)
-    gc_setColor(page == 4 and ZCEMclr.L or clr.L)
+    gc_setColor(page == 4 and ZCEMclr.L or page==5 and FMixclr.L or clr.L)
     gc_setAlpha(GAME.einvisUI and 0.262 or .626)
     gc_rectangle('fill', -1300, -50, 2600, -3)
     gc_replaceTransform(SCR.xOy_dl)
-    gc_setColor(page == 4 and ZCEMclr.L or clr.L)
+    gc_setColor(page == 4 and ZCEMclr.L or page==5 and FMixclr.L or clr.L)
     gc_setAlpha(GAME.einvisUI and 0.626 or 1)
     FONT.set(30)
-    gc_print("TWEAK YOUR SETTINGS FOR A BETTER " .. (page == 4 and "MODDED" or "CLICKING") .. " EXPERIENCE", 15, -45, 0, .85, 1)
+    gc_print("TWEAK YOUR SETTINGS FOR A BETTER " .. (page == 4 and "MODDED" or page == 5 and "MOUSE" or "CLICKING") .. " EXPERIENCE", 15, -45, 0, .85, 1)
 end
 
 function scene.overDraw()
@@ -952,6 +960,33 @@ function scene.overDraw()
             gc_setAlpha(1)
             FONT.set(50)
             gc_print("MULTIPLE PIECES!!!", 770 - (GAME.ecloseCard and 20 or 0), baseY + 338 + dy)
+            GAME.refreshCurrentCombo()
+        else
+            GAME.multiplePiecesActive = false
+            GAME.refreshCurrentCombo()
+        end
+    end
+    if page == 5 then
+        local text_code = "CONFIGURATION"
+        gc_setColor(COLOR.lV)
+        FONT.set(65)
+        gc_print(text_code, 380, 110 + dy)
+
+        local text_vanilla = "VANILLA PIECE"
+        gc_setColor(COLOR.lV)
+        FONT.set(65)
+        gc_print(text_vanilla, 380, 230 + dy)
+
+        local text_final = "FINAL MIX PIECE"
+        gc_setColor(COLOR.lV)
+        FONT.set(65)
+        gc_print(text_final, 380, 350 + dy)
+
+        if countPiecesActive() > 1 then
+            gc_setColor(COLOR.R)
+            gc_setAlpha(1)
+            FONT.set(50)
+            gc_print("MULTI-PIECE", 900, 120 + dy)
             GAME.refreshCurrentCombo()
         else
             GAME.multiplePiecesActive = false
@@ -2211,11 +2246,270 @@ local page4 = {
     },
 }
 
+-- Page 5
+local page5 = {
+    WIDGET.new { -- AP Bonus
+        name = 'achbonus', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "AP BONUS",
+        x = baseX + 50, y = baseY + 120,
+        disp = function() return STAT.ExtraSpeed end,
+        code = function()
+            MSG.clear()
+            STAT.ExtraSpeed = not STAT.ExtraSpeed
+            MSG('dark', "Speed Level AP Bonus set to " .. (STAT.ExtraSpeed and "TRUE" or "FALSE"))
+            SFX.play(STAT.ExtraSpeed and 'social_online' or 'social_offline')
+            SaveStat()
+        end,
+    },
+    WIDGET.new { -- Mouse Girl
+        name = 'mousegirl', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "MOUSE GIRL",
+        x = baseX + 300, y = baseY + 120,
+        disp = function() return STAT.MouseGirl end,
+        code = function()
+            MSG.clear()
+                if STAT.uid == "SPRITZY_LUNA" then
+                STAT.MouseGirl = not STAT.MouseGirl
+                MSG('dark', (STAT.MouseGirl and "YOU'RE A CUTE LITTLE MOUSE GIRL!! SQUEAK!" or "F"))
+                SFX.play(STAT.MouseGirl and 'social_online' or 'social_offline')
+            else
+                MSG('dark', "Mouse Girl check failed.")
+            end
+            SaveStat()
+        end,
+    },
+    WIDGET.new { -- Z
+        name = 'piece_z', type = 'checkBox',
+        fillColor = COLOR.dR,
+        frameColor = COLOR.R,
+        textColor = COLOR.R, text = "Z",
+        x = baseX + 50, y = baseY + 240,
+        disp = function() return GAME.nightcore end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.nightcore and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.nightcore = not GAME.nightcore
+            MSG('dark', "Z: " .. (GAME.nightcore and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- L
+        name = 'piece_l', type = 'checkBox',
+        fillColor = COLOR.dO,
+        frameColor = COLOR.O,
+        textColor = COLOR.O, text = "L",
+        x = baseX + 130, y = baseY + 240,
+        disp = function() return GAME.fastLeak end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.fastLeak and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.fastLeak = not GAME.fastLeak
+            MSG('dark', "L: " .. (GAME.fastLeak and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- O
+        name = 'piece_o', type = 'checkBox',
+        fillColor = COLOR.dY,
+        frameColor = COLOR.Y,
+        textColor = COLOR.Y, text = "O",
+        x = baseX + 210, y = baseY + 240,
+        disp = function() return GAME.invisCard end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.invisCard and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.invisCard = not GAME.invisCard
+            MSG('dark', "O: " .. (GAME.invisCard and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- S
+        name = 'piece_s', type = 'checkBox',
+        fillColor = COLOR.dG,
+        frameColor = COLOR.G,
+        textColor = COLOR.G, text = "S",
+        x = baseX + 290, y = baseY + 240,
+        disp = function() return GAME.slowmo end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.slowmo and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.slowmo = not GAME.slowmo
+            MSG('dark', "S: " .. (GAME.slowmo and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- I
+        name = 'piece_i', type = 'checkBox',
+        fillColor = COLOR.dI,
+        frameColor = COLOR.I,
+        textColor = COLOR.I, text = "I",
+        x = baseX + 370, y = baseY + 240,
+        disp = function() return GAME.closeCard end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.closeCard and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.closeCard = not GAME.closeCard
+            MSG('dark', "I: " .. (GAME.closeCard and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- J
+        name = 'piece_j', type = 'checkBox',
+        fillColor = COLOR.dB,
+        frameColor = COLOR.B,
+        textColor = COLOR.B, text = "J",
+        x = baseX + 450, y = baseY + 240,
+        disp = function() return GAME.glassCard end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.glassCard and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.glassCard = not GAME.glassCard
+            MSG('dark', "J: " .. (GAME.glassCard and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- T
+        name = 'piece_t', type = 'checkBox',
+        fillColor = COLOR.dP,
+        frameColor = COLOR.P,
+        textColor = COLOR.P, text = "T",
+        x = baseX + 530, y = baseY + 240,
+        disp = function() return GAME.invisUI end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.invisUI and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.invisUI = not GAME.invisUI
+            MSG('dark', "T: " .. (GAME.invisUI and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- F
+        name = 'piece_f', type = 'checkBox',
+        fillColor = COLOR.dA,
+        frameColor = COLOR.A,
+        textColor = COLOR.A, text = "F",
+        x = baseX + 50, y = baseY + 360,
+        disp = function() return GAME.big end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.big and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.big = not GAME.big
+            MSG('dark', "F: " .. (GAME.big and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- X
+        name = 'piece_x', type = 'checkBox',
+        fillColor = COLOR.DR,
+        frameColor = COLOR.dR,
+        textColor = COLOR.dR, text = "X",
+        x = baseX + 130, y = baseY + 360,
+        disp = function() return GAME.crit end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.crit and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.crit = not GAME.crit
+            MSG('dark', "X: " .. (GAME.crit and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- W
+        name = 'piece_w', type = 'checkBox',
+        fillColor = COLOR.LO,
+        frameColor = COLOR.lO,
+        textColor = COLOR.lO, text = "W",
+        x = baseX + 210, y = baseY + 360,
+        disp = function() return GAME.rando end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.rando and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.rando = not GAME.rando
+            MSG('dark', "W: " .. (GAME.rando and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+}
+
 -- Apply visibility functions if not set
 for _, W in next, page1 do W.visibleFunc = W.visibleFunc or pageVisFunc[1] end
 for _, W in next, page2 do W.visibleFunc = W.visibleFunc or pageVisFunc[2] end
 for _, W in next, page3 do W.visibleFunc = W.visibleFunc or pageVisFunc[3] end
 for _, W in next, page4 do W.visibleFunc = W.visibleFunc or pageVisFunc[4] end
+for _, W in next, page5 do W.visibleFunc = W.visibleFunc or pageVisFunc[5] end
 
 -- Tabs
 local tab = {
@@ -2256,6 +2550,15 @@ local tab = {
         onPress = function() love.keypressed('4') end,
         onClick = function() love.keyreleased('4') end,
     },
+    WIDGET.new {
+        name = 'fmix', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 500, w = 160, h = 60,
+        color = 'DV',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "F-Mix  ", textColor = { .45, .15, .75 },
+        onPress = function() love.keypressed('5') end,
+        onClick = function() love.keyreleased('5') end,
+    },
 }
 
 for _, W in next, page1 do if W.type == 'button' or W.type == 'checkBox' then W.sound_hover, W.sound_release = 'menutap', 'menuclick' end end
@@ -2267,6 +2570,7 @@ TABLE.append(scene.widgetList, page1)
 TABLE.append(scene.widgetList, page2)
 TABLE.append(scene.widgetList, page3)
 TABLE.append(scene.widgetList, page4)
+TABLE.append(scene.widgetList, page5)
 TABLE.append(scene.widgetList, tab)
 
 return scene

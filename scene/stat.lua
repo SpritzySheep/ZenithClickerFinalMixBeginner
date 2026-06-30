@@ -100,7 +100,7 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
-    cr = cr + MATH.floor(STAT.totalSingula)
+    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva)
     level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
     STAT.ZP = STAT.PeakZP
@@ -149,6 +149,8 @@ local function calculateRating()
     if cr >= 600e3 then IssueSecret('finity_03', true) end
     if cr >= 650e3 then IssueSecret('finity_04', true) end
     if cr >= 700e3 then IssueSecret('finity_05', true) end
+    if cr >= 750e3 then IssueSecret('finity_06', true) end
+    if cr >= 800e3 then IssueSecret('finity_07', true) end
 
     if level >= 5e3 then IssueSecret('Lv5000', true) end
     if level >= 10e3 then IssueSecret('Lv10000', true) end
@@ -163,6 +165,9 @@ local function calculateRating()
     if level >= 55e3 then IssueSecret('Lv55000', true) end
     if level >= 60e3 then IssueSecret('Lv60000', true) end
     if level >= 65e3 then IssueSecret('Lv65000', true) end
+    if level >= 70e3 then IssueSecret('Lv70000', true) end
+    if level >= 75e3 then IssueSecret('Lv75000', true) end
+    if level >= 80e3 then IssueSecret('Lv80000', true) end
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
@@ -521,7 +526,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -539,7 +544,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 310)
+    GC.rectangle('fill', 0, 0, 254, 335)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -555,6 +560,7 @@ function RefreshProfile()
         { k = "Terminaspeed",  v = { scoreColor, STAT.totalTermina }, x = 26, y = 233, d = 160 },
         { k = "Luminaspeed",  v = { scoreColor, STAT.totalLumina }, x = 26, y = 258, d = 160 },
         { k = "Singulaspeed",  v = { scoreColor, STAT.totalSingula }, x = 26, y = 283, d = 160 },
+        { k = "Univaspeed",  v = { scoreColor, STAT.totalUniva }, x = 26, y = 308, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
