@@ -1251,7 +1251,7 @@ function GAME.addXP(xp, falseCommit)
         if GAME.gspeedlv < 3 and GAME.rank >= TeraMusicReq and GAME.rank < PetaMusicReq then
             if GAME.comboStr == 'eASeEXeVL' then GAME.smithyMode = true
                 if GAME.height < 1650 then
-                    PlayBGM('tera')
+                    PlayBGM('tera',true)
                 end
             end
             GAME.teraLostHeight = 0
