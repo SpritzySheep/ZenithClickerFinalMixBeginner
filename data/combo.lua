@@ -267,6 +267,7 @@ d.menu = {
     { set = "EX rDH",             name = "Fatal Finesse"},
     { set = "EX rIN",             name = "no"},
     { set = "EX rDP",             name = "Surging King"},
+    { set = "EX rDP",             name = "Arranged Marriage"},
     { set = "rNH MS",             name = "Turbulent Rise"},
     { set = "rNH GV",             name = "Levitation"},
     { set = "rNH VL",             name = "Enlightened"},

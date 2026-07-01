@@ -306,8 +306,8 @@ local function keyTrigger(key)
                         GAME.fallout = true
                         scene.widgetList.stat.x = -100
                         scene.widgetList.stat:resetPos()
-                        scene.widgetList.achv.x = -100
-                        scene.widgetList.achv:resetPos()
+                        scene.widgetList.chnl.x = -100
+                        scene.widgetList.chnl:resetPos()
                         scene.widgetList.about.x = 100
                         scene.widgetList.about:resetPos()
                         scene.widgetList.conf.x = 100
