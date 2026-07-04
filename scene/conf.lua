@@ -269,11 +269,11 @@ end
 
 -- ZCEM Trevor Smithy
 local function anyPieceActive()
-    return GAME.nightcore or GAME.enightcore or GAME.slowmo or GAME.eslowmo or GAME.glassCard or GAME.eglassCard or GAME.fastLeak or GAME.efastLeak or GAME.invisUI or GAME.einvisUI or GAME.invisCard or GAME.einvisCard or GAME.closeCard or GAME.ecloseCard
+    return GAME.nightcore or GAME.enightcore or GAME.slowmo or GAME.eslowmo or GAME.glassCard or GAME.eglassCard or GAME.fastLeak or GAME.efastLeak or GAME.invisUI or GAME.einvisUI or GAME.invisCard or GAME.einvisCard or GAME.closeCard or GAME.ecloseCard or GAME.big or GAME.crit or GAME.rando
 end
 
 local function countPiecesActive()
-    return (GAME.nightcore and 1 or 0) + (GAME.enightcore and 1 or 0) + (GAME.slowmo and 1 or 0) + (GAME.eslowmo and 1 or 0) + (GAME.glassCard and 1 or 0) + (GAME.eglassCard and 1 or 0) + (GAME.fastLeak and 1 or 0) + (GAME.efastLeak and 1 or 0) + (GAME.invisUI and 1 or 0) + (GAME.einvisUI and 1 or 0) + (GAME.invisCard and 1 or 0) + (GAME.einvisCard and 1 or 0) + (GAME.closeCard and 1 or 0) + (GAME.ecloseCard and 1 or 0)
+    return (GAME.nightcore and 1 or 0) + (GAME.enightcore and 1 or 0) + (GAME.slowmo and 1 or 0) + (GAME.eslowmo and 1 or 0) + (GAME.glassCard and 1 or 0) + (GAME.eglassCard and 1 or 0) + (GAME.fastLeak and 1 or 0) + (GAME.efastLeak and 1 or 0) + (GAME.invisUI and 1 or 0) + (GAME.einvisUI and 1 or 0) + (GAME.invisCard and 1 or 0) + (GAME.einvisCard and 1 or 0) + (GAME.closeCard and 1 or 0) + (GAME.big and 1 or 0) + (GAME.crit and 1 or 0) + (GAME.rando and 1 or 0)
 end
 
 function scene.load()
@@ -2279,6 +2279,21 @@ local page5 = {
             else
                 MSG('dark', "Mouse Girl check failed.")
             end
+            SaveStat()
+        end,
+    },
+    WIDGET.new { -- Mod Codes
+        name = 'codenames', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "MOD CODE NAMES",
+        x = baseX + 550, y = baseY + 120,
+        disp = function() return CONF.codeName end,
+        code = function()
+            MSG.clear()
+                CONF.codeName = not CONF.codeName
+                MSG('dark', (CONF.codeName and "MOD CODE NAMES ENABLED" or "MOD CODE NAMES DISABLED"))
+                SFX.play(CONF.codeName and 'social_online' or 'social_offline')
             SaveStat()
         end,
     },

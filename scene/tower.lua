@@ -1387,7 +1387,7 @@ function scene.overDraw()
 
     if GAME.playing then
         if not GAME.invisUI then
-            -- Achievement state mark
+            -- Achievement state mark5
             if M.DP > 0 then
                 if GAME.comboStr == 'rDP' and not GAME.achv_protectH then
                     gc_setColor(COLOR.lG)

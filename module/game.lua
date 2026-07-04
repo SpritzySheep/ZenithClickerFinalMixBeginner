@@ -430,6 +430,10 @@ function GAME.getComboName(list, mode)
     for i = 1, #list do
         easyList[i] = 'e' .. list[i]
     end
+    local codeList = TABLE.copy(list)
+    for i = 1, #list do
+        codeList[i] = 'c' .. list[i]
+    end
     if mode == 'ingame' then
         GAME.spinCheck = false
         GAME.rollCheck = false
@@ -526,9 +530,9 @@ function GAME.getComboName(list, mode)
                 end
                 ins(fstr, MD.textColor[modCodes[colorModNumber]])     
             else
-                ins(fstr, MD.textColor[CONF.easyName and easyList[i] or list[i]])
+                ins(fstr, MD.textColor[CONF.easyName and easyList[i] or CONF.codeName and codeList[i] or list[i]])
             end
-            ins(fstr, MD.adj[CONF.easyName and easyList[i] or list[i]] .. " ")
+            ins(fstr, MD.adj[CONF.easyName and easyList[i] or CONF.codeName and codeList[i] or list[i]] .. " ")
         end
         if eINeMSAS then
             for j = 1, #modCodes do
@@ -538,9 +542,9 @@ function GAME.getComboName(list, mode)
             end
             ins(fstr, MD.textColor[modCodes[colorModNumber]])
         else
-            ins(fstr, MD.textColor[CONF.easyName and easyList[len] or list[len]])
+            ins(fstr, MD.textColor[CONF.easyName and easyList[len] or CONF.codeName and codeList[len] or list[len]])
         end
-        ins(fstr, MD.noun[CONF.easyName and easyList[len] or list[len]])
+        ins(fstr, MD.noun[CONF.easyName and easyList[len] or CONF.codeName and codeList[len] or list[len]])
 
         if M.IN > 0 then
             local r = rnd(0, 3)
@@ -644,9 +648,9 @@ function GAME.getComboName(list, mode)
         table.sort(CONF.easyName and GAME.playing and M.DH ~= 2 and mode ~= 'rpc' and easyList or list, modNameSorter)
         local str = ""
         for i = 1, len - 1 do 
-            str = str .. (CONF.easyName and GAME.playing and MD.adj[easyList[i]] or MD.adj[list[i]]) .. " " 
+            str = str .. (CONF.easyName and GAME.playing and MD.adj[easyList[i]] or CONF.codeName and GAME.playing and MD.adj[codeList[i]] or MD.adj[list[i]]) .. " " 
         end
-        return str .. (CONF.easyName and GAME.playing and MD.noun[easyList[len]] or MD.noun[list[len]])
+        return str .. (CONF.easyName and GAME.playing and MD.noun[easyList[len]] or CONF.codeName and GAME.playing and MD.noun[codeList[i]] or MD.noun[list[len]])
     end
 end
 
@@ -769,7 +773,7 @@ function GAME.genQuest()
         base = .25 + GAME.floor ^ .15 / 2 + GAME.extraQuestBase + icLerp(12400, 20000, GAME.height)
         end
         if GAME.crit then
-        base = .75 + GAME.floor ^ .4 / 5 + GAME.extraQuestBase + icLerp(1650, 6200, GAME.height)
+        base = .75 + GAME.floor ^ .4 / 5 + GAME.extraQuestBase + icLerp(10, 6200, GAME.height)
         end
 
         GAME.atkBuffer = GAME.atkBuffer + r
@@ -808,7 +812,8 @@ function GAME.genQuest()
             end
         end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize-2))
-        if GAME.crit then questCount = MATH.clamp(MATH.roundRnd(r), 2, MATH.max(1,GAME.maxQuestSize+1)) end
+        --if GAME.crit then questCount = MATH.clamp(MATH.roundRnd(r), 1, MATH.max(1,GAME.maxQuestSize+1)) end
+        if GAME.crit then questCount = MATH.clamp(GAME.floor, 1, 9) end
         if STAT.MouseGirl and not GAME.crit then questCount = 1 end
         if M.DP == -1 and not STAT.MouseGirl then
             if questCount == 1 then
