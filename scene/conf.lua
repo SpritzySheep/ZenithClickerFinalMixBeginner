@@ -296,7 +296,7 @@ function scene.load()
     TASK.unlock('import')
     TASK.unlock('rebind_control')
     TASK.unlock('just_saved')
-    if STAT.stacker and STAT.promotion then
+    if CONF.stacker and CONF.promotion then
         MSG("achv_badTime", "WARNING: PROMOTION and STACKER are MUTUALLY EXCLUSIVE!\nDISABLE ONE NOW OR IT WILL BE DONE AUTOMATICALLY!")
         SFX.play('hyperalert')
     end
@@ -869,9 +869,9 @@ function scene.draw()
     gc_setAlpha(GAME.einvisUI and 0.626 or 1)
     FONT.set(50)
     if GAME.anyRev then
-        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "FINAL MIX CONFIGURATION" or "CONFIG", 15, 68, 0, 1, -1)
+        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "MOUSE MIX CONFIGURATION" or "CONFIG", 15, 68, 0, 1, -1)
     else
-        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "FINAL MIX CONFIGURATION" or "CONFIG", 15, 0)
+        gc_print(page == 4 and "ZCEM SETTINGS" or page == 5 and "MOUSE MIX CONFIGURATION" or "CONFIG", 15, 0)
     end
 
     -- Bottom bar & text
@@ -977,7 +977,7 @@ function scene.overDraw()
         FONT.set(65)
         gc_print(text_vanilla, 380, 230 + dy)
 
-        local text_final = "FINAL MIX PIECE"
+        local text_final = "MOUSE MIX PIECE"
         gc_setColor(COLOR.lV)
         FONT.set(65)
         gc_print(text_final, 380, 350 + dy)
@@ -1310,21 +1310,21 @@ local page2 = {
                     UseAltName()
                     SFX.play('social_dm')
                 elseif data == 'UseEasyName' or data == 'UseEasName' then
-                    STAT.easyName = not STAT.easyName
+                    CONF.easyName = not CONF.easyName
                     SFX.play('social_dm')
-                    MSG('dark', "Easy Names In-Game: " .. (STAT.easyName and "ON" or "OFF"))
+                    MSG('dark', "Easy Names In-Game: " .. (CONF.easyName and "ON" or "OFF"))
                 elseif data == 'imperial' or data == 'feet' then
-                    STAT.imperial = not STAT.imperial
+                    CONF.imperial = not CONF.imperial
                     SFX.play('social_dm')
-                    MSG('dark', "Imperial Units: " .. (STAT.imperial and "ON" or "OFF"))
+                    MSG('dark', "Imperial Units: " .. (CONF.imperial and "ON" or "OFF"))
                 elseif data == 'promotion' then
-                    STAT.promotion = not STAT.promotion
+                    CONF.promotion = not CONF.promotion
                     SFX.play('social_dm')
-                    MSG('dark', "Rank Promotion Gauge: " .. (STAT.promotion and "ON" or "OFF"))
+                    MSG('dark', "Rank Promotion Gauge: " .. (CONF.promotion and "ON" or "OFF"))
                 elseif data == 'old_transparent_card' or data == 'oldTransparentCard' or data == 'oldtransparentcard' or data == 'oldeO' then
-                    STAT.oldTransparentCard = not STAT.oldTransparentCard
+                    CONF.oldTransparentCard = not CONF.oldTransparentCard
                     SFX.play('social_dm')
-                    MSG('dark', "Transparent Card: " .. (STAT.oldTransparentCard and "V1.0/1.1" or "V1.2+"))
+                    MSG('dark', "Transparent Card: " .. (CONF.oldTransparentCard and "V1.0/1.1" or "V1.2+"))
                 elseif data == 'eZ' or data == 'ez' then
                     if not GAME.enightcore and anyPieceActive then 
                         SFX.play('damage_alert')
@@ -2570,7 +2570,7 @@ local tab = {
         pos = { 1, 0 }, x = -60, y = 500, w = 160, h = 60,
         color = 'DV',
         sound_hover = 'menutap',
-        fontSize = 30, text = "F-Mix  ", textColor = { .45, .15, .75 },
+        fontSize = 30, text = "MOUSE   ", textColor = { .45, .15, .75 },
         onPress = function() love.keypressed('5') end,
         onClick = function() love.keyreleased('5') end,
     },

@@ -1493,7 +1493,7 @@ local d = {
         hide = TRUE,
         type = 'issued',
     },
-    { title = "Easy Mode Ex-Vanilla", mod = "ZCEM"},
+    { title = "Ex-Vanilla", desc = "Achievements that were removed from vanilla Zenith Clicker but were kept in ZCEM", mod = "ZCEM" },
     { -- patience_is_a_virtue
         ex = true,
         id = 'patience_is_a_virtue',
@@ -1504,7 +1504,7 @@ local d = {
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         mod = "ZCEM",
     },
-    { title = "Easy Mode (v1.0)", mod = "ZCEM" },
+    { title = "The Originals", desc = "Added in v1.0, includes a custom challenge for each Ultra Reversed mod", mod = "ZCEM" },
     { -- Programmer & Pro Gamer
         ex = true,
         id = 'programmer_gamer',
@@ -1687,7 +1687,7 @@ local d = {
         type = 'issued',
         mod = "ZCEM",
     },
-    { title = "Easy Mods (v1.1)", mod = "ZCEM" },
+    { title = "Easy Mods", desc = "Added in v1.1", mod = "ZCEM" },
     { -- eEX
         id = 'eEX',
         name = "Soft",
@@ -1726,9 +1726,9 @@ local d = {
     },
     { -- eVL
         id = 'eVL',
-        name = "Calm",
+        name = "Clam",
         desc = [[HFD with the "Tranquility" mod]],
-        quote = [[you're safe, just right where you are.]],
+        quote = [[You're safe, just right where you are.]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 4200),
         mod = "ZCEM",
          
@@ -1769,7 +1769,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Uneasy Mods (v1.1)", mod = "ZCEM" , hide = function() return not ACHV.uneasy end},
+    { title = "Uneasy Mods", desc = "Added in v1.1, each pair is matched with a regular piece to make their 'Uneasy' variant", hide = function() return not ACHV.uneasy end, mod = "ZCEM",},
     { -- ueEX
         id = 'ueEX',
         name = "Lethargy",
@@ -1896,7 +1896,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Special (v1.1)", mod = "ZCEM" },
+    { title = "Special Quests", desc = "Added in v1.1, each easy variant of the named combos has a special quest-based achievement goal", mod = "ZCEM" },
     { -- emperor_development
         --id = 'eDHEXeNH',
         id = 'emperor_development',
@@ -1937,8 +1937,10 @@ local d = {
         name = "The Humble Pupil",
         desc = [[Lowest quests per second (i.e. highest seconds per quest) without taking damage upon reaching floor 10 WUT "Lift" and "Visible" mods]],
         quote = [[Holding yourself back can be even harder then you think...]],
-        scoreSimp = function(qps) return string.format("%.2f quests/s", qps) end,
-        rank = numberRankRev(26, 1, 0.5, 0.34, 0.3, 0.26, 0.22),
+        --comp = '<',
+        scoreSimp = function(spq) return string.format("%.2f seconds/quest", spq) end,
+        --scoreFull = function(qps) return string.format("%.2f quests/s", 40 / time) end,
+        rank = numberRank(0, 1, 2, 3, 3.5, 4, 4.5),
         mod = "ZCEM",
          
     },
@@ -2004,7 +2006,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Why (v1.1)", mod = "ZCEM" , hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end},
+    { title = "-Why", desc = "Added in v1.1, unlike normal WHY these require the exact MP listed", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end, mod = "ZCEM"},
     { -- -3
         id = '-3',
         name = "Respite",
@@ -2075,7 +2077,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Easy Mode - Issued (v1.1) (No CR)", mod = "ZCEM" },
+    { title = "Secrets", desc = "Added in v1.1, these require exploring mechanics/features introduced by ZCEM", mod = "ZCEM" },
     { -- www
         id = 'www',
         name = "WWW.",
@@ -2222,7 +2224,7 @@ local d = {
         type = 'issued',
         mod = "ZCEM",
     },
-    { title = "Easy Mode - Issued (v1.2) (No CR)", mod = "ZCEM" },
+    { title = "Shenanigans", desc = "Added in v1.2, these require even more obscure knowledge to obtain", mod = "ZCEM" },
     { -- multiple_pieces (1.1.1)
         id = 'multiple_pieces',
         name = "Multiple Pieces???",
@@ -2318,8 +2320,129 @@ local d = {
         hide = TRUE,
         mod = "ZCEM",
     },
+    { title = "Stacker", desc = "Added in v1.3, these require doing something specific or unique with Stacker Mode enabled", mod = "ZCEM" },
+    { -- glissando
+        id = 'glissando',
+        name = "Glissando",
+        desc = [[Hear all 16 combo sfx at once by using at least eGV, rNH and Stacker Mode]],
+        quote = [["Waow so satisfying~"]],
+        credit = "@TrevorSmithy",
+        type = 'issued',
+        hide = function() return GAME.completion.NH == 0 end,
+        mod = "ZCEM",
+    },
+    { -- secret_grade
+        id = 'secret_grade',
+        name = "Secret Grade",
+        desc = [[Make a stack of sequential single mod quests from left to right and back (i.e: EX, NH, MS, GV, VL, DH, IN, AS, DP, AS, IN, DH, VL, GV, MS, NH, EX)]],
+        quote = [[A (poorly guarded) secret.]],
+        type = 'issued',
+        hide = TRUE,
+        mod = "ZCEM",
+    },
+    { -- garbage_in_garbage_out
+        id = 'garbage_in_garbage_out',
+        name = "Garbage In, Garbage Out",
+        desc = [[Die with at least 41 quests on the stack]],
+        quote = [["That's good. O-ok. Alright. OK THAT'S GOOD! IT'S- IT'S ENOUGH SLICES!]],
+        type = 'issued',
+        hide = TRUE,
+        mod = "ZCEM",
+    },
+    { title = "Smithy", desc = "Added in v1.3, these all require using eEX/ueEX, eVL, and eAS with all other mods sharing the same (non-easy) state", mod = "ZCEM"},
+    {
+        id = 'programming_smithy',
+        name = "The Pro G(r)am(m)ing Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy",
+        quote = "WAH-BAAM!",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90, 70, 60, 50, 40, 30, 20),
+        mod = "ZCEM",
+    },
+    {
+        id = 'uneasy_smithy',
+        name = "The Uneasy Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy and Uneasy active",
+        quote = "WAH-BAAM?",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90*1.5, 70*1.5, 60*1.5, 50*1.5, 40*1.5, 30*1.5, 20*1.5),
+        mod = "ZCEM",
+    },
+    {
+        id = 'swamped_smithy',
+        name = "The Swamped Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy and Upright mods",
+        quote = "wah-baam!",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90*2, 70*2, 60*2, 50*2, 40*2, 30*2, 20*2),
+        mod = "ZCEM",
+    },
+    {
+        id = 'bogged_smithy',
+        name = "The Bogged-Down Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy, Uneasy, and Upright mods",
+        quote = "wah-baam?",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90*4, 70*4, 60*4, 50*4, 40*4, 30*4, 20*4),
+        mod = "ZCEM",
+    },
+    {
+        id = 'overwhelmed_smithy',
+        name = "The Overwhelmed Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy and Reversed mods",
+        quote = "wah",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90*7, 70*7, 60*7, 50*7, 40*7, 30*7, 20*7),
+        mod = "ZCEM",
+    },
+    {
+        id = 'paralyzed_smithy',
+        name = "The Paralyzed Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with Smithy and Ultra Reversed mods",
+        quote = "...",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top / time) end,
+        rank = numberRankRev(90*14, 70*14, 60*14, 50*14, 40*14, 30*14, 20*14),
+        mod = "ZCEM",
+    },
+    {
+        id = 'speedrunning_smithy',
+        name = "The Speedrunning Smithy",
+        desc = "Reach F10 as fast as possible while retaining GIGASPEED with all the above Smithy combos",
+        quote = "Smithy%",
+        type = 'unranked',
+        credit = "TrevorSmithy",
+        comp = '<',
+        scoreSimp = function(time) return string.format("%.2fs", time) end,
+        scoreFull = function(time) return string.format("%.1f m/s", Floors[9].top * 6 / time) end,
+        rank = numberRankRev(90*30, 70*30, 60*30, 50*30, 40*30, 30*30, 20*30),
+        mod = "ZCEM",
+    },
 
-    { title = "FINAL MIX BEGINNER - ULTRA MODS", mod = "MISC"},
+    { title = "ULTRA MODS", desc = "Ultra mods are no joke. You think you have what it takes?", mod = "MISC"},
 
     { -- uEX
         id = 'uEX',
@@ -2412,7 +2535,7 @@ local d = {
         mod = "MISC",
     },
 
-    { title = "FINAL MIX BEGINNER - SPEED MOUSE", mod = "MISC"},
+    { title = "SPEED MOUSE", desc = "Mice are typically fast, but some have unparalleled speed. Will you be one of them?", mod = "MISC"},
 
     { -- Tera
         id = 'Tera',
@@ -2526,7 +2649,7 @@ local d = {
         mod = "MISC",
     }, 
 
-   { title = "FINAL MIX BEGINNER - POWERLEVELING", mod = "MISC"},
+   { title = "POWERLEVELING", desc = "ZP (Zenith Points) are a strange form of energy found throughout the Zenith Tower. Mice settled here have accumulated as many as they can.", mod = "MISC"},
 
     { -- Lv0
         id = 'powerleveling',
@@ -2628,7 +2751,7 @@ local d = {
         , realHide = function() return STAT.level < 60000 end, mod = "MISC",
     },
 
-    { title = "FINAL MIX BEGINNER - 2 Upright Mod Combos", mod = "2MP" },
+    { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
     { -- EXNH
         id = 'EXNH',
@@ -2888,7 +3011,7 @@ local d = {
         mod = "2MP",
     },
 
-    { title = "FINAL MIX BEGINNER - 3 Upright Mod Combos", mod = "3MP"},
+    { title = "3 Upright Mod Combos", desc = "Moderate Tests for all mice who wish for divinity. Not hard, but not easy either. Max wreath at 5,580m.", mod = "3MP"},
     { -- EXMSNH
         id = 'EXMSNH',
         name = "Online Gambling",
@@ -2986,7 +3109,7 @@ local d = {
     AchieveFromCombo('ASDPIN', "Blindfolded Collaboration", [[HFD with IN AS DP]], [[Can I order some chuggets?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('', "", [[]], [[]], floorRank(1e99, 3e99, 5e99, 7e99, 9e99, 10e99, 5580e99), FALSE, "3MP", 'issued'), -- Dummy Achievement to fix 3MP page
 
-    { title = "FINAL MIX BEGINNER - 1R1U Mod Combos", mod = "3MP"},
+    { title = "1Rev1Up Mod Combos", desc = "For a mouse to reach divinity, they must stand strong in the face of evil. These combos will get you ready for the tougher challenges ahead. Max wreath at 5,022m.", mod = "3MP"},
     AchieveFromCombo('NHrEX', "The Benevolent Dictator", [[HFD with rEX NH]], [[You want 3,000 liters of water? Sure, go ahead.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
     AchieveFromCombo('MSrEX', "Haphazard Regime", [[HFD with rEX MS]], [[Sir, the residents are revolting.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
     AchieveFromCombo('GVrEX', "Iron Fist", [[HFD with rEX GV]], [[Fists of iron sure do weigh a lot.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
@@ -3018,6 +3141,8 @@ local d = {
     AchieveFromCombo('NHrAS', "Pristine", [[HFD with NH rAS]], [[Squeaky!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.AS == 0 end, "3MP"),
     AchieveFromCombo('NHrDP', "Moving On", [[HFD with NH rDP]], [[ROADTRIP!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
     AchieveFromCombo('GVrMS', "Illusory Perpetuity", [[HFD with rMS GV]], [[The machine's still going right? RIGHT?!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
+    AchieveFromCombo('VLrMS', "Emotional Manipulation", [[HFD with rMS VL]], [[Do this, and I'll never distrust you.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
+    AchieveFromCombo('DHrMS', "Duplicitous Devilry", [[HFD with rMS DH]], [[This is gettin out of hand. Now there are two of them.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.MS == 0 end, "3MP"),
 }
 
 local compFunc = {

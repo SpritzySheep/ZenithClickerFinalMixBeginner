@@ -826,7 +826,7 @@ function Card:draw()
         end
 
         -- Outline (draw)
-        if STAT.oldTransparentCard then
+        if CONF.oldTransparentCard then
             if GAME.einvisCard then
                 gc_setLineWidth(20)
                 local temp = M.IN == 1 and 2 or M.IN == 2 and not URM and 3 or M.IN == 2 and URM and 4 or 1
@@ -835,7 +835,7 @@ function Card:draw()
                     if M.IN > 0 then
                         gc_setAlpha(1.26/temp + sin(love.timer.getTime() * 5.2/temp)/temp)
                     end
-                    if STAT.oldHitbox and MOBILE then
+                    if CONF.oldHitbox and MOBILE then
                         gc_circle('fill', 0, 0, 40)
                     end
                 else
@@ -876,7 +876,7 @@ else
                         gc_setAlpha(min(1, 2/temp))
                         width = (9-temp)*5
                     end
-                    if STAT.oldHitbox and MOBILE then
+                    if CONF.oldHitbox and MOBILE then
                         gc_circle('fill', 0, 0, 40)
                     end
                     gc_setLineWidth(width)

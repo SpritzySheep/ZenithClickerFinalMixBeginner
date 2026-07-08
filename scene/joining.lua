@@ -61,7 +61,6 @@ function scene.update(dt)
                 end
                 InitProfile()
                 LoadSave()
-                LoadConf()
                 URM = false
                 GAME.pieceEffectID = 0
                 GAME.floor = 0

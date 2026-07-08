@@ -647,10 +647,10 @@ TEXTURE = {
             NHrEX = aq(9, 6), MSrEX = aq(4, 13), GVrEX = aq(15, 13), VLrEX = aq(3, 14),
             DHrEX = aq(4, 14), INrEX = aq(5, 14), ASrEX = aq(6, 14), DPrEX = aq(7, 14),
             EXrNH = aq(8, 14), EXrMS = aq(9, 14), EXrGV = aq(12, 2), EXrVL = aq(9, 6),
-            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrDP = aq(12, 14), MSrNH = aq(14, 6), GVrNH = aq(13, 14),
+            EXrDH = aq(10, 14), EXrIN = aq(11, 14), EXrAS = aq(12, 14), EXrDP = aq(12, 14), MSrNH = aq(14, 6), GVrNH = aq(13, 14),
             VLrNH = aq(14, 14), DHrNH = aq(4, 14), INrNH = aq(15, 14), ASrNH = aq(16, 14), DPrNH = aq(14, 14),
             NHrMS = aq(1, 15), NHrGV = aq(14, 3), NHrVL = aq(2, 15), NHrDH = aq(4, 15), NHrIN = aq(5, 15),
-            NHrAS = aq(6, 15), NHrDP = aq(7, 15), GVrMS = aq(15, 14),
+            NHrAS = aq(6, 15), NHrDP = aq(7, 15), GVrMS = aq(15, 14), VLrMS = aq(9, 15), DHrMS = aq(10, 15),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -961,11 +961,11 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
-    slogan     = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER"),
-    slogan_EX  = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER EXTRA"),
-    slogan_rEX = GC.newText(FONT.get(30), "EASY MODE FINAL MIX BEGINNER FINAL"),
+    slogan     = GC.newText(FONT.get(30), "MOUSE MIX"),
+    slogan_EX  = GC.newText(FONT.get(30), "RAT MIX"),
+    slogan_rEX = GC.newText(FONT.get(30), "RODENT MIX"),
     forfeit    = GC.newText(FONT.get(50), "KEEP HOLDING TO FORFEIT"),
-    credit     = GC.newText(FONT.get(30), "Easy Mode by Trevor Smithy, F-Mix Beginner by Spritzy"),
+    credit     = GC.newText(FONT.get(30), "Easy Mode by Trevor Smithy, Mouse Mix by Spritzy"),
     test       = GC.newText(FONT.get(50), "TEST"),
     easyTitle  = GC.newText(FONT.get(50), "EASY GAMEPLAY"),
     uneasyTitle= GC.newText(FONT.get(50), "UNEASY GAMEPLAY"),
@@ -1075,10 +1075,6 @@ STAT = {
     achv = 0,
     ExtraSpeed = false,
     MouseGirl = false,
-    easyName = false,
-    imperial = false,
-    promotion = true,
-    stacker = false,
     rold = false,
     unlockAll = false,
     greenClicker = false,
@@ -1301,7 +1297,6 @@ SCN.add('badge', require 'scene/badge')
 SCN.add('conf', require 'scene/conf')
 SCN.add('about', require 'scene/about')
 SCN.add('ending', require 'scene/ending')
-SCN.add('zcem', require 'scene/zcem')
 SCN.add('chnl', require 'scene/chnl')
 ZENITHA.setFirstScene('joining')
 

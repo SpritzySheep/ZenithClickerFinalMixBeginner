@@ -503,6 +503,8 @@ function scene.load()
         applyCombo(PendingComboFromRecord)
         PendingComboFromRecord = nil
     end
+    TABLE.clear(revHold)
+    TABLE.clear(easyHold)
     if STAT.unlockAll and not ACHV.lazy_bastard then
         IssueAchv('lazy_bastard', true)
         MSG('achv_issued', {
@@ -1347,7 +1349,7 @@ function scene.overDraw()
             local ox, oy = TEXTS.spike:getWidth() / 2, TEXTS.spike:getHeight() / 2
             gc_setColor(1, 1, 1, GAME.spikeTimer * .62/eTAlpha)
             gc_strokeDraw('full', 2, TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
-            gc_setColor(0, 0, 0, GAME.spikeTimer * 2.6/eTAlpha)
+            gc_setColor(1, 1, 1, GAME.spikeTimer * 2.6/eTAlpha)
             gc_setBlendMode('subtract')
             gc_draw(TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)
             gc_draw(TEXTS.spike, 0, 0, 0, 1, 1, ox, oy)

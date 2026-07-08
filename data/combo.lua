@@ -142,7 +142,7 @@ d.menu = {
     { set = "eNH eMS eGV eDH eIN eDP", name = "Rold Smythy"},
     { set = "eEX eNH eMS eVL eDH eAS", name = "God Gamer"},
 
-    --Final Mix Beginner
+    --Mouse Mix
     { set = "EX NH",              name = "A Fair Leader" },
     { set = "EX GV",              name = "Invictus" },
     { set = "DH EX",              name = "The Devil's Temptation" },
@@ -266,7 +266,8 @@ d.menu = {
     { set = "EX rVL",             name = "Struggling Professional"},
     { set = "EX rDH",             name = "Fatal Finesse"},
     { set = "EX rIN",             name = "no"},
-    { set = "EX rDP",             name = "Surging King"},
+    { set = "EX rAS",             name = "Surging King"},
+    { set = "EX rDP",             name = "Arranged Marriage"},
     { set = "EX rDP",             name = "Arranged Marriage"},
     { set = "rNH MS",             name = "Turbulent Rise"},
     { set = "rNH GV",             name = "Levitation"},
@@ -283,6 +284,8 @@ d.menu = {
     { set = "NH rAS",             name = "Pristine"},
     { set = "NH rDP",             name = "Moving On"},
     { set = "rMS GV",             name = "Illusory Perpetuity"},
+    { set = "rMS VL",             name = "Emotional Manipulation"},
+    { set = "rMS DH",             name = "Duplicitous Devilry"},
 }
 
 

@@ -33,7 +33,7 @@ local d = {
             { set = "eDHeEXeGVeMSrDPrVL", name = '"SEVERED VOLITION"', forceRev = true, customUltraCombo = true},
             -- Smithy
             { set = "eASeEXeVLrDHrDPrGVrINrMSrNH", name = '"THE PARALYZED SMITHY"'},
-            -- Final Mix Beginner
+            -- Mouse Mix
             { set = "rEXrMS", name = '"THE HOLLOWER"', customUltraCombo = true},
         },
         uneasy = {

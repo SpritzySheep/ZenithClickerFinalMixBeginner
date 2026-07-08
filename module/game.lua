@@ -120,7 +120,6 @@ local ins, rem = table.insert, table.remove
 ---@field OSPActivated boolean
 ---@field finalFatigueOSPActivated boolean
 ---@field bonusRecoveryHealth number
----@field teraComplete boolean
 ---@field teraStartHeight number
 ---@field teraLostHeight number
 ---@field customUltraCombo boolean
@@ -146,6 +145,7 @@ local ins, rem = table.insert, table.remove
 ---@field achv_cleanBreakQuest number
 ---@field achv_professionalCleanerQuest number
 ---@field achv_roldSmythyQuest number
+---@field hasSubmittedTimedAchievements boolean
 ---@field comboSFX number
 ---@field comboBounceTime number
 ---@field multiplePiecesActive boolean True if multiple pieces are active together. If so, disables achievements and record submission viability
@@ -402,7 +402,7 @@ function GAME.getComboZP(list)
     if GAME.eglassCard then zp = zp * .7 end
     if GAME.efastLeak then zp = zp * .65 end
     if GAME.einvisUI then zp = zp * .6 end
-    if GAME.einvisCard and not STAT.oldTransparentCard then
+    if GAME.einvisCard and not CONF.oldTransparentCard then
         zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.83 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
     end
     if GAME.ecloseCard then
@@ -473,7 +473,7 @@ function GAME.getComboName(list, mode)
             end
             -- Random gray
             for i = #fstr, 1, -1 do
-                ins(fstr, i, { MATH.rand(1, 1), MATH.rand(1, 1), MATH.rand(1, 1) })
+                ins(fstr, i, { 1,1,1 })
             end
             if M.IN == 0 then
                 local colors = {}
@@ -1921,13 +1921,13 @@ function GAME.upFloor()
                 SubmitAchv('ueEXeGV', roundTime)
             elseif GAME.comboStr == 'eEXeVL' and GAME.closeCard then
                 SubmitAchv('ueEXeVL', roundTime)
-           elseif GAME.comboStr == 'eEXeDH' and GAME.nightcore then
+           elseif GAME.comboStr == 'eDHeEX' and GAME.nightcore then
                 SubmitAchv('ueEXeDH', roundTime)
             elseif GAME.comboStr == 'eEXeIN' and GAME.invisCard then
                 SubmitAchv('ueEXeIN', roundTime)
-            elseif GAME.comboStr == 'eEXeAS' and GAME.fastLeak then
+            elseif GAME.comboStr == 'eASeEX' and GAME.fastLeak then
                 SubmitAchv('ueEXeAS', roundTime)
-            elseif GAME.comboStr == 'eEXeDP' and GAME.invisUI then
+            elseif GAME.comboStr == 'eDPeEX' and GAME.invisUI then
                 SubmitAchv('ueEXeDP', roundTime)
             end
         end
@@ -2211,8 +2211,7 @@ function GAME.refreshResultModIcon()
     local hand = GAME.getHand(true)
     table.sort(hand, modIconSorter)
     local quad, w, _
-    local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
-    if uneasyMode then
+    if GAME.uneasyMode then
         for i = 1, #hand do
             if hand[i] == 'eEX' then hand[i] = 'ueEX' end
         end
@@ -2887,6 +2886,11 @@ function GAME.commit(auto, falseCommit)
 
         GAME.incrementPrompt('send', attack)
         GAME.totalAttack = GAME.totalAttack + attack
+
+        for i, q in next, GAME.questStack do
+            if not TABLE.equal(hand, TABLE.sort(q.combo)) then break end
+            if i > 15 then IssueAchv('glissando') end
+        end
         
         
 
@@ -3085,6 +3089,31 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
                 if GAME.chain >= 504 then attack = attack + 1 end
             end
             xp = xp + 3
+
+            if M.AS == -1 and correct then
+                if GAME.chain == 7 then SFX.play('btb_1')
+                elseif GAME.chain == 23 then SFX.play('btb_2')
+                elseif GAME.chain == 66 then SFX.play('btb_3')
+                elseif GAME.chain == 184 then 
+                    TASK.new(function()
+                        SFX.play('btb_1')
+                        TASK.yieldT(0.26)
+                        SFX.play('btb_2')
+                    end)
+                elseif GAME.chain == 503 then 
+                    TASK.new(function()
+                        SFX.play('btb_1')
+                        TASK.yieldT(0.26)
+                        SFX.play('btb_3')
+                    end)
+                elseif GAME.chain == 863 then 
+                    TASK.new(function()
+                        SFX.play('btb_2')
+                        TASK.yieldT(0.36)
+                        SFX.play('btb_3')
+                    end)
+                end
+            end
 
             -- B2B
             if correct == 1 or (correct == 2 and M.DP == -1 and not allyWasDead) then
@@ -3501,6 +3530,20 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
                     SFX.play("hyperalert", 1, 0, Tone(0))
                 end
             end
+            if not ACHV.secret_grade then
+                local secretGrade = 'EXNHMSGVVLDHINASDPASINDHVLGVMSNHEX'
+                local stackSet = {}
+                local stackText = ''
+                for i = #GAME.questStack, 1, -1 do
+                    ins(stackSet, GAME.questStack[i].combo)
+                end
+                for _, q in next, stackSet do
+                    stackText = stackText .. q[1]
+                end
+                if #GAME.questStack >= 17 then
+                    if STRING.find(stackText, secretGrade) then IssueAchv('secret_grade') end
+                end
+            end
             return
         end
 
@@ -3577,6 +3620,7 @@ function GAME.start()
     GAME.achv_cleanBreakQuest = 0
     GAME.achv_professionalCleanerQuest = 0
     GAME.achv_roldSmythyQuest = 0
+    GAME.hasSubmittedTimedAchievements = false
     GAME.noManualActivate = true
     GAME.noMouseOrSpin = true
     GAME.noKeyboardOrReset = true
@@ -4051,7 +4095,7 @@ end
         -- Easy Mode Version for records
         if not GAME.multiplePiecesActive then
             if not CONF.imperial then
-                TEXTS.easyModeVersion:set((STAT.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
+                TEXTS.easyModeVersion:set((CONF.oldHitbox and "eT" or "eV") .. (require 'version'.verStr))
             else
                 TEXTS.easyModeVersion:set({ COLOR.LL, ("%.1fm"):format(GAME.roundHeight) })
             end
@@ -4094,7 +4138,7 @@ end
         end
 
         -- Update ZP
-        local oldZP = STAT.zp
+        local oldZP = STAT.peakZP
         local thres1 = zpGain * 16
         local thres2 = zpGain * 26
         local newZP = max(
@@ -4115,9 +4159,9 @@ end
         end
 
         if zpGain > 0 then
-        STAT.zp = STAT.zp + zpGain
+        STAT.peakZP = STAT.peakZP + zpGain
         end
-        STAT.peakZP = max(STAT.peakZP, STAT.zp)
+        STAT.zp = max(STAT.peakZP, STAT.zp)
         if STAT.zp < STAT.peakZP then STAT.zp = STAT.peakZP end
 
         -- Best
@@ -4505,6 +4549,14 @@ end
         if GAME.time <= 600 then
             GAME.submitTimedAchievements()
         end
+        local smithys = {'programming_smithy', 'uneasy_smithy', 'swamped_smithy',        'bogged_smithy',          'overwhelmed_smithy',          'paralyzed_smithy'}
+        local combos =  {'eASeEXeVL',          'ueASeEXeVL',    'DHDPGVINMSNHeASeEXeVL', 'uDHDPGVINMSNHeASeEXeVL', 'eASeEXeVLrDHrDPrGVrINrMSrNH', 'ueASeEXeVLrDHrDPrGVrINrMSrNH'}
+        _t = 0
+        for combo, smithy in next, smithys do
+            SubmitAchv(smithy, BEST.speedrun[combos[combo]])
+            _t = _t + min(BEST.speedrun[combos[combo]], 2600) 
+        end
+        SubmitAchv('speedrunning_smithy', _t)
         SaveStat()
     else
         TEXTS.endHeight:set("")
@@ -4556,6 +4608,7 @@ end
     if reason ~= 'forfeit' then
         TASK.lock('cannotStart', 1)
         TASK.lock('cannotFlip', .626)
+        if #GAME.questStack > 40 then IssueAchv('garbage_in_garbage_out') end
     end
     TASK.removeTask_code(Task_MusicEnd)
     TASK.new(Task_MusicEnd)
@@ -4868,7 +4921,7 @@ function GAME.update(dt)
     end
     
     -- Time Based Achievements
-    if GAME.time > 600 then
+    if GAME.time > 600 and not GAME.hasSubmittedTimedAchievements then
         GAME.submitTimedAchievements()
     end
 

@@ -39,6 +39,8 @@ local achvListZCEM = {}
 local achvListMISC = {}
 local achvList2MP = {}
 local achvList3MP = {}
+local achvLists = {achvList, achvListZCEM, achvListMISC, achvList2MP, achvList3MP}
+local mods = {{"ZCEM", achvListZCEM},{"MISC",achvListMISC},{"2MP",achvList2MP},{"3MP",achvList3MP}}
 local scroll, scroll1 = 0, 0
 local maxScroll = 0
 local timer = 0
@@ -51,7 +53,7 @@ local overallProgress = {
     countStart = 0,
     ptGet = 0,
     ptAll = 0,
-    ptText = "0/0 Pts",
+    ptText = "00AP",
 }
 
 local page = 1
@@ -72,17 +74,24 @@ function RefreshAchvList(canShuffle)
     overallProgress.wreath[0] = 0
     overallProgress.ptGet = 0
     overallProgress.ptAll = 0
-    TABLE.clear(achvList)
-    TABLE.clear(achvListZCEM)
-    TABLE.clear(achvListMISC)
-    TABLE.clear(achvList2MP)
-    TABLE.clear(achvList3MP)
+    for _, achvList in next, achvLists do
+        TABLE.clear(achvList)
+    end
     local odCount, odCap, countSinceLastTitle = 0, 0, 0
     for i = 1, #Achievements do
         local A = Achievements[i]
+        local modAchvList = achvList
+        if A.mod then
+            for i, mod in next, mods do
+                if A.mod == mod[1] then 
+                    modAchvList = mod[2]
+                    break
+                end
+            end
+        end
         if not A.id then
             if page >= ZCEMpage then countSinceLastTitle = 0 end
-            table.insert((A.mod == "3MP" and achvList3MP or A.mod == "2MP" and achvList2MP or A.mod == "MISC" and achvListMISC or A.mod == "ZCEM" and achvListZCEM or achvList), { title = A.hide() and "???" or A.title and A.title:upper() })
+            table.insert(modAchvList, { title = A.hide() and "???" or A.title and A.title:upper(), desc = not A.hide() and A.desc, mod = A.mod or "ZC", })
         else
             local rank, score, progress, wreath, overDev
             if TestMode or not ACHV[A.id] then
@@ -119,7 +128,7 @@ function RefreshAchvList(canShuffle)
             local descWidth = hidden and 26 or AchvText:getWidth()
             if not hidden or not A.realHide() then 
                 if A.mod == not "ZC" then countSinceLastTitle = countSinceLastTitle + 1 end
-                table.insert((A.mod == "3MP" and achvList3MP or A.mod == "2MP" and achvList2MP or A.mod == "MISC" and achvListMISC or A.mod == "ZCEM" and achvListZCEM or achvList), {
+                table.insert((modAchvList), {
                     id = A.id,
                     name = hidden and "???" or A.name:upper(),
                     desc = hidden and "???" or A.desc,
@@ -131,11 +140,12 @@ function RefreshAchvList(canShuffle)
                     type = A.type,
                     hidden = A.hide ~= FALSE,
                     overDev = overDev,
+                    mod = A.mod or "ZC",
                 })
             elseif A.mod == not "ZC" and countSinceLastTitle % 2 == 1 then  
-                table.insert(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM, {id = '', name = ''})
+                table.insert(modAchvList, {id = '', name = ''})
             elseif A.mod == "MISC" and countSinceLastTitle % 2 == 1 then  
-                table.insert(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM, {id = '', name = ''})
+                table.insert(modAchvList, {id = '', name = ''})
             end
             if overDev then
                 odCount = odCount + 1
@@ -145,30 +155,6 @@ function RefreshAchvList(canShuffle)
     if odCount >= odCap * .62 then IssueSecret('exceed_dev', true) end
     if odCount >= odCap * .26 then IssueSecret('exceed_dev_half', true) end
     OverDevProgressText = "ACHV scores better than Dev: " .. odCount .. "/" .. odCap
-    if canShuffle then
-
-        local s, e
-        for i = 1, #(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList) do
-            if not s then
-                if (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[i].id then
-                    s = i
-                end
-            elseif not e then
-                if not (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[i].id then
-                    e = i - 1
-                elseif i == #(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList) then
-                    e = i
-                end
-            end
-            if e then
-                local buffer = TABLE.sub(page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList, s, e)
-                if M.MS > 0 then TABLE.shuffle(buffer) end
-                if M.GV > 0 then table.sort(buffer, M.GV == 1 and nameSortLT or nameSortGT) end
-                for j, a2 in next, buffer do (page == MP3page and achvList3MP or page == MP2page and achvList2MP or page == MISCpage and achvListMISC or page == ZCEMpage and achvListZCEM or achvList)[s + j - 1] = a2 end
-                s, e = nil, nil
-            end
-        end
-    end
 
     if not TestMode then
         overallProgress.ptText = overallProgress.ptGet .. "AP"
@@ -332,6 +318,14 @@ local function refreshAchivement()
             end
         )
     end
+     local smithys = {'programming_smithy', 'uneasy_smithy', 'swamped_smithy',        'bogged_smithy',          'overwhelmed_smithy',          'paralyzed_smithy'}
+    local combos =  {'eASeEXeVL',          'ueASeEXeVL',    'DHDPGVINMSNHeASeEXeVL', 'uDHDPGVINMSNHeASeEXeVL', 'eASeEXeVLrDHrDPrGVrINrMSrNH', 'ueASeEXeVLrDHrDPrGVrINrMSrNH'}
+    _t = 0
+    for combo, smithy in next, smithys do
+        submit(smithy, BEST.speedrun[combos[combo]], true)
+        _t = _t + min(BEST.speedrun[combos[combo]], 2600) 
+    end
+    submit('speedrunning_smithy', _t, true)
     RefreshAchvList()
 end
 
@@ -369,7 +363,7 @@ function scene.load()
 
     RefreshAchvList(true)
 
-    maxScroll = max(ceil(((page == MP3page and #achvList3MP or page == MP2page and #achvList2MP or page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+    maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
     clearNotice = false
 end
 
@@ -460,7 +454,7 @@ local gc_replaceTransform, gc_translate = gc.replaceTransform, gc.translate
 local gc_setColor, gc_rectangle, gc_polygon, gc_print, gc_printf = gc.setColor, gc.rectangle, gc.polygon, gc.print, gc.printf
 local gc_ucs_move, gc_ucs_back = GC.ucs_move, GC.ucs_back
 local gc_setAlpha, gc_mRect, gc_mDraw, gc_mDrawQ = GC.setAlpha, GC.mRect, GC.mDraw, GC.mDrawQ
-local gc_stc_setComp, gc_stc_arc, gc_stc_stop = GC.stc_setComp, GC.stc_arc, GC.stc_stop
+local gc_stc_setComp, gc_stc_reset, gc_stc_arc, gc_stc_stop = GC.stc_setComp, GC.stc_reset, GC.stc_arc, GC.stc_stop
 local gc_setBlendMode = GC.setBlendMode
 function scene.draw()
     DrawBG(26)
@@ -505,11 +499,11 @@ function scene.draw()
         local texture = TEXTURE.achievement
         local notAllRank5 = overallProgress.ptGet < overallProgress.ptAll
         gc_translate(0, -420 - scroll1)
-        for i = 1 + 2 * max(floor(scroll1 / 140) - 1, 0), min(2 * (floor(scroll1 / 140) + 8), (page == MP3page and #achvList3MP or page == MP2page and #achvList2MP or page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList)) do
-            local a = (page == MP3page and achvList3MP[i] or page == MP2page and achvList2MP[i] or page == MISCpage and achvListMISC[i] or page == ZCEMpage and achvListZCEM[i] or achvList[i])
+        for i = 1 + 2 * max(floor(scroll1 / 140) - 1, 0), min(2 * (floor(scroll1 / 140) + 8), #achvLists[page]) do
+            local a = achvLists[page][i]
             if not a.id then
                 if a.title then
-                    gc_ucs_move(i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140)
+                    gc_ucs_move(i % 2 == 1 and -605 or 5, floor((i - 1) / 2) * 140 - (a.desc and 30 or 0))
                     gc_setColor(0, 0, 0, .42)
                     gc_rectangle('fill', -25, 42, 1260, -10)
                     gc_setColor(clr.L)
@@ -517,12 +511,17 @@ function scene.draw()
                     if colorRev then
                         gc_print(a.title, 10, 134, 0, 1.8, -1.8)
                     else
-                        if a.title:sub(1, 4) == "EASY" then
+                        if a.mod == "ZCEM" then
                             gc_setColor(COLOR.G)
-                        elseif a.title:sub(1, 6) == "UNEASY" then
-                            gc_setColor(COLOR.dR)
+                            if a.title:sub(1, 6) == "UNEASY" then gc_setColor(COLOR.dR) end
                         end
                         gc_print(a.title, 10, 62, 0, 1.8)
+                    end
+                    if a.desc then
+                        gc_setColor(colorRev and COLOR.dR or COLOR.LD)
+                        FONT.set(10)
+                        gc_print(a.desc, 30, 130, 0, 1.8)
+                        FONT.set(30)
                     end
                     gc_ucs_back()
                 end
@@ -561,23 +560,24 @@ function scene.draw()
                     gc_mDraw(texture.frame[a.rank], 65, 65, 0, .42)
 
                     -- Progress ring
-                    if a.progress > 0 then
-                        if colorRev then gc_setColor(COLOR.lR) end
-                        if a.progress < 1 then
-                            gc_stc_setComp()
-                            gc_stc_arc('pie', 65, 65,
-                                ea + -2.0944,
-                                ea + -2.0944 + ka * a.progress,
-                                63, 26)
-                            gc_stc_arc('pie', 65, 65,
-                                ea + 1.0472,
-                                ea + 1.0472 + ka * a.progress,
-                                63, 26)
+                    -- Progress ring
+                if a.progress > 0 then
+                    if a.progress < 1 then
+                        gc_stc_reset()
+                        gc_stc_arc('pie', 65, 65,
+                            ea + -2.0944,
+                            ea + -2.0944 + ka * a.progress,
+                            63, 26)
+                        gc_stc_arc('pie', 65, 65,
+                            ea + 1.0472,
+                            ea + 1.0472 + ka * a.progress,
+                            63, 26)
                         end
-                        gc_mDraw(texture.ring, 65, 65, 0, .42)
-                        gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
-                        gc_stc_stop()
-                    end
+                        if colorRev then gc_setColor(COLOR.lR) end
+                    gc_mDraw(texture.ring, 65, 65, 0, .42)
+                    gc_mDraw(texture.ring, 65, 65, 3.1416, .42)
+                    gc_stc_stop()
+                end
 
                     -- Glint
                     if a.rank >= 1 then
@@ -691,10 +691,11 @@ function scene.draw()
     gc_replaceTransform(SCR.xOy_ul)
     gc_setColor(clr.L)
     FONT.set(50)
+    local pageTitles = {"ZC", "ZCEM", "MISC", "2MP", "3MP"}
     if colorRev then
-        gc_print("ACHIEVEMENTS", 15, 68, 0, 1, -1)
+        gc_print(pageTitles[page] .. " ACHIEVEMENTS", 15, 68, 0, 1, -1)
     else
-        gc_print("ACHIEVEMENTS", 15, 0)
+        gc_print(pageTitles[page] .. " ACHIEVEMENTS", 15, 0)
     end
 
     -- Badge (wreath) count
@@ -749,7 +750,7 @@ scene.widgetList = {
         fontSize = 30, text = " ZC    ", textColor = 'DL',
         onClick = function() 
             love.keypressed('1') 
-            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },
@@ -761,7 +762,7 @@ scene.widgetList = {
         fontSize = 30, text = "ZCEM   ", textColor = { .15, .75, .15 },
         onClick = function()
             love.keypressed(tostring(ZCEMpage))
-            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },
@@ -773,7 +774,7 @@ scene.widgetList = {
         fontSize = 30, text = "MISC   ", textColor = { 1, 1, 1 },
         onClick = function()
             love.keypressed(tostring(MISCpage))
-            maxScroll = max(ceil(((page == MISCpage and #achvListMISC or page == ZCEMpage and #achvListZCEM or #achvList) - 12) / 2) * 140, 0)
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },
@@ -785,7 +786,7 @@ scene.widgetList = {
         fontSize = 30, text = "02MP   ", textColor = { 0, 0, 0 },
         onClick = function()
             love.keypressed(tostring(MP2page))
-            maxScroll = max(ceil(((#achvList2MP) - 12) / 2) * 140, 0)
+            mmaxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },
@@ -797,7 +798,7 @@ scene.widgetList = {
         fontSize = 30, text = "03MP   ", textColor = { 0, 0, 0 },
         onClick = function()
             love.keypressed(tostring(MP3page))
-            maxScroll = max(ceil(((#achvList3MP) - 12) / 2) * 140, 0)
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },

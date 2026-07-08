@@ -32,11 +32,11 @@ ABOUT = {
 }
 
 for d = .5, 2.5, .5 do
-    addText({ COLOR.LD, "EASY MODE" }, 90 + d, 20 + d)
-    addText({ COLOR.LD, "F-MIX BEGINNER" }, 130 + d, 95 + d)
+    addText({ COLOR.LD, "MOUSE" }, 90 + d, 20 + d)
+    addText({ COLOR.LD, "MIX" }, 130 + d, 95 + d)
 end
-addText("EASY MODE", 90, 20)
-addText("F-MIX BEGINNER", 130, 95)
+addText("MOUSE", 90, 20)
+addText("MIX", 130, 95)
 
 addSection(220)
 
@@ -143,9 +143,9 @@ addText({
 
 addSection(1450)
 
-addText({ COLOR.O, "FINAL MIX BEGINNER MOD BY" }, 0, 20, .3)
+addText({ COLOR.O, "MOUSE MIX MOD BY" }, 0, 20, .3)
 
-addMajorCredit(0, 50, { COLOR.HEX 'FF82F0' }, "Spritzy Lunabright", "EM F-MixB Dev")
+addMajorCredit(0, 50, { COLOR.HEX 'FF82F0' }, "Spritzy Lunabright", "Mouse Mix Dev")
 
 addText({ COLOR.O, "BASE EASY MODE MOD BY" }, 0, 110, .3)
 
@@ -261,7 +261,7 @@ addRank(100, 2750, { COLOR.HEX 'DFDFDF' }, "Dia3", "480k CE")
 addRank(300, 2750, { COLOR.HEX '9F9F9F' }, "DiaM", "490k CE")
 addRank(-400, 2850, { COLOR.HEX 'FF0000' }, "ALPHA", "500,000 CE")
 addRank(0, 2850, { COLOR.HEX 'FF8000' }, "BETA", "600,000 CE")
-addRank(-400, 2850, { COLOR.HEX 'FFFF00' }, "GAMMA", "700,000 CE")
+addRank(400, 2850, { COLOR.HEX 'FFFF00' }, "GAMMA", "700,000 CE")
 local timer
 function scene.load()
     MSG.clear()
@@ -395,7 +395,7 @@ function scene.draw()
     gc_replaceTransform(SCR.xOy_dl)
     gc_setColor(clr.L)
     FONT.set(30)
-    gc_print("THANK YOU FOR PLAYING FINAL MIX BEGINNER!", 15, -45, 0, .85, 1)
+    gc_print("THANK YOU FOR PLAYING MOUSE MIX!", 15, -45, 0, .85, 1)
 end
 
 scene.widgetList = {
