@@ -1204,7 +1204,24 @@ if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
 
     if CONF.stacker then stackerStartButtonColor() end
 end
-
+local hyperText = {
+    [0] = "",
+    "",
+    TEXTS.gigaspeed,
+    TEXTS.teraspeed,
+    TEXTS.petaspeed,
+    TEXTS.exaspeed,
+    TEXTS.zetaspeed,
+    TEXTS.yottaspeed,
+    TEXTS.ronnaspeed,
+    TEXTS.quettaspeed,
+    TEXTS.dekaspeed,
+    TEXTS.terminaspeed,
+    TEXTS.luminaspeed,
+    TEXTS.singulaspeed,
+    TEXTS.univaspeed,
+    TEXTS.multivaspeed,
+}
 function scene.overDraw()
     local t = love.timer.getTime()
     local eTAlpha = GAME.einvisUI and 5 or 1
@@ -1269,71 +1286,13 @@ function scene.overDraw()
 
         -- GigaSpeed Anim
         -- Oh look at that the mouse has commited a mouse crime
+        -- Oh look at that the mouse has fixed her mouse crime
         if GigaSpeed.textTimer then
             gc_setBlendMode('add')
             gc_setColor(.26, .26, .26)
-            if GAME.gspeedlv == 14 then
+            if GAME.gspeedlv >= 2 then
                 for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.univaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 3)
-                end
-            end
-            if GAME.gspeedlv == 13 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.singulaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 12 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.luminaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 11 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.terminaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 10 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.dekaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 9 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.quettaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 8 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.ronnaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 7 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.yottaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 6 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.zetaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 5 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.exaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 4 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.petaspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            end
-            if GAME.gspeedlv == 3 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.teraspeed, 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 2.6)
-                end
-            elseif GAME.gspeedlv <= 2 then
-                for p = -10, 10, 3 do
-                    gc_mDraw(TEXTS.gigaspeed, 800 + (GigaSpeed.textTimer + p * .012) ^ 5 * 2600, 395, 0, 1.6)
+                    gc_mDraw(hyperText[GAME.gspeedlv], 800 + (GigaSpeed.textTimer + p * .01) ^ 5 * 2600, 355, 0, 3)
                 end
             end
             gc_setBlendMode('alpha')
@@ -1550,7 +1509,7 @@ function scene.overDraw()
                 local rank = GAME.rank
                 local xp = (M.VL == 2 and URM) and (5+GAME.chain) or GAME.commit(false, true)
                 local newXP, newRank = GAME.addXP(xp, true)
-                local revolutions = newRank - rank + (newXP/(4*(newRank))) -- 1/360
+                local revolutions = newRank - rank + (newXP/((newRank))) -- 1/360
                 local tempRevolutions = newRank - rank 
                 if revolutions > 1 then
                     while radius > 2 and tempRevolutions > 0 do
@@ -1739,13 +1698,46 @@ function scene.overDraw()
                 for i = 1, rank - floor(31.6 * ratio) do
                     gc_setColor(min(1-(i+1)/100, 1), (i)/100, 0)
                     gc_setAlpha(1/eTAlpha)
-                    gc_rectangle('fill', maxR-boxWidth, 950 - 13.3 * i, boxWidth, 9)
-                    gc_rectangle('fill', maxL+boxWidth, 950 - 13.3 * i, -boxWidth, 9)
+                    if i < 100 then
+                        gc_rectangle('fill', maxR-boxWidth, 950 - 13.3 * i, boxWidth, 9)
+                        gc_rectangle('fill', maxL+boxWidth, 950 - 13.3 * i, -boxWidth, 9)
+                    end
                 end
                 gc_setColor(min(1-(rank-floor(31.6 * ratio))/100, 1), (rank-floor(31.6 * ratio))/100, 0)
                 gc_setAlpha(1/eTAlpha)
                 gc_mDraw(TEXTS.rank, maxR-boxWidth*2, 950 - 13.3 * (rank-floor(31.6 * ratio)), 0, .626)
                 gc_mDraw(TEXTS.rank, maxL+boxWidth*2, 950 - 13.3 * (rank-floor(31.6 * ratio)), 0, .626)
+            end
+            if rank > 100 then
+                gc_setColor(COLOR.J)
+                gc_rectangle('fill', maxR-70, 950-(((rank-100)/100)*950), 32, ((rank-100)/100)*950)
+                gc_rectangle('line', (maxL+70)-32, 950-(((rank-100)/100)*950), 32, ((rank-100)/100)*950)
+                gc_mDraw(TEXTS.lank, maxR-120, 950-(((rank-100)/100)*950)+30, 0, 1)
+                --gc_mDraw(TEXTS.lank, (maxL+70)-32+100, 950-(((rank-100)/100)*950)-60, 0, 2)
+            end
+            if rank > 200 then
+                gc_setColor(COLOR.A)
+                gc_rectangle('fill', maxR-102, 950-(((rank-200)/150)*950), 32, (((rank-200)/150)*950))
+                gc_rectangle('line', (maxL+70), 950-(((rank-200)/150)*950), 32, (((rank-200)/150)*950))
+                gc_mDraw(TEXTS.lank, maxR-152, 950-(((rank-200)/150)*950)+30, 0, 1)
+            end
+            if rank > 350 then
+                gc_setColor(COLOR.Y)
+                gc_rectangle('fill', maxR-132, 950-(((rank-350)/200)*950), 32, (((rank-350)/200)*950))
+                gc_rectangle('line', (maxL+100), 950-(((rank-350)/200)*950), 32, (((rank-350)/200)*950))
+                gc_mDraw(TEXTS.lank, maxR-182, 950-(((rank-350)/200)*950)+30, 0, 1)
+            end
+            if rank > 550 then
+                gc_setColor(COLOR.O)
+                gc_rectangle('fill', maxR-157, 950-(((rank-550)/250)*950), 32, (((rank-550)/250)*950))
+                gc_rectangle('line', (maxL+125), 950-(((rank-550)/250)*950), 32, (((rank-550)/250)*950))
+                gc_mDraw(TEXTS.lank, maxR-207, 950-(((rank-550)/250)*950)+30, 0, 1)
+            end
+            if rank > 800 then
+                gc_setColor(COLOR.R)
+                gc_rectangle('fill', maxR-177, 950-(((rank-800)/300)*950), 32, (((rank-800)/300)*950))
+                gc_rectangle('line', (maxL+145), 950-(((rank-800)/300)*950), 32, (((rank-800)/300)*950))
+                gc_mDraw(TEXTS.lank, maxR-227, 950-(((rank-800)/300)*950)+30, 0, 1)
             end
         end
         gc_setColor(rankColor[rank - 1] or COLOR.dL)

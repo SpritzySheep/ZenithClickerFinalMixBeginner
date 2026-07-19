@@ -274,6 +274,8 @@ TEXTURE = {
             assets 'rank/beta_06.png', assets 'rank/beta_07.png', assets 'rank/beta_08.png', assets 'rank/beta_09.png', assets 'rank/beta_10.png',
             assets 'rank/gamma_01.png', assets 'rank/gamma_02.png', assets 'rank/gamma_03.png', assets 'rank/gamma_04.png', assets 'rank/gamma_05.png',
             assets 'rank/gamma_06.png', assets 'rank/gamma_07.png', assets 'rank/gamma_08.png', assets 'rank/gamma_09.png', assets 'rank/gamma_10.png',
+            assets 'rank/delta_01.png', assets 'rank/delta_02.png', assets 'rank/delta_03.png', assets 'rank/delta_04.png', assets 'rank/delta_05.png',
+            assets 'rank/delta_06.png', assets 'rank/delta_07.png', assets 'rank/delta_08.png', assets 'rank/delta_09.png', assets 'rank/delta_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -594,6 +596,7 @@ TEXTURE = {
             Lumina = aq(2, 11),
             Singula = aq(2, 14),
             Univa = aq(3, 15),
+            Multiva = aq(3, 16),
 
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
@@ -608,6 +611,10 @@ TEXTURE = {
             powerleveling11 = aq(16, 13),
             powerleveling12 = aq(1, 14),
             powerleveling13 = aq(8, 15),
+            powerleveling14 = aq(9, 16),
+            powerleveling15 = aq(10, 16),
+            powerleveling16 = aq(12, 16),
+            powerleveling17 = aq(13, 16),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -651,6 +658,11 @@ TEXTURE = {
             VLrNH = aq(14, 14), DHrNH = aq(4, 14), INrNH = aq(15, 14), ASrNH = aq(16, 14), DPrNH = aq(14, 14),
             NHrMS = aq(1, 15), NHrGV = aq(14, 3), NHrVL = aq(2, 15), NHrDH = aq(4, 15), NHrIN = aq(5, 15),
             NHrAS = aq(6, 15), NHrDP = aq(7, 15), GVrMS = aq(15, 14), VLrMS = aq(9, 15), DHrMS = aq(10, 15),
+            INrMS = aq(11, 15), ASrMS = aq(12, 15), DPrMS = aq(11, 3), MSrGV = aq(13, 15), MSrVL = aq(14, 15),
+            MSrDH = aq(15, 15), MSrIN = aq(12, 14), MSrAS = aq(16, 15), MSrDP = aq(1, 16), VLrGV = aq(2, 16),
+            DHrGV = aq(4, 16), INrGV = aq(5, 16), ASrGV = aq(14, 3), DPrGV = aq(7, 14), GVrVL = aq(6, 16),
+            GVrDH = aq(10, 6), GVrIN = aq(13, 7), GVrAS = aq(7, 16), GVrDP = aq(8, 16), DHrVL = aq(12, 2),
+            INrVL = aq(13, 15), ASrVL = aq(11, 16),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -743,7 +755,7 @@ TEXTURE.ruler:setWrap('repeat', 'repeat')
 
 TEXTURE.transition = GC.initCanvas(128, 1, function()
     for x = 0, 127 do
-        GC.setColor(1, 1, 1, 1 - x / 128)
+        GC.setColor(1, 1, 1, 1)
         GC.rectangle('fill', x, 0, 1, 1)
     end
 end)
@@ -879,6 +891,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     height     = GC.newText(FONT.get(30)),
     time       = GC.newText(FONT.get(30)),
     rank       = GC.newText(FONT.get(30)),
+    lank       = GC.newText(FONT.get(50)),
     chain      = GC.newText(FONT.get(50)),
     chain2     = GC.newText(FONT.get(50, 'led')),
     b2b        = GC.newText(FONT.get(30), "Chain"),
@@ -956,6 +969,12 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.R, "U", COLOR.O, "N", COLOR.Y, "I",
         COLOR.K, "V", COLOR.G, "A", COLOR.S, "S", 
         COLOR.B, "P",
+        COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
+    }),
+    multivaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "M", COLOR.O, "U", COLOR.Y, "L",
+        COLOR.K, "T", COLOR.G, "I", COLOR.J, "V",
+        COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
         COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
     }),
     gigatime   = GC.newText(FONT.get(50)),
@@ -1065,6 +1084,7 @@ STAT = {
     totalLumina = 0,
     totalSingula = 0,
     totalUniva = 0,
+    totalMultiva = 0,
     totalF10 = 0,
     totalKO = 0,
     totalRevive = 0,

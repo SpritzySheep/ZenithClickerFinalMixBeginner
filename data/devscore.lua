@@ -30,5 +30,17 @@ d.what_ever_it_takes = 12600
 d.speed_player = 2600
 d.clock_out = 420
 d.vip_list = 42
+--Spritzy tries her best
+d.EXNH = 2302.5
+d.EXMS = 2118.6
+d.EXGV = 1719.9
+d.EXVL = 2414.6
+d.DHEX = 2747.5
+d.EXIN = 2292.1
+d.ASEX = 2302.1
+d.MSNH = 1729.1
+d.NHVL = 4314.6
+d.DHNH = 4640.2
+d.INNH = 4217.5
 
 return d

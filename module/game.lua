@@ -224,6 +224,7 @@ local GAME = {
     luminaspeedFloor = {},
     singulaspeedFloor = {},
     univaspeedFloor = {},
+    multivaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
@@ -901,6 +902,7 @@ function GAME.genQuest()
             GAME.rank = (1 + (MATH.floor(STAT.achv/50)))
             GAME.xp = 1
             TEXTS.rank:set("Speed Lv"..(GAME.rank-1))
+            TEXTS.lank:set((GAME.rank-1))
         end
         if GAME.height < 1 then
             GAME.xpLockTimer = 2
@@ -1246,6 +1248,7 @@ function GAME.addXP(xp, falseCommit)
         GAME.rankupLast = true
         GAME.peakRank = max(GAME.peakRank, GAME.rank)
         TEXTS.rank:set("Speed Lv" .. GAME.rank - 1)
+        TEXTS.lank:set((GAME.rank-1))
         SFX.play('speed_up_' .. (speedupSFX[GAME.rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(GAME.rank / 4, 1))
         -- if GAME.height > 0 and not GAME.gigaspeedEntered and GAME.rank >= GigaSpeedReq[max(GAME.floor, (GAME.negFloor - 1) % 10 + 1)] then
         if not GAME.gigaspeed and (GAME.height > 0 or GAME.badTime) and GAME.rank >= GigaSpeedReq then
@@ -1307,6 +1310,10 @@ function GAME.addXP(xp, falseCommit)
             GAME.startUnivaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 15 and GAME.rank >= MultivaMusicReq then
+            GAME.startMultivaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1331,6 +1338,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isLumina = false
         GigaSpeed.isSingula = false
         GigaSpeed.isUniva = false
+        GigaSpeed.ismultiva = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1565,6 +1573,25 @@ function GAME.startUnivaAnim()
 end
 
 function GAME.stopUnivaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startMultivaAnim()
+    GAME.gspeedlv = 15
+    GAME.multivaspeed = true
+    GAME.multivaspeedFloor[GAME.floor] = true
+    GAME.multivaCount = GAME.multivaCount + 1
+    GigaSpeed.isMultiva = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopMultivaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1934,7 +1961,19 @@ function GAME.upFloor()
     end
     PlayBGM('f' .. GAME.floor)
     GAME.refreshRPC()
-if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
+    if GAME.petaCount >= 1 or STAT.totalPeta >= 1 then
+                IssueSecret('peta')
+                GAME.finishTera = true
+    end
+    if GAME.exaCount >= 1 or STAT.totalExa >= 1 then
+                IssueSecret('exa')
+                GAME.finishTera = true
+    end
+    if GAME.zetaCount >= 1 or STAT.totalZeta >= 1 then
+                IssueSecret('zeta')
+                GAME.finishTera = true
+    end
+    if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('yotta')
                 GAME.finishTera = true
     end
@@ -1966,19 +2005,15 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
                 IssueSecret('univa')
                 GAME.finishTera = true
     end
+    if GAME.multivaCount >= 1 or STAT.totalMultiva >= 1 then
+                IssueSecret('multiva')
+                GAME.finishTera = true
+    end
     SubmitAchv('powerleveling', STAT.level,true,true)
-    SubmitAchv('powerleveling2', STAT.level,true,true)
-    SubmitAchv('powerleveling3', STAT.level,true,true)
-    SubmitAchv('powerleveling4', STAT.level,true,true)
-    SubmitAchv('powerleveling5', STAT.level,true,true)
-    SubmitAchv('powerleveling6', STAT.level,true,true)
-    SubmitAchv('powerleveling7', STAT.level,true,true)
-    SubmitAchv('powerleveling8', STAT.level,true,true)
-    SubmitAchv('powerleveling9', STAT.level,true,true)
-    SubmitAchv('powerleveling10', STAT.level,true,true)
-    SubmitAchv('powerleveling11', STAT.level,true,true)
-    SubmitAchv('powerleveling12', STAT.level,true,true)
-    SubmitAchv('powerleveling13', STAT.level,true,true)
+    local powerCount = 17
+    for tier = 2, powerCount do
+        SubmitAchv('powerleveling'..tier, STAT.level,true,true)
+    end
     SubmitAchv('Tera', STAT.totalTera,true,true)
     SubmitAchv('Peta', STAT.totalPeta,true,true)
     SubmitAchv('Exa', STAT.totalExa,true,true)
@@ -1991,6 +2026,7 @@ if GAME.yottaCount >= 1 or STAT.totalYotta >= 1 then
     SubmitAchv('Lumina', STAT.totalLumina,true,true)
     SubmitAchv('Singula', STAT.totalSingula,true,true)
     SubmitAchv('Univa', STAT.totalUniva,true,true)
+    SubmitAchv('Multiva', STAT.totalMultiva,true,true)
     
 end
 
@@ -3692,6 +3728,7 @@ function GAME.start()
     -- Rank
     GAME.rank = 1
     TEXTS.rank:set("Speed Lv"..(GAME.rank-1))
+    TEXTS.lank:set((GAME.rank-1))
     GAME.xp = 0
     GAME.rankupLast = false
     GAME.xpLockLevel = GAME.xpLockLevelMax
@@ -3745,6 +3782,7 @@ function GAME.start()
     TABLE.clear(GAME.luminaspeedFloor)
     TABLE.clear(GAME.singulaspeedFloor)
     TABLE.clear(GAME.univaspeedFloor)
+    TABLE.clear(GAME.multivaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -3758,6 +3796,7 @@ function GAME.start()
     GAME.luminaCount = 0
     GAME.singulaCount = 0
     GAME.univaCount = 0
+    GAME.multivaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -4078,6 +4117,7 @@ end
         STAT.totalLumina = STAT.totalLumina + GAME.luminaCount
         STAT.totalSingula = STAT.totalSingula + GAME.singulaCount
         STAT.totalUniva = STAT.totalUniva + GAME.univaCount
+        STAT.totalMultiva = STAT.totalMultiva + GAME.multivaCount
         STAT.totalKO = STAT.totalKO + GAME.koCount
         STAT.totalRevive = STAT.totalRevive + GAME.reviveCount
         if GAME.floor >= 10 then
@@ -4583,6 +4623,7 @@ end
     GAME.stopLuminaspeed('fin')
     GAME.stopSingulaspeed('fin')
     GAME.stopUnivaspeed('fin')
+    GAME.stopMultivaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -4736,9 +4777,9 @@ function GAME.update(dt)
 
     if TestMode then
         if KBisDown(']') then
-            GAME.addXP(dt * GAME.rank * 8)
+            GAME.addXP(GAME.rank)
         elseif KBisDown('[') then
-            GAME.xp = GAME.xp - dt * GAME.rank * 8
+            GAME.xp = GAME.xp - GAME.rank
             if GAME.xp < 0 then GAME.xpLockTimer = 0 end
         end
         if KBisDown('=') then
@@ -4975,6 +5016,11 @@ function GAME.update(dt)
         if GAME.height < 0 and (M.NH == -1 or M.MS == -1 or M.GV == -1 or M.VL == -1 or M.DH == -1 or M.AS == -1 or M.DP == -1) then
         GAME.height = 0
     end
+    if GAME.height >= 1e6 and STAT.MouseGirl 
+    then 
+        GAME.time = 180
+        GAME.height = 1e6
+    end
         if M.EX < 2 then
             if not GAME.badTime then
                 if STAT.MouseGirl then
@@ -5020,6 +5066,7 @@ function GAME.update(dt)
                     end
                 end
                 TEXTS.rank:set("Speed Lv" .. (GAME.rank - 1))
+                TEXTS.lank:set((GAME.rank-1))
                 SFX.play('speed_down', .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1))
                 if not GAME.achv_demoteH then
                     GAME.achv_demoteH = GAME.roundHeight

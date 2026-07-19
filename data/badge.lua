@@ -150,6 +150,9 @@ local d = {
     {id = 'Lv70000',name = "Prestige XIV",desc = "Reached Z-Lv70,000",},
     {id = 'Lv75000',name = "Prestige XV",desc = "Reached Z-Lv75,000",},
     {id = 'Lv80000',name = "Prestige XVI",desc = "Reached Z-Lv80,000",},
+    {id = 'Lv85000',name = "Prestige XVII",desc = "Reached Z-Lv85,000",},
+    {id = 'Lv90000',name = "Prestige XVIII",desc = "Reached Z-Lv90,000",},
+    {id = 'Lv95000',name = "Prestige XIX",desc = "Reached Z-Lv95,000",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -196,6 +199,7 @@ local d = {
     {id = 'lumina', name = "LUMINASPEED??", desc = "Entered Luminaspeed",},
     {id = 'singula', name = "SINGULASPEED?!?", desc = "Entered Singulaspeed",},
     {id = 'univa', name = "...UNIVASPEED...", desc = "Entered Univaspeed",},
+    {id = 'multiva', name = "MULTIVASPEED‽", desc = "Entered Multivaspeed",},
     {
         id = 'ascendant',
         name = "Ascendant",
@@ -249,6 +253,8 @@ local d = {
     {id = 'finity_05',name = "Finity_05",desc = "Gathered 700,000 Chakra Escence",},
     {id = 'finity_06',name = "Finity_06",desc = "Gathered 750,000 Chakra Escence",},
     {id = 'finity_07',name = "Finity_07",desc = "Gathered 800,000 Chakra Escence",},
+    {id = 'finity_08',name = "Finity_08",desc = "Gathered 850,000 Chakra Escence",},
+    {id = 'finity_09',name = "Finity_09",desc = "Gathered 900,000 Chakra Escence",},
 }
 
 for i = 1, #d do

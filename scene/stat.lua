@@ -75,10 +75,10 @@ local function calculateRating()
     cr = cr + 2400 * norm(MATH.icLerp(0, #ModData.deck * 2, crProgress.sr), .62)
 
     -- Zenith point (3K)
-    cr = cr + 3600 * norm(MATH.icLerp(0, 26e4, STAT.zp), 4.2)
+    cr = cr + 3600 * norm(MATH.icLerp(0, 26e4, STAT.peakZP), 4.2)
 
     -- Daily challenge (2K)
-    cr = cr + 2400 * norm(MATH.icLerp(0, 67009019, STAT.zp), 2.6)
+    cr = cr + 2400 * norm(MATH.icLerp(0, 67009019, STAT.peakZP), 2.6)
 
     -- Achievement (5K)
     cr = cr + (7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6))
@@ -100,9 +100,9 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
-    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva)
-    level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
-    STAT.level = MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1)
+    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva)
+    level = MATH.floor((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    STAT.level = level
     STAT.ZP = STAT.PeakZP
     cr = cr + MATH.floor(level)
     cr = cr + STAT.totalGame
@@ -151,23 +151,13 @@ local function calculateRating()
     if cr >= 700e3 then IssueSecret('finity_05', true) end
     if cr >= 750e3 then IssueSecret('finity_06', true) end
     if cr >= 800e3 then IssueSecret('finity_07', true) end
+    if cr >= 850e3 then IssueSecret('finity_08', true) end
+    if cr >= 900e3 then IssueSecret('finity_09', true) end
 
-    if level >= 5e3 then IssueSecret('Lv5000', true) end
-    if level >= 10e3 then IssueSecret('Lv10000', true) end
-    if level >= 15e3 then IssueSecret('Lv15000', true) end
-    if level >= 20e3 then IssueSecret('Lv20000', true) end
-    if level >= 25e3 then IssueSecret('Lv25000', true) end
-    if level >= 30e3 then IssueSecret('Lv30000', true) end
-    if level >= 35e3 then IssueSecret('Lv35000', true) end
-    if level >= 40e3 then IssueSecret('Lv40000', true) end
-    if level >= 45e3 then IssueSecret('Lv45000', true) end
-    if level >= 50e3 then IssueSecret('Lv50000', true) end
-    if level >= 55e3 then IssueSecret('Lv55000', true) end
-    if level >= 60e3 then IssueSecret('Lv60000', true) end
-    if level >= 65e3 then IssueSecret('Lv65000', true) end
-    if level >= 70e3 then IssueSecret('Lv70000', true) end
-    if level >= 75e3 then IssueSecret('Lv75000', true) end
-    if level >= 80e3 then IssueSecret('Lv80000', true) end
+    local levelBadgeCount = 19
+    for lev = 1, levelBadgeCount do
+        if level >= (level*5000) then IssueSecret('Lv'..(level*5000), true) end
+    end
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
@@ -279,7 +269,7 @@ function RefreshProfile()
     FONT.set(50)
     GC.setColor(COLOR.L)
     GC.print(STAT.uid .. " Lv" .. STAT.level, 30, 18, 0, 1.2)
-    GC.print((scroll + 1) .. "/" .. (bpage + 1), 30, 130, 0, 1.2)
+    
 
     -- Time
     GC.ucs_move(1065, 165)
@@ -326,26 +316,28 @@ function RefreshProfile()
         for i = 1, MATH.floor((rating-30000)/10000) do clickerLV = clickerLV + 1 end
         if rating >= 25000 then clickerLV = clickerLV + 1 end
         if clickerLV < 20 then
-        for i = 0, (clickerLV - 1) or 20 do
+        for i = 0, (clickerLV - 1) or 25 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
     else
-        for i = 0, 19 do
+        for i = 0, 24 do
             GC.mDraw(TEXTURE.stat.clicker_star, 879 - i * 34, 182, 0, .626)
         end
     end
-        if clickerLV > 20 then clickerLV = 20 end
+        if clickerLV > 25 then clickerLV = 25 end
     end
 
     -- Introduction
     GC.ucs_move(25, 280)
     GC.setColor(boxColor)
     GC.rectangle('fill', 0, 0, 1150, 80)
-    FONT.set(30)
+    FONT.set(70)
     GC.setColor(lblColor)
-    GC.print("ABOUT  ME", 7, 2, 0, .8)
-    GC.setColor(textColor)
-    GC.print(STAT.aboutme, 15, 35, 0, .8)
+    --GC.print("ABOUT  ME", 7, 2, 0, .8)
+    GC.setColor(COLOR.Y)
+    GC.print((scroll + 1) .. "/" .. (bpage + 1), 480, -17, 0, 1.2)
+    GC.print("←", 0, -22, 0, 1.2)
+    GC.print("→", 1068, -22, 0, 1.2)
     GC.ucs_back()
 
     GC.setLineWidth(2)
@@ -391,7 +383,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 58)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 68)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -471,16 +463,16 @@ function RefreshProfile()
         { t = { textColor, "Zenith Level" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
-        { t = { scoreColor, MATH.round(STAT.zp), textColor, "" },                      x = 420, y = 58 },
-        { t = { scoreColor, MATH.floor((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
+        { t = { scoreColor, MATH.round(STAT.peakZP), textColor, "" },                      x = 420, y = 58 },
+        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
     -- GC.rectangle('fill', 0, 0, bw, bh)
     GC.setColor(lblColor)
     GC.rectangle('fill', 315, 121, 254, 18)
     GC.setColor(scoreColor)
-    GC.rectangle('fill', 315, 120, MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*254), 20)
+    GC.rectangle('fill', 315, 120, MATH.round((((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.zp/500)^.6+(STAT.zp/(5000+(MATH.max(0,(STAT.zp-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
     scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. Use code 'achbonus' in Config to turn it on."
     if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. Use code 'achbonus' in Config to turn it off." end
@@ -526,7 +518,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva) + (STAT.totalMultiva)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -544,7 +536,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 335)
+    GC.rectangle('fill', 0, 0, 254, 360)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -561,6 +553,7 @@ function RefreshProfile()
         { k = "Luminaspeed",  v = { scoreColor, STAT.totalLumina }, x = 26, y = 258, d = 160 },
         { k = "Singulaspeed",  v = { scoreColor, STAT.totalSingula }, x = 26, y = 283, d = 160 },
         { k = "Univaspeed",  v = { scoreColor, STAT.totalUniva }, x = 26, y = 308, d = 160 },
+        { k = "Multivaspeed",  v = { scoreColor, STAT.totalMultiva }, x = 26, y = 333, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
@@ -675,6 +668,18 @@ scene.widgetList = {
         name = 'close', type = 'button_invis',
         pos = { .5, .5 }, x = -174, y = -436, w = 100, h = 50,
         onClick = function() love.keypressed('escape') end,
+    },
+    WIDGET.new {
+        name = 'left', type = 'button_invis',
+        pos = { .5, .5 }, x = -850, y = -267.5, w = 50, h = 50,
+        color = COLOR.V,
+        onClick = function() love.keypressed('a') end,
+    },
+    WIDGET.new {
+        name = 'right', type = 'button_invis',
+        pos = { .5, .5 }, x = -125, y = -267.5, w = 50, h = 50,
+        color = COLOR.V,
+        onClick = function() love.keypressed('d') end,
     },
     -- BADGES button
     --WIDGET.new {

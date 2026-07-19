@@ -3,6 +3,6 @@ return {
     ["apkCode"] = 011401,
     ["verCode"] = 011401,
 
-    ["appVer"] = "987.17.3e2.7 Penteract",
-    ["verStr"] = "987.17.3e2.7 Penteract",
+    ["appVer"] = "1597.17.3e2.7 Arcana",
+    ["verStr"] = "1597.17.3e2.7 Arcana",
 }

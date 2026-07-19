@@ -1193,49 +1193,49 @@ local page2 = {
             IssueAchv('identity')
         end,
     },
-    WIDGET.new {
-        name = 'changeAboutme', type = 'button',
-        x = baseX + 640, y = baseY + 130, w = 380, h = 50,
-        color = clr.L,
-        fontSize = 30, textColor = clr.LT, text = "CHANGE  ABOUT ME",
-        onClick = function()
-            -- MSG.clear()
-            local newText = CLIPBOARD.get()
-            if #newText == 0 then
-                MSG('dark', "No data in clipboard")
-                return
-            end
-            newText = newText:trim()
-            if TASK.lock('changeAboutme', 2.6) then
-                SFX.play('notify')
-                MSG('dark', "Change your about me text to clipboard text?\nPress again to confirm", 2.6)
-                return
-            end
-            TASK.unlock('changeAboutme')
-            repeat
-                if type(newText) ~= 'string' then
-                    MSG('dark', "No data in clipboard")
-                    break
-                end
-                if #newText < 1 or #newText > 260000 or newText:find('[^\32-\126]') then
-                    MSG('dark', "Text must be 1-260000 characters long and contain visible ASCII characters")
-                    break
-                end
-                if newText == STAT.aboutme then
-                    MSG('dark', "New text is the same as the old one")
-                    break
-                end
-                STAT.aboutme = newText
-                SaveStat()
-                SFX.play('supporter')
-                MSG('dark', "Your About Me text has been updated.")
-                if SCN.cur == 'stat' then RefreshProfile() end
-                IssueAchv('identity')
-                return
-            until true
-            SFX.play('staffwarning')
-        end,
-    },
+    --WIDGET.new {
+    --    name = 'changeAboutme', type = 'button',
+    --    x = baseX + 640, y = baseY + 130, w = 380, h = 50,
+    --    color = clr.L,
+    --    fontSize = 30, textColor = clr.LT, text = "CHANGE  ABOUT ME",
+    --    onClick = function()
+    --        -- MSG.clear()
+    --        local newText = CLIPBOARD.get()
+    --        if #newText == 0 then
+    --            MSG('dark', "No data in clipboard")
+    --            return
+    --        end
+    --        newText = newText:trim()
+    --        if TASK.lock('changeAboutme', 2.6) then
+    --            SFX.play('notify')
+    --            MSG('dark', "Change your about me text to clipboard text?\nPress again to confirm", 2.6)
+    --            return
+    --        end
+    --        TASK.unlock('changeAboutme')
+    --        repeat
+    --            if type(newText) ~= 'string' then
+    --                MSG('dark', "No data in clipboard")
+    --                break
+    --            end
+    --            if #newText < 1 or #newText > 260000 or newText:find('[^\32-\126]') then
+    --                MSG('dark', "Text must be 1-260000 characters long and contain visible ASCII characters")
+    --                break
+    --            end
+    --            if newText == STAT.aboutme then
+    --                MSG('dark', "New text is the same as the old one")
+    --                break
+    --            end
+    --            STAT.aboutme = newText
+    --            SaveStat()
+    --            SFX.play('supporter')
+    --            MSG('dark', "Your About Me text has been updated.")
+    --            if SCN.cur == 'stat' then RefreshProfile() end
+    --            IssueAchv('identity')
+    --            return
+    --        until true
+    --        SFX.play('staffwarning')
+    --    end,
+    --},
     -- Profile
     WIDGET.new { -- title
         type = 'text', alignX = 'left',

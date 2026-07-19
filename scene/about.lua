@@ -262,6 +262,7 @@ addRank(300, 2750, { COLOR.HEX '9F9F9F' }, "DiaM", "490k CE")
 addRank(-400, 2850, { COLOR.HEX 'FF0000' }, "ALPHA", "500,000 CE")
 addRank(0, 2850, { COLOR.HEX 'FF8000' }, "BETA", "600,000 CE")
 addRank(400, 2850, { COLOR.HEX 'FFFF00' }, "GAMMA", "700,000 CE")
+addRank(-400, 2950, { COLOR.HEX '80FF00' }, "DELTA", "800,000 CE")
 local timer
 function scene.load()
     MSG.clear()

@@ -786,7 +786,7 @@ scene.widgetList = {
         fontSize = 30, text = "02MP   ", textColor = { 0, 0, 0 },
         onClick = function()
             love.keypressed(tostring(MP2page))
-            mmaxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,
     },
