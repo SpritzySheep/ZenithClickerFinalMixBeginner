@@ -960,10 +960,10 @@ function DrawBG(brightness, showRuler)
     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
 
     -- Ruler
-    if showRuler and GAME.bgH < 1700 and not (GAME.invisUI or GAME.einvisUI) then
+    if showRuler and not (GAME.invisUI or GAME.einvisUI) then
         gc_replaceTransform(SCR.xOy_m)
         gc_setBlendMode('add')
-        gc_setColor(1, 1, 1, GAME.bgH <= 1650 and .626 or .626 * (1700 - GAME.bgH) / 50 * brightness / 100)
+        gc_setColor(1, 1, 1, 0.7)
         rulerQuad:setViewport(0, 150 - 300 / 25 * GAME.bgH, 32, 300, 32, 300)
         gc_mDrawQ(TEXTURE.ruler, rulerQuad, 0, 0, 0, 4, 4)
         gc_setBlendMode('alpha')
@@ -1319,7 +1319,7 @@ function scene.overDraw()
         -- Health Bar
         local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
         if M.DP == 0 then
-            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
+            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.lG or COLOR.R)
             gc_setAlpha(1/eTAlpha)
             gc_mRect('fill', 800, 440, 1540 * GAME.lifeShow / GAME.startingHealth, 10)
             if GAME.playing then
@@ -1332,10 +1332,10 @@ function scene.overDraw()
             end
         else
             local onAlly = GAME.onAlly
-            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.L or COLOR.R)
+            gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.lG or COLOR.R)
             if onAlly then gc_setAlpha(.42) end
             gc_rectangle('fill', 800, 440 - 5, -1540 / 2 * GAME.lifeShow / GAME.startingHealth, onAlly and 8 * M.DP or 12)
-            gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.L or COLOR.R)
+            gc_setColor(GAME.playing and GAME.life2 > safeHP and COLOR.lC or COLOR.M)
             if not onAlly then gc_setAlpha(.42) end
             gc_rectangle('fill', 800, 440 - 5, 1540 / 2 * GAME.lifeShow2 / GAME.startingHealth, onAlly and 12 or 8 * M.DP)
         end

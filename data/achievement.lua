@@ -2771,6 +2771,11 @@ local d = {
         rank = numberRank(80000, 81000, 82000, 83000, 84000, 85000, 89999), hide = function() return STAT.level < 80000 end
         , realHide = function() return STAT.level < 80000 end, mod = "MISC",
     },
+    {id = 'powerleveling18',name = "Revolutionary Leveling", desc = [[Zenith Level (85,000-90,000)]],
+        quote = [["I've not seen such bravery."]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(85000, 86000, 87000, 88000, 89000, 90000, 94999), hide = function() return STAT.level < 80000 end
+        , realHide = function() return STAT.level < 85000 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3186,6 +3191,15 @@ local d = {
     AchieveFromCombo('DHrVL', "Down Bad", [[HFD with rVL DH]], [[uhhhhhhhhhhhhhhhhhhhh]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.VL == 0 end, "3MP"),
     AchieveFromCombo('INrVL', "Mental Block", [[HFD with rVL IN]], [[Not to get political, but what is the piece used for T-spins?]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.VL == 0 end, "3MP"),
     AchieveFromCombo('ASrVL', "Greeding", [[HFD with rVL AS]], [[LET'S GO GAMBLING!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!! AWW DANG IT!!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.VL == 0 end, "3MP"),
+    AchieveFromCombo('DPrVL', "Chained by Love", [[HFD with rVL DP]], [[Being literally chained to eachother would be a massive headache.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.VL == 0 end, "3MP"),
+    AchieveFromCombo('VLrDH', "Emotional Poison", [[HFD with VL rDH]], [["I'm dead."]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
+    AchieveFromCombo('VLrIN', "Forgetfulness", [[HFD with VL rIN]], [["What level is Base Alpha on again?"]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.IN == 0 end, "3MP"),
+    AchieveFromCombo('VLrAS', "Contrition", [[HFD with VL rAS]], [["What even is religion?"]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.AS == 0 end, "3MP"),
+    AchieveFromCombo('VLrDP', "Harrowing Heartbreak", [[HFD with VL rDP]], [["A heartbreak so bad you experience it twice."]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
+    AchieveFromCombo('INrDH', "The Curse", [[HFD with rDH IN]], [["What the T-Spin have you brought upon this cursed world?"]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
+    AchieveFromCombo('ASrDH', "Mech Heart", [[HFD with rDH AS]], [["No, it can't be..." The tower master says as you unleash the forbidden technique.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
+    AchieveFromCombo('DPrDH', "The Circle of Lust", [[HFD with rDH DP]], [["Ompphgl..."]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
+    AchieveFromCombo('DHrIN', "Must've Been the Wind...", [[HFD with DH rIN]], [[Nah, that was just me eating you.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
 }
 
 local compFunc = {

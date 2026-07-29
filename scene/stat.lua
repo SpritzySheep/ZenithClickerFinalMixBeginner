@@ -161,6 +161,7 @@ local function calculateRating()
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
+    if crProgress.achvGet >= 2e3 then IssueSecret('achv400', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap

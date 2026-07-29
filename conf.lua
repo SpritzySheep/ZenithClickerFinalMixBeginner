@@ -52,7 +52,7 @@ function love.conf(t)
     W.fullscreentype = mobile and 'exclusive' or 'desktop' -- Fullscreen type
     W.width, W.height = 1280, 720
     W.minwidth, W.minheight = 288, 180
-    W.title = 'Zenith Clicker Easy Mode Final Mix Beginner'
+    W.title = 'Zenith Clicker Mouse Mix'
 
     if love._os == 'Linux' and fs.getInfo('assets/icon.png') then
         W.icon = 'assets/icon.png'

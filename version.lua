@@ -1,8 +1,8 @@
 return {
-    ["appName"] = "Final Mix Beginner",
+    ["appName"] = "Mouse Mix",
     ["apkCode"] = 011401,
     ["verCode"] = 011401,
 
-    ["appVer"] = "1597.17.3e2.7 Arcana",
-    ["verStr"] = "1597.17.3e2.7 Arcana",
+    ["appVer"] = "1597.17.3e2.7_01 Arcana",
+    ["verStr"] = "1597.17.3e2.7_01 Arcana",
 }

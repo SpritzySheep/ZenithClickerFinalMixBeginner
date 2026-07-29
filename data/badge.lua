@@ -158,8 +158,8 @@ local d = {
         name = "Overachiever",
         desc = "Got a total of 1,000 AP",
     },
-    {id = 'achv300',name = "Superachiever",desc = "Got a total of 1,500 AP",
-    },
+    {id = 'achv300',name = "Superachiever",desc = "Got a total of 1,500 AP",},
+    {id = 'achv400',name = "Hyperachiever",desc = "Got a total of 2,000 AP",},
     {
         id = 'peta',
         name = "PETASPEED!!!!",

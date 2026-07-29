@@ -42,7 +42,7 @@ local function q2(ox, oy, w, h)
         2178*2, 1663
     )
 end
-local function aq(x, y) return GC.newQuad((x - 1) % 16 * 256, (y - 1) % 16 * 256, 256, 256, 4096, 4096) end
+local function aq(x, y) return GC.newQuad((x - 1) % 32 * 256, (y - 1) % 32 * 256, 256, 256, 8192, 8192) end
 TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
@@ -615,6 +615,7 @@ TEXTURE = {
             powerleveling15 = aq(10, 16),
             powerleveling16 = aq(12, 16),
             powerleveling17 = aq(13, 16),
+            powerleveling18 = aq(16, 16),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -662,7 +663,9 @@ TEXTURE = {
             MSrDH = aq(15, 15), MSrIN = aq(12, 14), MSrAS = aq(16, 15), MSrDP = aq(1, 16), VLrGV = aq(2, 16),
             DHrGV = aq(4, 16), INrGV = aq(5, 16), ASrGV = aq(14, 3), DPrGV = aq(7, 14), GVrVL = aq(6, 16),
             GVrDH = aq(10, 6), GVrIN = aq(13, 7), GVrAS = aq(7, 16), GVrDP = aq(8, 16), DHrVL = aq(12, 2),
-            INrVL = aq(13, 15), ASrVL = aq(11, 16),
+            INrVL = aq(13, 15), ASrVL = aq(11, 16), DPrVL = aq(14, 16), VLrDH = aq(15, 16), VLrIN = aq(14, 7),
+            VLrAS = aq(17, 1), VLrDP = aq(7, 14), INrDH = aq(16, 14), ASrDH = aq(2, 15), DPrDH = aq(14, 16),
+            DHrIN = aq(18, 1),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -738,10 +741,10 @@ TEXTURE.pixel = GC.load { w = 1, h = 1, { 'clear', 1, 1, 1 } }
 TEXTURE.ruler = GC.initCanvas(32, 600, function()
     for y = 0, 199 do
         local w =
-            y % 200 == 0 and 32 or
-            y % 40 == 0 and 20 or
-            y % 8 == 0 and 10 or
-            6
+            y % 200 == 0 and 200 or
+            y % 40 == 0 and 60 or
+            y % 8 == 0 and 20 or
+            10
         local l = .4 + .6 * w / 32
         GC.setColor(l, l, l)
         GC.rectangle('fill', 16 - w / 2, y * 3, w, 1)
@@ -756,7 +759,7 @@ TEXTURE.ruler:setWrap('repeat', 'repeat')
 TEXTURE.transition = GC.initCanvas(128, 1, function()
     for x = 0, 127 do
         GC.setColor(1, 1, 1, 1)
-        GC.rectangle('fill', x, 0, 1, 1)
+        GC.rectangle('fill', x, 0, 1, 0)
     end
 end)
 

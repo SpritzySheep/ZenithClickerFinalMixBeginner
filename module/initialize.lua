@@ -57,6 +57,7 @@ function Initialize(save)
     if STAT.achv == not STAT.achv then STAT.achv = 0 end
     if STAT.badges == not STAT.badges then STAT.badges = 0 end
     if STAT.CEheight == not STAT.CEheight then STAT.CEheight = 0 end
+    if STAT.version == nil then STAT.version = 195 end
     if BEST.version then STAT.version, BEST.version = BEST.version, nil end
     local oldVer = STAT.version
     if STAT.version then

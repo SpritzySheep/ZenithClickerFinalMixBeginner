@@ -307,6 +307,15 @@ d.menu = {
     { set = "rVL DH",             name = "Down Bad"},
     { set = "rVL IN",             name = "Mental Block"},
     { set = "rVL AS",             name = "Greeding"},
+    { set = "rVL DP",             name = "Chained by Love"},
+    { set = "VL rDH",             name = "Emotional Poison"},
+    { set = "VL rIN",             name = "Forgetfulness"},
+    { set = "VL rAS",             name = "Contrition"},
+    { set = "VL rDP",             name = "Horrowing Heartbreak"},
+    { set = "rDH IN",             name = "The Curse"},
+    { set = "rDH AS",             name = "Mech Heart"},
+    { set = "rDH DP",             name = "The Circle of Lust"},
+    { set = "DH rIN",             name = "Must've Been the Wind..."},
 }
 
 

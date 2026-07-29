@@ -43,10 +43,11 @@ PieceData = {
     { id = 'invisUI',   text = { COLOR.lM, "T" }, piece = { COLOR.lM, CHAR.brik.T },  popup = { COLOR.lM, "T - Invisible UI" } },
     { id = 'invisCard', text = { COLOR.lY, "O" }, piece = { COLOR.lY, CHAR.brik.O },  popup = { COLOR.lY, "O - Invisible Card" } },
     { id = 'closeCard', text = { COLOR.lC, "I" }, piece = { COLOR.lC, CHAR.brik.I },  popup = { COLOR.lC, "I - Close Card" } },
-        -- Final Mix
+        -- Mouse Mix
     { id = 'big', text = { COLOR.A, "F", }, piece = { COLOR.A, CHAR.brik.F }, popup = { COLOR.A, "F - Big Card" } },
     { id = 'crit', text = { COLOR.R, "X", }, piece = { COLOR.R, CHAR.brik.X }, popup = { COLOR.R, "X - Critical" } },
     { id = 'rando', text = { COLOR.lO, "W", }, piece = { COLOR.lO, CHAR.brik.W }, popup = { COLOR.lO, "W - Random Spread" } },
+    { id = 'noLeak', text = { COLOR.LC, "2", }, piece = { COLOR.LC, CHAR.brik.I2 }, popup = { COLOR.LC, "2 - No Leak" } },
         -- Trevor Smithy
     { id = 'enightcore', text = { COLOR.lR, "eZ", }, piece = { COLOR.lR, CHAR.brik.C }, popup = { COLOR.lR, "eZ - Nightcore+" } },
     { id = 'eslowmo',    text = { COLOR.lG, "eS", }, piece = { COLOR.lG, CHAR.brik.C }, popup = { COLOR.lG, "eS - Slow-mo+" } },

@@ -269,7 +269,7 @@ end
 
 -- ZCEM Trevor Smithy
 local function anyPieceActive()
-    return GAME.nightcore or GAME.enightcore or GAME.slowmo or GAME.eslowmo or GAME.glassCard or GAME.eglassCard or GAME.fastLeak or GAME.efastLeak or GAME.invisUI or GAME.einvisUI or GAME.invisCard or GAME.einvisCard or GAME.closeCard or GAME.ecloseCard or GAME.big or GAME.crit or GAME.rando
+    return GAME.nightcore or GAME.enightcore or GAME.slowmo or GAME.eslowmo or GAME.glassCard or GAME.eglassCard or GAME.fastLeak or GAME.efastLeak or GAME.invisUI or GAME.einvisUI or GAME.invisCard or GAME.einvisCard or GAME.closeCard or GAME.ecloseCard or GAME.big or GAME.crit or GAME.rando or GAME.noLeak
 end
 
 local function countPiecesActive()
@@ -1471,13 +1471,13 @@ local page2 = {
                 MSG('error', "Cannot import data from future versions\nPlease update your game first!")
                 SFX.play('staffwarning')
                 return
-            elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'easyMode' then
+            elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'easyMode' and res1.mod ~= 'finalmixbeg' then
                 local modText = "Cannot import data from a different modded version"
                 if res1.mod == "A Fool's Mod" then modText = "The Creator thinks you're foolish for trying to use that here"
                 elseif res1.mod == "evilvile" then modText = "The Creator wants nothing to do with something that evil"
                 elseif res1.mod == "shimmer" then modText = "The Creator asks you to keep your sparkling water away from his creation"
                 elseif res1.mod == "unabstracted" then modText = "The Creator prefers his work abstract"
-                elseif res1.mod == "finalmixbeg" then modText = "The Creator rejects your chakras and magics" end
+                end
                 MSG('dark', modText)
                 SFX.play('staffwarning')
                 return
@@ -2176,6 +2176,10 @@ local page4 = {
             GAME.einvisUI = false
             GAME.einvisCard = false
             GAME.ecloseCard = false
+            GAME.big = false
+            GAME.crit = false
+            GAME.rando = false
+            GAME.noLeak = false
             GAME.multiplePiecesActive = false
             PieceSFXID = #PieceData
             GAME.hardMode = GAME.mod.EX > 0 or GAME.anyRev and not URM
@@ -2514,6 +2518,28 @@ local page5 = {
             end
             GAME.rando = not GAME.rando
             MSG('dark', "W: " .. (GAME.rando and "ON" or "OFF"))
+            RefreshBGM(mode)
+        end,
+    },
+    WIDGET.new { -- 2
+        name = 'piece_2', type = 'checkBox',
+        fillColor = COLOR.lC,
+        frameColor = COLOR.LC,
+        textColor = COLOR.LC, text = "2",
+        x = baseX + 290, y = baseY + 360,
+        disp = function() return GAME.noLeak end,
+        code = function()
+            MSG.clear()
+            TASK.removeTask_code(Task_MusicEnd)
+            if not GAME.noLeak and anyPieceActive() then 
+                SFX.play('damage_alert')
+                MSG('dark', "WARNING: MULTIPLE PIECES ENABLED DISABLES SCORING AND MAY CAUSE ISSUES. DO NOT REPORT!")
+                GAME.multiplePiecesActive = true
+            else
+                SFX.play('social_dm')
+            end
+            GAME.noLeak = not GAME.noLeak
+            MSG('dark', "2: " .. (GAME.noLeak and "ON" or "OFF"))
             RefreshBGM(mode)
         end,
     },

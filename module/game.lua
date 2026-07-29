@@ -239,6 +239,11 @@ local GAME = {
     fastLeak = false,
     invisCard = false,
     invisUI = false,
+
+    big = false,
+    crit = false,
+    rando = false,
+    noLeak = false,
     -- Trevor Smithy
     enightcore = false,
     eslowmo = false,
@@ -402,6 +407,7 @@ function GAME.getComboZP(list)
     if GAME.eslowmo then zp = zp * .6 end
     if GAME.eglassCard then zp = zp * .7 end
     if GAME.efastLeak then zp = zp * .65 end
+    if GAME.noLeak then zp = zp * 0.1 end
     if GAME.einvisUI then zp = zp * .6 end
     if GAME.einvisCard and not CONF.oldTransparentCard then
         zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.83 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
@@ -2010,7 +2016,7 @@ function GAME.upFloor()
                 GAME.finishTera = true
     end
     SubmitAchv('powerleveling', STAT.level,true,true)
-    local powerCount = 17
+    local powerCount = 18
     for tier = 2, powerCount do
         SubmitAchv('powerleveling'..tier, STAT.level,true,true)
     end
@@ -3685,10 +3691,10 @@ function GAME.start()
     -- Trevor Smithy
     GAME.bonusRecoveryHealth = 0
     local slowMo = GAME.eslowmo and 0.5 or 0
-    GAME.xpLockLevelMax = (((URM and M.NH == 2 and 1) or (M.EX == -1 and 0) or 5) + (GAME.efastLeak and 5 or 0) + (M.NH == -1 and 2 or 0)) * (1 + slowMo)
+    GAME.xpLockLevelMax = (((URM and M.NH == 2 and 1) or (M.EX == -1 and 0) or 5) + (GAME.noLeak and 5 or GAME.efastLeak and 5 or 0) + (M.NH == -1 and 2 or 0)) * (1 + slowMo)
     if GAME.xpLockLevelMax == 0 and GAME.eslowmo then GAME.xpLockLevelMax = 1.5 end
-    -- fast leak increases leakSpeed to 2.666 times normal rate, slow leak decreases leakSpeed to 1/2.666 times normal rate, eslowmo halves leak speed
-    GAME.leakSpeed = (((M.EX > 0 or (M.DP == 2 and M.EX ~= -1)) and 5 or 3) + (GAME.fastLeak and 8 or GAME.efastLeak and -1.875 or 0)) / (1 + slowMo)
+    -- fast leak increases leakSpeed to 2.666 times normal rate, slow leak decreases leakSpeed to 1/2.666 times normal rate, eslowmo halves leak speed, noleak sets leak speed to 0
+    GAME.leakSpeed = GAME.noLeak and 0 or (((M.EX > 0 or (M.DP == 2 and M.EX ~= -1)) and 5 or 3) + (GAME.fastLeak and 8 or GAME.efastLeak and -1.875 or 0)) / (1 + slowMo)
     GAME.invincible = false
 
     TASK.unlock('sure_quit')
