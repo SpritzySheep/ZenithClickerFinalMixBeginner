@@ -333,7 +333,7 @@ local achvIconInit
 function scene.load()
     if not achvIconInit then
         achvIconInit = true
-        TEXTURE.achievement.icons = GC.initCanvas(8192, 8192, function()
+        TEXTURE.achievement.icons = GC.initCanvas(4096, 4096, function()
             GC.setShader(GC.newShader [[
                 vec4 effect(vec4 color, sampler2D tex, vec2 texCoord, vec2 scrCoord) {
                     vec4 t = texture2D(tex, texCoord);
@@ -416,8 +416,8 @@ function scene.update(dt)
             local name = RevSwampName[mp]:sub(2, -2):lower()
             local r = math.random(94, 126)
             TEXTURE.achievement.iconQuad[name]:setViewport(
-                MATH.rand(.5, 15.5) * 256 - r, MATH.rand(.5, 5.5) * 256 - r,
-                2 * r, 2 * r, 8192, 8192
+                MATH.rand(.5, 31.5) * 128 - r, MATH.rand(.5, 31.5) * 128 - r,
+                1 * r, 1 * r, 4096, 4096
             )
         end
     end
@@ -428,7 +428,7 @@ function scene.update(dt)
             local r2 = math.random(-i*2, i*2)
             --(10 - 1) % 16 * 256, (4 - 1) % 16 * 256, 256, 256, 4096, 2048
             TEXTURE.achievement.iconQuad[name]:setViewport(
-                (10 - 1) % 16 * 256 - r, (4 - 1) % 16 * 256 - r2, 256, 256, 8192, 8192
+                (10 - 1) % 16 * 128 - r, (4 - 1) % 16 * 128 - r2, 128, 128, 4096, 4096
             )
         end
     end
@@ -438,7 +438,7 @@ function scene.update(dt)
             local r = math.random(-f*2, f*2)
             local r2 = math.random(-f*2, f*2) + 10
             TEXTURE.achievement.iconQuad[tostring(i)]:setViewport(
-                (2 - 1) % 16 * 256 - r, (3 - 1) % 16 * 256 - r2, 256, 256, 8192, 8192
+                (2 - 1) % 16 * 128 - r, (3 - 1) % 16 * 128 - r2, 128, 128, 4096, 4096
             )
         end
     end
@@ -600,9 +600,9 @@ function scene.draw()
                             gc_setColor(1, 1, 1, .26)
                         end
                         if a.id == "-3" or a.id == "-4"or a.id == "-5" or a.id == "-6" or a.id == "-7" or a.id == "-8" or a.id == "-9" then
-                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, math.pi, .24)
+                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, math.pi, .48)
                         else
-                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .24)
+                            gc_mDrawQ(texture.icons, slice or texture.iconQuad._undef, 65, 65, 0, .48)
                         end
                     end
 

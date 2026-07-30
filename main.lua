@@ -42,7 +42,7 @@ local function q2(ox, oy, w, h)
         2178*2, 1663
     )
 end
-local function aq(x, y) return GC.newQuad((x - 1) % 32 * 256, (y - 1) % 32 * 256, 256, 256, 8192, 8192) end
+local function aq(x, y) return GC.newQuad((x - 1) % 32 * 128, (y - 1) % 32 * 128, 128, 128, 4096, 4096) end
 TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
