@@ -276,6 +276,8 @@ TEXTURE = {
             assets 'rank/gamma_06.png', assets 'rank/gamma_07.png', assets 'rank/gamma_08.png', assets 'rank/gamma_09.png', assets 'rank/gamma_10.png',
             assets 'rank/delta_01.png', assets 'rank/delta_02.png', assets 'rank/delta_03.png', assets 'rank/delta_04.png', assets 'rank/delta_05.png',
             assets 'rank/delta_06.png', assets 'rank/delta_07.png', assets 'rank/delta_08.png', assets 'rank/delta_09.png', assets 'rank/delta_10.png',
+            assets 'rank/epsilon_01.png', assets 'rank/epsilon_02.png', assets 'rank/epsilon_03.png', assets 'rank/epsilon_04.png', assets 'rank/epsilon_05.png',
+            assets 'rank/epsilon_06.png', assets 'rank/epsilon_07.png', assets 'rank/epsilon_08.png', assets 'rank/epsilon_09.png', assets 'rank/epsilon_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -598,6 +600,25 @@ TEXTURE = {
             Univa = aq(3, 15),
             Multiva = aq(3, 16),
 
+            piece_z = aq(19, 1),
+            piece_l = aq(20, 1),
+            piece_o = aq(21, 1),
+            piece_s = aq(22, 1),
+            piece_i = aq(23, 1),
+            piece_j = aq(24, 1),
+            piece_t = aq(25, 1),
+            piece_ez = aq(26, 1),
+            piece_el = aq(26, 1),
+            piece_eo = aq(26, 1),
+            piece_es = aq(26, 1),
+            piece_ei = aq(27, 1),
+            piece_ej = aq(26, 1),
+            piece_et = aq(26, 1),
+            piece_f = aq(10, 12),
+            piece_x = aq(28, 1),
+            piece_w = aq(29, 1),
+            piece_2 = aq(30, 1),
+
             powerleveling = aq(2, 1),
             powerleveling2 = aq(9, 10),
             powerleveling3 = aq(10, 10),
@@ -616,6 +637,8 @@ TEXTURE = {
             powerleveling16 = aq(12, 16),
             powerleveling17 = aq(13, 16),
             powerleveling18 = aq(16, 16),
+            powerleveling19 = aq(18, 2),
+            powerleveling20 = aq(19, 2),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -665,7 +688,8 @@ TEXTURE = {
             GVrDH = aq(10, 6), GVrIN = aq(13, 7), GVrAS = aq(7, 16), GVrDP = aq(8, 16), DHrVL = aq(12, 2),
             INrVL = aq(13, 15), ASrVL = aq(11, 16), DPrVL = aq(14, 16), VLrDH = aq(15, 16), VLrIN = aq(14, 7),
             VLrAS = aq(17, 1), VLrDP = aq(7, 14), INrDH = aq(16, 14), ASrDH = aq(2, 15), DPrDH = aq(14, 16),
-            DHrIN = aq(18, 1),
+            DHrIN = aq(18, 1), DHrAS = aq(11, 14), DHrDP = aq(31, 1), ASrIN = aq(4, 15), DPrIN = aq(32, 1),
+            INrAS = aq(7, 15), INrDP = aq(17, 2), DPrAS = aq(11, 6), ASrDP = aq(1, 16),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -693,7 +717,7 @@ TEXTURE = {
         event = assets 'achievements/event.png',
         unranked = assets 'achievements/unranked.png',
         extra = assets 'achievements/extra.png',
-        overDev = assets 'achievements/verified-halfmod.png',
+        overDev = assets 'crystal-fire.png',
     },
 
     logo = assets 'iconZCEM.png',

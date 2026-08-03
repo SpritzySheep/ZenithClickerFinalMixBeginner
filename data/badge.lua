@@ -111,6 +111,11 @@ local d = {
         desc = "KO Mina the Hollower",
     },
     {
+        id = 'critical',
+        name = "A Critical Victory",
+        desc = "Reached F6 with Critical without Easy Mods",
+    },
+    {
         id = 'Lv5000',
         name = "Prestige",
         desc = "Reached Z-Lv5,000",
@@ -153,6 +158,9 @@ local d = {
     {id = 'Lv85000',name = "Prestige XVII",desc = "Reached Z-Lv85,000",},
     {id = 'Lv90000',name = "Prestige XVIII",desc = "Reached Z-Lv90,000",},
     {id = 'Lv95000',name = "Prestige XIX",desc = "Reached Z-Lv95,000",},
+    {id = 'Lv100000',name = "Prestige XX",desc = "Reached Lv100k",},
+    {id = 'Lv105000',name = "Prestige XXI",desc = "Reached Lv105k",},
+    {id = 'Lv110000',name = "Prestige XXII",desc = "Reached Lv110k",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -255,6 +263,8 @@ local d = {
     {id = 'finity_07',name = "Finity_07",desc = "Gathered 800,000 Chakra Escence",},
     {id = 'finity_08',name = "Finity_08",desc = "Gathered 850,000 Chakra Escence",},
     {id = 'finity_09',name = "Finity_09",desc = "Gathered 900,000 Chakra Escence",},
+    {id = 'finity_10',name = "Finity_10",desc = "Gathered 950,000 Chakra Escence",},
+    {id = 'infinity',name = "Infinity",desc = "Gathered 1,000k Chakra Escence",},
 }
 
 for i = 1, #d do

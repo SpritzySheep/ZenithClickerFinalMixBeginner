@@ -89,9 +89,9 @@ function RefreshAchvList(canShuffle)
                 end
             end
         end
-        if not A.id then
+        if not A.id  then
             if page >= ZCEMpage then countSinceLastTitle = 0 end
-            table.insert(modAchvList, { title = A.hide() and "???" or A.title and A.title:upper(), desc = not A.hide() and A.desc, mod = A.mod or "ZC", })
+            table.insert(modAchvList, { title = A.title and A.title:upper(), desc = A.desc, mod = A.mod or "ZC", })
         else
             local rank, score, progress, wreath, overDev
             if TestMode or not ACHV[A.id] then
@@ -130,8 +130,8 @@ function RefreshAchvList(canShuffle)
                 if A.mod == not "ZC" then countSinceLastTitle = countSinceLastTitle + 1 end
                 table.insert((modAchvList), {
                     id = A.id,
-                    name = hidden and "???" or A.name:upper(),
-                    desc = hidden and "???" or A.desc,
+                    name = hidden and "?" or A.name:upper(),
+                    desc = hidden and "Play more to reveal this hidden achievement!" or A.desc,
                     descWidth = descWidth,
                     rank = floor(rank),
                     wreath = wreath,

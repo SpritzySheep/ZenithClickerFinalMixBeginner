@@ -11,7 +11,7 @@ local gc_setAlpha, gc_setLineWidth = GC.setAlpha, GC.setLineWidth
 local gc_draw, gc_mDraw = GC.draw, GC.mDraw
 local gc_line = GC.line
 local spin = 0
-local allBadge = 78
+local allBadge = 84
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
     L = { COLOR.HEX '656565FF' },
@@ -157,7 +157,7 @@ function scene.draw()
     gc_draw(DevNoteText, 0, 285 - DevNoteText:getHeight() * (.68 / 2), 0, .68, .68, 1000, 0)
     local badges = TABLE.sort(TABLE.getKeys(STAT.badge), function(a, b) return (BadgeData[a] or BadgeData[0]).prio < (BadgeData[b] or BadgeData[0]).prio end)
     if ((200*MATH.floor(#badges/8))-420) > 0 then
-    maxScroll = (200*MATH.floor((#badges+7)/8))-420
+    maxScroll = (200*MATH.floor((#badges+7)/8))-260
     else maxScroll = 0 end
     for b = 1, #badges do
     addBadge(badges[b],(200 * ((b-1) % 8)) - 700,(200 * MATH.floor((b-1)/8)) + 450)

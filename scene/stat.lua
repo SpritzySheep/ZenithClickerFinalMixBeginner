@@ -153,10 +153,12 @@ local function calculateRating()
     if cr >= 800e3 then IssueSecret('finity_07', true) end
     if cr >= 850e3 then IssueSecret('finity_08', true) end
     if cr >= 900e3 then IssueSecret('finity_09', true) end
+    if cr >= 950e3 then IssueSecret('finity_10', true) end
+    if cr >= 1000e3 then IssueSecret('infinity', true) end
 
-    local levelBadgeCount = 19
+    local levelBadgeCount = 22
     for lev = 1, levelBadgeCount do
-        if level >= (level*5000) then IssueSecret('Lv'..(level*5000), true) end
+        if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
 
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
@@ -357,6 +359,7 @@ function RefreshProfile()
     GC.print("CHAKRA ESCENCE", 7, 2, 0, .8)
     -- Number
     t30:set(
+        rating >= 1e6 and "INFINITY" or
         rating >= 500000 and "FINITY" or
         rating >= 100000 and "TRANSCENSION" or
         rating >= 90000 and "ASCENDED, PHASE 5" or

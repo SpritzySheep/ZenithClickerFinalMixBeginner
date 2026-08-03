@@ -2016,7 +2016,7 @@ function GAME.upFloor()
                 GAME.finishTera = true
     end
     SubmitAchv('powerleveling', STAT.level,true,true)
-    local powerCount = 18
+    local powerCount = 199
     for tier = 2, powerCount do
         SubmitAchv('powerleveling'..tier, STAT.level,true,true)
     end
@@ -4545,10 +4545,35 @@ end
                 end
             end
         end
+        if not GAME.multiplePiecesActive then
+            if GAME.crit and GAME.roundHeight >= 650 and M.EX ~= -1 and M.NH ~= -1 and M.MS ~= -1 and M.GV ~= -1 and M.VL ~= -1 and M.DH ~= -1 and M.IN ~= -1 and M.AS ~= -1 and M.DP ~= -1 then
+               IssueSecret('critical')
+            end
+        end
         if GAME.comboStr == '' then
             SubmitAchv('zenith_explorer', GAME.roundHeight)
             SubmitAchv('supercharged', GAME.achv_maxChain)
             SubmitAchv('the_spike_of_all_time_minus', GAME.maxSpikeWeak)
+            if not GAME.multiplePiecesActive then
+                if GAME.nightcore then SubmitAchv('piece_z', GAME.roundHeight) end
+                if GAME.fastLeak then SubmitAchv('piece_l', GAME.roundHeight) end
+                if GAME.invisCard then SubmitAchv('piece_o', GAME.roundHeight) end
+                if GAME.slowmo then SubmitAchv('piece_s', GAME.roundHeight) end
+                if GAME.closeCard then SubmitAchv('piece_i', GAME.roundHeight) end
+                if GAME.glassCard then SubmitAchv('piece_j', GAME.roundHeight) end
+                if GAME.invisUI then SubmitAchv('piece_t', GAME.roundHeight) end
+                if GAME.enightcore then SubmitAchv('piece_ez', GAME.roundHeight) end
+                if GAME.efastLeak then SubmitAchv('piece_el', GAME.roundHeight) end
+                if GAME.einvisCard then SubmitAchv('piece_eo', GAME.roundHeight) end
+                if GAME.eslowmo then SubmitAchv('piece_es', GAME.roundHeight) end
+                if GAME.ecloseCard then SubmitAchv('piece_ei', GAME.roundHeight) end
+                if GAME.eglassCard then SubmitAchv('piece_ej', GAME.roundHeight) end
+                if GAME.einvisUI then SubmitAchv('piece_et', GAME.roundHeight) end
+                if GAME.big then SubmitAchv('piece_f', GAME.roundHeight) end
+                if GAME.crit then SubmitAchv('piece_x', GAME.roundHeight) end
+                if GAME.rando then SubmitAchv('piece_w', GAME.roundHeight) end
+                if GAME.noLeak then SubmitAchv('piece_2', GAME.roundHeight) end
+            end
         else
             local revCount = GAME.comboStr:count('r')
             local easyCount = GAME.comboStr:count('e')

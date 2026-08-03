@@ -273,7 +273,7 @@ local function anyPieceActive()
 end
 
 local function countPiecesActive()
-    return (GAME.nightcore and 1 or 0) + (GAME.enightcore and 1 or 0) + (GAME.slowmo and 1 or 0) + (GAME.eslowmo and 1 or 0) + (GAME.glassCard and 1 or 0) + (GAME.eglassCard and 1 or 0) + (GAME.fastLeak and 1 or 0) + (GAME.efastLeak and 1 or 0) + (GAME.invisUI and 1 or 0) + (GAME.einvisUI and 1 or 0) + (GAME.invisCard and 1 or 0) + (GAME.einvisCard and 1 or 0) + (GAME.closeCard and 1 or 0) + (GAME.big and 1 or 0) + (GAME.crit and 1 or 0) + (GAME.rando and 1 or 0)
+    return (GAME.nightcore and 1 or 0) + (GAME.enightcore and 1 or 0) + (GAME.slowmo and 1 or 0) + (GAME.eslowmo and 1 or 0) + (GAME.glassCard and 1 or 0) + (GAME.eglassCard and 1 or 0) + (GAME.fastLeak and 1 or 0) + (GAME.efastLeak and 1 or 0) + (GAME.invisUI and 1 or 0) + (GAME.einvisUI and 1 or 0) + (GAME.invisCard and 1 or 0) + (GAME.einvisCard and 1 or 0) + (GAME.closeCard and 1 or 0) + (GAME.big and 1 or 0) + (GAME.crit and 1 or 0) + (GAME.rando and 1 or 0) + (GAME.noLeak and 1 or 0)
 end
 
 function scene.load()
@@ -1473,10 +1473,10 @@ local page2 = {
                 return
             elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'easyMode' and res1.mod ~= 'finalmixbeg' then
                 local modText = "Cannot import data from a different modded version"
-                if res1.mod == "A Fool's Mod" then modText = "The Creator thinks you're foolish for trying to use that here"
-                elseif res1.mod == "evilvile" then modText = "The Creator wants nothing to do with something that evil"
-                elseif res1.mod == "shimmer" then modText = "The Creator asks you to keep your sparkling water away from his creation"
-                elseif res1.mod == "unabstracted" then modText = "The Creator prefers his work abstract"
+                if res1.mod == "A Fool's Mod" then modText = "We don't have extra cards here, sorry."
+                elseif res1.mod == "evilvile" then modText = "Mice should not give in to the dark arts."
+                elseif res1.mod == "shimmer" then modText = "The Zenith Tower shall not be flooded."
+                elseif res1.mod == "unabstracted" then modText = "bro"
                 end
                 MSG('dark', modText)
                 SFX.play('staffwarning')
@@ -1494,7 +1494,7 @@ local page2 = {
             end
             Initialize(true)
             if TestMode or GAME.multiplePiecesActive then
-                MSG('dark', "Progress imported, but won't be saved.")
+                MSG('dark', "Progress imported! However, saving is disabled due to test mode or multiple pieces.")
             else
                 MSG('dark', "Progress imported!")
             end

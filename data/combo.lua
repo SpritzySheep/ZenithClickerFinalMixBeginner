@@ -316,6 +316,14 @@ d.menu = {
     { set = "rDH AS",             name = "Mech Heart"},
     { set = "rDH DP",             name = "The Circle of Lust"},
     { set = "DH rIN",             name = "Must've Been the Wind..."},
+    { set = "DH rAS",             name = "The Devil's Fine Print"},
+    { set = "DH rDP",             name = "Twas Never Meant to Be..."},
+    { set = "rIN AS",             name = "That's not a kick..."},
+    { set = "rIN DP",             name = "Friends with Benefits"},
+    { set = "IN rAS",             name = "Stygian Spins"},
+    { set = "IN rDP",             name = "Silent Sorrow"},
+    { set = "rAS DP",             name = "Polyamorous"},
+    { set = "AS rDP",             name = "Disagreements"},
 }
 
 
