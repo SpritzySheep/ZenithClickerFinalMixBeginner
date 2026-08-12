@@ -52,6 +52,7 @@ function Initialize(save)
     if STAT.totalSingula == not STAT.totalSingula then STAT.totalSingula = 0 end
     if STAT.totalUniva == not STAT.totalUniva then STAT.totalUniva = 0 end
     if STAT.totalMultiva == not STAT.totalMultiva then STAT.totalMultiva = 0 end
+    if STAT.totalExista == not STAT.totalExista then STAT.totalExista = 0 end
     if STAT.mousegirl == not STAT.mousegirl then STAT.mousegirl = false end
     if STAT.srTimer_life == not STAT.srTimer_life then STAT.srTimer_life = 0 end
     if STAT.achv == not STAT.achv then STAT.achv = 0 end

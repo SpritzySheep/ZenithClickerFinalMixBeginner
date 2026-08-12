@@ -1164,7 +1164,7 @@ if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
         gc_draw(GAME.resIB, 400, 150, 0, .9)
         gc_setColor(COLOR.D)
         gc_mDraw(TEXTS.endHeight, 0, 135, 0, 1.8)
-        gc_mDraw(TEXTS.zpChange, 220, 95, 0, .626)
+        --gc_mDraw(TEXTS.zpChange, 220, 95, 0, .626)
         gc_draw(TEXTS.endResult, -617+xOffset, 80, 0, .626)
         gc_draw(TEXTS.floorTime, -617+xOffset, 226 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -527+xOffset, 226 - GAME.uiHide * 150, 0, .38)
@@ -1173,20 +1173,24 @@ if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
         gc_draw(TEXTS.endResult, -616+xOffset, 78, 0, .626)
         if GAME.gigaspeedEntered and GAME.gigaTime then
             gc_setColor(1, 1, 1, .1)
-            GC.strokeDraw('full', 2.5, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 201 - TEXTS.endFloor:getHeight() / 2)
+            GC.strokeDraw('full', 2.5, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 93 - TEXTS.endFloor:getHeight() / 2)
             gc_setColor(1, 1, 1, .2)
-            GC.strokeDraw('full', 1, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 201 - TEXTS.endFloor:getHeight() / 2)
+            GC.strokeDraw('full', 1, TEXTS.endFloor, -TEXTS.endFloor:getWidth() / 2, 93 - TEXTS.endFloor:getHeight() / 2)
         else
             gc_setColor(COLOR.D)
-            gc_mDraw(TEXTS.endFloor, 0, 204)
+            gc_mDraw(TEXTS.endFloor, 0, 96)
         end
+        gc_setColor(1, 1, 1, .1)
+        GC.strokeDraw('full', 2.5, TEXTS.zpChange, -TEXTS.zpChange:getWidth() / 2, 193 - TEXTS.zpChange:getHeight() / 2)
+        gc_setColor(1, 1, 1, .2)
+        GC.strokeDraw('full', 1, TEXTS.zpChange, -TEXTS.zpChange:getWidth() / 2, 193 - TEXTS.zpChange:getHeight() / 2)
         gc_setColor(COLOR.L)
-        gc_mDraw(TEXTS.endFloor, 0, 201)
+        gc_mDraw(TEXTS.endFloor, 0, 96)
         gc_setColor(COLOR.DL)
         gc_draw(TEXTS.floorTime, -616+xOffset, 224 - GAME.uiHide * 150, 0, .38)
         gc_draw(TEXTS.rankTime, -526+xOffset, 224 - GAME.uiHide * 150, 0, .38)
-        gc_setColor(COLOR.dL)
-        gc_mDraw(TEXTS.zpChange, 220, 93, 0, .626)
+        gc_setColor(COLOR.LV)
+        
     end
 
     -- Daily Challenge Button
@@ -1221,6 +1225,7 @@ local hyperText = {
     TEXTS.singulaspeed,
     TEXTS.univaspeed,
     TEXTS.multivaspeed,
+    TEXTS.existaspeed,
 }
 function scene.overDraw()
     local t = love.timer.getTime()
@@ -1273,7 +1278,28 @@ function scene.overDraw()
             local gigaFade = clamp((GAME.time - (GAME.gigaspeedEntered or GAME.time) - 120) / 180, 0, 1)
             gc_setColor(GigaSpeed.r, GigaSpeed.g, GigaSpeed.b, .2 * (GigaSpeed.alpha - gigaFade)/eTAlpha)
             gc_strokeDraw('full', 3, TEXTS.gigatime, 800, 264, 0, 1.5, 1.2, w * .5, h * .5)
-            if M.DP < 2 then
+            local SpeedName = {[0] = "",
+            "",
+            "GIGA",
+            "TERA",
+            "PETA",
+            "EXA",
+            "ZETA",
+            "YOTTA",
+            "RONNA",
+            "QUETTA",
+            "DEKA",
+            "TERMINA",
+            "LUMINA",
+            "SINGULA",
+            "UNIVA",
+            "MULTIVA",
+            "EXISTA"
+            }
+            TEXTS.theA:set(SpeedName[GAME.gspeedlv].."SPEED")
+            if GAME.gigaspeed then
+                gc_setAlpha(1)
+                gc_draw(TEXTS.theA, 580, 390, 0, 1.5, 1.2, w * .5, h * .5)
                 gc_setAlpha(GigaSpeed.alpha/eTAlpha)
                 gc_draw(TEXTS.gigatime, 800, 264, 0, 1.5, 1.2, w * .5, h * .5)
                 if gigaFade > 0 then
@@ -1504,7 +1530,7 @@ function scene.overDraw()
                 gc_scale(GAME.uiHide)
                 local baseThickness = 6
                 local radius = 60
-                local colorList = {COLOR.R, COLOR.F, COLOR.O, COLOR.Y, COLOR.A, COLOR.K, COLOR.G, COLOR.J, COLOR.C, COLOR.I, COLOR.S, COLOR.B, COLOR.P, COLOR.V, COLOR.M, COLOR.W, COLOR.L, COLOR.T, COLOR.D, COLOR.lR, COLOR.lF, COLOR.lO, COLOR.lY, COLOR.lA, COLOR.lK, COLOR.lG, COLOR.lJ, COLOR.lC, COLOR.lI, COLOR.lS, COLOR.lB, COLOR.lP, COLOR.lV, COLOR.lM, COLOR.lW, COLOR.lL, COLOR.lT, COLOR.lD }
+                local colorList = {COLOR.R, COLOR.O, COLOR.Y, COLOR.G, COLOR.C, COLOR.I, COLOR.B, COLOR.V, COLOR.M, COLOR.W }
                 local colorIndex = 1
                 local rank = GAME.rank
                 local xp = (M.VL == 2 and URM) and (5+GAME.chain) or GAME.commit(false, true)
@@ -1516,7 +1542,7 @@ function scene.overDraw()
                         for i = 1, floor(revolutions) do
                             gc_setColor(colorList[colorIndex])
                             gc_circle('fill', 0, 0, radius)
-                            if colorIndex == 38 then
+                            if colorIndex == 10 then
                                 colorIndex = 1
                             else
                                 colorIndex = colorIndex + 1

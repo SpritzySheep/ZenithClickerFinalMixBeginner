@@ -100,8 +100,8 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
-    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva)
-    level = MATH.floor((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva) + STAT.totalExista
+    level = MATH.floor((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
     STAT.level = level
     STAT.ZP = STAT.PeakZP
     cr = cr + MATH.floor(level)
@@ -155,8 +155,10 @@ local function calculateRating()
     if cr >= 900e3 then IssueSecret('finity_09', true) end
     if cr >= 950e3 then IssueSecret('finity_10', true) end
     if cr >= 1000e3 then IssueSecret('infinity', true) end
+    if cr >= 1050e3 then IssueSecret('infinity_02', true) end
+    if cr >= 1100e3 then IssueSecret('infinity_03', true) end
 
-    local levelBadgeCount = 22
+    local levelBadgeCount = 25
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -387,7 +389,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 68)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 78)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -467,16 +469,16 @@ function RefreshProfile()
         { t = { textColor, "Zenith Level" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
-        { t = { scoreColor, MATH.round(STAT.peakZP), textColor, "" },                      x = 420, y = 58 },
-        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
+        { t = { scoreColor, STAT.peakZP > 1e10 and MATH.floor(STAT.peakZP/1e9)..'B' or STAT.peakZP > 1e7 and MATH.floor(STAT.peakZP/1e6)..'M' or STAT.peakZP > 1e5 and MATH.floor(STAT.peakZP/1e3)..'k' or MATH.round(STAT.peakZP), textColor, "" },                      x = 470, y = 58 },
+        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
     -- GC.rectangle('fill', 0, 0, bw, bh)
     GC.setColor(lblColor)
     GC.rectangle('fill', 315, 121, 254, 18)
     GC.setColor(scoreColor)
-    GC.rectangle('fill', 315, 120, MATH.round((((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
+    GC.rectangle('fill', 315, 120, MATH.round((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^.6+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
     scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. Use code 'achbonus' in Config to turn it on."
     if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. Use code 'achbonus' in Config to turn it off." end
@@ -522,7 +524,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva) + (STAT.totalMultiva)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva) + (STAT.totalMultiva) + (STAT.totalExista)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -540,7 +542,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 360)
+    GC.rectangle('fill', 0, 0, 254, 390)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -558,6 +560,7 @@ function RefreshProfile()
         { k = "Singulaspeed",  v = { scoreColor, STAT.totalSingula }, x = 26, y = 283, d = 160 },
         { k = "Univaspeed",  v = { scoreColor, STAT.totalUniva }, x = 26, y = 308, d = 160 },
         { k = "Multivaspeed",  v = { scoreColor, STAT.totalMultiva }, x = 26, y = 333, d = 160 },
+        { k = "Existaspeed",  v = { scoreColor, STAT.totalExista }, x = 26, y = 358, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

@@ -225,6 +225,7 @@ local GAME = {
     singulaspeedFloor = {},
     univaspeedFloor = {},
     multivaspeedFloor = {},
+    existaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
@@ -375,6 +376,7 @@ function GAME.getComboZP(list)
     zp = 1 + (STAT.totalQuest/1000)
     end
     if GAME.crit then zp = zp * 2 end
+    if STAT.MouseGirl then zp = zp * 10 end
     if m.EX then zp = zp * 1.8 elseif m.rEX then zp = zp * 3.9 end
     if m.NH then zp = zp * 1.2 elseif m.rNH then zp = zp * (1.8 + .075 * (#list - 1)) end
     if m.MS then zp = zp * 1.4 elseif m.rMS then zp = zp * 2.4 end
@@ -407,7 +409,7 @@ function GAME.getComboZP(list)
     if GAME.eslowmo then zp = zp * .6 end
     if GAME.eglassCard then zp = zp * .7 end
     if GAME.efastLeak then zp = zp * .65 end
-    if GAME.noLeak then zp = zp * 0.1 end
+    if not STAT.MouseGirl then if GAME.noLeak then zp = zp * 0.1 end end
     if GAME.einvisUI then zp = zp * .6 end
     if GAME.einvisCard and not CONF.oldTransparentCard then
         zp = zp * ((m.rDH and 0.9 or 1) * ((URM and m.rIN) and 0.95 or (not URM and m.rIN) and 0.9 or m.IN and 0.875 or m.eIN and 0.83 or 0.85) * (m.eDP and 0.9 or (m.DP or m.rDP) and 0.95 or 1))
@@ -1320,6 +1322,10 @@ function GAME.addXP(xp, falseCommit)
             GAME.startMultivaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 16 and GAME.rank >= ExistaMusicReq then
+            GAME.startExistaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1344,7 +1350,8 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isLumina = false
         GigaSpeed.isSingula = false
         GigaSpeed.isUniva = false
-        GigaSpeed.ismultiva = false
+        GigaSpeed.isMultiva = false
+        GigaSpeed.isExista = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1598,6 +1605,25 @@ function GAME.startMultivaAnim()
 end
 
 function GAME.stopMultivaspeed(mode)
+    GAME.gspeedlv = 2
+    GAME.teramusic = false
+    if mode == 'drop' then
+        PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
+    end
+end
+
+function GAME.startExistaAnim()
+    GAME.gspeedlv = 16
+    GAME.existaspeed = true
+    GAME.existaspeedFloor[GAME.floor] = true
+    GAME.existaCount = GAME.existaCount + 1
+    GigaSpeed.isExista = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
+end
+
+function GAME.stopExistaspeed(mode)
     GAME.gspeedlv = 2
     GAME.teramusic = false
     if mode == 'drop' then
@@ -1876,7 +1902,7 @@ function GAME.upFloor()
                 SaveStat()
             end
             GAME.gigaTime = GAME.time
-            GAME.setGigaspeedAnim(false)
+            --GAME.setGigaspeedAnim(false)
             if GAME.teramusic then
                 IssueAchv('blazing_speed')
                 GAME.finishTera = true
@@ -1887,7 +1913,7 @@ function GAME.upFloor()
             if GAME.yottaspeed then IssueAchv('yotta') end
             if GAME.ronnaspeed then IssueAchv('ronna') end
             if GAME.quettaspeed then IssueAchv('quetta') end
-            if not GAME.smithyMode then GAME.stopTeraspeed('f10') end -- don't stop my cover until we get to fomg
+             -- don't stop my cover until we get to fomg
 
             local setStr = ((GAME.anyUltra or GAME.uneasyMode) and 'u' or '') .. GAME.comboStr
             local t = BEST.speedrun[setStr]
@@ -2015,6 +2041,10 @@ function GAME.upFloor()
                 IssueSecret('multiva')
                 GAME.finishTera = true
     end
+    if GAME.existaCount >= 1 or STAT.totalExista >= 1 then
+                IssueSecret('exista')
+                GAME.finishTera = true
+    end
     SubmitAchv('powerleveling', STAT.level,true,true)
     local powerCount = 199
     for tier = 2, powerCount do
@@ -2033,6 +2063,7 @@ function GAME.upFloor()
     SubmitAchv('Singula', STAT.totalSingula,true,true)
     SubmitAchv('Univa', STAT.totalUniva,true,true)
     SubmitAchv('Multiva', STAT.totalMultiva,true,true)
+    SubmitAchv('Exista', STAT.totalExista,true,true)
     
 end
 
@@ -3789,6 +3820,7 @@ function GAME.start()
     TABLE.clear(GAME.singulaspeedFloor)
     TABLE.clear(GAME.univaspeedFloor)
     TABLE.clear(GAME.multivaspeedFloor)
+    TABLE.clear(GAME.existaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -3803,6 +3835,7 @@ function GAME.start()
     GAME.singulaCount = 0
     GAME.univaCount = 0
     GAME.multivaCount = 0
+    GAME.existaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -3900,6 +3933,22 @@ function GAME.start()
     GAME.achv_totalResetCount = 0
     GAME.achv_altFromSurge = 0
     if M.DP ~= 0 then IssueAchv('intended_glitch') end
+    if GAME.rank >= GigaSpeedReq then GAME.setGigaspeedAnim(true) end
+    -- Probably another mouse crime but it works and I don't want to fix what isn't broken incase doing so would actually make it broken
+    if GAME.rank >= TeraMusicReq then GAME.startTeraAnim() end
+    if GAME.rank >= PetaMusicReq then GAME.startPetaAnim() end
+    if GAME.rank >= ExaMusicReq then GAME.startExaAnim() end
+    if GAME.rank >= ZetaMusicReq then GAME.startZetaAnim() end
+    if GAME.rank >= YottaMusicReq then GAME.startYottaAnim() end
+    if GAME.rank >= RonnaMusicReq then GAME.startRonnaAnim() end
+    if GAME.rank >= QuettaMusicReq then GAME.startQuettaAnim() end
+    if GAME.rank >= DekaMusicReq then GAME.startDekaAnim() end
+    if GAME.rank >= TerminaMusicReq then GAME.startTerminaAnim() end
+    if GAME.rank >= LuminaMusicReq then GAME.startLuminaAnim() end
+    if GAME.rank >= SingulaMusicReq then GAME.startSingulaAnim() end
+    if GAME.rank >= UnivaMusicReq then GAME.startUnivaAnim() end
+    if GAME.rank >= MultivaMusicReq then GAME.startMultivaAnim() end
+    if GAME.rank >= ExistaMusicReq then GAME.startExistaAnim() end
 end
 
 function GAME.clearResultStat()
@@ -4124,6 +4173,7 @@ end
         STAT.totalSingula = STAT.totalSingula + GAME.singulaCount
         STAT.totalUniva = STAT.totalUniva + GAME.univaCount
         STAT.totalMultiva = STAT.totalMultiva + GAME.multivaCount
+        STAT.totalExista = STAT.totalExista + GAME.existaCount
         STAT.totalKO = STAT.totalKO + GAME.koCount
         STAT.totalRevive = STAT.totalRevive + GAME.reviveCount
         if GAME.floor >= 10 then
@@ -4136,7 +4186,7 @@ end
 
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
-        TEXTS.zpChange:set(("%.0f ZP"):format(zpGain, 0, DailyActived and ", 260%" or ""))
+        TEXTS.zpChange:set((zpGain >= 1e13 and "%.0fT ZP" or zpGain >= 1e10 and "%.0fB ZP" or zpGain >= 1e7 and "%.0fM ZP" or zpGain >= 1e5 and "%.0fk ZP" or "%.0fk ZP"):format(zpGain >=1e13 and MATH.floor(zpGain/1e12) or zpGain >=1e10 and MATH.floor(zpGain/1e9) or zpGain >=1e7 and MATH.floor(zpGain/1e6) or zpGain >=1e5 and MATH.floor(zpGain/1e3) or zpGain, 0, DailyActived and ", 260%" or ""))
 
         -- Easy Mode Version for records
         if not GAME.multiplePiecesActive then
@@ -4198,7 +4248,7 @@ end
             TASK.new(function()
                 TASK.yieldT(0.626)
                 TWEEN.new(function(t)
-                    TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, DailyActived and ", 260%" or ""))
+                    --TEXTS.zpChange:set(("%.0f ZP  (+%.0f%s)"):format(zpGain, zpEarn * t, DailyActived and ", 260%" or ""))
                 end):setEase('InOutCubic'):setDuration(2):run()
                 SFX.play('ratingraise', zpEarn ^ .5 / 60)
             end)
@@ -4261,8 +4311,10 @@ end
         if GAME.uneasyMode or GAME.badTime then
             TABLE.append(resStr, {COLOR.DR, "U"})
         end
-        if STAT.ExtraSpeed  then
-            TABLE.append(resStr, {COLOR.A, "A"..MATH.floor(STAT.achv/50)})
+        if not GAME.crit then
+            if STAT.ExtraSpeed  then
+                TABLE.append(resStr, {COLOR.A, "A"..MATH.floor(STAT.achv/50)})
+            end
         end
         if STAT.MouseGirl  then
             TABLE.append(resStr, {COLOR.M, "M"})
@@ -4655,6 +4707,7 @@ end
     GAME.stopSingulaspeed('fin')
     GAME.stopUnivaspeed('fin')
     GAME.stopMultivaspeed('fin')
+    GAME.stopExistaspeed('fin')
     TASK.removeTask_code(task_startSpin)
     GAME.refreshLockState()
     GAME.refreshCurrentCombo()
@@ -5055,6 +5108,7 @@ function GAME.update(dt)
         if M.EX < 2 then
             if not GAME.badTime then
                 if STAT.MouseGirl then
+                    if GAME.height < 1e6 then GAME.invincible = true else GAME.invincible = false end
                     GAME.height = GAME.height + GAME.rank / 0.3 * dt
                     --if GAME.height > 1e5 then GAME.height = 1e5 end
                 elseif GAME.crit then
@@ -5129,7 +5183,6 @@ function GAME.update(dt)
     if GAME.floor >= 10 then
         -- Omega floor
         if GAME.smithyMode then 
-            GAME.stopTeraspeed('f10') 
         end
         if not GAME.omega and GAME.height >= 2000 then
             GAME.omega = true

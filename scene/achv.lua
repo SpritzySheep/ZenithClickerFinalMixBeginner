@@ -39,8 +39,9 @@ local achvListZCEM = {}
 local achvListMISC = {}
 local achvList2MP = {}
 local achvList3MP = {}
-local achvLists = {achvList, achvListZCEM, achvListMISC, achvList2MP, achvList3MP}
-local mods = {{"ZCEM", achvListZCEM},{"MISC",achvListMISC},{"2MP",achvList2MP},{"3MP",achvList3MP}}
+local achvList4MP = {}
+local achvLists = {achvList, achvListZCEM, achvListMISC, achvList2MP, achvList3MP, achvList4MP}
+local mods = {{"ZCEM", achvListZCEM},{"MISC",achvListMISC},{"2MP",achvList2MP},{"3MP",achvList3MP},{"4MP",achvList4MP}}
 local scroll, scroll1 = 0, 0
 local maxScroll = 0
 local timer = 0
@@ -57,11 +58,12 @@ local overallProgress = {
 }
 
 local page = 1
-local maxPage = 5
+local maxPage = 6
 local ZCEMpage = 2
 local MISCpage = 3
 local MP2page = 4
 local MP3page = 5
+local MP4page = 6
 
 local function nameSortLT(i1, i2) return i1.name < i2.name end
 local function nameSortGT(i1, i2) return i1.name > i2.name end
@@ -667,7 +669,8 @@ function scene.draw()
                         gc_printf(a.desc, 130, 73, 1050, 'left', 0, .4)
                     end
                     gc_setColor(colorRev and COLOR.dR or COLOR.LD)
-                    gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
+                    --gc_print(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 0, .42)
+                    gc_printf(A.quote, 130, a.descWidth <= 1050 and 98 or 103, 1150, 'left', 0, .4)
 
                     -- Hidden covering
                     if M.IN > 0 then
@@ -691,7 +694,7 @@ function scene.draw()
     gc_replaceTransform(SCR.xOy_ul)
     gc_setColor(clr.L)
     FONT.set(50)
-    local pageTitles = {"ZC", "ZCEM", "MISC", "2MP", "3MP"}
+    local pageTitles = {"ZC", "ZCEM", "MISC", "2MP", "3MP", "4MP"}
     if colorRev then
         gc_print(pageTitles[page] .. " ACHIEVEMENTS", 15, 68, 0, 1, -1)
     else
@@ -798,6 +801,18 @@ scene.widgetList = {
         fontSize = 30, text = "03MP   ", textColor = { 0, 0, 0 },
         onClick = function()
             love.keypressed(tostring(MP3page))
+            maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
+            if scroll > maxScroll then scroll = maxScroll end
+        end,
+    },
+    WIDGET.new {
+        name = 'mp4', type = 'button',
+        pos = { 1, 0 }, x = -60, y = 440, w = 160, h = 60,
+        color = 'O',
+        sound_hover = 'menutap',
+        fontSize = 30, text = "04MP   ", textColor = { 0, 0, 0 },
+        onClick = function()
+            love.keypressed(tostring(MP4page))
             maxScroll = max(ceil((#achvLists[page] - 12) / 2) * 140, 0)
             if scroll > maxScroll then scroll = maxScroll end
         end,

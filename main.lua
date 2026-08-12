@@ -278,6 +278,8 @@ TEXTURE = {
             assets 'rank/delta_06.png', assets 'rank/delta_07.png', assets 'rank/delta_08.png', assets 'rank/delta_09.png', assets 'rank/delta_10.png',
             assets 'rank/epsilon_01.png', assets 'rank/epsilon_02.png', assets 'rank/epsilon_03.png', assets 'rank/epsilon_04.png', assets 'rank/epsilon_05.png',
             assets 'rank/epsilon_06.png', assets 'rank/epsilon_07.png', assets 'rank/epsilon_08.png', assets 'rank/epsilon_09.png', assets 'rank/epsilon_10.png',
+            assets 'rank/zeta_01.png', assets 'rank/zeta_02.png', assets 'rank/zeta_03.png', assets 'rank/zeta_04.png', assets 'rank/zeta_05.png',
+            assets 'rank/zeta_06.png', assets 'rank/zeta_07.png', assets 'rank/zeta_08.png', assets 'rank/zeta_09.png', assets 'rank/zeta_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -599,6 +601,7 @@ TEXTURE = {
             Singula = aq(2, 14),
             Univa = aq(3, 15),
             Multiva = aq(3, 16),
+            Exista = aq(26, 2),
 
             piece_z = aq(19, 1),
             piece_l = aq(20, 1),
@@ -639,6 +642,11 @@ TEXTURE = {
             powerleveling18 = aq(16, 16),
             powerleveling19 = aq(18, 2),
             powerleveling20 = aq(19, 2),
+            powerleveling21 = aq(20, 2),
+            powerleveling22 = aq(18, 3),
+            powerleveling23 = aq(17, 3),
+            powerleveling24 = aq(19, 3),
+            powerleveling25 = aq(20, 3),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -690,6 +698,13 @@ TEXTURE = {
             VLrAS = aq(17, 1), VLrDP = aq(7, 14), INrDH = aq(16, 14), ASrDH = aq(2, 15), DPrDH = aq(14, 16),
             DHrIN = aq(18, 1), DHrAS = aq(11, 14), DHrDP = aq(31, 1), ASrIN = aq(4, 15), DPrIN = aq(32, 1),
             INrAS = aq(7, 15), INrDP = aq(17, 2), DPrAS = aq(11, 6), ASrDP = aq(1, 16),
+
+            EXGVMSNH = aq(21, 2), EXMSNHVL = aq(22, 2), DHEXMSNH = aq(6, 6), EXINMSNH = aq(28, 1), ASEXMSNH = aq(5, 4),
+            DPEXMSNH = aq(23, 2), EXGVNHVL = aq(4, 1), DHEXGVNH = aq(11, 11), EXGVINNH = aq(1, 10), ASEXGVNH = aq(3, 10),
+            DPEXGVNH = aq(24, 2), DHEXNHVL = aq(4, 12), EXINNHVL = aq(4, 2), ASEXNHVL = aq(8, 7), DPEXNHVL = aq(25, 2),
+            DHEXINNH = aq(16, 7), ASDHEXNH = aq(6, 2), DHDPEXNH = aq(27, 2), ASEXINNH = aq(28, 2), DPEXINNH = aq(13, 5),
+            ASDPEXNH = aq(29, 2), EXGVMSVL = aq(30, 2), DHEXGVMS = aq(13, 11), EXGVINMS = aq(8, 6), ASEXGVMS = aq(9, 12),
+            DPEXGVMS = aq(7, 10), EXINMSVL = aq(31, 2), ASEXMSVL = aq(32, 2),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -903,7 +918,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     mod        = GC.newText(FONT.get(30)),
     mpPreview  = GC.newText(FONT.get(30)),
     zpPreview  = GC.newText(FONT.get(30)),
-    zpChange   = GC.newText(FONT.get(30)),
+    zpChange   = GC.newText(FONT.get(50)),
     dcBest     = GC.newText(FONT.get(30)),
     dcTimer    = GC.newText(FONT.get(30)),
     srTimer    = GC.newText(FONT.get(30)),
@@ -1004,6 +1019,12 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
         COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
     }),
+    existaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "E", COLOR.O, "X", COLOR.Y, "I",
+        COLOR.K, "S", COLOR.G, "T", 
+        COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
+        COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -1016,7 +1037,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     easyTitle  = GC.newText(FONT.get(50), "EASY GAMEPLAY"),
     uneasyTitle= GC.newText(FONT.get(50), "UNEASY GAMEPLAY"),
     easyModeVersion = GC.newText(FONT.get(30)),
-    theA       = GC.newText(FONT.get(50), ""),
+    theA       = GC.newText(FONT.get(50)),
     theM       = GC.newText(FONT.get(50), ""),
 }
 FONT.setDefaultFont('sans')
@@ -1112,6 +1133,7 @@ STAT = {
     totalSingula = 0,
     totalUniva = 0,
     totalMultiva = 0,
+    totalExista = 0,
     totalF10 = 0,
     totalKO = 0,
     totalRevive = 0,

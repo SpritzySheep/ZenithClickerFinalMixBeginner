@@ -2641,13 +2641,12 @@ local d = {
         hide = function() return STAT.totalMultiva == 0 end,
         mod = "MISC",
     },
-    { -- Multiva
-        id = '', name = "", desc = [[]],
-        quote = [[]],
-        scoreSimp = function(n) return n .. " MULTIVAs" end,rank = numberRank(0, 1, 3, 7, 15, 27, 43),
-        hide = function() return STAT.totalMultiva == 0 end,
+    { -- Exista
+        id = 'Exista', name = "Shrodinger's Mouse", desc = [[Exitaspeed Entries]],
+        quote = [["Going faster than quantum physics."]],
+        scoreSimp = function(n) return n .. " EXISTAs" end,rank = numberRank(0, 1, 2, 6, 13, 24, 38),
+        hide = function() return STAT.totalExista == 0 end,
         mod = "MISC",
-        type = 'issued',
     },
 
    { title = "PIECES", desc = "Pieces have been found to have strange effects. These challenge you to climb using ONLY them.", mod = "MISC"},
@@ -2934,9 +2933,29 @@ local d = {
         , realHide = function() return STAT.level < 95000 end, mod = "MISC",
     },
     {id = 'powerleveling21',name = "Divine Leveling", desc = [[Zenith Level (100k-105k)]],
-        quote = [[You thought Level 99999 was the max? It is time to ascend to the divine,]], scoreSimp = function(n) return "Lv" .. n end,
+        quote = [[You thought Level 99999 was the max? It is time to ascend to the divine.]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(100e3, 101e3, 102e3, 103e3, 104e3, 105e3, 110e3), hide = function() return STAT.level < 100e3 end
         , realHide = function() return STAT.level < 100e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling22',name = "Subliminal Leveling", desc = [[Zenith Level (105k-110k)]],
+        quote = [[You're going far beyond normal mouse strength, be careful.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(105e3, 106e3, 107e3, 108e3, 109e3, 110e3, 115e3), hide = function() return STAT.level < 105e3 end
+        , realHide = function() return STAT.level < 105e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling23',name = "Superliminal Leveling", desc = [[Zenith Level (110k-115k)]],
+        quote = [[You're going far beyond abnormal mouse strength, be very careful.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(110e3, 111e3, 112e3, 113e3, 114e3, 115e3, 120e3), hide = function() return STAT.level < 110e3 end
+        , realHide = function() return STAT.level < 110e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling24',name = "Planetary Leveling", desc = [[Zenith Level (115k-120k)]],
+        quote = [["She's practically a planet now, the dingus!"]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(115e3, 116e3, 117e3, 118e3, 119e3, 120e3, 125e3), hide = function() return STAT.level < 115e3 end
+        , realHide = function() return STAT.level < 115e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling25',name = "Spherical Leveling", desc = [[Zenith Level (120k-125k)]],
+        quote = [["My god..."]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(120e3, 121e3, 122e3, 123e3, 124e3, 125e3, 130e3), hide = function() return STAT.level < 120e3 end
+        , realHide = function() return STAT.level < 120e3 end, mod = "MISC",
     },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
@@ -3258,7 +3277,7 @@ local d = {
     AchieveFromCombo('ASDHNH', "Shapeshifter", [[HFD with NH DH AS]], [[HOLY MOLY I SMOKED MY OLD PB]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('DHDPNH', "Good and Evil", [[HFD with NH DH DP]], [[↻]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('ASINNH', "The Blind Artist", [[HFD with NH IN AS]], [[Bro, that's my fridge, not your canvas.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
-    AchieveFromCombo('DPINNH', "Left On Read", [[HFD with NH IN DP]], [[I sent you my T-Spin, please respond.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
+    AchieveFromCombo('DPINNH', "No Contact Relationship", [[HFD with NH IN DP]], [[I sent you my T-Spin, please respond.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('ASDPNH', "Ecstatic Dance", [[HFD with NH AS DP]], [[Come on, step it up!]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('GVMSVL', "Survival", [[HFD with MS GV VL]], [[Your game mode has been updated to Survival.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('DHGVMS', "Double Down", [[HFD with MS GV DH]], [[Reaper Flat Arial S-Droptwist Double Back-to-Back x15 Combo x12 All Clear #6]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
@@ -3361,7 +3380,7 @@ local d = {
     AchieveFromCombo('INrDH', "The Curse", [[HFD with rDH IN]], [["What the T-Spin have you brought upon this cursed world?"]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
     AchieveFromCombo('ASrDH', "Mech Heart", [[HFD with rDH AS]], [["No, it can't be..." The tower master says as you unleash the forbidden technique.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
     AchieveFromCombo('DPrDH', "The Circle of Lust", [[HFD with rDH DP]], [["Ompphgl..."]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DH == 0 end, "3MP"),
-    AchieveFromCombo('DHrIN', "Must've Been the Wind...", [[HFD with DH rIN]], [[Nah, that was just me eating you.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.IN == 0 end, "3MP"),
+    AchieveFromCombo('DHrIN', "Must've Been the Wind...", [[HFD with DH rIN]], [[What kind of wind are you having?]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.IN == 0 end, "3MP"),
     AchieveFromCombo('DHrAS', "The Devil's Fine Print", [[HFD with DH rAS]], [[The devil decieves and will decieve again.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.AS == 0 end, "3MP"),
     AchieveFromCombo('DHrDP', "Twas Never Meant to Be...", [[HFD with DH rDP]], [[Hey Kris, I think we gotta click the Zenith!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
     AchieveFromCombo('ASrIN', "That's not a kick...", [[HFD with rIN AS]], [[55,000 Wound Lines imminent]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.IN == 0 end, "3MP"),
@@ -3370,6 +3389,36 @@ local d = {
     AchieveFromCombo('INrDP', "Silent Sorrow", [[HFD with IN rDP]], [[Full of Tears...]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
     AchieveFromCombo('DPrAS', "Polyamorous", [[HFD with rAS DP]], [[You know, I don't think we should be doing this.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
     AchieveFromCombo('ASrDP', "Disagreements", [[HFD with AS rDP]], [[Dude, why didn't you take the T-Spin?? You lost us the game!]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.DP == 0 end, "3MP"),
+
+    { title = "4 Upright Mod Combos", desc = "Welcome to the beginning of the true tower. Fun fact:Mouse Mix takes place in an alternate reality! Max wreath at 4,620m.", mod = "4MP"},
+    AchieveFromCombo('EXGVMSNH', "Atlas' Lament", [[HFD with EX NH MS GV]], [[He who cares for the world cares not for himself.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXMSNHVL', "The Fugitive", [[HFD with EX NH MS VL]], [[Illegal in Finland!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXMSNH', "Impasse", [[HFD with EX NH MS DH]], [[YOU SHALL NOT- *cough*]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXINMSNH', "Classic Prophet", [[HFD with EX NH MS IN]], [[Ah, the good ol' times... of CHEESE]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXMSNH', "Fair Chance", [[HFD with EX NH MS AS]], [[Are those weighted dice? GET THOSE OUTTA HERE!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXMSNH', "Sly Pair", [[HFD with EX NH MS DP]], [[Neither you or your wife are allowed here!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXGVNHVL', "Cutting Edge", [[HFD with EX NH GV VL]], [[Now THIS is my Magnum Opus!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXGVNH', "Purgatory Pro", [[HFD with EX NH GV DH]], [[...it's rat poison. Mice aren't rats, but still don't drink it, we are very similar.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXGVINNH', "Still Water", [[HFD with EX NH GV IN]], [[Tranquil poolrooms lose their tranquility when you are lost.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXGVNH', "Beyond the Afterdeath", [[HFD with EX NH GV AS]], [[This is why you don't ragebait.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXGVNH', "Double Maxout", [[HFD with EX NH GV DP]], [[WOULD YOU LOOK AT THAT! BOTH PLAYERS HAVE HIT MAX SCORE!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXNHVL', "Azathoth", [[HFD with EX NH VL DH]], [[*aggressive internetting* oh this is one of them cthulus]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXINNHVL', "Unreasonable", [[HFD with EX NH VL IN]], [[Just let me be cute in peace!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXNHVL', "Scam Leader", [[HFD with EX NH VL AS]], [[Send this to 10 other people within the day or get only Hexominoes!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXNHVL', "Heaven and Earth", [[HFD with EX NH VL DP]], [[A mouse can't truly ascend until they reach Level 100,000.\nAnd when they do, there's only further goals to attain...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXINNH', "Invisible Decadence", [[HFD with EX NH DH IN]], [[HOLY SWEET GOD, WHAT THE L-SPIN TRIPLE IS HAPPENING IN THIS KINGDOM?!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHEXNH', "Amorphous", [[HFD with EX NH DH AS]], [[Hey... hey... hey, you're losing your form. You need to keep yourself together!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPEXNH', "The Decadent Court", [[HFD with EX NH DH DP]], [[Why do we even have ten courtrooms?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXINNH', "Black Magic", [[HFD with EX NH IN AS]], [[SQUIDWARD!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXINNH', "Abandoned", [[HFD with EX NH IN DP]], [[The rememberence of what once was...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPEXNH', "Royal Waltz", [[HFD with EX NH AS DP]], [["Don't you DARE put me in that pot!"]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXGVMSVL', "Juggernaut", [[HFD with EX MS GV VL]], [[I don't know what to put here so uh... Jupiter]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXGVMS', "Mining for Netherite", [[HFD with EX MS GV DH]], [[Make sure you bring beds with you, their explosions will help.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXGVINMS', "Resourceful", [[HFD with EX MS GV IN]], [[Survival requires proper management of resources, among other things.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXGVMS', "Irregular Sketch", [[HFD with EX MS GV AS]], [[Now, that's a crude drawing if I've ever seen one.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXGVMS', "Mining Corporation", [[HFD with EX MS GV DP]], [[We are NOT stopping until we get a stack of diamonds!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXINMSVL', "Interstellar", [[HFD with EX MS VL IN]], [[This little manuver's gonna take us 500 Quintillion eons.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXMSVL', "The Hacker", [[HFD with EX MS VL AS]], [["I'm in"]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {
@@ -3383,6 +3432,7 @@ do
     local misc = 1
     local mp2 = 1
     local mp3 = 1
+    local mp4 = 1
     repeat
         local achv = d[i]
         if achv.title then
@@ -3414,6 +3464,13 @@ do
                     mp3 = mp3 + 1
                 end
                 table.insert(d, i + 1, {mod = '3MP'})
+            elseif achv.mod == '4MP' then
+                if mp4 % 2 == 0 then
+                    table.insert(d, i, {mod = '4MP'})
+                    i = i + 1
+                    mp4 = mp4 + 1
+                end
+                table.insert(d, i + 1, {mod = '4MP'})
             else
                 if i % 2 == 0 then
                     table.insert(d, i, {})
@@ -3433,6 +3490,9 @@ do
         end
         if achv.mod == '3MP'  then
             mp3 = mp3 + 1
+        end
+        if achv.mod == '4MP'  then
+            mp4 = mp4 + 1
         end
         i = i + 1
     until i > #d
