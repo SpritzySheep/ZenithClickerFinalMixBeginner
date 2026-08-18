@@ -5067,8 +5067,10 @@ function GAME.update(dt)
                 GAME.height = GAME.height + GAME.rank / 4 * (passiveClimbSpeedMod * 0.6) * dt * (GAME.einvisUI and 1 or icLerp(0.5, 3, Floors[GAME.floor].top - GAME.height))
             end
             if not URM then
-                GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20  
-                GAME.height = max(GAME.height, Floors[GAME.floor - 1].top)
+                if not STAT.MouseGirl then
+                    GAME.height = GAME.height - dt * (GAME.floor * (GAME.floor + 1) + 10) / 20  
+                    GAME.height = max(GAME.height, Floors[GAME.floor - 1].top)
+                end
             else
                 if GAME.negFloor > 0 then
                     if GAME.negFloor >= 2 then
@@ -5077,7 +5079,9 @@ function GAME.update(dt)
                     if GAME.negFloor < 10 then
                         local f = max(GAME.floor, GAME.negFloor)
                         local fallSpeed = (f * (f + 1) + 10) / 20
-                        GAME.height = GAME.height - dt * fallSpeed
+                        if not STAT.MouseGirl then
+                            GAME.height = GAME.height - dt * fallSpeed
+                        end
                         end
                     end
                     if GAME.height < NegFloors[GAME.negFloor].bottom and not GAME.einvisUI then GAME.downFloor() end
@@ -5105,10 +5109,25 @@ function GAME.update(dt)
         GAME.time = 180
         GAME.height = 1e6
     end
+                if STAT.MouseGirl then
+                    if GAME.height < 1e6 then 
+                        GAME.invincible = true 
+                        GAME.time = 0
+                        if not GAME.noLeak then GAME.noLeak = true end
+                    else 
+                        GAME.invincible = false 
+                    end
+                end
         if M.EX < 2 then
             if not GAME.badTime then
                 if STAT.MouseGirl then
-                    if GAME.height < 1e6 then GAME.invincible = true else GAME.invincible = false end
+                    if GAME.height < 1e6 then 
+                        GAME.invincible = true 
+                        GAME.time = 0
+                        if not GAME.noLeak then GAME.noLeak = true end
+                    else 
+                        GAME.invincible = false 
+                    end
                     GAME.height = GAME.height + GAME.rank / 0.3 * dt
                     --if GAME.height > 1e5 then GAME.height = 1e5 end
                 elseif GAME.crit then

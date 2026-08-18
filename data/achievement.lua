@@ -2929,7 +2929,7 @@ local d = {
     },
     {id = 'powerleveling20',name = "Finity Leveling", desc = [[Zenith Level (95,000-99,999)]],
         quote = [["Any bigger and she'll be taller than the entire atmosphere."]], scoreSimp = function(n) return "Lv" .. n end,
-        rank = numberRank(95000, 96000, 97000, 98000, 99000, 99999, 1049999), hide = function() return STAT.level < 95000 end
+        rank = numberRank(95000, 96000, 97000, 98000, 99000, 99999, 104999), hide = function() return STAT.level < 95000 end
         , realHide = function() return STAT.level < 95000 end, mod = "MISC",
     },
     {id = 'powerleveling21',name = "Divine Leveling", desc = [[Zenith Level (100k-105k)]],
@@ -2956,6 +2956,26 @@ local d = {
         quote = [["My god..."]], scoreSimp = function(n) return "Lv" .. n end,
         rank = numberRank(120e3, 121e3, 122e3, 123e3, 124e3, 125e3, 130e3), hide = function() return STAT.level < 120e3 end
         , realHide = function() return STAT.level < 120e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling26',name = "Satelite Leveling", desc = [[Zenith Level (125k-130k)]],
+        quote = [["You ever gonna stop?!"]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(125e3, 126e3, 127e3, 128e3, 129e3, 130e3, 135e3), hide = function() return STAT.level < 125e3 end
+        , realHide = function() return STAT.level < 125e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling27',name = "Colossal Leveling", desc = [[Zenith Level (130k-135k)]],
+        quote = [["She's huge..."]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(130e3, 131e3, 132e3, 133e3, 134e3, 135e3, 140e3), hide = function() return STAT.level < 130e3 end
+        , realHide = function() return STAT.level < 130e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling28',name = "Orbital Leveling", desc = [[Zenith Level (135k-140k)]],
+        quote = [[I ran out of ideas for powerleveling descriptions.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(135e3, 136e3, 137e3, 138e3, 139e3, 140e3, 145e3), hide = function() return STAT.level < 135e3 end
+        , realHide = function() return STAT.level < 135e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling29',name = "Trans-Orbital Leveling", desc = [[Zenith Level (140k-145k)]],
+        quote = [["Ah, no! Not the floating thing again!" -Skully]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(140e3, 141e3, 142e3, 143e3, 144e3, 145e3, 150e3), hide = function() return STAT.level < 140e3 end
+        , realHide = function() return STAT.level < 140e3 end, mod = "MISC",
     },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
@@ -3419,6 +3439,16 @@ local d = {
     AchieveFromCombo('DPEXGVMS', "Mining Corporation", [[HFD with EX MS GV DP]], [[We are NOT stopping until we get a stack of diamonds!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('EXINMSVL', "Interstellar", [[HFD with EX MS VL IN]], [[This little manuver's gonna take us 500 Quintillion eons.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASEXMSVL', "The Hacker", [[HFD with EX MS VL AS]], [["I'm in"]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXMSVL', "The Bull and Bear", [[HFD with EX MS VL DP]], [[You've heard of bull in a china shop, how about bear in a japan shop?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXINMS', "The Theocrat", [[HFD with EX MS DH IN]], [[...is this theoretical music?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHEXMS', "Imprisonment", [[HFD with EX MS DH AS]], [[Mmph... Let me out!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPEXMS', "Checkmate", [[HFD with EX MS DH DP]], [["Good game, old friend."]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXINMS', "The Mathematician", [[HFD with EX MS IN AS]], [[The sheer expansiveness of the world of maths eclipse even the far reaches of reality.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXINMS', "Rulers in the Dark", [[HFD with EX MS IN DP]], [["I'm with you in the dark."]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPEXMS', "Double Cancelling", [[HFD with EX MS AS DP]], [[Bootleg Volatile?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXGVVL', "The Autocrat", [[HFD with EX GV VL DH]], [["Don't generate music with AI! Worst mistake I've ever made!" -Peter]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('EXGVINVL', "Lateness", [[HFD with EX GV VL IN]], [[My World Thinks I'm Late]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXGVVL', "Inertia", [[HFD with EX GV VL AS]], [[Round and round she goes...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {

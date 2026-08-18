@@ -280,6 +280,8 @@ TEXTURE = {
             assets 'rank/epsilon_06.png', assets 'rank/epsilon_07.png', assets 'rank/epsilon_08.png', assets 'rank/epsilon_09.png', assets 'rank/epsilon_10.png',
             assets 'rank/zeta_01.png', assets 'rank/zeta_02.png', assets 'rank/zeta_03.png', assets 'rank/zeta_04.png', assets 'rank/zeta_05.png',
             assets 'rank/zeta_06.png', assets 'rank/zeta_07.png', assets 'rank/zeta_08.png', assets 'rank/zeta_09.png', assets 'rank/zeta_10.png',
+            assets 'rank/eta_01.png', assets 'rank/eta_02.png', assets 'rank/eta_03.png', assets 'rank/eta_04.png', assets 'rank/eta_05.png',
+            assets 'rank/eta_06.png', assets 'rank/eta_07.png', assets 'rank/eta_08.png', assets 'rank/eta_09.png', assets 'rank/eta_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -647,6 +649,10 @@ TEXTURE = {
             powerleveling23 = aq(17, 3),
             powerleveling24 = aq(19, 3),
             powerleveling25 = aq(20, 3),
+            powerleveling26 = aq(23, 3),
+            powerleveling27 = aq(24, 3),
+            powerleveling28 = aq(25, 3),
+            powerleveling29 = aq(27, 3),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -704,7 +710,9 @@ TEXTURE = {
             DPEXGVNH = aq(24, 2), DHEXNHVL = aq(4, 12), EXINNHVL = aq(4, 2), ASEXNHVL = aq(8, 7), DPEXNHVL = aq(25, 2),
             DHEXINNH = aq(16, 7), ASDHEXNH = aq(6, 2), DHDPEXNH = aq(27, 2), ASEXINNH = aq(28, 2), DPEXINNH = aq(13, 5),
             ASDPEXNH = aq(29, 2), EXGVMSVL = aq(30, 2), DHEXGVMS = aq(13, 11), EXGVINMS = aq(8, 6), ASEXGVMS = aq(9, 12),
-            DPEXGVMS = aq(7, 10), EXINMSVL = aq(31, 2), ASEXMSVL = aq(32, 2),
+            DPEXGVMS = aq(7, 10), EXINMSVL = aq(31, 2), ASEXMSVL = aq(32, 2), DPEXMSVL = aq(7, 6), DHEXINMS = aq(1, 11),
+            ASDHEXMS = aq(21, 3), DHDPEXMS = aq(22, 3), ASEXINMS = aq(26, 3), DPEXINMS = aq(28, 3), ASDPEXMS = aq(3, 11),
+            DHEXGVVL = aq(29, 3), EXGVINVL = aq(30, 3), ASEXGVVL = aq(9, 4),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1039,6 +1047,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     easyModeVersion = GC.newText(FONT.get(30)),
     theA       = GC.newText(FONT.get(50)),
     theM       = GC.newText(FONT.get(50), ""),
+    ReveText   = GC.newText(FONT.get(50)),
 }
 FONT.setDefaultFont('sans')
 

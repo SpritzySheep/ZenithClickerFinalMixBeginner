@@ -2,7 +2,7 @@
 local scene = {}
 
 local maskAlpha, cardShow
-local card = GC.newCanvas(2650, 1440)
+local card = GC.newCanvas(2250, 1440)
 local totalBadges = 50
 local wreaths = 0
 local floor = math.floor
@@ -157,8 +157,10 @@ local function calculateRating()
     if cr >= 1000e3 then IssueSecret('infinity', true) end
     if cr >= 1050e3 then IssueSecret('infinity_02', true) end
     if cr >= 1100e3 then IssueSecret('infinity_03', true) end
+    if cr >= 1150e3 then IssueSecret('infinity_04', true) end
+    if cr >= 1200e3 then IssueSecret('infinity_05', true) end
 
-    local levelBadgeCount = 25
+    local levelBadgeCount = 29
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -231,12 +233,12 @@ function RefreshProfile()
     -- Main panel & frame
     GC.setColor(pnlColor)
     -- base
-    GC.rectangle('fill', 0, 0, 2800, 1440)
+    GC.rectangle('fill', 0, 0, 2400, 1440)
     -- deco
     GC.draw(saw, sawQuad, 0, 1440 - 560, 0, 7.2, 7.2, 0, 3)
     -- top ribbon (badges)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 00, 210, 2800, 60)
+    GC.rectangle('fill', 00, 210, 2400, 60)
     -- bottom ribbon
     GC.rectangle('fill', 0, 1440, 1800, -90)
     -- github link
@@ -264,8 +266,8 @@ function RefreshProfile()
     local avatar = AVATAR or TEXTURE.stat.avatar
     GC.setColor(1, 1, 1)
     GC.stc_setComp()
-    GC.stc_rect(2650-1440, 0, 1440, 1440, 0)
-    GC.draw(avatar, 2650-1440, 0, 0, 1440 / math.min(avatar:getDimensions()))
+    GC.stc_rect(2650-1440, 300, 1040, 1040, 0)
+    GC.draw(avatar, 2650-1440, 300, 0, 1040 / math.min(avatar:getDimensions()))
     GC.stc_stop()
 
     -- ID
@@ -301,7 +303,7 @@ function RefreshProfile()
             if TEXTURE.stat.badges[id] then
                 badgeCount = badgeCount + 1
                 if i > (scroll*50) and i <= 50+(scroll*50) then
-                GC.mDraw(TEXTURE.stat.badges[id], (6 + 50 * badgeCount) - (scroll*2500), 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
+                GC.mDraw(TEXTURE.stat.badges[id], (6 + 44 * badgeCount) - (scroll*2200), 242, 0, 50 / math.max(TEXTURE.stat.badges[id]:getDimensions()))
                 end
                 local bd = BadgeData[id] or BadgeData[0]
                 bpage = floor(badgeCount/50)
@@ -394,7 +396,7 @@ function RefreshProfile()
      end
     GC.setColor(1, 1, 1)
     GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
-    GC.draw(rankIcon, 2200, 650,0, 400 / rankIcon:getWidth())
+    GC.draw(rankIcon, 700, 500,0, 400 / rankIcon:getWidth())
     if rank > 0 then
         -- Progress Bar
         GC.setColor(rating <= rating and textColor or scoreColor)
@@ -643,7 +645,7 @@ end
 scene.widgetList = {
     WIDGET.new {
         name = 'peakZP', type = 'hint',
-        pos = { .5, .5 }, x = -590, y = -90, w = 180, h = 35,
+        pos = { .5, .5 }, x = -450, y = -90, w = 180, h = 35,
         color = COLOR.X,
         labelPos = 'topRight',
         labelDist = 2,
@@ -652,7 +654,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'achbonus', type = 'hint',
-        pos = { .5, .5 }, x = -380, y = -30, w = 180, h = 35,
+        pos = { .5, .5 }, x = -240, y = -30, w = 180, h = 35,
         color = COLOR.Y,
         labelPos = 'topRight',
         labelDist = 2,
@@ -662,7 +664,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'full', type = 'button_invis',
-        pos = { .5, .5 }, x = -480, y = 450, w = 800, h = 60,
+        pos = { .5, .5 }, x = -340, y = 450, w = 800, h = 60,
         onPress = function()
             if cardShow == 1 then
                 SFX.play('menuconfirm')
@@ -673,18 +675,18 @@ scene.widgetList = {
     -- CLOSE button
     WIDGET.new {
         name = 'close', type = 'button_invis',
-        pos = { .5, .5 }, x = -174, y = -436, w = 100, h = 50,
+        pos = { .5, .5 }, x = -34, y = -436, w = 100, h = 50,
         onClick = function() love.keypressed('escape') end,
     },
     WIDGET.new {
         name = 'left', type = 'button_invis',
-        pos = { .5, .5 }, x = -850, y = -267.5, w = 50, h = 50,
+        pos = { .5, .5 }, x = -710, y = -267.5, w = 50, h = 50,
         color = COLOR.V,
         onClick = function() love.keypressed('a') end,
     },
     WIDGET.new {
         name = 'right', type = 'button_invis',
-        pos = { .5, .5 }, x = -125, y = -267.5, w = 50, h = 50,
+        pos = { .5, .5 }, x = 15, y = -267.5, w = 50, h = 50,
         color = COLOR.V,
         onClick = function() love.keypressed('d') end,
     },
@@ -699,7 +701,7 @@ scene.widgetList = {
     -- Inside the profile card
     WIDGET.new {
         name = 'protect', type = 'button_invis',
-        pos = { .5, .5 }, w = 1780, h = 960,
+        pos = { .5, .5 }, w = 1380, h = 960,
     },
     -- Outside the profile card
     WIDGET.new {

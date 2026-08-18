@@ -353,6 +353,16 @@ d.menu = {
     { set = "EX MS GV DP",        name = "Mining Corporation"},
     { set = "EX MS VL IN",        name = "Interstellar"},
     { set = "EX MS VL AS",        name = "The Hacker"},
+    { set = "EX MS VL DP",        name = "The Bull and Bear"},
+    { set = "EX MS DH IN",        name = "The Theocrat"},
+    { set = "EX MS DH AS",        name = "Imprisonment"},
+    { set = "EX MS DH DP",        name = "Checkmate"},
+    { set = "EX MS IN AS",        name = "The Mathematician"},
+    { set = "EX MS IN DP",        name = "Rulers in the Dark"},
+    { set = "EX MS AS DP",        name = "Double Cancelling"},
+    { set = "EX GV VL DH",        name = "The Autocrat"},
+    { set = "EX GV VL IN",        name = "Lateness"},
+    { set = "EX GV VL AS",        name = "Inertia"},
 }
 
 

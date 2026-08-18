@@ -706,8 +706,8 @@ function scene.update(dt)
     end
     if GAME.nightcore then dt = dt * 2.6 end
     if GAME.zenithTraveler and M.EX == 2 then
-        local f = GAME.calculateFloor(GAME.bgH)
-        GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL >= 0 and M.VL + 1 or 1), 0)
+        --local f = GAME.calculateFloor(GAME.bgH)
+        --GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL >= 0 and M.VL + 1 or 1), 0)
     end
     GAME.update(dt)
     GAME.lifeShow = expApproach(GAME.lifeShow, GAME.life, dt * 10)
@@ -1344,6 +1344,12 @@ function scene.overDraw()
 
         -- Health Bar
         local safeHP = GAME.playing and max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime) or 0
+        if STAT.MouseGirl then
+        gc_setColor(COLOR.D)
+        gc_mRect('fill', 800, 0, 1800, 200)
+        gc_setColor(COLOR.V)
+        gc_mRect('fill', 800, 0, 1800 * GAME.height / 1e6, 200)
+        end
         if M.DP == 0 then
             gc_setColor(GAME.playing and GAME.life > safeHP and COLOR.lG or COLOR.R)
             gc_setAlpha(1/eTAlpha)
@@ -1530,16 +1536,17 @@ function scene.overDraw()
                 gc_scale(GAME.uiHide)
                 local baseThickness = 6
                 local radius = 60
-                local colorList = {COLOR.R, COLOR.O, COLOR.Y, COLOR.G, COLOR.C, COLOR.I, COLOR.B, COLOR.V, COLOR.M, COLOR.W }
+                local colorList = {COLOR.R, COLOR.O, COLOR.Y, COLOR.G, COLOR.C, COLOR.I, COLOR.B, COLOR.V, COLOR.M, COLOR.L }
                 local colorIndex = 1
                 local rank = GAME.rank
                 local xp = (M.VL == 2 and URM) and (5+GAME.chain) or GAME.commit(false, true)
                 local newXP, newRank = GAME.addXP(xp, true)
                 local revolutions = newRank - rank + (newXP/((newRank))) -- 1/360
                 local tempRevolutions = newRank - rank 
+                local ReveText = 0
                 if revolutions > 1 then
                     while radius > 2 and tempRevolutions > 0 do
-                        for i = 1, floor(revolutions) do
+                        for i = 1, MATH.min(floor(revolutions),600) do
                             gc_setColor(colorList[colorIndex])
                             gc_circle('fill', 0, 0, radius)
                             if colorIndex == 10 then
@@ -1548,7 +1555,7 @@ function scene.overDraw()
                                 colorIndex = colorIndex + 1
                             end
                             tempRevolutions = tempRevolutions - 1
-                            radius = radius - (revolutions <= 10 and 6 or revolutions <= 12 and 5 or revolutions <= 15 and 4 or revolutions <= 20 and 3 or revolutions <= 30 and 2 or revolutions <= 50 and 1 or 0)
+                            radius = radius - (revolutions <= 10 and 6 or revolutions <= 12 and 5 or revolutions <= 15 and 4 or revolutions <= 20 and 3 or revolutions <= 30 and 2 or revolutions <= 60 and 1 or revolutions <= 120 and 0.5 or revolutions <= 240 and 0.25 or 0.1)
                         end
                     end
                     gc_setColor(colorList[colorIndex])
@@ -1561,6 +1568,9 @@ function scene.overDraw()
                 gc_setColor(GAME.rank > 126 and COLOR.LL or COLOR.LD)
                 gc_setAlpha(1/eTAlpha)
                 gc_circle('line', 0, 0, 60)
+                TEXTS.ReveText:set("+"..MATH.floor(revolutions))
+                gc_setColor(COLOR.L)
+                gc_draw(TEXTS.ReveText, 70, -70)
                 gc_pop()
             end
             -- Revive Task
