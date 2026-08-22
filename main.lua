@@ -653,6 +653,9 @@ TEXTURE = {
             powerleveling27 = aq(24, 3),
             powerleveling28 = aq(25, 3),
             powerleveling29 = aq(27, 3),
+            powerleveling30 = aq(31, 3),
+            powerleveling31 = aq(18, 4),
+            powerleveling32 = aq(18, 4),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -712,7 +715,11 @@ TEXTURE = {
             ASDPEXNH = aq(29, 2), EXGVMSVL = aq(30, 2), DHEXGVMS = aq(13, 11), EXGVINMS = aq(8, 6), ASEXGVMS = aq(9, 12),
             DPEXGVMS = aq(7, 10), EXINMSVL = aq(31, 2), ASEXMSVL = aq(32, 2), DPEXMSVL = aq(7, 6), DHEXINMS = aq(1, 11),
             ASDHEXMS = aq(21, 3), DHDPEXMS = aq(22, 3), ASEXINMS = aq(26, 3), DPEXINMS = aq(28, 3), ASDPEXMS = aq(3, 11),
-            DHEXGVVL = aq(29, 3), EXGVINVL = aq(30, 3), ASEXGVVL = aq(9, 4),
+            DHEXGVVL = aq(29, 3), EXGVINVL = aq(30, 3), ASEXGVVL = aq(9, 4), DPEXGVVL = aq(1, 6), DHEXGVIN = aq(11, 8),
+            ASDHEXGV = aq(7, 2), DHDPEXGV = aq(7, 5), ASEXGVIN = aq(32, 3), DPEXGVIN = aq(14, 10), ASDPEXGV = aq(17, 4),
+            DHEXINVL = aq(2, 8), ASDHEXVL = aq(9, 11), DHDPEXVL = aq(13, 9), ASEXINVL = aq(11, 9), DPEXINVL = aq(19, 4),
+            ASDPEXVL = aq(7, 11), ASDHEXIN = aq(20, 4), DHDPEXIN = aq(7, 10), ASDHDPEX = aq(3, 7), ASDPEXIN = aq(12, 9),
+            GVMSNHVL = aq(21, 4),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',

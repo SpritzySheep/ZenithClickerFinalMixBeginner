@@ -2977,6 +2977,21 @@ local d = {
         rank = numberRank(140e3, 141e3, 142e3, 143e3, 144e3, 145e3, 150e3), hide = function() return STAT.level < 140e3 end
         , realHide = function() return STAT.level < 140e3 end, mod = "MISC",
     },
+    {id = 'powerleveling30',name = "Interplanetary Leveling", desc = [[Zenith Level (145k-150k)]],
+        quote = [[INTERGALCTIC PLANETARY PLANETAY INTERGALACTIC]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(145e3, 146e3, 147e3, 148e3, 149e3, 150e3, 155e3), hide = function() return STAT.level < 145e3 end
+        , realHide = function() return STAT.level < 145e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling31',name = "Superplanetary Leveling", desc = [[Zenith Level (150k-155k)]],
+        quote = [[what]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(150e3, 151e3, 152e3, 153e3, 154e3, 155e3, 160e3), hide = function() return STAT.level < 150e3 end
+        , realHide = function() return STAT.level < 150e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling32',name = "Hyperplanetary Leveling", desc = [[Zenith Level (155k-160k)]],
+        quote = [[It is time to reach the farlands.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(155e3, 156e3, 157e3, 158e3, 159e3, 160e3, 165e3), hide = function() return STAT.level < 155e3 end
+        , realHide = function() return STAT.level < 155e3 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3449,6 +3464,24 @@ local d = {
     AchieveFromCombo('DHEXGVVL', "The Autocrat", [[HFD with EX GV VL DH]], [["Don't generate music with AI! Worst mistake I've ever made!" -Peter]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('EXGVINVL', "Lateness", [[HFD with EX GV VL IN]], [[My World Thinks I'm Late]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASEXGVVL', "Inertia", [[HFD with EX GV VL AS]], [[Round and round she goes...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXGVVL', "The Irresponsible One", [[HFD with EX GV VL DP]], [["Could you please stop reviving?"]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXGVIN', "Lament Rain", [[HFD with EX GV DH IN]], [[I'm not even sure how this would work.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHEXGV', "Spin Overlord", [[HFD with EX GV DH AS]], [[P-Spin Penta!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPEXGV', "Shortcuts", [[HFD with EX GV DH DP]], [[That's not a shortcut, that's just misdropping.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXGVIN', "Mastermind", [[HFD with EX GV IN AS]], [[No cheese?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXGVIN', "Grandmasters of the World", [[HFD with EX GV IN DP]], [[YOU AER: GRAND-MASTER! PRINCESS of ROUNDS]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPEXGV', "T-Spinners", [[HFD with EX GV AS DP]], [[Flat Arial TT-Droptwist Tesseradeca All-Clear #25 35-Combo Back-to-Back x255 Reaper]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHEXINVL', "Corruption", [[HFD with EX VL DH IN]], [[௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹௹]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHEXVL', "Devilish Falsifier", [[HFD with EX VL DH AS]], [[The earth is, in fact, not flat. Don't ler falsifiers tell you otherwise.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPEXVL', "Dyarchy", [[HFD with EX VL DH DP]], [[Whoever heard of a kingsom with TWO kings?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASEXINVL', "Insanity", [[HFD with EX VL IN AS]], [[When you need a trip to the mine museum]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPEXINVL', "Dynasty", [[HFD with EX VL IN DP]], [[e]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPEXVL', "The Loophole", [[HFD with EX VL AS DP]], [[Puzzles meant for a single mouse can easily become trivial when done by a pack of mice.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHEXIN', "Reverse Quadruple Threat", [[HFD with EX DH IN AS]], [[Stop turning numbers upside-down, Johnson.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPEXIN', "Construction Site", [[HFD with EX DH IN DP]], [[Everyone vibin' until Spritzy sits on the roof.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHDPEX', "The Devil's Advocate", [[HFD with EX DH AS DP]], [[I TOLD YOU: MICE SHOULD NOT GIVE INTO THE DARK ARTS!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPEXIN', "The Professional Artist", [[HFD with EX IN AS DP]], [[Vincent Van Gogh and Leonardo DaVinci combined into one]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('GVMSNHVL', "Quadruple Threat", [[HFD with NH MS GV VL]], [[There we go, see how much better that looks?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {

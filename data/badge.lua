@@ -168,6 +168,9 @@ local d = {
     {id = 'Lv135000',name = "Prestige XXVII",desc = "Reached Lv135k",},
     {id = 'Lv140000',name = "Prestige XXVIII",desc = "Reached Lv140k",},
     {id = 'Lv145000',name = "Prestige XXIX",desc = "Reached Lv145k",},
+    {id = 'Lv150000',name = "Prestige XXX",desc = "Reached Lv150k",},
+    {id = 'Lv155000',name = "Prestige XXXI",desc = "Reached Lv155k",},
+    {id = 'Lv160000',name = "Prestige XXXII",desc = "Reached Lv160k",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -175,6 +178,7 @@ local d = {
     },
     {id = 'achv300',name = "Superachiever",desc = "Got a total of 1,500 AP",},
     {id = 'achv400',name = "Hyperachiever",desc = "Got a total of 2,000 AP",},
+    {id = 'achv500',name = "Ultra-achiever",desc = "Got a total of 2,500 AP",},
     {
         id = 'peta',
         name = "PETASPEED!!!!",

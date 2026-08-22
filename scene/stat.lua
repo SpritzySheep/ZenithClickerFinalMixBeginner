@@ -16,6 +16,7 @@ local setup = { stencil = true, card }
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
 local level = 0
+local y = 0
 local bpage = 1
 local crProgress = {
     f10 = 0,
@@ -101,7 +102,8 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
     cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva) + STAT.totalExista
-    level = MATH.floor((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    y = (.55-MATH.max(0,((level-2e5)/5e7)))
+    level = MATH.floor((STAT.peakZP/500)^y+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
     STAT.level = level
     STAT.ZP = STAT.PeakZP
     cr = cr + MATH.floor(level)
@@ -160,7 +162,7 @@ local function calculateRating()
     if cr >= 1150e3 then IssueSecret('infinity_04', true) end
     if cr >= 1200e3 then IssueSecret('infinity_05', true) end
 
-    local levelBadgeCount = 29
+    local levelBadgeCount = 32
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -168,6 +170,7 @@ local function calculateRating()
     if crProgress.achvGet >= 1e3 then IssueSecret('achv', true) end
     if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
     if crProgress.achvGet >= 2e3 then IssueSecret('achv400', true) end
+    if crProgress.achvGet >= 2.5e3 then IssueSecret('achv500', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap
@@ -266,7 +269,7 @@ function RefreshProfile()
     local avatar = AVATAR or TEXTURE.stat.avatar
     GC.setColor(1, 1, 1)
     GC.stc_setComp()
-    GC.stc_rect(2650-1440, 300, 1040, 1040, 0)
+    GC.stc_rect(2650-1440, 300, 1640, 1640, 0)
     GC.draw(avatar, 2650-1440, 300, 0, 1040 / math.min(avatar:getDimensions()))
     GC.stc_stop()
 
@@ -472,15 +475,15 @@ function RefreshProfile()
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
         { t = { scoreColor, STAT.peakZP > 1e10 and MATH.floor(STAT.peakZP/1e9)..'B' or STAT.peakZP > 1e7 and MATH.floor(STAT.peakZP/1e6)..'M' or STAT.peakZP > 1e5 and MATH.floor(STAT.peakZP/1e3)..'k' or MATH.round(STAT.peakZP), textColor, "" },                      x = 470, y = 58 },
-        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
+        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
     -- GC.rectangle('fill', 0, 0, bw, bh)
     GC.setColor(lblColor)
     GC.rectangle('fill', 315, 121, 254, 18)
     GC.setColor(scoreColor)
-    GC.rectangle('fill', 315, 120, MATH.round((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
+    GC.rectangle('fill', 315, 120, MATH.round((MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
     scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. Use code 'achbonus' in Config to turn it on."
     if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. Use code 'achbonus' in Config to turn it off." end

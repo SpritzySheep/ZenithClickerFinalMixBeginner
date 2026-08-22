@@ -3,6 +3,6 @@ return {
     ["apkCode"] = 011401,
     ["verCode"] = 011401,
 
-    ["appVer"] = "4181.17.3e2.7_01 Runic",
-    ["verStr"] = "4181.17.3e2.7_01 Runic",
+    ["appVer"] = "6765.17.3e2.7 Crystal",
+    ["verStr"] = "6765.17.3e2.7 Crystal",
 }
