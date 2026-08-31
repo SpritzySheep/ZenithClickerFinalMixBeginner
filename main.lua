@@ -282,6 +282,8 @@ TEXTURE = {
             assets 'rank/zeta_06.png', assets 'rank/zeta_07.png', assets 'rank/zeta_08.png', assets 'rank/zeta_09.png', assets 'rank/zeta_10.png',
             assets 'rank/eta_01.png', assets 'rank/eta_02.png', assets 'rank/eta_03.png', assets 'rank/eta_04.png', assets 'rank/eta_05.png',
             assets 'rank/eta_06.png', assets 'rank/eta_07.png', assets 'rank/eta_08.png', assets 'rank/eta_09.png', assets 'rank/eta_10.png',
+            assets 'rank/theta_01.png', assets 'rank/theta_02.png', assets 'rank/theta_03.png', assets 'rank/theta_04.png', assets 'rank/theta_05.png',
+            assets 'rank/theta_06.png', assets 'rank/theta_07.png', assets 'rank/theta_08.png', assets 'rank/theta_09.png', assets 'rank/theta_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -656,6 +658,9 @@ TEXTURE = {
             powerleveling30 = aq(31, 3),
             powerleveling31 = aq(18, 4),
             powerleveling32 = aq(18, 4),
+            powerleveling33 = aq(23, 4),
+            powerleveling34 = aq(23, 4),
+            powerleveling35 = aq(23, 4),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -719,7 +724,12 @@ TEXTURE = {
             ASDHEXGV = aq(7, 2), DHDPEXGV = aq(7, 5), ASEXGVIN = aq(32, 3), DPEXGVIN = aq(14, 10), ASDPEXGV = aq(17, 4),
             DHEXINVL = aq(2, 8), ASDHEXVL = aq(9, 11), DHDPEXVL = aq(13, 9), ASEXINVL = aq(11, 9), DPEXINVL = aq(19, 4),
             ASDPEXVL = aq(7, 11), ASDHEXIN = aq(20, 4), DHDPEXIN = aq(7, 10), ASDHDPEX = aq(3, 7), ASDPEXIN = aq(12, 9),
-            GVMSNHVL = aq(21, 4),
+            GVMSNHVL = aq(21, 4), DHGVMSNH = aq(1, 2), GVINMSNH = aq(7, 10), ASGVMSNH = aq(29, 1), DPGVMSNH = aq(22, 4),
+            DHMSNHVL = aq(1, 12), INMSNHVL = aq(24, 4), ASMSNHVL = aq(25, 4), DPMSNHVL = aq(12, 4), DHINMSNH = aq(6, 10),
+            ASDHMSNH = aq(26, 4), DHDPMSNH = aq(14, 4), ASINMSNH = aq(3, 7), DPINMSNH = aq(27, 4), ASDPMSNH = aq(15, 4),
+            DHGVNHVL = aq(3, 6), GVINNHVL = aq(26, 3), ASGVNHVL = aq(8, 6), DPGVNHVL = aq(31, 2), DHGVINNH = aq(28, 4),
+            ASDHGVNH = aq(29, 4), DHDPGVNH = aq(6, 8), ASGVINNH = aq(30, 4), DPGVINNH = aq(31, 4), ASDPGVNH = aq(10, 9),
+            DHINNHVL = aq(1, 10), ASDHNHVL = aq(28, 2), DHDPNHVL = aq(8, 11), ASINNHVL = aq(12, 12),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1089,6 +1099,7 @@ CONF = {
     stacker = false,
     oldTransparentCard = false,
     lyrics = false,
+    shortScale = true,
 }
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall

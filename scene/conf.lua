@@ -2267,37 +2267,33 @@ local page5 = {
             SaveStat()
         end,
     },
-    WIDGET.new { -- Mouse Girl
-        name = 'mousegirl', type = 'checkBox',
-        fillColor = COLOR.dV,
-        frameColor = COLOR.V,
-        textColor = COLOR.lV, text = "MOUSE GIRL",
-        x = baseX + 300, y = baseY + 120,
-        disp = function() return STAT.MouseGirl end,
-        code = function()
-            MSG.clear()
-                if STAT.uid == "SPRITZY_LUNA" then
-                STAT.MouseGirl = not STAT.MouseGirl
-                MSG('dark', (STAT.MouseGirl and "YOU'RE A CUTE LITTLE MOUSE GIRL!! SQUEAK!" or "F"))
-                SFX.play(STAT.MouseGirl and 'social_online' or 'social_offline')
-            else
-                MSG('dark', "Mouse Girl check failed.")
-            end
-            SaveStat()
-        end,
-    },
     WIDGET.new { -- Mod Codes
         name = 'codenames', type = 'checkBox',
         fillColor = COLOR.dV,
         frameColor = COLOR.V,
-        textColor = COLOR.lV, text = "MOD CODE NAMES",
-        x = baseX + 550, y = baseY + 120,
+        textColor = COLOR.lV, text = "CODE NAMES",
+        x = baseX + 350, y = baseY + 120,
         disp = function() return CONF.codeName end,
         code = function()
             MSG.clear()
                 CONF.codeName = not CONF.codeName
                 MSG('dark', (CONF.codeName and "MOD CODE NAMES ENABLED" or "MOD CODE NAMES DISABLED"))
                 SFX.play(CONF.codeName and 'social_online' or 'social_offline')
+            SaveStat()
+        end,
+    },
+    WIDGET.new { -- Short Scale
+        name = 'shortscale', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "SHORT SCALE",
+        x = baseX + 650, y = baseY + 120,
+        disp = function() return CONF.shortScale end,
+        code = function()
+            MSG.clear()
+                CONF.shortScale = not CONF.shortScale
+                MSG('dark', (CONF.shortScale and "SHORT SCALE SET" or "RAW NUMBER SET"))
+                SFX.play(CONF.shortScale and 'social_online' or 'social_offline')
             SaveStat()
         end,
     },

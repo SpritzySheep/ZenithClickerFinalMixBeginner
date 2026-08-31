@@ -270,6 +270,7 @@ addRank(-400, 3350, { COLOR.HEX '80FF00' }, "DELTA", "800,000 CE")
 addRank(0, 3350, { COLOR.HEX '00FF00' }, "EPSILON", "900,000 CE")
 addRank(400, 3350, { COLOR.HEX '00FF80' }, "ZETA", "1,000,000 CE")
 addRank(-400, 3450, { COLOR.HEX '00FFFF' }, "ETA", "1,100,000 CE")
+addRank(0, 3450, { COLOR.HEX '0080FF' }, "THETA", "1,200,000 CE")
 local timer
 function scene.load()
     MSG.clear()

@@ -689,9 +689,33 @@ end
 
 local KBIsDown, MSIsDown = love.keyboard.isDown, love.mouse.isDown
 local expApproach = MATH.expApproach
+local y, level, achvTime = 0, 0, 0
 function scene.update(dt)
     if dt > .26 then dt = .26 end
     if not GAME.playing then randomizeRNG() end
+    achvTime = achvTime + 1
+    if achvTime >=30 then
+        SubmitAchv('powerleveling', STAT.level,true,true)
+        local powerCount = 199
+        for tier = 2, powerCount do
+           SubmitAchv('powerleveling'..tier, STAT.level,true,true)
+        end
+        SubmitAchv('Tera', STAT.totalTera,true,true)
+        SubmitAchv('Peta', STAT.totalPeta,true,true)
+        SubmitAchv('Exa', STAT.totalExa,true,true)
+        SubmitAchv('Zeta', STAT.totalZeta,true,true)
+        SubmitAchv('Yotta', STAT.totalYotta,true,true)
+        SubmitAchv('Ronna', STAT.totalRonna,true,true)
+        SubmitAchv('Quetta', STAT.totalQuetta,true,true)
+        SubmitAchv('Deka', STAT.totalDeka,true,true)
+        SubmitAchv('Termina', STAT.totalTermina,true,true)
+        SubmitAchv('Lumina', STAT.totalLumina,true,true)
+        SubmitAchv('Singula', STAT.totalSingula,true,true)
+        SubmitAchv('Univa', STAT.totalUniva,true,true)
+        SubmitAchv('Multiva', STAT.totalMultiva,true,true)
+        SubmitAchv('Exista', STAT.totalExista,true,true)
+        achvTime = 0
+    end
     comboTimer = comboTimer - dt
     if comboTimer <= 0 then
         combo = 0
@@ -709,6 +733,9 @@ function scene.update(dt)
         --local f = GAME.calculateFloor(GAME.bgH)
         --GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL >= 0 and M.VL + 1 or 1), 0)
     end
+    y = (.55-MATH.max(0,((level-2e5)/5e7)))
+    level = MATH.floor((STAT.peakZP/500)^y+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    STAT.level = level
     GAME.update(dt)
     GAME.lifeShow = expApproach(GAME.lifeShow, GAME.life, dt * 10)
     GAME.lifeShow2 = expApproach(GAME.lifeShow2, GAME.life2, dt * 10)

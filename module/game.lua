@@ -4187,6 +4187,7 @@ end
         -- ZP of current run
         local zpGain = GAME.roundHeight * GAME.comboZP
         TEXTS.zpChange:set((zpGain >= 1e13 and "%.0fT ZP" or zpGain >= 1e10 and "%.0fB ZP" or zpGain >= 1e7 and "%.0fM ZP" or zpGain >= 1e5 and "%.0fk ZP" or "%.0fk ZP"):format(zpGain >=1e13 and MATH.floor(zpGain/1e12) or zpGain >=1e10 and MATH.floor(zpGain/1e9) or zpGain >=1e7 and MATH.floor(zpGain/1e6) or zpGain >=1e5 and MATH.floor(zpGain/1e3) or zpGain, 0, DailyActived and ", 260%" or ""))
+        if not CONF.shortScale then TEXTS.zpChange:set(("%.0f ZP"):format(zpGain, 0, DailyActived and ", 260%" or "")) end
 
         -- Easy Mode Version for records
         if not GAME.multiplePiecesActive then

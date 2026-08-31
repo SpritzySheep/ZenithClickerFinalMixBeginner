@@ -16,6 +16,7 @@ local setup = { stencil = true, card }
 local scroll, scroll1 = 0, 0
 local maxScroll = 90000
 local level = 0
+local refreshed = false
 local y = 0
 local bpage = 1
 local crProgress = {
@@ -161,8 +162,10 @@ local function calculateRating()
     if cr >= 1100e3 then IssueSecret('infinity_03', true) end
     if cr >= 1150e3 then IssueSecret('infinity_04', true) end
     if cr >= 1200e3 then IssueSecret('infinity_05', true) end
+    if cr >= 1250e3 then IssueSecret('infinity_06', true) end
+    if cr >= 1300e3 then IssueSecret('infinity_07', true) end
 
-    local levelBadgeCount = 32
+    local levelBadgeCount = 35
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -394,7 +397,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 78)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 118)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -474,8 +477,8 @@ function RefreshProfile()
         { t = { textColor, "Zenith Level" },                                                   x = 300, y = 83 },
         { t = { scoreColor, STAT.maxHeight <= 0 and "---" or MATH.round(STAT.maxHeight) .. "m" }, x = 470, y = 8 },
         { t = { scoreColor, STAT.minTime >= 1560 and "---" or MATH.round(STAT.minTime) .. "s" },  x = 470, y = 33 },
-        { t = { scoreColor, STAT.peakZP > 1e10 and MATH.floor(STAT.peakZP/1e9)..'B' or STAT.peakZP > 1e7 and MATH.floor(STAT.peakZP/1e6)..'M' or STAT.peakZP > 1e5 and MATH.floor(STAT.peakZP/1e3)..'k' or MATH.round(STAT.peakZP), textColor, "" },                      x = 470, y = 58 },
-        { t = { scoreColor, MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1), textColor, "" },                             x = 470, y = 83 },
+        { t = { scoreColor, CONF.shortScale and (STAT.peakZP > 1e13 and MATH.floor(STAT.peakZP/1e12)..'T' or STAT.peakZP > 1e10 and MATH.floor(STAT.peakZP/1e9)..'B' or STAT.peakZP > 1e7 and MATH.floor(STAT.peakZP/1e6)..'M' or STAT.peakZP > 1e5 and MATH.floor(STAT.peakZP/1e3)..'k' or MATH.round(STAT.peakZP)) or MATH.floor(STAT.peakZP), textColor, "" },                      x = 430, y = 58 },
+        { t = { scoreColor, STAT.level, textColor, "" },                             x = 430, y = 83 },
     } do GC.print(l.t, l.x, l.y, 0, .75) end
     -- GC.rectangle('fill', 0, 0, bw, bh)
     GC.setColor(lblColor)
@@ -596,6 +599,7 @@ function scene.load()
     crProgress.f10 = getF10Completion()
     crProgress.sr = getSpeedrunCompletion()
     crProgress.achvGet, crProgress.achvAll = getAchvCompletion()
+    STAT.level = level
 
     RefreshProfile()
 end
@@ -624,6 +628,7 @@ function scene.update(dt)
     for _, W in next, SCN.scenes.tower.widgetList do
         W:update(dt)
     end
+    RefreshProfile()
 end
 
 function scene.draw()

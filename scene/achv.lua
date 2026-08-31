@@ -748,7 +748,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'zc', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 140, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 90, w = 160, h = 40,
         color = { COLOR.HEX '383838' },
         fontSize = 30, text = " ZC    ", textColor = 'DL',
         onClick = function() 
@@ -759,7 +759,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'zcem', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 200, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 130, w = 160, h = 40,
         color = 'DG',
         sound_hover = 'menutap',
         fontSize = 30, text = "ZCEM   ", textColor = { .15, .75, .15 },
@@ -771,7 +771,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'misc', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 260, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 170, w = 160, h = 40,
         color = 'D',
         sound_hover = 'menutap',
         fontSize = 30, text = "MISC   ", textColor = { 1, 1, 1 },
@@ -783,7 +783,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'mp2', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 320, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 210, w = 160, h = 40,
         color = 'A',
         sound_hover = 'menutap',
         fontSize = 30, text = "02MP   ", textColor = { 0, 0, 0 },
@@ -795,7 +795,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'mp3', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 380, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 250, w = 160, h = 40,
         color = 'Y',
         sound_hover = 'menutap',
         fontSize = 30, text = "03MP   ", textColor = { 0, 0, 0 },
@@ -807,7 +807,7 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'mp4', type = 'button',
-        pos = { 1, 0 }, x = -60, y = 440, w = 160, h = 60,
+        pos = { 1, 0 }, x = -60, y = 290, w = 160, h = 40,
         color = 'O',
         sound_hover = 'menutap',
         fontSize = 30, text = "04MP   ", textColor = { 0, 0, 0 },

@@ -1493,7 +1493,7 @@ local d = {
         hide = TRUE,
         type = 'issued',
     },
-    { title = "Ex-Vanilla", desc = "Achievements that were removed from vanilla Zenith Clicker but were kept in ZCEM", mod = "ZCEM" },
+    { title = "Ex-Vanilla", desc = "Achievements that were removed from vanilla Zenith Clicker but were kept in ZCEM and by extension ZCMM", mod = "ZCEM" },
     { -- patience_is_a_virtue
         ex = true,
         id = 'patience_is_a_virtue',
@@ -1504,7 +1504,7 @@ local d = {
         rank = floorRank(1, 3, 5, 7, 9, 10, 2000),
         mod = "ZCEM",
     },
-    { title = "The Originals", desc = "Added in v1.0, includes a custom challenge for each Ultra Reversed mod", mod = "ZCEM" },
+    { title = "The Originals", desc = "Added in ZCEM v1.0, includes a custom challenge for each Ultra Reversed mod", mod = "ZCEM" },
     { -- Programmer & Pro Gamer
         ex = true,
         id = 'programmer_gamer',
@@ -1652,7 +1652,7 @@ local d = {
     { -- your_too_fast
         id = 'your_too_fast',
         name = "YOUR TOO FAST",
-        desc = [[Highest (climb speed) rank reached (Max Badge is Rank 127)]],
+        desc = [[Highest (climb speed) rank reached]],
         quote = [["MAMA MIA!"]],
         credit = "@TrevorSmithy",
         scoreSimp = function(rank) return "Rank " .. rank end,
@@ -1687,7 +1687,7 @@ local d = {
         type = 'issued',
         mod = "ZCEM",
     },
-    { title = "Easy Mods", desc = "Added in v1.1", mod = "ZCEM" },
+    { title = "Easy Mods", desc = "Added in ZCEM v1.1", mod = "ZCEM" },
     { -- eEX
         id = 'eEX',
         name = "Soft",
@@ -1769,7 +1769,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Uneasy Mods", desc = "Added in v1.1, each pair is matched with a regular piece to make their 'Uneasy' variant", hide = function() return not ACHV.uneasy end, mod = "ZCEM",},
+    { title = "Uneasy Mods", desc = "Added in ZCEM v1.1, each pair is matched with a regular piece to make their 'Uneasy' variant", hide = function() return not ACHV.uneasy end, mod = "ZCEM",},
     { -- ueEX
         id = 'ueEX',
         name = "Lethargy",
@@ -1896,7 +1896,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Special Quests", desc = "Added in v1.1, each easy variant of the named combos has a special quest-based achievement goal", mod = "ZCEM" },
+    { title = "Special Quests", desc = "Added in ZCEM v1.1, each easy variant of the named combos has a special quest-based achievement goal", mod = "ZCEM" },
     { -- emperor_development
         --id = 'eDHEXeNH',
         id = 'emperor_development',
@@ -2005,7 +2005,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "-Why", desc = "Added in v1.1, unlike normal WHY these require the exact MP listed", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end, mod = "ZCEM"},
+    { title = "-Why", desc = "Added in ZCEM v1.1, unlike normal WHY these require the exact MP listed", hide = function() return TABLE.countAll(GAME.completion, 0) >= 8 end, mod = "ZCEM"},
     { -- -3
         id = '-3',
         name = "Respite",
@@ -2076,7 +2076,7 @@ local d = {
         mod = "ZCEM",
          
     },
-    { title = "Secrets", desc = "Added in v1.1, these require exploring mechanics/features introduced by ZCEM", mod = "ZCEM" },
+    { title = "Secrets", desc = "Added in ZCEM v1.1, these require exploring mechanics/features introduced by ZCEM", mod = "ZCEM" },
     { -- www
         id = 'www',
         name = "WWW.",
@@ -2217,7 +2217,7 @@ local d = {
         type = 'issued',
         mod = "ZCEM",
     },
-    { title = "Shenanigans", desc = "Added in v1.2, these require even more obscure knowledge to obtain", mod = "ZCEM" },
+    { title = "Shenanigans", desc = "Added in ZCEM v1.2, these require even more obscure knowledge to obtain", mod = "ZCEM" },
     { -- multiple_pieces (1.1.1)
         id = 'multiple_pieces',
         name = "Multiple Pieces???",
@@ -2313,7 +2313,7 @@ local d = {
         hide = TRUE,
         mod = "ZCEM",
     },
-    { title = "Stacker", desc = "Added in v1.3, these require doing something specific or unique with Stacker Mode enabled", mod = "ZCEM" },
+    { title = "Stacker", desc = "Added in ZCEM v1.3, these require doing something specific or unique with Stacker Mode enabled", mod = "ZCEM" },
     { -- glissando
         id = 'glissando',
         name = "Glissando",
@@ -2342,7 +2342,7 @@ local d = {
         hide = TRUE,
         mod = "ZCEM",
     },
-    { title = "Smithy", desc = "Added in v1.3, these all require using eEX/ueEX, eVL, and eAS with all other mods sharing the same (non-easy) state", mod = "ZCEM"},
+    { title = "Smithy", desc = "Added in ZCEM v1.3, these all require using eEX/ueEX, eVL, and eAS with all other mods sharing the same (non-easy) state", mod = "ZCEM"},
     {
         id = 'programming_smithy',
         name = "The Pro G(r)am(m)ing Smithy",
@@ -2992,6 +2992,21 @@ local d = {
         rank = numberRank(155e3, 156e3, 157e3, 158e3, 159e3, 160e3, 165e3), hide = function() return STAT.level < 155e3 end
         , realHide = function() return STAT.level < 155e3 end, mod = "MISC",
     },
+    {id = 'powerleveling33',name = "Quantum Leveling", desc = [[Zenith Level (160k-165k)]],
+        quote = [[Woah, hold on, don't phase out of existance please.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(160e3, 161e3, 162e3, 163e3, 164e3, 165e3, 170e3), hide = function() return STAT.level < 160e3 end
+        , realHide = function() return STAT.level < 160e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling34',name = "SuperQuantum Leveling", desc = [[Zenith Level (165k-170k)]],
+        quote = [[How exactly do mice even get quantum entangled?]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(165e3, 166e3, 167e3, 168e3, 169e3, 170e3, 175e3), hide = function() return STAT.level < 165e3 end
+        , realHide = function() return STAT.level < 165e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling35',name = "HyperQuantum Leveling", desc = [[Zenith Level (170k-175k)]],
+        quote = [[Does quantum entanglement hurt?]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(170e3, 171e3, 172e3, 173e3, 174e3, 175e3, 180e3), hide = function() return STAT.level < 170e3 end
+        , realHide = function() return STAT.level < 170e3 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3482,6 +3497,34 @@ local d = {
     AchieveFromCombo('ASDHDPEX', "The Devil's Advocate", [[HFD with EX DH AS DP]], [[I TOLD YOU: MICE SHOULD NOT GIVE INTO THE DARK ARTS!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDPEXIN', "The Professional Artist", [[HFD with EX IN AS DP]], [[Vincent Van Gogh and Leonardo DaVinci combined into one]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('GVMSNHVL', "Quadruple Threat", [[HFD with NH MS GV VL]], [[There we go, see how much better that looks?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHGVMSNH', "Futility", [[HFD with NH MS GV DH]], [[Resistance is never futile if you struggle hard enough.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('GVINMSNH', "Spelunking", [[HFD with NH MS GV IN]], [[We're not gonna find diamonds at Y=11, dingus.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASGVMSNH', "The Modern Artist", [[HFD with NH MS GV AS]], [[Woah, that looks cool! I don't know what it is, but I love it!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPGVMSNH', "Inside Out", [[HFD with NH MS GV DP]], [[THIS WAS THE SECOND WORST IDEA I'VE EVER HAD!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHMSNHVL', "Deadbolt", [[HFD with NH MS VL DH]], [[You better make sure you can unlock it.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('INMSNHVL', "Blind Swinging", [[HFD with NH MS VL IN]], [[WATCH IT!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASMSNHVL', "Bluff", [[HFD with NH MS VL AS]], [[I DON'T HAVE A GREEN!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPMSNHVL', "Mistaken Desires", [[HFD with NH MS VL DP]], [[You gotta love ha]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHINMSNH', "Unfinished Business", [[HFD with NH MS DH IN]], [[You feel into the backrooms and then screamed and then came back.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHMSNH', "Locksmith", [[HFD with NH MS DH AS]], [[Locksmithing is not always about keys, you know.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPMSNH', "Emotional Barriers", [[HFD with NH MS DH DP]], [[You can't fix that!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASINMSNH', "Writer's Block", [[HFD with NH MS IN AS]], [[Me trying to write category descriptions.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPINMSNH', "Hajidere", [[HFD with NH MS IN DP]], [[Something something anime]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPMSNH', "Unpredictable Relationship", [[HFD with NH MS AS DP]], [[This couldv'e been us, but you exposed my fake Minecraft speedrun.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHGVNHVL', "Nephalem", [[HFD with NH GV VL DH]], [[Is it true? Do archangels really exist?!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('GVINNHVL', "The Black Hole", [[HFD with NH GV VL IN]], [["She ate the entire tower?!"]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASGVNHVL', "Recreation", [[HFD with NH GV VL AS]], [[Recreation, Reincarnation, eh, I'm more into ascension and transcension.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPGVNHVL', "One Night Stand", [[HFD with NH GV VL DP]], [[Starying the night was weird, never doing that again.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHGVINNH', "Live Fast Die Young", [[HFD with NH GV DH IN]], [[0 out of 10, would not recommend]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHGVNH', "Dance Dance Revolution", [[HFD with NH GV DH AS]], [[Twister for Masochists]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPGVNH', "Ice Climbers", [[HFD with NH GV DH DP]], [[Naninoninenunonaninenuninonanonenanunininane]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASGVINNH', "Divine Failiure", [[HFD with NH GV IN AS]], [[Mission failed. We'll get 'em next time.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPGVINNH', "Silver Anniversary", [[HFD with NH GV IN DP]], [[Bronse anniverssaries are already weird, now we've got silver ones!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPGVNH', "Can't Let Go", [[HFD with NH GV AS DP]], [[Friends stick together to the end.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHINNHVL', "Spilled Milk", [[HFD with NH VL DH IN]], [[Cry about it.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHNHVL', "The Restrained Artist", [[HFD with NH VL DH AS]], [[CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPNHVL', "Hell and Heaven", [[HFD with NH VL DH DP]], [[The balance between good and evil is not easy to keep. Or maybe we only need the good?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASINNHVL', "Vigilante", [[HFD with NH VL IN AS]], [[Oh, look! A calzone gun!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {

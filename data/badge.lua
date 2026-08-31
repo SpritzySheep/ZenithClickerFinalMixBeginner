@@ -171,6 +171,9 @@ local d = {
     {id = 'Lv150000',name = "Prestige XXX",desc = "Reached Lv150k",},
     {id = 'Lv155000',name = "Prestige XXXI",desc = "Reached Lv155k",},
     {id = 'Lv160000',name = "Prestige XXXII",desc = "Reached Lv160k",},
+    {id = 'Lv165000',name = "Prestige XXXIII",desc = "Reached Lv165k",},
+    {id = 'Lv170000',name = "Prestige XXXIV",desc = "Reached Lv170k",},
+    {id = 'Lv175000',name = "Prestige XXXV",desc = "Reached Lv175k",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -281,6 +284,8 @@ local d = {
     {id = 'infinity_03',name = "Infinity_03",desc = "Gathered 1,100k Chakra Escence",},
     {id = 'infinity_04',name = "Infinity_04",desc = "Gathered 1,150k Chakra Escence",},
     {id = 'infinity_05',name = "Infinity_05",desc = "Gathered 1,200k Chakra Escence",},
+    {id = 'infinity_06',name = "Infinity_06",desc = "Gathered 1,250k Chakra Escence",},
+    {id = 'infinity_07',name = "Infinity_07",desc = "Gathered 1,300k Chakra Escence",},
 }
 
 for i = 1, #d do
