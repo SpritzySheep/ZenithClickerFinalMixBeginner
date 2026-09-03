@@ -661,6 +661,7 @@ TEXTURE = {
             powerleveling33 = aq(23, 4),
             powerleveling34 = aq(23, 4),
             powerleveling35 = aq(23, 4),
+            powerleveling36 = aq(23, 4),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -729,7 +730,8 @@ TEXTURE = {
             ASDHMSNH = aq(26, 4), DHDPMSNH = aq(14, 4), ASINMSNH = aq(3, 7), DPINMSNH = aq(27, 4), ASDPMSNH = aq(15, 4),
             DHGVNHVL = aq(3, 6), GVINNHVL = aq(26, 3), ASGVNHVL = aq(8, 6), DPGVNHVL = aq(31, 2), DHGVINNH = aq(28, 4),
             ASDHGVNH = aq(29, 4), DHDPGVNH = aq(6, 8), ASGVINNH = aq(30, 4), DPGVINNH = aq(31, 4), ASDPGVNH = aq(10, 9),
-            DHINNHVL = aq(1, 10), ASDHNHVL = aq(28, 2), DHDPNHVL = aq(8, 11), ASINNHVL = aq(12, 12),
+            DHINNHVL = aq(1, 10), ASDHNHVL = aq(28, 2), DHDPNHVL = aq(8, 11), ASINNHVL = aq(12, 12), DPINNHVL = aq(11, 9),
+            ASDPNHVL = aq(32, 4), ASDHINNH = aq(3, 13), ASDHDPNH = aq(17, 5), ASDPINNH = aq(6, 11),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -1100,6 +1102,7 @@ CONF = {
     oldTransparentCard = false,
     lyrics = false,
     shortScale = true,
+    noAlert = false,
 }
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall

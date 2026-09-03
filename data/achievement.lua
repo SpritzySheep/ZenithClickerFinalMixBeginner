@@ -3007,6 +3007,11 @@ local d = {
         rank = numberRank(170e3, 171e3, 172e3, 173e3, 174e3, 175e3, 180e3), hide = function() return STAT.level < 170e3 end
         , realHide = function() return STAT.level < 170e3 end, mod = "MISC",
     },
+    {id = 'powerleveling36',name = "Final Leveling", desc = [[Zenith Level (175k-180k)]],
+        quote = [[The final is never the final.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(175e3, 176e3, 177e3, 178e3, 179e3, 180e3, 200e3), hide = function() return STAT.level < 175e3 end
+        , realHide = function() return STAT.level < 175e3 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3525,6 +3530,12 @@ local d = {
     AchieveFromCombo('ASDHNHVL', "The Restrained Artist", [[HFD with NH VL DH AS]], [[CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD! CAREFUL, SQUIDWARD!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('DHDPNHVL', "Hell and Heaven", [[HFD with NH VL DH DP]], [[The balance between good and evil is not easy to keep. Or maybe we only need the good?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASINNHVL', "Vigilante", [[HFD with NH VL IN AS]], [[Oh, look! A calzone gun!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPINNHVL', "Unspoken Love", [[HFD with NH VL IN DP]], [[Actions speak louder than words. Unless you say something really messed up.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPNHVL', "The Inner Alchemist", [[HFD with NH VL AS DP]], [[The art of mixing potions is its own branch of magic.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHINNH', "Impressionism", [[HFD with NH DH IN AS]], [[The magic of impressionism is its own branch of art.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPINNH', "Deep Blindness", [[HFD with NH DH IN DP]], [[What good are symbols to those who can't see? (This achievement not having an icon is intentional)]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHDPNH', "Cosplay Party", [[HFD with NH DH AS DP]], [[A gathering of all kinds of species dressed up as eachother.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPINNH', "Fatal Artistry", [[HFD with NH IN AS DP]], [[Shadow Mario? Why are you dabbing?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {

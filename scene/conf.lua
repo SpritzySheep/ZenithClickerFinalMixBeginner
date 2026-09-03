@@ -975,12 +975,12 @@ function scene.overDraw()
         local text_vanilla = "VANILLA PIECE"
         gc_setColor(COLOR.lV)
         FONT.set(65)
-        gc_print(text_vanilla, 380, 230 + dy)
+        gc_print(text_vanilla, 380, 290 + dy)
 
         local text_final = "MOUSE MIX PIECE"
         gc_setColor(COLOR.lV)
         FONT.set(65)
-        gc_print(text_final, 380, 350 + dy)
+        gc_print(text_final, 380, 410 + dy)
 
         if countPiecesActive() > 1 then
             gc_setColor(COLOR.R)
@@ -2297,12 +2297,27 @@ local page5 = {
             SaveStat()
         end,
     },
+    WIDGET.new { -- No Alert
+        name = 'noAlert', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "NO ALERT",
+        x = baseX + 50, y = baseY + 180,
+        disp = function() return CONF.noAlert end,
+        code = function()
+            MSG.clear()
+                CONF.noAlert = not CONF.noAlert
+                MSG('dark', (CONF.noAlert and "DISABLED DANGER ALERT" or "ENABLED DANGER ALERT"))
+                SFX.play(CONF.noAlert and 'social_online' or 'social_offline')
+            SaveStat()
+        end,
+    },
     WIDGET.new { -- Z
         name = 'piece_z', type = 'checkBox',
         fillColor = COLOR.dR,
         frameColor = COLOR.R,
         textColor = COLOR.R, text = "Z",
-        x = baseX + 50, y = baseY + 240,
+        x = baseX + 50, y = baseY + 300,
         disp = function() return GAME.nightcore end,
         code = function()
             MSG.clear()
@@ -2324,7 +2339,7 @@ local page5 = {
         fillColor = COLOR.dO,
         frameColor = COLOR.O,
         textColor = COLOR.O, text = "L",
-        x = baseX + 130, y = baseY + 240,
+        x = baseX + 130, y = baseY + 300,
         disp = function() return GAME.fastLeak end,
         code = function()
             MSG.clear()
@@ -2346,7 +2361,7 @@ local page5 = {
         fillColor = COLOR.dY,
         frameColor = COLOR.Y,
         textColor = COLOR.Y, text = "O",
-        x = baseX + 210, y = baseY + 240,
+        x = baseX + 210, y = baseY + 300,
         disp = function() return GAME.invisCard end,
         code = function()
             MSG.clear()
@@ -2368,7 +2383,7 @@ local page5 = {
         fillColor = COLOR.dG,
         frameColor = COLOR.G,
         textColor = COLOR.G, text = "S",
-        x = baseX + 290, y = baseY + 240,
+        x = baseX + 290, y = baseY + 300,
         disp = function() return GAME.slowmo end,
         code = function()
             MSG.clear()
@@ -2390,7 +2405,7 @@ local page5 = {
         fillColor = COLOR.dI,
         frameColor = COLOR.I,
         textColor = COLOR.I, text = "I",
-        x = baseX + 370, y = baseY + 240,
+        x = baseX + 370, y = baseY + 300,
         disp = function() return GAME.closeCard end,
         code = function()
             MSG.clear()
@@ -2412,7 +2427,7 @@ local page5 = {
         fillColor = COLOR.dB,
         frameColor = COLOR.B,
         textColor = COLOR.B, text = "J",
-        x = baseX + 450, y = baseY + 240,
+        x = baseX + 450, y = baseY + 300,
         disp = function() return GAME.glassCard end,
         code = function()
             MSG.clear()
@@ -2434,7 +2449,7 @@ local page5 = {
         fillColor = COLOR.dP,
         frameColor = COLOR.P,
         textColor = COLOR.P, text = "T",
-        x = baseX + 530, y = baseY + 240,
+        x = baseX + 530, y = baseY + 300,
         disp = function() return GAME.invisUI end,
         code = function()
             MSG.clear()
@@ -2456,7 +2471,7 @@ local page5 = {
         fillColor = COLOR.dA,
         frameColor = COLOR.A,
         textColor = COLOR.A, text = "F",
-        x = baseX + 50, y = baseY + 360,
+        x = baseX + 50, y = baseY + 420,
         disp = function() return GAME.big end,
         code = function()
             MSG.clear()
@@ -2478,7 +2493,7 @@ local page5 = {
         fillColor = COLOR.DR,
         frameColor = COLOR.dR,
         textColor = COLOR.dR, text = "X",
-        x = baseX + 130, y = baseY + 360,
+        x = baseX + 130, y = baseY + 420,
         disp = function() return GAME.crit end,
         code = function()
             MSG.clear()
@@ -2500,7 +2515,7 @@ local page5 = {
         fillColor = COLOR.LO,
         frameColor = COLOR.lO,
         textColor = COLOR.lO, text = "W",
-        x = baseX + 210, y = baseY + 360,
+        x = baseX + 210, y = baseY + 420,
         disp = function() return GAME.rando end,
         code = function()
             MSG.clear()
@@ -2522,7 +2537,7 @@ local page5 = {
         fillColor = COLOR.lC,
         frameColor = COLOR.LC,
         textColor = COLOR.LC, text = "2",
-        x = baseX + 290, y = baseY + 360,
+        x = baseX + 290, y = baseY + 420,
         disp = function() return GAME.noLeak end,
         code = function()
             MSG.clear()

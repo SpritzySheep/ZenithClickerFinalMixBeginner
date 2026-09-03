@@ -484,12 +484,12 @@ function RefreshProfile()
     GC.setColor(lblColor)
     GC.rectangle('fill', 315, 121, 254, 18)
     GC.setColor(scoreColor)
-    GC.rectangle('fill', 315, 120, MATH.round((MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
+    GC.rectangle('fill', 315, 120, ((((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "" .. MATH.round((MATH.floor((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
-    scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. Use code 'achbonus' in Config to turn it on."
-    if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. Use code 'achbonus' in Config to turn it off." end
+    scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. You can toggle it in config."
+    if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. You can toggle it in config." end
     scene.widgetList.achbonus:reset()
 
     -- Full stats
@@ -600,6 +600,7 @@ function scene.load()
     crProgress.sr = getSpeedrunCompletion()
     crProgress.achvGet, crProgress.achvAll = getAchvCompletion()
     STAT.level = level
+    refreshed = false
 
     RefreshProfile()
 end
@@ -628,7 +629,10 @@ function scene.update(dt)
     for _, W in next, SCN.scenes.tower.widgetList do
         W:update(dt)
     end
-    RefreshProfile()
+    if not refreshed then
+        RefreshProfile()
+        refreshed = true
+    end
 end
 
 function scene.draw()

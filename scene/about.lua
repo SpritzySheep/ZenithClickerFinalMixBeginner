@@ -60,7 +60,7 @@ end
 addMajorCredit(0000, 060, { COLOR.HEX '80CCFF' }, "MRZ", "FOUNDER & LEAD PRODUCER", "Programming, Game Design, General Development")
 addMajorCredit(-160, 160, { COLOR.HEX 'B966E3' }, "PETRTECH", "MUSIC", "F10 Music")
 addMajorCredit(0160, 160, { COLOR.HEX '9DBCFF' }, "RONEZKJ15", "MUSIC", "Extra Music")
-addMajorCredit(-320, 260, { COLOR.HEX 'DDFF80' }, "DJ  ASRIEL", "GRAPHICS", "Background Reconstruction & Game Icon")
+addMajorCredit(-320, 260, { COLOR.HEX 'DDFF80' }, "DJ  RALSEI", "GRAPHICS", "Background Reconstruction & Game Icon")
 addMajorCredit(0000, 260, { COLOR.HEX '77DD66' }, "RODINIA", "GRAPHICS", "Mod Icons")
 addMajorCredit(0320, 260, { COLOR.HEX '5792FF' }, "ZYRIXIA", "GRAPHICS", "Rank Icons")
 addMajorCredit(-320, 360, { COLOR.HEX 'DD99FF' }, "OSK", "FOUNDER & LEAD PRODUCER", "of the Original Game: TETR.IO")
@@ -107,7 +107,7 @@ addText({
         "5HAN",
         "ADRIAN FRUTIGER",
         "BARON",
-        "addText({ COLOR.O, 'BASE EASY MODE MOD BY' }, 0, 110, .3)addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, 'Trevor Smithy', 'ZCEM Dev')",
+        -- "addText({ COLOR.O, 'BASE EASY MODE MOD BY' }, 0, 110, .3)addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, 'Trevor Smithy', 'ZCEM Dev')",
         "DELAPOUITE",
         "DJ ASRIEL",
         "DOKTOROCELOT",
@@ -137,7 +137,6 @@ addText({
         "TREVOR_SMITHY",
         "WAH",
         "ZYRIXIA",
-        "MINA THE HOLLOWER",
     }, ",  ")
 }, 0, 60, .26)
 
@@ -163,7 +162,6 @@ addMajorCredit(0, 220, { COLOR.HEX '94B1FF' }, "Rodinia ", "TETR.IO RANKS 2.0 Fo
 addSection(1750)
 
 addText({ COLOR.O, "RANK ALMANAC" }, 0, 20, .3)
-addText({ COLOR.O, "WARNING: THIS SHOWS ALL RANKS, SPOILERS AHEAD" }, 0, 40, .3)
 
 addRank(0, 50, { COLOR.HEX 'FFFFFF' }, "Phase 1", "The Beginning")
 addRank(0, 150, { COLOR.HEX '131313' }, "?", "2,000 CE")

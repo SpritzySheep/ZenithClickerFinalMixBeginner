@@ -409,6 +409,12 @@ d.menu = {
     { set = "NH VL DH AS",        name = "The Restrained Artist" },
     { set = "NH VL DH DP",        name = "Hell and Heaven" },
     { set = "NH VL IN AS",        name = "Vigilante" },
+    { set = "NH VL IN DP",        name = "Unspoken Love" },
+    { set = "NH VL AS DP",        name = "The Inner Alchemist" },
+    { set = "NH DH IN AS",        name = "Impressionism" },
+    { set = "NH DH IN DP",        name = "Deep Blindness" },
+    { set = "NH DH AS DP",        name = "Cosplay Party" },
+    { set = "NH IN AS DP",        name = "Fatal Artistry" },
 }
 
 

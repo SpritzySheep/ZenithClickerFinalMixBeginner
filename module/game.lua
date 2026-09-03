@@ -2607,7 +2607,7 @@ function GAME.refreshLifeState()
     if oldState ~= newState then
         GAME.lifeState = newState
         if newState == 'danger' then
-            SFX.play('hyperalert')
+            if not CONF.noAlert then SFX.play('hyperalert') end
         end
     end
 end
@@ -3600,7 +3600,7 @@ if #hand == 7 and not TABLE.find(hand, 'DP') and M.EX == -1 and M.GV == -1 and M
                     GAME.takeDamage((M.MS == -1 and (GAME.dmgWrong + 1)/2 or GAME.dmgWrong) * (#GAME.questStack-20)/(M.MS == -1 and 20 or 10)) 
                 end
                 if TASK.lock('hyperalert', 2) then
-                    SFX.play("hyperalert", 1, 0, Tone(0))
+                    if not CONF.noAlert then SFX.play("hyperalert", 1, 0, Tone(0)) end
                 end
             end
             if not ACHV.secret_grade then
