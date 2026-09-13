@@ -3012,6 +3012,11 @@ local d = {
         rank = numberRank(175e3, 176e3, 177e3, 178e3, 179e3, 180e3, 200e3), hide = function() return STAT.level < 175e3 end
         , realHide = function() return STAT.level < 175e3 end, mod = "MISC",
     },
+    {id = 'powerleveling37',name = "Nebula Leveling", desc = [[Zenith Level (180k-200k)]],
+        quote = [[No, don't eat the stardust! We need that to upkeep the universe!]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(180e3, 184e3, 188e3, 192e3, 196e3, 200e3, 220e3), hide = function() return STAT.level < 180e3 end
+        , realHide = function() return STAT.level < 180e3 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3536,6 +3541,20 @@ local d = {
     AchieveFromCombo('DHDPINNH', "Deep Blindness", [[HFD with NH DH IN DP]], [[What good are symbols to those who can't see? (This achievement not having an icon is intentional)]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDHDPNH', "Cosplay Party", [[HFD with NH DH AS DP]], [[A gathering of all kinds of species dressed up as eachother.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDPINNH', "Fatal Artistry", [[HFD with NH IN AS DP]], [[Shadow Mario? Why are you dabbing?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHGVMSVL', "Quadruple Down", [[HFD with MS GV VL DH]], [[Wha-no, this isn't how blackjack works!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('GVINMSVL', "Eleventh Hour", [[HFD with MS GV VL IN]], [[Not quite midnight.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASGVMSVL', "Gambled Faith", [[HFD with MS GV VL AS]], [[Pay just one dollar for a chance to win ten Jesuses!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPGVMSVL', "Royale", [[HFD with MS GV VL DP]], [[Old Quickplay lives on in our memories]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHGVINMS', "Intoxication", [[HFD with MS GV DH IN]], [["Ingredients go in the pot. Everything else, does not."]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHGVMS', "The Spacial Artist", [[HFD with MS GV DH AS]], [[The puzzle of art in space is but an enigma.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPGVMS', "Triple Down", [[HFD with MS GV DH DP]], [[What? Super Blackjack? What are you talking about?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASGVINMS', "Parmigiano Reggiano", [[HFD with MS GV IN AS]], [[Is this the cheese that caused mice to learn to walljump?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DPGVINMS', "Lonesome Feeling", [[HFD with MS GV IN DP]], [[gone]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDPGVMS', "I Miss You", [[HFD with MS GV AS DP]], [[Do you miss me?]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHINMSVL', "The Night Watchman", [[HFD with MS VL DH IN]], [[He keeps murmuring something about a null element...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASDHMSVL', "Blue Cheese", [[HFD with MS VL DH AS]], [[Why does the cheese have mold? WHY IS THE CHEESE MOLDY?!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPMSVL', "Quadruples Therapy", [[HFD with MS VL DH DP]], [[A couple of couples in the ssame room is an interesting therapy strategy, but hey, can't judge it until we know if it works or not.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('ASINMSVL', "Creative Explosion", [[HFD with MS VL IN AS]], [[Think of anything, you can turn it into something creative.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
 }
 
 local compFunc = {

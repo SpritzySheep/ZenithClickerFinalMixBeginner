@@ -941,6 +941,7 @@ else
             -- Star
             if completion[self.id] > 0 then
                 img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star2' or 'star1') or 'star0']
+                if STAT.heaven[self.id] >= 100 then img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star5' or 'star4') or 'star3'] end
                 local t = (self.upright or self.easy) and self.float or 1
                 local blur = (FloatOnCard == self.initOrder or not self.upright) and 0 or -.2
                 local x = lerp(155, 0, t)
@@ -979,6 +980,7 @@ else
                     end
                     gc_setColor(1, 1, 1, t)
                     local star1 = TEXTURE[self.id == 'DP' and STAT.clicker and 'star2' or 'star1']
+                    if STAT.heaven[self.id] >= 100 then star1 = TEXTURE[self.id == 'DP' and STAT.clicker and 'star5' or 'star4'] end
                     gc_mDraw(star1, x, y, ang, lerp(.16, .42, t))
                     if revMastery then gc_mDraw(star1, -x, -y, ang, lerp(.16, .42, t)) end
                 end

@@ -47,6 +47,9 @@ TEXTURE = {
     star0 = assets 'crystal-dark.png',
     star1 = assets 'crystal.png',
     star2 = assets 'crystal-fire.png',
+    star3 = assets 'double_crystal-dark.png',
+    star4 = assets 'double_crystal.png',
+    star5 = assets 'double_crystal-fire.png',
     panel = {
         glass_a = assets 'panel/glass-a.png',
         glass_b = assets 'panel/glass-b.png',
@@ -176,6 +179,7 @@ TEXTURE = {
     keiper = assets 'tower/keiper.png',
     oort = assets 'tower/oort.png',
     oort2 = assets 'tower/oort2.png',
+    heaven = assets 'tower/heaven.png',
     nothing = assets 'tower/f11.png',
     stars = assets 'tower/stars.png',
     warning = assets 'finalwarning.png',
@@ -284,6 +288,8 @@ TEXTURE = {
             assets 'rank/eta_06.png', assets 'rank/eta_07.png', assets 'rank/eta_08.png', assets 'rank/eta_09.png', assets 'rank/eta_10.png',
             assets 'rank/theta_01.png', assets 'rank/theta_02.png', assets 'rank/theta_03.png', assets 'rank/theta_04.png', assets 'rank/theta_05.png',
             assets 'rank/theta_06.png', assets 'rank/theta_07.png', assets 'rank/theta_08.png', assets 'rank/theta_09.png', assets 'rank/theta_10.png',
+            assets 'rank/iota_01.png', assets 'rank/iota_02.png', assets 'rank/iota_03.png', assets 'rank/iota_04.png', assets 'rank/iota_05.png',
+            assets 'rank/iota_06.png', assets 'rank/iota_07.png', assets 'rank/iota_08.png', assets 'rank/iota_09.png', assets 'rank/iota_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -662,6 +668,7 @@ TEXTURE = {
             powerleveling34 = aq(23, 4),
             powerleveling35 = aq(23, 4),
             powerleveling36 = aq(23, 4),
+            powerleveling37 = aq(18, 5),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -731,7 +738,10 @@ TEXTURE = {
             DHGVNHVL = aq(3, 6), GVINNHVL = aq(26, 3), ASGVNHVL = aq(8, 6), DPGVNHVL = aq(31, 2), DHGVINNH = aq(28, 4),
             ASDHGVNH = aq(29, 4), DHDPGVNH = aq(6, 8), ASGVINNH = aq(30, 4), DPGVINNH = aq(31, 4), ASDPGVNH = aq(10, 9),
             DHINNHVL = aq(1, 10), ASDHNHVL = aq(28, 2), DHDPNHVL = aq(8, 11), ASINNHVL = aq(12, 12), DPINNHVL = aq(11, 9),
-            ASDPNHVL = aq(32, 4), ASDHINNH = aq(3, 13), ASDHDPNH = aq(17, 5), ASDPINNH = aq(6, 11),
+            ASDPNHVL = aq(32, 4), ASDHINNH = aq(3, 13), ASDHDPNH = aq(17, 5), ASDPINNH = aq(6, 11), DHGVMSVL = aq(9, 8),
+            GVINMSVL = aq(30, 3), ASGVMSVL = aq(13, 5), DPGVMSVL = aq(2, 3), DHGVINMS = aq(29, 2), ASDHGVMS = aq(26, 4),
+            DHDPGVMS = aq(16, 12), ASGVINMS = aq(13, 8), DPGVINMS = aq(19, 5), ASDPGVMS = aq(2, 10), DHINMSVL = aq(20, 5),
+            ASDHMSVL = aq(14, 8), DHDPMSVL = aq(21, 4), ASINMSVL = aq(12, 9),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -967,6 +977,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     comboText  = GC.newText(FONT.get(50), "COMBO"),
     combo      = GC.newText(FONT.get(50)),
     spike      = GC.newText(FONT.get(50)),
+    gameFloor  = GC.newText(FONT.get(50), "NONE SET"),
     gigaspeed  = GC.newText(FONT.get(50), {
         COLOR.dR, "G", COLOR.dO, "I", COLOR.dY, "G",
         COLOR.dK, "A", COLOR.dG, "S", COLOR.dJ, "P",
@@ -1177,6 +1188,7 @@ STAT = {
     rold = false,
     unlockAll = false,
     greenClicker = false,
+    heaven = {["EX"]=0,["NH"]=0,["MS"]=0,["GV"]=0,["VL"]=0,["DH"]=0,["IN"]=0,["AS"]=0,["DP"]=0};
 }
 
 

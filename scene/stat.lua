@@ -5,6 +5,7 @@ local maskAlpha, cardShow
 local card = GC.newCanvas(2250, 1440)
 local totalBadges = 50
 local wreaths = 0
+local aCR = 0
 local floor = math.floor
 local badgeList = 0
 local baseColor = { .2, 0, .4 }
@@ -118,7 +119,16 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalAttack / 200)
     cr = cr + MATH.min(MATH.floor(STAT.maxHeight / 10),93999)
     cr = cr + MATH.floor(STAT.maxFloor * 100)
-
+    local asCR = 0
+    local Mid = {[0]="","EX","NH","MS","GV","VL","DH","IN","AS","DP"}
+    for i = 1, 9 do
+        if STAT.heaven[Mid[i]] > 99 then 
+            aCR = aCR + 10000
+            asCR = asCR + 10000
+            cr = cr + 10000
+        end
+    end
+    aCR = asCR
     -- ACHV Wreath (competitive achievement count)
     for i = 1, #Achievements do
         local A = Achievements[i]
@@ -164,8 +174,10 @@ local function calculateRating()
     if cr >= 1200e3 then IssueSecret('infinity_05', true) end
     if cr >= 1250e3 then IssueSecret('infinity_06', true) end
     if cr >= 1300e3 then IssueSecret('infinity_07', true) end
+    if cr >= 1350e3 then IssueSecret('infinity_08', true) end
+    if cr >= 1400e3 then IssueSecret('infinity_09', true) end
 
-    local levelBadgeCount = 35
+    local levelBadgeCount = 41
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -397,7 +409,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 118)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 128)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -520,7 +532,7 @@ function RefreshProfile()
     GC.ucs_move(25, 640)
     FONT.set(30)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 300, 465)
+    GC.rectangle('fill', 0, 0, 300, 480)
     GC.setColor(lblColor)
     GC.print("CE BREAKDOWN", 7, 2, 0, .8)
     for _, l in next, {
@@ -541,6 +553,7 @@ function RefreshProfile()
         { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 383, d = 200 },
         { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 408, d = 200 },
         { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 433, d = 200 },
+        { k = aCR>0 and "Ascension" or "",    v = { scoreColor, aCR>0 and aCR or "" },                      x = 26, y = 458, d = 200 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)

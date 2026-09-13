@@ -11,7 +11,7 @@ local gc_setAlpha, gc_setLineWidth = GC.setAlpha, GC.setLineWidth
 local gc_draw, gc_mDraw = GC.draw, GC.mDraw
 local gc_line = GC.line
 local spin = 0
-local allBadge = 105
+local allBadge = 122
 local clr = {
     D = { COLOR.HEX '1F1F1FFF' },
     L = { COLOR.HEX '656565FF' },
@@ -137,6 +137,7 @@ function scene.draw()
         addText({ COLOR.T, BadgeData[id].desc }, x, y - 110, .15)
     end
     DrawBG(26)
+    gc_setColor(0,0,0,0.5)
     GC.rectangle('fill',-800,0,3200,2000)
 
     gc_replaceTransform(SCR.xOy_u)

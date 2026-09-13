@@ -415,6 +415,20 @@ d.menu = {
     { set = "NH DH IN DP",        name = "Deep Blindness" },
     { set = "NH DH AS DP",        name = "Cosplay Party" },
     { set = "NH IN AS DP",        name = "Fatal Artistry" },
+    { set = "MS GV VL DH",        name = "Quadruple Down" },
+    { set = "MS GV VL IN",        name = "Eleventh Hour" },
+    { set = "MS GV VL AS",        name = "Gambled Faith" },
+    { set = "MS GV VL DP",        name = "Royale" },
+    { set = "MS GV DH IN",        name = "Intoxication" },
+    { set = "MS GV DH AS",        name = "The Spacial Artist" },
+    { set = "MS GV DH DP",        name = "Triple Down" },
+    { set = "MS GV IN AS",        name = "Parmigiano Reggiano" },
+    { set = "MS GV IN DP",        name = "Lonesome Feeling" },
+    { set = "MS GV AS DP",        name = "I Miss You" },
+    { set = "MS VL DH IN",        name = "The Night Watchman" },
+    { set = "MS VL DH AS",        name = "Blue Cheese" },
+    { set = "MS VL DH DP",        name = "Quadruples Therapy" },
+    { set = "MS VL IN AS",        name = "Creative Explosion" },
 }
 
 

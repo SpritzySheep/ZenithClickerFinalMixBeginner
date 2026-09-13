@@ -4,6 +4,9 @@ local abs, rnd = math.abs, math.random
 local roundUnit = MATH.roundUnit
 local expApproach = MATH.expApproach
 local lerp, cLerp, icLerp = MATH.lerp, MATH.cLerp, MATH.icLerp
+local gc = love.graphics
+local gc_rectangle = gc.rectangle
+local gc_setColor = gc.setColor
 local clamp = MATH.clamp
 local lLerp = MATH.lLerp
 local clampInterpolate = MATH.clampInterpolate
@@ -1641,6 +1644,9 @@ function GAME.readyShuffle(messiness, noSnd)
 end
 
 function GAME.showFloorText(f, name, duration)
+    gc_setColor(COLOR.D)
+    gc_rectangle('fill',0,0,15000,10000)
+    TEXTS.gameFloor:set("Floor "..f.." - "..name)
     if GAME.invisUI then return end
     -- Trevor Smithy
     if GAME.einvisUI then
@@ -2045,6 +2051,15 @@ function GAME.upFloor()
                 IssueSecret('exista')
                 GAME.finishTera = true
     end
+    if STAT.heaven["EX"]>99 then IssueSecret('aEX') end
+    if STAT.heaven["NH"]>99 then IssueSecret('aNH') end
+    if STAT.heaven["MS"]>99 then IssueSecret('aMS') end
+    if STAT.heaven["GV"]>99 then IssueSecret('aGV') end
+    if STAT.heaven["VL"]>99 then IssueSecret('aVL') end
+    if STAT.heaven["DH"]>99 then IssueSecret('aDH') end
+    if STAT.heaven["IN"]>99 then IssueSecret('aIN') end
+    if STAT.heaven["AS"]>99 then IssueSecret('aAS') end
+    if STAT.heaven["DP"]>99 then IssueSecret('aDP') end
     SubmitAchv('powerleveling', STAT.level,true,true)
     local powerCount = 199
     for tier = 2, powerCount do
@@ -3676,6 +3691,7 @@ function GAME.start()
     GAME.pluto = false
     GAME.keiper = false
     GAME.oort = false
+    GAME.heaven = false
     GAME.negFloor = 1
     GAME.negEvent = 1
     GAME.timerMul = 1
@@ -4112,6 +4128,9 @@ end
         if GAME.floor >= 10 then
             local unlockRev = 0
             for k, v in next, M do
+                if GAME.height >= 10000 and v ~= 0 then
+                    STAT.heaven[k] = STAT.heaven[k] + 1
+                end
                 if v > GAME.completion[k] then
                     if GAME.completion[k] == 0 then
                         unlockRev = unlockRev + 1
@@ -5211,33 +5230,6 @@ function GAME.update(dt)
             ins(GAME.secTime, GAME.floorTime)
             GAME.refreshSectionTime()
             GAME.floorTime = 0
-            if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore then
-                TASK.new(
-                    function()
-                        local timeMod = GAME.nightcore and 0.5 or GAME.slowmo and 2 or 1
-                        if GAME.eslowmo then timeMod = timeMod * 1.4142 end
-                        GAME.extraQuestBase = GAME.extraQuestBase - 0.5
-                        GAME.gravDelay = 2.05 * timeMod
-                        GAME.gravTimer = GAME.gravDelay
-                        TASK.yieldT(2.047 * timeMod)
-                        GAME.gravDelay = 1.9 * timeMod
-                        TASK.yieldT(1.9 * timeMod)
-                        GAME.gravDelay = 1.75 * timeMod
-                        TASK.yieldT(1.75 * timeMod)
-                        GAME.gravDelay = 1.6 * timeMod
-                        TASK.yieldT(1.6 * timeMod)
-                        GAME.gravDelay = 1.45 * timeMod
-                        TASK.yieldT(1.45 * timeMod)
-                        GAME.gravDelay = 1.3 * timeMod
-                        TASK.yieldT(1.3 * timeMod)
-                        GAME.gravDelay = 1.15 * timeMod
-                        TASK.yieldT(1.16 * timeMod)
-                        --TASK.yieldT(11.17)
-                        GAME.gravDelay = 1.0091 * timeMod
-                        GAME.gravTimer = GAME.gravDelay - 0.15
-                    end
-                )
-            end
         end
         if not GAME.mars and GAME.height >= 3200 then
             GAME.mars = true
@@ -5277,6 +5269,11 @@ function GAME.update(dt)
         if not GAME.oort and GAME.height >= 8000 then
             GAME.oort = true
             GAME.showFloorText("θ", "Oort Cloud", 6.2)
+            SFX.play('zenith_levelup_a', 1, 0, Tone(1))
+        end
+        if not GAME.heaven and GAME.height >= 10000 then
+            GAME.heaven = true
+            GAME.showFloorText("ι", "Heaven", 6.2)
             SFX.play('zenith_levelup_a', 1, 0, Tone(1))
         end
 

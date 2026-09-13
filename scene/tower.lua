@@ -695,6 +695,7 @@ function scene.update(dt)
     if not GAME.playing then randomizeRNG() end
     achvTime = achvTime + 1
     if achvTime >=30 then
+        -- MSG('dark',"EX"..STAT.heaven["EX"].."NH"..STAT.heaven["NH"].."MS"..STAT.heaven["MS"].."GV"..STAT.heaven["GV"].."VL"..STAT.heaven["VL"].."DH"..STAT.heaven["DH"].."IN"..STAT.heaven["IN"].."AS"..STAT.heaven["AS"].."DP"..STAT.heaven["DP"])
         SubmitAchv('powerleveling', STAT.level,true,true)
         local powerCount = 199
         for tier = 2, powerCount do
@@ -934,24 +935,9 @@ function DrawBG(brightness, showRuler)
                     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
                 end
 
-                -- Bodies
                 gc_setBlendMode('add')
                 gc_setColor(1, 1, 1, .8)
                 gc_draw(StarPS, SCR.w / 2, SCR.h / 2 + GAME.bgH * 2 * BgScale)
-                gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.mars, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 3200) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.jupiter, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 4100) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.saturn, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5000) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.uranus, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5800) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.neptune, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 6500) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.pluto, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7000) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.1 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.2 * BgScale, 0, .2 * BgScale)
-                gc_mDraw(TEXTURE.oort, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2 * BgScale, 0, .3 * BgScale)
-                gc_mDraw(TEXTURE.oort2, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2.1 * BgScale, 0, .3 * BgScale)
-                gc_mDraw(TEXTURE.nothing, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2000) * 0.01 * BgScale, 0, 1 * BgScale)
-                gc_setBlendMode('alpha')
 
                 -- Tower
                 if GAME.bgH < 1700 then
@@ -986,8 +972,27 @@ function DrawBG(brightness, showRuler)
     gc_setColor(0, 0, 0, 1 - (GAME.gigaspeed and (.7 + GigaSpeed.bgAlpha * .6) or 1) * brightness / 100)
     gc_rectangle('fill', 0, 0, SCR.w, SCR.h)
 
+    -- Bodies
+                gc_setBlendMode('add')
+                gc_setColor(1, 1, 1, .8)
+                gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.mars, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 3200) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.jupiter, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 4100) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.saturn, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5000) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.uranus, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 5800) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.neptune, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 6500) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.pluto, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7000) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.1 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.keiper, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 7500) * 2.2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.oort, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2 * BgScale, 0, .3 * BgScale)
+                gc_mDraw(TEXTURE.oort2, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 8000) * 2.1 * BgScale, 0, .3 * BgScale)
+                gc_mDraw(TEXTURE.heaven, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 10000) * 1 * BgScale, 0, .5 * BgScale)
+                gc_mDraw(TEXTURE.nothing, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2000) * 0.01 * BgScale, 0, 1 * BgScale)
+                gc_setBlendMode('alpha')
+
     -- Ruler
-    if showRuler and not (GAME.invisUI or GAME.einvisUI) then
+    if showRuler and not (GAME.invisUI or GAME.einvisUI) and GAME.height < 1e30 then
         gc_replaceTransform(SCR.xOy_m)
         gc_setBlendMode('add')
         gc_setColor(1, 1, 1, 0.7)
@@ -1718,6 +1723,9 @@ function scene.overDraw()
     -- end
 
     -- bottom in-game UI
+
+    
+
     if GAME.uiHide > 0 and not GAME.invisUI then
         local h = 100 - GAME.uiHide * 100
         gc_ucs_move(0, h)
@@ -1826,6 +1834,11 @@ function scene.overDraw()
             gc_mRect('fill', 800, 965, 420 * GAME.xp / (6 * rank), 15)
         end
 
+        gc_setColor(COLOR.D)
+        gc_rectangle('fill', 400, 450, 800, 60)
+        gc_setColor(COLOR.LY)
+        gc_mDraw(TEXTS.gameFloor, 800, 475, 0, 1)
+
         -- Height & Time
         local height = GAME.height
         local miles = 0
@@ -1876,6 +1889,8 @@ function scene.overDraw()
         gc_ucs_back()
     end
 
+    
+
     -- Rev trigger for touchscreen
     if usingTouch and not GAME.playing and RevUnlocked then
         gc_replaceTransform(SCR.xOy_dl)
@@ -1896,6 +1911,8 @@ function scene.overDraw()
         gc_setAlpha(next(easyHold) and .42 or .26)
         gc_draw(TEXTURE.transition, -200 * GAME.uiHide, -295, 0, 200 / 128, -245)
     end
+
+    
 
     -- Cards
     gc_replaceTransform(SCR.xOy)
@@ -2179,7 +2196,7 @@ function scene.overDraw()
         end
     end
     --
-
+    
     -- Windup animation
     gc_replaceTransform(SCR.xOy_m)
     gc_translate(0, -170)
@@ -2294,6 +2311,8 @@ function scene.overDraw()
         gc_setColor(.626, .626, .626, .626/eTAlpha)
         gc_mDraw(TEXTS.version, GAME.invisUI and 0 or -260 * GAME.uiHide, -10, 0, .62)
     end
+
+        
 
     -- GC.replaceTransform(SCR.xOy)
     -- local y=0

@@ -115,6 +115,15 @@ local d = {
         name = "A Critical Victory",
         desc = "Reached F6 with Critical without Easy Mods",
     },
+    {id = 'aEX',name = "Expert Ascension",desc = "Reached Heaven with EX 100 times",},
+    {id = 'aNH',name = "Holdless Ascension",desc = "Reached Heaven with NH 100 times",},
+    {id = 'aMS',name = "Messy Ascension",desc = "Reached Heaven with MS 100 times",},
+    {id = 'aGV',name = "Gravity Ascension",desc = "Reached Heaven with GV 100 times",},
+    {id = 'aVL',name = "Volatile Ascension",desc = "Reached Heaven with VL 100 times",},
+    {id = 'aDH',name = "Double Hole Ascension",desc = "Reached Heaven with DH 100 times",},
+    {id = 'aIN',name = "Invisible Ascension",desc = "Reached Heaven with IN 100 times",},
+    {id = 'aAS',name = "All-Spin Ascension",desc = "Reached Heaven with AS 100 times",},
+    {id = 'aDP',name = "Duo Ascension",desc = "Reached Heaven with DP 100 times",},
     {
         id = 'Lv5000',
         name = "Prestige",
@@ -174,6 +183,12 @@ local d = {
     {id = 'Lv165000',name = "Prestige XXXIII",desc = "Reached Lv165k",},
     {id = 'Lv170000',name = "Prestige XXXIV",desc = "Reached Lv170k",},
     {id = 'Lv175000',name = "Prestige XXXV",desc = "Reached Lv175k",},
+    {id = 'Lv180000',name = "Prestige XXXVI",desc = "Reached Lv180k",},
+    {id = 'Lv185000',name = "Prestige XXXVII",desc = "Reached Lv185k",},
+    {id = 'Lv190000',name = "Prestige XXXVIII",desc = "Reached Lv190k",},
+    {id = 'Lv195000',name = "Prestige XXXIX",desc = "Reached Lv195k",},
+    {id = 'Lv200000',name = "Prestige XL",desc = "Reached Lv200k",},
+    {id = 'Lv205000',name = "Prestige XLI",desc = "Reached Lv205k",},
     {
         id = 'achv',
         name = "Overachiever",
@@ -286,6 +301,8 @@ local d = {
     {id = 'infinity_05',name = "Infinity_05",desc = "Gathered 1,200k Chakra Escence",},
     {id = 'infinity_06',name = "Infinity_06",desc = "Gathered 1,250k Chakra Escence",},
     {id = 'infinity_07',name = "Infinity_07",desc = "Gathered 1,300k Chakra Escence",},
+    {id = 'infinity_08',name = "Infinity_08",desc = "Gathered 1,350k Chakra Escence",},
+    {id = 'infinity_09',name = "Infinity_09",desc = "Gathered 1,400k Chakra Escence",},
 }
 
 for i = 1, #d do
