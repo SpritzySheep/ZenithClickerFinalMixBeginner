@@ -1561,6 +1561,12 @@ function scene.overDraw()
                 gc_pop()
             end
 
+            -- Floor Display
+            gc_setColor(COLOR.D)
+        gc_rectangle('fill', 400, 450, 800, 60)
+        gc_setColor(COLOR.LY)
+        gc_mDraw(TEXTS.gameFloor, 800, 475, 0, 1)
+
             -- Promotion Gauge
             if CONF.promotion then
                 gc_push('transform')
@@ -1834,10 +1840,7 @@ function scene.overDraw()
             gc_mRect('fill', 800, 965, 420 * GAME.xp / (6 * rank), 15)
         end
 
-        gc_setColor(COLOR.D)
-        gc_rectangle('fill', 400, 450, 800, 60)
-        gc_setColor(COLOR.LY)
-        gc_mDraw(TEXTS.gameFloor, 800, 475, 0, 1)
+        
 
         -- Height & Time
         local height = GAME.height
