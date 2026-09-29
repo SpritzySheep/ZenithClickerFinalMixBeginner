@@ -447,6 +447,7 @@ d.menu = {
     { set = "GV IN AS DP",        name = "All Spinners" },
     { set = "VL DH IN AS",        name = "The Prodigy" },
     { set = "VL DH IN DP",        name = "The Illusion of Love" },
+    { set = "VL DH AS DP",        name = "A Dance of Fire and Ice" },
     { set = "VL IN AS DP",        name = "The Introverted Lovers" },
     { set = "DH IN AS DP",        name = "Alter Ego" },
 }

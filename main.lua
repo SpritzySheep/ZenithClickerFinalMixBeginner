@@ -968,6 +968,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     title      = GC.newText(FONT.get(50), "EXPERT GAMEPLAY"),
     load       = GC.newText(FONT.get(50), "LOAD"),
     ghp        = GC.newText(FONT.get(50)),
+    ghp2       = GC.newText(FONT.get(50)),
     pb         = GC.newText(FONT.get(50)),
     endResult  = GC.newText(FONT.get(30)),
     endHeight  = GC.newText(FONT.get(50)),

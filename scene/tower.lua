@@ -1664,26 +1664,26 @@ function scene.overDraw()
         end
 
         -- Top bar & texts
-            gc_replaceTransform(SCR.xOy_u)
-            gc_setColor(ShadeColor)
-            gc_rectangle('fill', -1300, 0, 3200, 70)
-            gc_setColor(TextColor)
-            gc_setAlpha(.626)
-            gc_rectangle('fill', -1300, 70, 3200, 3)
-            gc_replaceTransform(SCR.xOy_d)
-            gc_setColor(ShadeColor)
-            gc_rectangle('fill', -1300, -70, 3200, 70)
-            gc_setColor(TextColor)
-            gc_setAlpha(.626)
-            gc_rectangle('fill', -1300, -70, 3200, 3)
+            --gc_replaceTransform(SCR.xOy_u)
+            --gc_setColor(ShadeColor)
+            --gc_rectangle('fill', -1300, 0, 3200, 70)
+            --gc_setColor(TextColor)
+            --gc_setAlpha(.626)
+            --gc_rectangle('fill', -1300, 70, 3200, 3)
             gc_setAlpha(1)
             gc_replaceTransform(SCR.xOy_u)
-            if M.DP == 0 then
-                TEXTS.ghp:set("HP "..MATH.floor(GAME.life*10))
-            else
-                TEXTS.ghp:set("1P "..MATH.floor(GAME.life*10).."/2P "..MATH.floor(GAME.life2*10))
+                TEXTS.ghp:set(MATH.floor(GAME.life*10))
+                TEXTS.ghp2:set(MATH.floor(GAME.life2*10))
+            gc_setColor(COLOR.D)
+            gc_strokeDraw('full', 3, TEXTS.ghp, -680+(TEXTS.ghp:getWidth()/2), 469, 0, 1.5, 1.2, TEXTS.ghp:getWidth() / 1, TEXTS.ghp:getHeight() / 2)
+            gc_setColor(COLOR.G)
+            gc_strokeDraw('full', 1, TEXTS.ghp, -680+(TEXTS.ghp:getWidth()/2), 469, 0, 1.5, 1.2, TEXTS.ghp:getWidth() / 1, TEXTS.ghp:getHeight() / 2)
+            if M.DP ~= 0 then
+                gc_setColor(COLOR.D)
+                gc_strokeDraw('full', 3, TEXTS.ghp2, 720+(TEXTS.ghp2:getWidth()/2), 469, 0, 1.5, 1.2, TEXTS.ghp2:getWidth() / 1, TEXTS.ghp2:getHeight() / 2)
+                gc_setColor(COLOR.I)
+                gc_strokeDraw('full', 1, TEXTS.ghp2, 720+(TEXTS.ghp2:getWidth()/2), 469, 0, 1.5, 1.2, TEXTS.ghp2:getWidth() / 1, TEXTS.ghp2:getHeight() / 2)
             end
-            gc_draw(TEXTS.ghp, -850, -5, 0, 1.5, 1.2, 0, 0)
             gc_replaceTransform(SCR.xOy_m)
 
         -- Quests
@@ -1944,21 +1944,7 @@ function scene.overDraw()
 
     
 
-    -- Cards
-    gc_replaceTransform(SCR.xOy)
-    gc_setColor(1, 1, 1)
-    if GAME.big then gc_scale(1.3)
-    gc_translate(-185,-170)
-    end
-    if FloatOnCard then
-        for i = #Cards, 1, -1 do
-            if i ~= FloatOnCard then Cards[i]:draw() end
-        end
-        Cards[FloatOnCard]:draw()
-    else
-        for i = #Cards, 1, -1 do
-            Cards[i]:draw() end
-    end
+    
 
     if not GAME.invisUI then
         -- Allspin keyboard hint Trevor Smithy (any AS and eEX or no EX)
@@ -1988,6 +1974,22 @@ function scene.overDraw()
             gc_draw(TEXTS.floorTime, -10, -5 + 260 * (1 - GAME.uiHide), 0, .7, .7, ox, oy)
         end
 
+        -- Cards
+        gc_replaceTransform(SCR.xOy)
+        gc_setColor(1, 1, 1)
+        if GAME.big then gc_scale(1.3)
+            gc_translate(-185,-170)
+        end
+        if FloatOnCard then
+            for i = #Cards, 1, -1 do
+                if i ~= FloatOnCard then Cards[i]:draw() end
+            end
+           Cards[FloatOnCard]:draw()
+        else
+            for i = #Cards, 1, -1 do
+            Cards[i]:draw() end
+        end
+
         -- UI
         if GAME.uiHide < 1 and not GAME.badTime then
             local exT = GAME.exTimer
@@ -2003,22 +2005,16 @@ function scene.overDraw()
             gc_setColor(TextColor)
             gc_setAlpha(.626)
             gc_rectangle('fill', -1300, 70 - d, 2600, 3)
-            gc_replaceTransform(SCR.xOy_d)
-            gc_setColor(ShadeColor)
-            gc_rectangle('fill', -1300, -70, 3200, 70)
-            gc_setColor(TextColor)
-            gc_setAlpha(.626)
-            gc_rectangle('fill', -1300, -70, 3200, 3)
             gc_setAlpha(1)
             gc_replaceTransform(SCR.xOy_ul)
             local h = TEXTS.title:getHeight()
             gc_setColor(TextColor)
             if M.EX ~= -1 then
-                gc_draw(TEXTS.title, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
+                gc_draw(TEXTS.title, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
             elseif GAME.uneasyMode then
-                gc_draw(TEXTS.uneasyTitle, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
+                gc_draw(TEXTS.uneasyTitle, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
             else
-                gc_draw(TEXTS.easyTitle, lerp(-181, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
+                gc_draw(TEXTS.easyTitle, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
             end
             gc_replaceTransform(SCR.xOy_ur)
             gc_draw(TEXTS.pb, -10, -d, 0, 1, 1, TEXTS.pb:getWidth(), 0)
@@ -2036,6 +2032,8 @@ function scene.overDraw()
             gc_translate(0, DeckPress)
             gc_draw(TEXTS.credit, -5, d, 0, .872, .872, TEXTS.credit:getDimensions())
         end
+
+        
 
         -- Speedrun Timer
         gc_replaceTransform(SCR.xOy_dl)
