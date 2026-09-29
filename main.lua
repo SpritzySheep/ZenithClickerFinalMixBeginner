@@ -290,6 +290,8 @@ TEXTURE = {
             assets 'rank/theta_06.png', assets 'rank/theta_07.png', assets 'rank/theta_08.png', assets 'rank/theta_09.png', assets 'rank/theta_10.png',
             assets 'rank/iota_01.png', assets 'rank/iota_02.png', assets 'rank/iota_03.png', assets 'rank/iota_04.png', assets 'rank/iota_05.png',
             assets 'rank/iota_06.png', assets 'rank/iota_07.png', assets 'rank/iota_08.png', assets 'rank/iota_09.png', assets 'rank/iota_10.png',
+            assets 'rank/kappa_01.png', assets 'rank/kappa_02.png', assets 'rank/kappa_03.png', assets 'rank/kappa_04.png', assets 'rank/kappa_05.png',
+            assets 'rank/kappa_06.png', assets 'rank/kappa_07.png', assets 'rank/kappa_08.png', assets 'rank/kappa_09.png', assets 'rank/kappa_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -741,7 +743,11 @@ TEXTURE = {
             ASDPNHVL = aq(32, 4), ASDHINNH = aq(3, 13), ASDHDPNH = aq(17, 5), ASDPINNH = aq(6, 11), DHGVMSVL = aq(9, 8),
             GVINMSVL = aq(30, 3), ASGVMSVL = aq(13, 5), DPGVMSVL = aq(2, 3), DHGVINMS = aq(29, 2), ASDHGVMS = aq(26, 4),
             DHDPGVMS = aq(16, 12), ASGVINMS = aq(13, 8), DPGVINMS = aq(19, 5), ASDPGVMS = aq(2, 10), DHINMSVL = aq(20, 5),
-            ASDHMSVL = aq(14, 8), DHDPMSVL = aq(21, 4), ASINMSVL = aq(12, 9),
+            ASDHMSVL = aq(14, 8), DHDPMSVL = aq(21, 4), ASINMSVL = aq(12, 9), DPINMSVL = aq(30, 3), ASDPMSVL = aq(9, 12),
+            ASDHINMS = aq(31, 2), DHDPINMS = aq(21, 5), ASDHDPMS = aq(22, 5), ASDPINMS = aq(29, 4), DHGVINVL = aq(13, 5),
+            ASDHGVVL = aq(24, 4), DHDPGVVL = aq(20, 5), ASGVINVL = aq(23, 5), DPGVINVL = aq(11, 9), ASDPGVVL = aq(13, 12),
+            ASDHGVIN = aq(3, 10), DHDPGVIN = aq(17, 5), ASDHDPGV = aq(11, 12), ASDPGVIN = aq(24, 5), ASDHINVL = aq(6, 5),
+            DHDPINVL = aq(13, 4), ASDHDPVL = aq(25, 5), ASDPINVL = aq(14, 5), ASDHDPIN = aq(9, 4),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -961,6 +967,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     srTimer    = GC.newText(FONT.get(30)),
     title      = GC.newText(FONT.get(50), "EXPERT GAMEPLAY"),
     load       = GC.newText(FONT.get(50), "LOAD"),
+    ghp        = GC.newText(FONT.get(50)),
     pb         = GC.newText(FONT.get(50)),
     endResult  = GC.newText(FONT.get(30)),
     endHeight  = GC.newText(FONT.get(50)),

@@ -300,7 +300,7 @@ local function keyTrigger(key)
                     SFX.play('combo_' .. combo .. (power and '_power' or ''), 1, 0, Tone((power and (combo-1)/5 or 0)))
                 else
                     SFX.play('combo_16' .. (power and '_power' or ''), 1, 0, Tone((power and (combo-1)/5 or 0)))
-                    scene.widgetList.easy.x = -100
+                    scene.widgetList.easy.x = 60
                     scene.widgetList.easy:resetPos()
                     if power then
                         GAME.fallout = true
@@ -369,7 +369,7 @@ local function keyTrigger(key)
                     else
                         IssueAchv('could_you_not')
                     end
-                    buttonRemoved = true
+                    
                 end                
                 if not buttonRemoved then 
                     local str = "Select upright mods to make Easy first!"
@@ -793,8 +793,8 @@ XMasTextColor = { .4, .4, 1 }
 XMasShadeColor = { .2, .2, .42 }
 ValentineTextColor = { 1, .6, .8 }
 ValentineShadeColor = { .45, .3, .45 }
-BaseTextColor = { .7, .5, .3 }
-BaseShadeColor = { .3, .15, 0 }
+BaseTextColor = { .75, .25, 1 }
+BaseShadeColor = { .2, .0, .5 }
 TextColor, ShadeColor, ComboColor = {}, {}, {}
 local rankColor = {
     [0] = { 1, 1, 1, .26 },
@@ -1131,7 +1131,8 @@ end
         -- Mod icons
         if GAME.uiHide > 0 then
             gc_setColor(1, 1, 1, GAME.uiHide * (M.IN == 0 and 1 or 1 - M.IN * (.26 + .1 * sin(t * 2.6))))
-            local y = 330 + (GAME.height - GAME.bgH) * (M.VL + 1)
+            local y = 330 + (((GAME.height - GAME.bgH) * (M.VL + 1))/1000)
+            if y > 430 then y = 430 elseif y < 230 then y = 230 end
             if GAME.anyRev then
                 local r = (M.AS + 1) * .026
                 gc_setColorMask(false, false, true, true)
@@ -1410,6 +1411,9 @@ function scene.overDraw()
         gc_mDraw(TEXTS.mod, 800, 396, 0, min(1, 760 / TEXTS.mod:getWidth()))
     end
 
+    gc_setColor(COLOR.D)
+        gc_rectangle('fill', -200, 600, 2000, 4000)
+
     if GAME.playing then
         if not GAME.invisUI then
             -- Achievement state mark5
@@ -1659,6 +1663,28 @@ function scene.overDraw()
             end
         end
 
+        -- Top bar & texts
+            gc_replaceTransform(SCR.xOy_u)
+            gc_setColor(ShadeColor)
+            gc_rectangle('fill', -1300, 0, 3200, 70)
+            gc_setColor(TextColor)
+            gc_setAlpha(.626)
+            gc_rectangle('fill', -1300, 70, 3200, 3)
+            gc_replaceTransform(SCR.xOy_d)
+            gc_setColor(ShadeColor)
+            gc_rectangle('fill', -1300, -70, 3200, 70)
+            gc_setColor(TextColor)
+            gc_setAlpha(.626)
+            gc_rectangle('fill', -1300, -70, 3200, 3)
+            gc_setAlpha(1)
+            gc_replaceTransform(SCR.xOy_u)
+            if M.DP == 0 then
+                TEXTS.ghp:set("HP "..MATH.floor(GAME.life*10))
+            else
+                TEXTS.ghp:set("1P "..MATH.floor(GAME.life*10).."/2P "..MATH.floor(GAME.life2*10))
+            end
+            gc_draw(TEXTS.ghp, -850, -5, 0, 1.5, 1.2, 0, 0)
+            gc_replaceTransform(SCR.xOy_m)
 
         -- Quests
         for i = 1, GAME.maxQuestCount do
@@ -1678,9 +1704,9 @@ function scene.overDraw()
             if a > 0 then
                 a = a * Q.a
                 gc_setColor(.2 * a, .2 * a, .2 * a, a)
-                gc_mDraw(text, 800, Q.y + 5, 0, kx, ky)
+                gc_mDraw(text, 0, Q.y - 495, 0, kx, ky)
                 gc_setColor(1, 1, 1, a)
-                gc_mDraw(text, 800, Q.y, 0, kx, ky)
+                gc_mDraw(text, 0, Q.y - 500, 0, kx, ky)
             end
         end
     if CONF.stacker and GAME.questStack[1] then
@@ -1700,9 +1726,9 @@ function scene.overDraw()
             if a > 0 then
                 a = a * Q.a
                 gc_setColor(.2 * a, .2 * a, .2 * a, a)
-                gc_mDraw(text, 800, Q.y + 5, 0, kx, ky)
+                gc_mDraw(text, 0, Q.y - 495, 0, kx, ky)
                 gc_setColor(1, 1, 1, a)
-                gc_mDraw(text, 800, Q.y, 0, kx, ky)
+                gc_mDraw(text, 0, Q.y - 500, 0, kx, ky)
             end
         end
         if CONF.stacker and GAME.comboBounceTime > 0 then
@@ -1737,6 +1763,7 @@ function scene.overDraw()
         gc_ucs_move(0, h)
 
         -- Thruster (XP bar)
+        gc_replaceTransform(SCR.xOy)
        local screenWidth, screenHeight = love.graphics.getDimensions()
         local ratio = screenWidth/screenHeight
         local maxL, maxR = 0, 1600
@@ -1966,6 +1993,7 @@ function scene.overDraw()
             local exT = GAME.exTimer
             local revT = GAME.revTimer
             local d = GAME.uiHide * 70
+            d = 0
 
             gc_replaceTransform(SCR.xOy_u)
 
@@ -1975,6 +2003,13 @@ function scene.overDraw()
             gc_setColor(TextColor)
             gc_setAlpha(.626)
             gc_rectangle('fill', -1300, 70 - d, 2600, 3)
+            gc_replaceTransform(SCR.xOy_d)
+            gc_setColor(ShadeColor)
+            gc_rectangle('fill', -1300, -70, 3200, 70)
+            gc_setColor(TextColor)
+            gc_setAlpha(.626)
+            gc_rectangle('fill', -1300, -70, 3200, 3)
+            gc_setAlpha(1)
             gc_replaceTransform(SCR.xOy_ul)
             local h = TEXTS.title:getHeight()
             gc_setColor(TextColor)
@@ -2356,7 +2391,7 @@ scene.widgetList = {
         pos = { 0, 0 }, x = 60, y = 140, w = 160, h = 60,
         color = { .15, .15, .15 },
         sound_hover = 'menutap',
-        fontSize = 30, text = "    BACK", textColor = 'DL',
+        fontSize = 30, text = GAME.playing and "    BACK" or "    QUIT", textColor = 'DL',
         onClick = function()
             if GAME.playing then
                 if TASK.lock('sure_forfeit', 2.6) then
@@ -2420,7 +2455,7 @@ scene.widgetList = {
     WIDGET.new {
         name = 'start', type = 'button',
         pos = { .5, .5 }, y = -170, w = 800, h = 200,
-        color = { .35, .12, .05 },
+        color = { .3, .0, .7 },
         textColor = TextColor,
         sound_hover = 'menuhover',
         fontSize = 70, text = "COMMIT",
@@ -2444,7 +2479,7 @@ scene.widgetList = {
     WIDGET.new {
         name = 'reset', type = 'button',
         pos = { .5, .5 }, x = 500, y = -120, w = 160, h = 100,
-        color = 'DR',
+        color = 'DV',
         sound_hover = 'menutap',
         fontSize = 30, text = "CLEAR", textColor = TextColor,
         onPress = function(k)

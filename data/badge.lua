@@ -303,6 +303,8 @@ local d = {
     {id = 'infinity_07',name = "Infinity_07",desc = "Gathered 1,300k Chakra Escence",},
     {id = 'infinity_08',name = "Infinity_08",desc = "Gathered 1,350k Chakra Escence",},
     {id = 'infinity_09',name = "Infinity_09",desc = "Gathered 1,400k Chakra Escence",},
+    {id = 'infinity_10',name = "Infinity_10",desc = "Gathered 1,450k Chakra Escence",},
+    {id = 'infinity_11',name = "Infinity_11",desc = "Gathered 1,500k Chakra Escence",},
 }
 
 for i = 1, #d do

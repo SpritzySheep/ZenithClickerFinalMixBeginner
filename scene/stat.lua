@@ -176,6 +176,8 @@ local function calculateRating()
     if cr >= 1300e3 then IssueSecret('infinity_07', true) end
     if cr >= 1350e3 then IssueSecret('infinity_08', true) end
     if cr >= 1400e3 then IssueSecret('infinity_09', true) end
+    if cr >= 1450e3 then IssueSecret('infinity_10', true) end
+    if cr >= 1500e3 then IssueSecret('infinity_11', true) end
 
     local levelBadgeCount = 41
     for lev = 1, levelBadgeCount do
@@ -409,7 +411,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 128)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 138)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
