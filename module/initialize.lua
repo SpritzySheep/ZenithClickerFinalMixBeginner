@@ -53,6 +53,7 @@ function Initialize(save)
     if STAT.totalUniva == not STAT.totalUniva then STAT.totalUniva = 0 end
     if STAT.totalMultiva == not STAT.totalMultiva then STAT.totalMultiva = 0 end
     if STAT.totalExista == not STAT.totalExista then STAT.totalExista = 0 end
+    if STAT.totalChroma == not STAT.totalChroma then STAT.totalChroma = 0 end
     if STAT.heaven == not STAT.heaven then STAT.heaven = {["EX"]=0,["NH"]=0,["MS"]=0,["GV"]=0,["VL"]=0,["DH"]=0,["IN"]=0,["AS"]=0,["DP"]=0} end
     if STAT.mousegirl == not STAT.mousegirl then STAT.mousegirl = false end
     if STAT.srTimer_life == not STAT.srTimer_life then STAT.srTimer_life = 0 end

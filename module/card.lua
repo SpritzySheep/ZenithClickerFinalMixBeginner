@@ -938,10 +938,24 @@ else
                 gc_setShader()
             end
 
+            local masteryMarks = {
+                [0] = TEXTURE.star2,
+                [1] = TEXTURE.master1,
+                [2] = TEXTURE.master2,
+                [3] = TEXTURE.master3,
+                [4] = TEXTURE.master4,
+                [5] = TEXTURE.master5,
+                [6] = TEXTURE.master6,
+                [7] = TEXTURE.master7,
+                [8] = TEXTURE.master8,
+                [9] = TEXTURE.master9,
+                [10] = TEXTURE.master10,
+            }
+            local maxMaster = 10
             -- Star
             if completion[self.id] > 0 then
                 img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star2' or 'star1') or 'star0']
-                if STAT.heaven[self.id] >= 100 then img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star5' or 'star4') or 'star3'] end
+                if CONF.masterIcon and STAT.heaven[self.id] >= 100 then img = masteryMarks[math.min(math.floor(STAT.heaven[self.id]/100),maxMaster)] end
                 local t = (self.upright or self.easy) and self.float or 1
                 local blur = (FloatOnCard == self.initOrder or not self.upright) and 0 or -.2
                 local x = lerp(155, 0, t)
@@ -958,8 +972,8 @@ else
                     if revMastery then gc_blurCircle(blur, -x, -y, cr) end
                     gc_setBlendMode('alpha')
                     gc_setColor(1, 1, 1)
-                    gc_mDraw(img, x, y, ang, lerp(.16, .42, t))
-                    if revMastery then gc_mDraw(img, -x, -y, ang, lerp(.16, .42, t)) end
+                    gc_mDraw(img, x, y, ang, lerp(.3, .6, t))
+                    if revMastery then gc_mDraw(img, -x, -y, ang, lerp(.3, .6, t)) end
                 else
                     gc_setColor(.6, .1, .1)
                     gc_setBlendMode('add')
@@ -967,8 +981,8 @@ else
                     if revMastery then gc_blurCircle(blur, -x, -y, cr) end
                     gc_setBlendMode('alpha')
                     gc_setColor(1, .62 + .1 * sin(getTime() * 42), .26)
-                    gc_mDraw(img, x, y, ang, lerp(.16, .42, t))
-                    if revMastery then gc_mDraw(img, -x, -y, ang, lerp(.16, .42, t)) end
+                    gc_mDraw(img, x, y, ang, lerp(.3, .6, t))
+                    if revMastery then gc_mDraw(img, -x, -y, ang, lerp(.3, .6, t)) end
                 end
                 -- Float star
                 if not self.active then
@@ -980,9 +994,9 @@ else
                     end
                     gc_setColor(1, 1, 1, t)
                     local star1 = TEXTURE[self.id == 'DP' and STAT.clicker and 'star2' or 'star1']
-                    if STAT.heaven[self.id] >= 100 then star1 = TEXTURE[self.id == 'DP' and STAT.clicker and 'star5' or 'star4'] end
-                    gc_mDraw(star1, x, y, ang, lerp(.16, .42, t))
-                    if revMastery then gc_mDraw(star1, -x, -y, ang, lerp(.16, .42, t)) end
+                    if CONF.masterIcon and STAT.heaven[self.id] >= 100 then star1 = masteryMarks[math.min(math.floor(STAT.heaven[self.id]/100),maxMaster)] end
+                    gc_mDraw(star1, x, y, ang, lerp(.3, .6, t))
+                    if revMastery then gc_mDraw(star1, -x, -y, ang, lerp(.3, .6, t)) end
                 end
             end
             gc_pop()

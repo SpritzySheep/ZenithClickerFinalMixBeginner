@@ -229,6 +229,7 @@ local GAME = {
     univaspeedFloor = {},
     multivaspeedFloor = {},
     existaspeedFloor = {},
+    chromaspeedFloor = {},
     windupAnim = {}, ---@type Windup[]
     koCharge = 0,
     koBuffer = {}, ---@type {uid:string, timer:number, valid:boolean}[]
@@ -1159,9 +1160,9 @@ function GAME.addHeight(h, realHeight, bypassDPlock)
         end
     else
         if GAME.height > 2050 then
-            GAME.height = GAME.height + (h*2)
+            GAME.height = GAME.height + (h*99)
         else
-            GAME.heightBuffer = GAME.heightBuffer + (h*2)
+            GAME.heightBuffer = GAME.heightBuffer + (h*99)
         end
     end
     if h >= 6 and TASK.lock('speed_tick_whirl', 2.6) then SFX.play('speed_tick_whirl') end
@@ -1329,6 +1330,10 @@ function GAME.addXP(xp, falseCommit)
             GAME.startExistaAnim()
             GAME.refreshRPC()
         end
+        if GAME.gspeedlv < 17 and GAME.rank >= ChromaMusicReq then
+            GAME.startChromaAnim()
+            GAME.refreshRPC()
+        end
     else
         GAME.xpLockTimer = oldLockTimer
     end
@@ -1355,6 +1360,7 @@ function GAME.setGigaspeedAnim(on)
         GigaSpeed.isUniva = false
         GigaSpeed.isMultiva = false
         GigaSpeed.isExista = false
+        GigaSpeed.isChroma = false
         TWEEN.new(function(t) GigaSpeed.alpha = lerp(s, 1, t) end):setUnique('giga'):run()
         TASK.removeTask_code(GAME.task_gigaspeed)
         TASK.new(GAME.task_gigaspeed)
@@ -1632,6 +1638,17 @@ function GAME.stopExistaspeed(mode)
     if mode == 'drop' then
         PlayBGM('f' .. max(GAME.floor, GAME.negFloor), true)
     end
+end
+
+function GAME.startChromaAnim()
+    GAME.gspeedlv = 17
+    GAME.chromaspeed = true
+    GAME.chromaspeedFloor[GAME.floor] = true
+    GAME.chromaCount = GAME.chromaCount + 1
+    GigaSpeed.isChromaa = true
+    TASK.removeTask_code(GAME.task_gigaspeed)
+    TASK.new(GAME.task_gigaspeed)
+    SFX.play('zenith_speedrun_start')
 end
 
 function GAME.readyShuffle(messiness, noSnd)
@@ -2051,6 +2068,7 @@ function GAME.upFloor()
                 IssueSecret('exista')
                 GAME.finishTera = true
     end
+    if GAME.chromaCount >= 1 or STAT.totalChroma >= 1 then IssueSecret('chroma') end
     if STAT.heaven["EX"]>99 then IssueSecret('aEX') end
     if STAT.heaven["NH"]>99 then IssueSecret('aNH') end
     if STAT.heaven["MS"]>99 then IssueSecret('aMS') end
@@ -2060,6 +2078,24 @@ function GAME.upFloor()
     if STAT.heaven["IN"]>99 then IssueSecret('aIN') end
     if STAT.heaven["AS"]>99 then IssueSecret('aAS') end
     if STAT.heaven["DP"]>99 then IssueSecret('aDP') end
+    if STAT.heaven["EX"]>499 then IssueSecret('mEX') end
+    if STAT.heaven["NH"]>499 then IssueSecret('mNH') end
+    if STAT.heaven["MS"]>499 then IssueSecret('mMS') end
+    if STAT.heaven["GV"]>499 then IssueSecret('mGV') end
+    if STAT.heaven["VL"]>499 then IssueSecret('mVL') end
+    if STAT.heaven["DH"]>499 then IssueSecret('mDH') end
+    if STAT.heaven["IN"]>499 then IssueSecret('mIN') end
+    if STAT.heaven["AS"]>499 then IssueSecret('mAS') end
+    if STAT.heaven["DP"]>499 then IssueSecret('mDP') end
+    if STAT.heaven["EX"]>999 then IssueSecret('gEX') end
+    if STAT.heaven["NH"]>999 then IssueSecret('gNH') end
+    if STAT.heaven["MS"]>999 then IssueSecret('gMS') end
+    if STAT.heaven["GV"]>999 then IssueSecret('gGV') end
+    if STAT.heaven["VL"]>999 then IssueSecret('gVL') end
+    if STAT.heaven["DH"]>999 then IssueSecret('gDH') end
+    if STAT.heaven["IN"]>999 then IssueSecret('gIN') end
+    if STAT.heaven["AS"]>999 then IssueSecret('gAS') end
+    if STAT.heaven["DP"]>999 then IssueSecret('gDP') end
     SubmitAchv('powerleveling', STAT.level,true,true)
     local powerCount = 199
     for tier = 2, powerCount do
@@ -2079,6 +2115,7 @@ function GAME.upFloor()
     SubmitAchv('Univa', STAT.totalUniva,true,true)
     SubmitAchv('Multiva', STAT.totalMultiva,true,true)
     SubmitAchv('Exista', STAT.totalExista,true,true)
+    SubmitAchv('Chroma', STAT.totalChroma,true,true)
     
 end
 
@@ -3837,6 +3874,7 @@ function GAME.start()
     TABLE.clear(GAME.univaspeedFloor)
     TABLE.clear(GAME.multivaspeedFloor)
     TABLE.clear(GAME.existaspeedFloor)
+    TABLE.clear(GAME.chromaspeedFloor)
     GAME.gigaCount = 0
     GAME.teraCount = 0
     GAME.petaCount = 0
@@ -3852,6 +3890,7 @@ function GAME.start()
     GAME.univaCount = 0
     GAME.multivaCount = 0
     GAME.existaCount = 0
+    GAME.chromaCount = 0
     GAME.teramusic = false
     GAME.finishTera = false
     GAME.atkBuffer = 0
@@ -3965,6 +4004,7 @@ function GAME.start()
     if GAME.rank >= UnivaMusicReq then GAME.startUnivaAnim() end
     if GAME.rank >= MultivaMusicReq then GAME.startMultivaAnim() end
     if GAME.rank >= ExistaMusicReq then GAME.startExistaAnim() end
+    if GAME.rank >= ChromaMusicReq then GAME.startChromaAnim() end
 end
 
 function GAME.clearResultStat()
@@ -4128,7 +4168,7 @@ end
         if GAME.floor >= 10 then
             local unlockRev = 0
             for k, v in next, M do
-                if GAME.height >= 10000 and v ~= 0 then
+                if GAME.height >= 1650 and v > 0 then
                     STAT.heaven[k] = STAT.heaven[k] + 1
                 end
                 if v > GAME.completion[k] then
@@ -4139,6 +4179,15 @@ end
                     GAME.completion[k] = v
                 end
             end
+            if M.EX == 2 then STAT.heaven["EX"] = STAT.heaven["EX"] + (URM and 3 or 1) end
+            if M.NH == 2 then STAT.heaven["NH"] = STAT.heaven["NH"] + (URM and 3 or 1) end
+            if M.MS == 2 then STAT.heaven["MS"] = STAT.heaven["MS"] + (URM and 3 or 1) end
+            if M.GV == 2 then STAT.heaven["GV"] = STAT.heaven["GV"] + (URM and 3 or 1) end
+            if M.VL == 2 then STAT.heaven["VL"] = STAT.heaven["VL"] + (URM and 3 or 1) end
+            if M.DH == 2 then STAT.heaven["DH"] = STAT.heaven["DH"] + (URM and 3 or 1) end
+            if M.IN == 2 then STAT.heaven["IN"] = STAT.heaven["IN"] + (URM and 3 or 1) end
+            if M.AS == 2 then STAT.heaven["AS"] = STAT.heaven["AS"] + (URM and 3 or 1) end
+            if M.DP == 2 then STAT.heaven["DP"] = STAT.heaven["DP"] + (URM and 3 or 1) end
             if (unlockRev > 0 or TABLE.countAll(GAME.completion, 1) > 0 and not GAME.anyRev and MATH.roll(.1)) and TABLE.countAll(GAME.completion, 2) == 0 then
                 local hintText
                 if unlockRev == 0 then
@@ -4193,6 +4242,7 @@ end
         STAT.totalUniva = STAT.totalUniva + GAME.univaCount
         STAT.totalMultiva = STAT.totalMultiva + GAME.multivaCount
         STAT.totalExista = STAT.totalExista + GAME.existaCount
+        STAT.totalChroma = STAT.totalChroma + GAME.chromaCount
         STAT.totalKO = STAT.totalKO + GAME.koCount
         STAT.totalRevive = STAT.totalRevive + GAME.reviveCount
         if GAME.floor >= 10 then
@@ -5148,7 +5198,7 @@ function GAME.update(dt)
                     else 
                         GAME.invincible = false 
                     end
-                    GAME.height = GAME.height + GAME.rank / 0.3 * dt
+                    GAME.height = GAME.height + GAME.rank / 0.01 * dt
                     --if GAME.height > 1e5 then GAME.height = 1e5 end
                 elseif GAME.crit then
                     GAME.height = GAME.height + (GAME.rank + 7) / 7 * dt

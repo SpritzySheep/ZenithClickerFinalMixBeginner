@@ -55,7 +55,7 @@ end
 ---@field type? 'competitive' | 'unranked' | 'issued' | 'event'
 ---@field hide? fun():boolean
 ---@field mod string?
-local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc, mod, typo)
+local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc, mod, credit, typo)
         return {
             id = id,
             name = name,
@@ -65,6 +65,7 @@ local function AchieveFromCombo(id, name, desc, quote, rankFunc, hideFunc, mod, 
             hide = hideFunc or FALSE,
             mod = mod,
             type = typo,
+            credit = credit,
         }
     end
 ---@type Map<Achievement>
@@ -2648,6 +2649,13 @@ local d = {
         hide = function() return STAT.totalExista == 0 end,
         mod = "MISC",
     },
+    { -- Chroma
+        id = 'Chroma', name = "Edge of the multiverse", desc = [[Chromaspeed Entries]],
+        quote = [["No mouse has ever breached the outer reaches of the multiverse... watch yourself."]],
+        scoreSimp = function(n) return n .. " CHROMAs" end,rank = numberRank(0, 1, 2, 5, 11, 21, 34),
+        hide = function() return STAT.totalChroma == 0 end,
+        mod = "MISC",
+    },
 
    { title = "PIECES", desc = "Pieces have been found to have strange effects. These challenge you to climb using ONLY them.", mod = "MISC"},
 
@@ -3017,6 +3025,21 @@ local d = {
         rank = numberRank(180e3, 184e3, 188e3, 192e3, 196e3, 200e3, 220e3), hide = function() return STAT.level < 180e3 end
         , realHide = function() return STAT.level < 180e3 end, mod = "MISC",
     },
+    {id = 'powerleveling38',name = "Galactic Leveling", desc = [[Zenith Level (200k-220k)]],
+        quote = [[Welp, that's a mouse the size of a galaxy.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(200e3, 204e3, 208e3, 212e3, 216e3, 220e3, 240e3), hide = function() return STAT.level < 200e3 end
+        , realHide = function() return STAT.level < 200e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling39',name = "Intergalactic Leveling", desc = [[Zenith Level (220k-240k)]],
+        quote = [[Welp, that's a mouse the size of multiple galaxies.]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(220e3, 224e3, 228e3, 232e3, 236e3, 240e3, 260e3), hide = function() return STAT.level < 220e3 end
+        , realHide = function() return STAT.level < 220e3 end, mod = "MISC",
+    },
+    {id = 'powerleveling40',name = "Local Leveling", desc = [[Zenith Level (240k-260k)]],
+        quote = [[WHAT DO YOU MEAN SHE ATE THE ENTIRE LOCAL GROUP?! DO YOU KNOW JUST HOW MANY GALAXIES THAT IS?!]], scoreSimp = function(n) return "Lv" .. n end,
+        rank = numberRank(240e3, 244e3, 248e3, 252e3, 256e3, 260e3, 280e3), hide = function() return STAT.level < 240e3 end
+        , realHide = function() return STAT.level < 240e3 end, mod = "MISC",
+    },
 
     { title = "2 Upright Mod Combos", desc = "Single Mods make things a little harder, yes, but what about TWO of them at once? Max wreath obtained at 6,200m.", mod = "2MP" },
 
@@ -3374,7 +3397,7 @@ local d = {
     AchieveFromCombo('DHDPIN', "Speration Anxiety", [[HFD with DH IN DP]], [[No... Don't go...]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('ASDHDP', "A Mutual Friendship", [[HFD with DH AS DP]], [[Bro stop adding your extra card to everything.]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
     AchieveFromCombo('ASDPIN', "Blindfolded Collaboration", [[HFD with IN AS DP]], [[Can I order some chuggets?]], floorRank(1, 3, 5, 7, 9, 10, 5580), FALSE, "3MP"),
-    AchieveFromCombo('', "", [[]], [[]], floorRank(1e99, 3e99, 5e99, 7e99, 9e99, 10e99, 5580e99), FALSE, "3MP", 'issued'), -- Dummy Achievement to fix 3MP page
+    AchieveFromCombo('', "", [[]], [[]], floorRank(1e99, 3e99, 5e99, 7e99, 9e99, 10e99, 5580e99), FALSE, "3MP",'', 'issued'), -- Dummy Achievement to fix 3MP page
 
     { title = "1Rev1Up Mod Combos", desc = "For a mouse to reach divinity, they must stand strong in the face of evil. These combos will get you ready for the tougher challenges ahead. Max wreath at 5,022m.", mod = "3MP"},
     AchieveFromCombo('NHrEX', "The Benevolent Dictator", [[HFD with rEX NH]], [[You want 3,000 liters of water? Sure, go ahead.]], floorRank(1, 3, 5, 7, 9, 10, 5022), function() return GAME.completion.EX == 0 end, "3MP"),
@@ -3563,7 +3586,7 @@ local d = {
     AchieveFromCombo('ASDPINMS', "Inception", [[HFD with MS IN AS DP]], [[*Insert loud sound effect here*]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('DHGVINVL', "Nightmare", [[HFD with GV VL DH IN]], [[Oh thank god, I'm not actually in the middlerooms...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDHGVVL', "Sword Box", [[HFD with GV VL DH AS]], [[It's a real death trap of a box.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
-    AchieveFromCombo('DHDPGVVL', "The Tempting Ones", [[HFD with GV VL IN AS]], [[The Null's mystery is tempting to many. It is also a very volitale element, resulting in the dessctruction of multiple buildings.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+    AchieveFromCombo('DHDPGVVL', "The Tempting Ones", [[HFD with GV VL DH DP]], [[The Null's mystery is tempting to many. It is also a very volitale element, resulting in the dessctruction of multiple buildings.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASGVINVL', "Immense Pressure", [[HFD with GV VL IN AS]], [[Pressure! I don't know.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('DPGVINVL', "Blind Date", [[HFD with GV VL IN DP]], [["I'm me." he says.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDPGVVL', "The Colosseum", [[HFD with GV VL AS DP]], [[Heros come here from all over to take part in THE GAMES!!]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
@@ -3576,6 +3599,36 @@ local d = {
     AchieveFromCombo('ASDHDPVL', "A Dance of Fire and Ice", [[HFD with VL DH AS DP]], [[The opposing elements, kinda.]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDPINVL', "The Introverted Lovers", [[HFD with VL IN AS DP]], [[Honey, there's people outside again...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
     AchieveFromCombo('ASDHDPIN', "Alter Ego", [[HFD with DH IN AS DP]], [[Honey, there's people inside again...]], floorRank(1, 3, 5, 7, 9, 10, 4620), FALSE, "4MP"),
+
+    { title = "1Rev2Up Mod Combos", desc = "There is a legend of reverse mods coming from the void. It has proven controversal. Max wreath at 4,200m.", mod = "4MP"},
+    AchieveFromCombo('MSNHrEX', "The Casino Kingpin", [[HFD with rEX NH MS]], [[Darn casino's probably run my the mafia.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP"),
+    AchieveFromCombo('GVNHrEX', "The Virtual Viceroy", [[HFD with rEX NH GV]], [[A Realm run by AI is a realm hardly run properly at all.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP"),
+    AchieveFromCombo('NHVLrEX', "Mercurian Empire", [[HFD with rEX NH VL]], [[A Realm run on Mercury is an impressive feat, albeit not without technology.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DHNHrEX', "Despot's Decadence", [[HFD with rEX NH DH]], [[Those power hungry mice slowy wither away to dust, or even less. Do not give in to the temptations.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP"),
+    AchieveFromCombo('INNHrEX', "Laura Bridgman", [[HFD with rEX NH IN]], [[I kinda know who this is, I think.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASNHrEX', "Dancing Princess", [[HFD with rEX NH AS]], [["I know I'm a princess and all, but I don't want to just sit here and watch. I'm jumping right in." -Spritzy Lunabright]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DPNHrEX', "Sword in sword", [[HFD with rEX NH DP]], [[We doing this? We doing this.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('GVMSrEX', "Shaman Race", [[HFD with rEX MS GV]], [[A cheeserunner's worst nightmare.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('MSVLrEX', "Blue Cheese", [[HFD with rEX MS VL]], [[Brother, euugh!! What's that brother?]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DHMSrEX', "Digging to Bedrock", [[HFD with rEX MS DH]], [[That is straight up the bottom of the world, we're not finding anything below here.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('INMSrEX', "Blind Sacrifice", [[HFD with rEX MS IN]], [[SKULL EMOJI]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASMSrEX', "The Centibillionaire", [[HFD with rEX MS AS]], [[How did you even manage to accrue 100,000,000,000 cheese coins??]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", ''),
+    AchieveFromCombo('DPMSrEX', "Grand Gluttony", [[HFD with rEX MS DP]], [[How do you manage to literally eat THE ENTIRE RESTURAUNT?!]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('GVVLrEX', "Vacation", [[HFD with rEX GV VL]], [[The ham he bought was hammy.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DHGVrEX', "Chemical Anomaly", [[HFD with rEX GV DH]], [[Touch it to immediately evaporate.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('GVINrEX', "The Ultimate GM", [[HFD with rEX GV IN]], [[YOU AER GRANDD-MASTER! FINAL ALL]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", ''),
+    AchieveFromCombo('ASGVrEX', "Tyrant of the T", [[HFD with rEX GV AS]], [[THREE T-SPIN TRIPLES IN A ROW, POSTHASTE! I WILL NOT SETTLE FOR LESS!]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", ''),
+    AchieveFromCombo('DPGVrEX', "The Submerged", [[HFD with rEX GV DP]], [[We've still not explored the sea floor thuroughly.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DHVLrEX', "The Berserk Potentate", [[HFD with rEX VL DH]], [[Your majesty, where are you going?!]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", ''),
+    AchieveFromCombo('INVLrEX', "The Crusader", [[HFD with rEX VL IN]], [[Hamster Mario obtains 18,000 rubies.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASVLrEX', "The Scammer", [[HFD with rEX VL AS]], [[Hello, your computer has virus.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DPVLrEX', "Romantic Rivalry", [[HFD with rEX VL DP]], [["Hey, honey, do you think you can beat my score?"]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", ''),
+    AchieveFromCombo('DHINrEX', "7 Wonders", [[HFD with rEX DH IN]], [[Nobody remembers the work of the workers 7.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASDHrEX', "The Bootleg Fool", [[HFD with rEX DH AS]], [[Sorry, no reverse mod quests here.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DHDPrEX', "Murmurs of Lust", [[HFD with rEX DH DP]], [[Hmm... I don't think the Zenith Tower allows that.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASINrEX', "The Sinister Wizard", [[HFD with rEX IN AS]], [[Did you hear about TheLegend27? I heard some wizard got 'em.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('DPINrEX', "Democracy", [[HFD with rEX IN DP]], [[Get your politics out of my mouse.]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
+    AchieveFromCombo('ASDPrEX', "Opera Partners", [[HFD with rEX AS DP]], [[*Extremely loud glass-shattering singing*]], floorRank(1, 3, 5, 7, 9, 10, 4200), function() return GAME.completion.EX == 0 end, "4MP", 'ZCMM Name'),
 }
 
 local compFunc = {

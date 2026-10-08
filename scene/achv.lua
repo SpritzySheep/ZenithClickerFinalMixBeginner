@@ -616,7 +616,7 @@ function scene.draw()
 
                     -- Credit
                     gc_setColor(colorRev and COLOR.dR or COLOR.LD)
-                    gc_printf(A.credit, 65, 113, 130 / .37, 'center', 0, .37, .37, 65 / .37)
+                    gc_printf(A.credit, 164, 30, 130 / .37, 'center', 0, .37, .37, 65 / .37)
 
                     -- Tags
                     local x = 600 - 15

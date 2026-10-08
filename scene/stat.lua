@@ -103,9 +103,9 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.totalDeka)
     cr = cr + MATH.floor(STAT.totalTermina)
     cr = cr + MATH.floor(STAT.totalLumina)
-    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva) + STAT.totalExista
+    cr = cr + MATH.floor(STAT.totalSingula) + MATH.floor(STAT.totalUniva) + MATH.floor(STAT.totalMultiva) + STAT.totalExista + STAT.totalChroma
     y = (.55-MATH.max(0,((level-2e5)/5e7)))
-    level = MATH.floor((STAT.peakZP/500)^y+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    level = MATH.floor((STAT.peakZP/500)^0.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
     STAT.level = level
     STAT.ZP = STAT.PeakZP
     cr = cr + MATH.floor(level)
@@ -121,11 +121,16 @@ local function calculateRating()
     cr = cr + MATH.floor(STAT.maxFloor * 100)
     local asCR = 0
     local Mid = {[0]="","EX","NH","MS","GV","VL","DH","IN","AS","DP"}
+    local crBoost = {
+        [0]=0,10000,9000,8190,7534,7081,6726,6456,6262,6136,6074,
+    }
     for i = 1, 9 do
-        if STAT.heaven[Mid[i]] > 99 then 
-            aCR = aCR + 10000
-            asCR = asCR + 10000
-            cr = cr + 10000
+        for j = 1, 10 do
+            if STAT.heaven[Mid[i]] >= j*100 then 
+                aCR = aCR + crBoost[j]
+                asCR = asCR + crBoost[j]
+                cr = cr + crBoost[j]
+            end
         end
     end
     aCR = asCR
@@ -178,8 +183,10 @@ local function calculateRating()
     if cr >= 1400e3 then IssueSecret('infinity_09', true) end
     if cr >= 1450e3 then IssueSecret('infinity_10', true) end
     if cr >= 1500e3 then IssueSecret('infinity_11', true) end
+    if cr >= 1550e3 then IssueSecret('infinity_12', true) end
+    if cr >= 1600e3 then IssueSecret('infinity_13', true) end
 
-    local levelBadgeCount = 41
+    local levelBadgeCount = 52
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -188,6 +195,7 @@ local function calculateRating()
     if crProgress.achvGet >= 1.5e3 then IssueSecret('achv300', true) end
     if crProgress.achvGet >= 2e3 then IssueSecret('achv400', true) end
     if crProgress.achvGet >= 2.5e3 then IssueSecret('achv500', true) end
+    if crProgress.achvGet >= 3e3 then IssueSecret('achv600', true) end
     wreaths = maxi
 
     return MATH.round(cr), cap
@@ -411,12 +419,12 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 138)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 148)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
-    GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
-    GC.draw(rankIcon, 700, 500,0, 400 / rankIcon:getWidth())
+    --GC.mDraw(rankIcon, bw / 2 - t50:getWidth() / 2 - 26, bh / 2, 0, 62 / rankIcon:getWidth())
+    GC.draw(rankIcon, 700, 550,0, 400 / rankIcon:getWidth())
     if rank > 0 then
         -- Progress Bar
         GC.setColor(rating <= rating and textColor or scoreColor)
@@ -498,13 +506,15 @@ function RefreshProfile()
     GC.setColor(lblColor)
     GC.rectangle('fill', 315, 121, 254, 18)
     GC.setColor(scoreColor)
-    GC.rectangle('fill', 315, 120, ((((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
+    GC.rectangle('fill', 315, 120, ((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*254), 20)
     GC.ucs_back()
-    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^(.55-MATH.max(0,((y-2e5)/5e7)))+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
+    scene.widgetList.peakZP.floatText = "" .. MATH.round((((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1) % 1)*100) .. "% towards Level " .. MATH.round(level + 1)
     scene.widgetList.peakZP:reset()
     scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. You can toggle it in config."
     if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. You can toggle it in config." end
     scene.widgetList.achbonus:reset()
+    scene.widgetList.masterhint.floatText = "After mastering the upright version of a mod,\ncontinue reaching F10 with that mod active to progress the mastery!\nEvery 100 Master Points on a mod will increase your mastery level,\nwhich will give you a good amount of extra CE.\nYou can view your current mastery levels on the main screen.\nReverse materies share their levels with upright if you have them.\nReaching F10 with the mod upright gives 1 Mastery Point.\n If it's active in reverse, you'll get 2, and if it's ultra, you'll get 4.\nEasy mods don't count for mastery points.\nCurrent maximal mastery level is 10."
+    scene.widgetList.masterhint:reset()
 
     -- Full stats
     GC.ucs_move(635, 500)
@@ -546,7 +556,7 @@ function RefreshProfile()
         { k = "Zenith Level",  v = { scoreColor,(level)}, x = 26, y = 158, d = 200},
         { k = "Achievements", v = { scoreColor, MATH.floor((7500 * norm(MATH.icLerp(0, crProgress.achvAll, crProgress.achvGet), 2.6)))+(crProgress.achvGet * 5)+MATH.floor(((crProgress.achvGet * crProgress.achvGet)/(20+(crProgress.achvGet/100)))+(wreaths * 37)) }, x = 26, y = 183, d = 200 },
         { k = "Badges",  v = { scoreColor, (343*STAT.badges) },                                                     x = 26, y = 208, d = 200 },
-        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva) + (STAT.totalMultiva) + (STAT.totalExista)) }, x = 26, y = 233, d = 200 },
+        { k = "Speed Entries",    v = { scoreColor, MATH.floor((STAT.totalGiga * 0.2) + (STAT.totalTera * 0.3)+ (STAT.totalPeta * 0.4)+ (STAT.totalExa * 0.5) + (STAT.totalZeta * 0.6) + (STAT.totalYotta * 0.7) + (STAT.totalRonna * 0.8) + (STAT.totalQuetta * 0.9) + (STAT.totalDeka) + (STAT.totalTermina) + (STAT.totalLumina) + (STAT.totalSingula) + (STAT.totalUniva) + (STAT.totalMultiva) + (STAT.totalExista) + (STAT.totalChroma)) }, x = 26, y = 233, d = 200 },
         { k = "Total Quests",  v = { scoreColor, floor(STAT.totalQuest / 50) },                     x = 26, y = 258, d = 200 },
         { k = "Total Flips",   v = { scoreColor, MATH.floor(STAT.totalFlip / 100) },                      x = 26, y = 283, d = 200 },
         { k = "Total Perfects",   v = { scoreColor, MATH.floor(STAT.totalPerfect / 50) },                      x = 26, y = 308, d = 200 },
@@ -555,7 +565,7 @@ function RefreshProfile()
         { k = "Total Floors",    v = { scoreColor, MATH.floor(STAT.totalFloor / 5) },                      x = 26, y = 383, d = 200 },
         { k = "Total Attack",    v = { scoreColor, MATH.floor(STAT.totalAttack / 200) },                      x = 26, y = 408, d = 200 },
         { k = "Maximal Floor",    v = { scoreColor, MATH.floor(STAT.maxFloor * 100) },                      x = 26, y = 433, d = 200 },
-        { k = aCR>0 and "Ascension" or "",    v = { scoreColor, aCR>0 and aCR or "" },                      x = 26, y = 458, d = 200 },
+        { k = aCR>0 and "Master Level" or "",    v = { scoreColor, aCR>0 and aCR or "" },                      x = 26, y = 458, d = 200 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
@@ -565,7 +575,7 @@ function RefreshProfile()
     GC.ucs_back()
     GC.ucs_move(340, 640)
     GC.setColor(boxColor)
-    GC.rectangle('fill', 0, 0, 254, 390)
+    GC.rectangle('fill', 0, 0, 254, 420)
     FONT.set(30)
     GC.setColor(lblColor)
     GC.print("SPEED ENTRIES", 7, 2, 0, .8)
@@ -584,11 +594,91 @@ function RefreshProfile()
         { k = "Univaspeed",  v = { scoreColor, STAT.totalUniva }, x = 26, y = 308, d = 160 },
         { k = "Multivaspeed",  v = { scoreColor, STAT.totalMultiva }, x = 26, y = 333, d = 160 },
         { k = "Existaspeed",  v = { scoreColor, STAT.totalExista }, x = 26, y = 358, d = 160 },
+        { k = "Chromaspeed",  v = { scoreColor, STAT.totalChroma }, x = 26, y = 383, d = 160 },
     } do
         GC.setColor(textColor)
         GC.print(l.k, l.x, l.y, 0, .75)
         GC.setColor(1, 1, 1)
         GC.print(l.v, l.x + l.d, l.y, 0, .75)
+    end
+    GC.ucs_back()
+    GC.ucs_move(600, 640)
+    GC.setColor(boxColor)
+    GC.rectangle('fill', 0, 0, 280, 260)
+    GC.setColor(COLOR.D)
+    GC.rectangle('fill', 240, 35, 280, 25*9)
+    GC.setColor(COLOR.lD)
+    GC.rectangle('fill', 520, 35, 40, 25*9)
+    GC.setColor(COLOR.dY)
+    GC.rectangle('fill', 240, 35, (STAT.heaven["EX"] % 100) *2.8, 25)
+    GC.setColor(COLOR.M)
+    GC.rectangle('fill', 240, 60, (STAT.heaven["NH"] % 100) *2.8, 25)
+    GC.setColor(COLOR.O)
+    GC.rectangle('fill', 240, 85, (STAT.heaven["MS"] % 100) *2.8, 25)
+    GC.setColor(COLOR.Y)
+    GC.rectangle('fill', 240, 110, (STAT.heaven["GV"] % 100) *2.8, 25)
+    GC.setColor(COLOR.R)
+    GC.rectangle('fill', 240, 135, (STAT.heaven["VL"] % 100) *2.8, 25)
+    GC.setColor(COLOR.S)
+    GC.rectangle('fill', 240, 160, (STAT.heaven["DH"] % 100) *2.8, 25)
+    GC.setColor(COLOR.P)
+    GC.rectangle('fill', 240, 185, (STAT.heaven["IN"] % 100) *2.8, 25)
+    GC.setColor(COLOR.G)
+    GC.rectangle('fill', 240, 210, (STAT.heaven["AS"] % 100) *2.8, 25)
+    GC.setColor(COLOR.W)
+    GC.rectangle('fill', 240, 235, (STAT.heaven["DP"] % 100) *2.8, 25)
+GC.setColor(COLOR.L)
+    GC.rectangle('fill', 240+(28*1), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*2), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*3), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*4), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*5), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*6), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*7), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*8), 35, 1, 25*9)
+    GC.rectangle('fill', 240+(28*9), 35, 1, 25*9)
+    GC.rectangle('fill', 240, 35+(25*1), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*2), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*3), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*4), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*5), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*6), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*7), 280, 1)
+    GC.rectangle('fill', 240, 35+(25*8), 280, 1)
+    FONT.set(30)
+    GC.setColor(lblColor)
+    GC.print("MOD MASTERY (1Lv/100)", 7, 2, 0, .8)
+    for _, l in next, {
+        { k = "Expert",    v = { scoreColor, STAT.heaven["EX"] }, x = 26,  y = 33, d = 160 },
+        { k = "No Hold",  v = { scoreColor, STAT.heaven["NH"] },  x = 26,  y = 58, d = 160 },
+        { k = "Messiness",    v = { scoreColor, STAT.heaven["MS"]         },  x = 26,  y = 83, d = 160 },
+        { k = "Gravity",    v = { scoreColor, STAT.heaven["GV"] },  x = 26, y = 108, d = 160 },
+        { k = "Volatile",   v = { scoreColor, STAT.heaven["VL"] },    x = 26, y = 133, d = 160 },
+        { k = "Double Hole", v = { scoreColor, STAT.heaven["DH"] }, x = 26, y = 158, d = 160 },
+        { k = "Invisible",  v = { scoreColor, STAT.heaven["IN"] }, x = 26, y = 183, d = 160 },
+        { k = "All-Spin",  v = { scoreColor, STAT.heaven["AS"] }, x = 26, y = 208, d = 160 },
+        { k = "Duo",  v = { scoreColor, STAT.heaven["DP"] }, x = 26, y = 233, d = 160 },
+    } do
+        GC.setColor(textColor)
+        GC.print(l.k, l.x, l.y, 0, .75)
+        GC.setColor(1, 1, 1)
+        GC.print(l.v, l.x + l.d, l.y, 0, .75)
+    end
+    for _, l in next, {
+        { k = "",    v = { COLOR.lO, math.floor(STAT.heaven["EX"]/100) }, x = 26,  y = 33, d = 500 },
+        { k = "",  v = { COLOR.lM, math.floor(STAT.heaven["NH"]/100) },  x = 26,  y = 58, d = 500 },
+        { k = "",    v = { COLOR.O, math.floor(STAT.heaven["MS"]/100)         },  x = 26,  y = 83, d = 500 },
+        { k = "",    v = { COLOR.lY, math.floor(STAT.heaven["GV"]/100) },  x = 26, y = 108, d = 500 },
+        { k = "",   v = { COLOR.lR, math.floor(STAT.heaven["VL"]/100) },    x = 26, y = 133, d = 500 },
+        { k = "", v = { COLOR.lS, math.floor(STAT.heaven["DH"]/100) }, x = 26, y = 158, d = 500 },
+        { k = "",  v = { COLOR.lP, math.floor(STAT.heaven["IN"]/100) }, x = 26, y = 183, d = 500 },
+        { k = "",  v = { COLOR.lG, math.floor(STAT.heaven["AS"]/100) }, x = 26, y = 208, d = 500 },
+        { k = "",  v = { COLOR.lW, math.floor(STAT.heaven["DP"]/100) }, x = 26, y = 233, d = 500 },
+    } do
+        GC.setColor(textColor)
+        --GC.print(l.k, l.x, l.y, 0, .75)
+        GC.setColor(1, 1, 1)
+        GC.print(l.v, l.x + l.d, l.y-6, 0, 1)
     end
     GC.ucs_back()
 
@@ -681,11 +771,21 @@ scene.widgetList = {
     },
     WIDGET.new {
         name = 'achbonus', type = 'hint',
-        pos = { .5, .5 }, x = -240, y = -30, w = 180, h = 35,
+        pos = { .5, .5 }, x = -640, y = 300, w = 160, h = 35,
         color = COLOR.Y,
         labelPos = 'topRight',
         labelDist = 2,
         text = "AP Bonus",
+        floatFontSize = 30,
+        floatText = "", -- Dynamic text
+    },
+    WIDGET.new {
+        name = 'masterhint', type = 'hint',
+        pos = { .5, .5 }, x = -640, y = 340, w = 160, h = 35,
+        color = COLOR.LI,
+        labelPos = 'topRight',
+        labelDist = 2,
+        text = "Mod Mastery",
         floatFontSize = 30,
         floatText = "", -- Dynamic text
     },

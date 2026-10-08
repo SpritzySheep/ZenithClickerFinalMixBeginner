@@ -271,6 +271,7 @@ addRank(-400, 3450, { COLOR.HEX '00FFFF' }, "ETA", "1,100,000 CE")
 addRank(0, 3450, { COLOR.HEX '0080FF' }, "THETA", "1,200,000 CE")
 addRank(400, 3450, { COLOR.HEX '0000FF' }, "IOTA", "1,300,000 CE")
 addRank(-400, 3550, { COLOR.HEX '8000FF' }, "KAPPA", "1,400,000 CE")
+addRank(0, 3550, { COLOR.HEX 'FF00FF' }, "LAMBDA", "1,500,000 CE")
 local timer
 function scene.load()
     MSG.clear()

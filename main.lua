@@ -50,6 +50,16 @@ TEXTURE = {
     star3 = assets 'double_crystal-dark.png',
     star4 = assets 'double_crystal.png',
     star5 = assets 'double_crystal-fire.png',
+    master1 = assets 'mastery/master_01.png',
+    master2 = assets 'mastery/master_02.png',
+    master3 = assets 'mastery/master_03.png',
+    master4 = assets 'mastery/master_04.png',
+    master5 = assets 'mastery/master_05.png',
+    master6 = assets 'mastery/master_06.png',
+    master7 = assets 'mastery/master_07.png',
+    master8 = assets 'mastery/master_08.png',
+    master9 = assets 'mastery/master_09.png',
+    master10 = assets 'mastery/master_10.png',
     panel = {
         glass_a = assets 'panel/glass-a.png',
         glass_b = assets 'panel/glass-b.png',
@@ -292,6 +302,8 @@ TEXTURE = {
             assets 'rank/iota_06.png', assets 'rank/iota_07.png', assets 'rank/iota_08.png', assets 'rank/iota_09.png', assets 'rank/iota_10.png',
             assets 'rank/kappa_01.png', assets 'rank/kappa_02.png', assets 'rank/kappa_03.png', assets 'rank/kappa_04.png', assets 'rank/kappa_05.png',
             assets 'rank/kappa_06.png', assets 'rank/kappa_07.png', assets 'rank/kappa_08.png', assets 'rank/kappa_09.png', assets 'rank/kappa_10.png',
+            assets 'rank/lambda_01.png', assets 'rank/lambda_02.png', assets 'rank/lambda_03.png', assets 'rank/lambda_04.png', assets 'rank/lambda_05.png',
+            assets 'rank/lambda_06.png', assets 'rank/lambda_07.png', assets 'rank/lambda_08.png', assets 'rank/lambda_09.png', assets 'rank/lambda_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -614,6 +626,7 @@ TEXTURE = {
             Univa = aq(3, 15),
             Multiva = aq(3, 16),
             Exista = aq(26, 2),
+            Chroma = aq(17, 6),
 
             piece_z = aq(19, 1),
             piece_l = aq(20, 1),
@@ -671,6 +684,9 @@ TEXTURE = {
             powerleveling35 = aq(23, 4),
             powerleveling36 = aq(23, 4),
             powerleveling37 = aq(18, 5),
+            powerleveling38 = aq(27, 5),
+            powerleveling39 = aq(20, 6),
+            powerleveling40 = aq(24, 6),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -748,6 +764,13 @@ TEXTURE = {
             ASDHGVVL = aq(24, 4), DHDPGVVL = aq(20, 5), ASGVINVL = aq(23, 5), DPGVINVL = aq(11, 9), ASDPGVVL = aq(13, 12),
             ASDHGVIN = aq(3, 10), DHDPGVIN = aq(17, 5), ASDHDPGV = aq(11, 12), ASDPGVIN = aq(24, 5), ASDHINVL = aq(6, 5),
             DHDPINVL = aq(13, 4), ASDHDPVL = aq(25, 5), ASDPINVL = aq(14, 5), ASDHDPIN = aq(9, 4),
+
+            MSNHrEX = aq(11, 16), GVNHrEX = aq(26, 5), NHVLrEX = aq(28, 5), DHNHrEX = aq(17, 1), INNHrEX = aq(29, 5),
+            ASNHrEX = aq(6, 14), DPNHrEX = aq(30, 5), GVMSrEX = aq(31, 5), MSVLrEX = aq(32, 5), DHMSrEX = aq(18, 6),
+            INMSrEX = aq(15, 16), ASMSrEX = aq(1, 15), DPMSrEX = aq(19, 6), GVVLrEX = aq(15, 15), DHGVrEX = aq(16, 14),
+            GVINrEX = aq(21, 6), ASGVrEX = aq(4, 15), DPGVrEX = aq(22, 6), DHVLrEX = aq(4, 13), INVLrEX = aq(30, 5),
+            ASVLrEX = aq(14, 7), DPVLrEX = aq(14, 16), DHINrEX = aq(23, 6), ASDHrEX = aq(4, 8), DHDPrEX = aq(15, 2),
+            ASINrEX = aq(14, 6), DPINrEX = aq(11, 14), ASDPrEX = aq(25, 6),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
@@ -966,6 +989,7 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     dcTimer    = GC.newText(FONT.get(30)),
     srTimer    = GC.newText(FONT.get(30)),
     title      = GC.newText(FONT.get(50), "EXPERT GAMEPLAY"),
+    notitle      = GC.newText(FONT.get(50), "GAMEPLAY"),
     load       = GC.newText(FONT.get(50), "LOAD"),
     ghp        = GC.newText(FONT.get(50)),
     ghp2       = GC.newText(FONT.get(50)),
@@ -1071,6 +1095,12 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
         COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
         COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
     }),
+    chromaspeed   = GC.newText(FONT.get(50), {
+        COLOR.R, "C", COLOR.O, "H", COLOR.Y, "R",
+        COLOR.K, "O", COLOR.G, "M", 
+        COLOR.C, "A", COLOR.S, "S", COLOR.B, "P",
+        COLOR.V, "E", COLOR.M, "E", COLOR.W, "D",
+    }),
     gigatime   = GC.newText(FONT.get(50)),
     floorTime  = GC.newText(FONT.get(30)),
     rankTime   = GC.newText(FONT.get(30)),
@@ -1122,6 +1152,7 @@ CONF = {
     lyrics = false,
     shortScale = true,
     noAlert = false,
+    masterIcon = true,
 }
 -- Create BEST, STAT, ACHV tables,
 -- only called when launching and on resetall
@@ -1183,6 +1214,7 @@ STAT = {
     totalUniva = 0,
     totalMultiva = 0,
     totalExista = 0,
+    totalChroma = 0,
     totalF10 = 0,
     totalKO = 0,
     totalRevive = 0,
@@ -1579,7 +1611,6 @@ local normalHelp = {
 local ultraHelp = {
     COLOR.LL, "Welcome to ", COLOR.LR, "Zenith Clicker: ", COLOR.R, "Ultra Reverse", COLOR.LL, ". Activate a reversed mod to start ", COLOR.lR, "suffering.\n",
     COLOR.LL, "The higher you go in the tower, the more likely you are to ", COLOR.R, "die.\n",
-    COLOR.LL, "There are no more achievements, and ", COLOR.lR, "you are not expected to go very high up.\n",
     COLOR.R, "Give Up: ", COLOR.LL, "ESC    ", COLOR.R, "Forfeit: ", COLOR.LL, "ESC    ", COLOR.R, "Quit: ", COLOR.LL, "ESC"
 }
 function RefreshHelpText()

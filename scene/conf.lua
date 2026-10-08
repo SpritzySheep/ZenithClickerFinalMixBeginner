@@ -2312,6 +2312,21 @@ local page5 = {
             SaveStat()
         end,
     },
+    WIDGET.new { -- Master Level Icon
+        name = 'masterIcon', type = 'checkBox',
+        fillColor = COLOR.dV,
+        frameColor = COLOR.V,
+        textColor = COLOR.lV, text = "M-LEVEL ICONS",
+        x = baseX + 350, y = baseY + 180,
+        disp = function() return CONF.masterIcon end,
+        code = function()
+            MSG.clear()
+                CONF.masterIcon = not CONF.masterIcon
+                MSG('dark', (CONF.masterIcon and "MASTERY LEVEL ICONS SET" or "MASTERY LEVEL ICONS UNSET"))
+                SFX.play(CONF.masterIcon and 'social_online' or 'social_offline')
+            SaveStat()
+        end,
+    },
     WIDGET.new { -- Z
         name = 'piece_z', type = 'checkBox',
         fillColor = COLOR.dR,

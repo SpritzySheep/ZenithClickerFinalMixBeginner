@@ -715,6 +715,7 @@ function scene.update(dt)
         SubmitAchv('Univa', STAT.totalUniva,true,true)
         SubmitAchv('Multiva', STAT.totalMultiva,true,true)
         SubmitAchv('Exista', STAT.totalExista,true,true)
+        SubmitAchv('Chroma', STAT.totalChroma,true,true)
         achvTime = 0
     end
     comboTimer = comboTimer - dt
@@ -735,7 +736,7 @@ function scene.update(dt)
         --GAME.height = max(GAME.height - dt * (f * (f + 1) + 10) * (M.VL >= 0 and M.VL + 1 or 1), 0)
     end
     y = (.55-MATH.max(0,((level-2e5)/5e7)))
-    level = MATH.floor((STAT.peakZP/500)^y+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
+    level = MATH.floor((STAT.peakZP/500)^.55+(STAT.peakZP/(5000+(MATH.max(0,(STAT.peakZP-4e6))/5000)))+1)
     STAT.level = level
     GAME.update(dt)
     GAME.lifeShow = expApproach(GAME.lifeShow, GAME.life, dt * 10)
@@ -1259,6 +1260,7 @@ local hyperText = {
     TEXTS.univaspeed,
     TEXTS.multivaspeed,
     TEXTS.existaspeed,
+    TEXTS.chromaspeed,
 }
 function scene.overDraw()
     local t = love.timer.getTime()
@@ -1327,9 +1329,10 @@ function scene.overDraw()
             "SINGULA",
             "UNIVA",
             "MULTIVA",
-            "EXISTA"
+            "EXISTA",
+            "CHROMA"
             }
-            TEXTS.theA:set(SpeedName[GAME.gspeedlv].."SPEED")
+            TEXTS.theA:set(SpeedName[GAME.gspeedlv])
             if GAME.gigaspeed then
                 gc_setAlpha(1)
                 gc_draw(TEXTS.theA, 580, 390, 0, 1.5, 1.2, w * .5, h * .5)
@@ -1758,7 +1761,7 @@ function scene.overDraw()
 
     
 
-    if GAME.uiHide > 0 and not GAME.invisUI then
+    if GAME.uiHide > 0 and not GAME.invisUI and GAME.playing then
         local h = 100 - GAME.uiHide * 100
         gc_ucs_move(0, h)
 
@@ -2009,7 +2012,9 @@ function scene.overDraw()
             gc_replaceTransform(SCR.xOy_ul)
             local h = TEXTS.title:getHeight()
             gc_setColor(TextColor)
-            if M.EX ~= -1 then
+            if M.EX == 0 then
+                gc_draw(TEXTS.notitle, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
+            elseif M.EX >= 1 then
                 gc_draw(TEXTS.title, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
             elseif GAME.uneasyMode then
                 gc_draw(TEXTS.uneasyTitle, lerp(10, 10, exT), (h / 2 + 2) - d, 0, 1, 1 - 2 * revT, 0, (h / 2 + 2))
