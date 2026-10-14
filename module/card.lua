@@ -60,7 +60,7 @@ end
 local completion = GAME.completion
 local KBIsDown = love.keyboard.isDown
 local function tween_deckPress(t) DeckPress = 26 * (1 - t) end
-local function tween_expertOn(t) GAME.exTimer = M.EX > 0 and t or (1 - t) end
+local function tween_expertOn(t) GAME.exTimer = M.EX ~= 0 and t or (1 - t) end
 local function task_refreshBGM()
     TASK.yieldT(.1)
     RefreshBGM()
@@ -925,6 +925,7 @@ else
                 gc_setColor(r2, g2, b2, a2)
                 gc_draw(activeFrame2, 0, 0, 0, sign(self.kx), 1, frame2W, frame2H)
             end
+            end
         end
         -- Menu UI
         if not playing then
@@ -950,8 +951,9 @@ else
                 [8] = TEXTURE.master8,
                 [9] = TEXTURE.master9,
                 [10] = TEXTURE.master10,
+                [11] = TEXTURE.master11,
             }
-            local maxMaster = 10
+            local maxMaster = 11
             -- Star
             if completion[self.id] > 0 then
                 img = TEXTURE[self.active and (self.id == 'DP' and STAT.clicker and 'star2' or 'star1') or 'star0']
@@ -1000,7 +1002,6 @@ else
                 end
             end
             gc_pop()
-        end
     end
 
     -- Icon cover

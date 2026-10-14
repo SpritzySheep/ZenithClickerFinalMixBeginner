@@ -1401,7 +1401,7 @@ function GAME.startPetaAnim()
     GigaSpeed.isPeta = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopPetaspeed(mode)
@@ -1420,7 +1420,7 @@ function GAME.startExaAnim()
     GigaSpeed.isExa = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopExaspeed(mode)
@@ -1439,7 +1439,7 @@ function GAME.startZetaAnim()
     GigaSpeed.isZeta = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopZetaspeed(mode)
@@ -1458,7 +1458,7 @@ function GAME.startYottaAnim()
     GigaSpeed.isYotta = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopYottaspeed(mode)
@@ -1477,7 +1477,7 @@ function GAME.startRonnaAnim()
     GigaSpeed.isRonna = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopRonnaspeed(mode)
@@ -1496,7 +1496,7 @@ function GAME.startQuettaAnim()
     GigaSpeed.isQuetta = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopQuettaspeed(mode)
@@ -1515,7 +1515,7 @@ function GAME.startDekaAnim()
     GigaSpeed.isDeka = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopDekaspeed(mode)
@@ -1534,7 +1534,7 @@ function GAME.startTerminaAnim()
     GigaSpeed.isTermina = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopTerminaspeed(mode)
@@ -1553,7 +1553,7 @@ function GAME.startLuminaAnim()
     GigaSpeed.isLumina = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopLuminaspeed(mode)
@@ -1572,7 +1572,7 @@ function GAME.startSingulaAnim()
     GigaSpeed.isSingula = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopSingulaspeed(mode)
@@ -1591,7 +1591,7 @@ function GAME.startUnivaAnim()
     GigaSpeed.isUniva = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopUnivaspeed(mode)
@@ -1610,7 +1610,7 @@ function GAME.startMultivaAnim()
     GigaSpeed.isMultiva = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopMultivaspeed(mode)
@@ -1629,7 +1629,7 @@ function GAME.startExistaAnim()
     GigaSpeed.isExista = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.stopExistaspeed(mode)
@@ -1648,7 +1648,7 @@ function GAME.startChromaAnim()
     GigaSpeed.isChromaa = true
     TASK.removeTask_code(GAME.task_gigaspeed)
     TASK.new(GAME.task_gigaspeed)
-    SFX.play('zenith_speedrun_start')
+    --SFX.play('zenith_speedrun_start')
 end
 
 function GAME.readyShuffle(messiness, noSnd)
@@ -4170,6 +4170,7 @@ end
             for k, v in next, M do
                 if GAME.height >= 1650 and v > 0 then
                     STAT.heaven[k] = STAT.heaven[k] + 1
+                    if STAT.MouseGirl then STAT.heaven[k] = STAT.heaven[k] + MATH.floor((MATH.rand(-3.141592,12.5)*v))end
                 end
                 if v > GAME.completion[k] then
                     if GAME.completion[k] == 0 then

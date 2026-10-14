@@ -60,6 +60,7 @@ TEXTURE = {
     master8 = assets 'mastery/master_08.png',
     master9 = assets 'mastery/master_09.png',
     master10 = assets 'mastery/master_10.png',
+    master11 = assets 'mastery/master_11.png',
     panel = {
         glass_a = assets 'panel/glass-a.png',
         glass_b = assets 'panel/glass-b.png',
@@ -304,6 +305,8 @@ TEXTURE = {
             assets 'rank/kappa_06.png', assets 'rank/kappa_07.png', assets 'rank/kappa_08.png', assets 'rank/kappa_09.png', assets 'rank/kappa_10.png',
             assets 'rank/lambda_01.png', assets 'rank/lambda_02.png', assets 'rank/lambda_03.png', assets 'rank/lambda_04.png', assets 'rank/lambda_05.png',
             assets 'rank/lambda_06.png', assets 'rank/lambda_07.png', assets 'rank/lambda_08.png', assets 'rank/lambda_09.png', assets 'rank/lambda_10.png',
+            assets 'rank/mu_01.png', assets 'rank/mu_02.png', assets 'rank/mu_03.png', assets 'rank/mu_04.png', assets 'rank/mu_05.png',
+            assets 'rank/mu_06.png', assets 'rank/mu_07.png', assets 'rank/mu_08.png', assets 'rank/mu_09.png', assets 'rank/mu_10.png',
         },
         badges = (function()
             local list = love.filesystem.getDirectoryItems('assets/badges')
@@ -687,6 +690,7 @@ TEXTURE = {
             powerleveling38 = aq(27, 5),
             powerleveling39 = aq(20, 6),
             powerleveling40 = aq(24, 6),
+            powerleveling41 = aq(17, 7),
 
             EXMSNH = aq(15, 8),
             EXGVNH = aq(3, 10),
@@ -770,7 +774,13 @@ TEXTURE = {
             INMSrEX = aq(15, 16), ASMSrEX = aq(1, 15), DPMSrEX = aq(19, 6), GVVLrEX = aq(15, 15), DHGVrEX = aq(16, 14),
             GVINrEX = aq(21, 6), ASGVrEX = aq(4, 15), DPGVrEX = aq(22, 6), DHVLrEX = aq(4, 13), INVLrEX = aq(30, 5),
             ASVLrEX = aq(14, 7), DPVLrEX = aq(14, 16), DHINrEX = aq(23, 6), ASDHrEX = aq(4, 8), DHDPrEX = aq(15, 2),
-            ASINrEX = aq(14, 6), DPINrEX = aq(11, 14), ASDPrEX = aq(25, 6),
+            ASINrEX = aq(14, 6), DPINrEX = aq(11, 14), ASDPrEX = aq(25, 6), EXMSrNH = aq(26, 6), EXGVrNH = aq(27, 6),
+            EXVLrNH = aq(12, 14), DHEXrNH = aq(28, 6), EXINrNH = aq(29, 6), ASEXrNH = aq(18, 6), DPEXrNH = aq(13, 15),
+            GVMSrNH = aq(30, 6), MSVLrNH = aq(10, 2), DHMSrNH = aq(13, 7), INMSrNH = aq(17, 1), ASMSrNH = aq(9, 7),
+            DPMSrNH = aq(4, 14), GVVLrNH = aq(21, 6), DHGVrNH = aq(4, 15), GVINrNH = aq(13, 14), ASGVrNH = aq(7, 15),
+            DPGVrNH = aq(2, 15), DHVLrNH = aq(31, 6), INVLrNH = aq(14, 14), ASVLrNH = aq(32, 6), DPVLrNH = aq(7, 14),
+            DHINrNH = aq(29, 6), ASDHrNH = aq(18, 7), DHDPrNH = aq(5, 16), ASINrNH = aq(19, 7), DPINrNH = aq(1, 16),
+            ASDPrNH = aq(10, 14),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',

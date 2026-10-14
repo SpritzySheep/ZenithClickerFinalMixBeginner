@@ -152,7 +152,8 @@ addMajorCredit(0, 130, { COLOR.HEX '00FF00' }, "Trevor Smithy", "ZCEM Dev")
 
 addText({ COLOR.O, "SPECIAL THANKS" }, 0, 200, .3)
 
-addMajorCredit(0, 220, { COLOR.HEX '94B1FF' }, "Rodinia ", "TETR.IO RANKS 2.0 Font")
+addMajorCredit(-150, 220, { COLOR.HEX '94B1FF' }, "Rodinia", "TETR.IO RANKS 2.0 Font")
+addMajorCredit(150, 220, { COLOR.HEX 'B1EEFF' }, "F1e308", "Community Combo Names Reference")
 
 -- addSection(1650)
 -- addText({ COLOR.O, "CHAKRA ESCENCE BREAKDOWN" }, 0, 20, 1)
@@ -272,6 +273,7 @@ addRank(0, 3450, { COLOR.HEX '0080FF' }, "THETA", "1,200,000 CE")
 addRank(400, 3450, { COLOR.HEX '0000FF' }, "IOTA", "1,300,000 CE")
 addRank(-400, 3550, { COLOR.HEX '8000FF' }, "KAPPA", "1,400,000 CE")
 addRank(0, 3550, { COLOR.HEX 'FF00FF' }, "LAMBDA", "1,500,000 CE")
+addRank(400, 3550, { COLOR.HEX 'FF0080' }, "MU", "1,600,000 CE")
 local timer
 function scene.load()
     MSG.clear()

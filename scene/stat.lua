@@ -20,6 +20,7 @@ local level = 0
 local refreshed = false
 local y = 0
 local bpage = 1
+local mLvMax = 11
 local crProgress = {
     f10 = 0,
     sr = 0,
@@ -123,9 +124,10 @@ local function calculateRating()
     local Mid = {[0]="","EX","NH","MS","GV","VL","DH","IN","AS","DP"}
     local crBoost = {
         [0]=0,10000,9000,8190,7534,7081,6726,6456,6262,6136,6074,
+        6019,
     }
     for i = 1, 9 do
-        for j = 1, 10 do
+        for j = 1, mLvMax do
             if STAT.heaven[Mid[i]] >= j*100 then 
                 aCR = aCR + crBoost[j]
                 asCR = asCR + crBoost[j]
@@ -185,8 +187,10 @@ local function calculateRating()
     if cr >= 1500e3 then IssueSecret('infinity_11', true) end
     if cr >= 1550e3 then IssueSecret('infinity_12', true) end
     if cr >= 1600e3 then IssueSecret('infinity_13', true) end
+    if cr >= 1650e3 then IssueSecret('infinity_14', true) end
+    if cr >= 1700e3 then IssueSecret('infinity_15', true) end
 
-    local levelBadgeCount = 52
+    local levelBadgeCount = 56
     for lev = 1, levelBadgeCount do
         if level >= (lev*5000) then IssueSecret('Lv'..(lev*5000), true) end
     end
@@ -419,7 +423,7 @@ function RefreshProfile()
         MATH.clamp(math.ceil(rating / 2000), 1, 75)
     local rankIcon = TEXTURE.stat.rank[rank]
     if rating >= 120000 then 
-        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 148)
+        rank=MATH.clamp((math.ceil(rating / 10000)-12), 1, 158)
         rankIcon = TEXTURE.stat.upperRank[rank]
      end
     GC.setColor(1, 1, 1)
@@ -513,7 +517,7 @@ function RefreshProfile()
     scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently INACTIVE. You can toggle it in config."
     if STAT.ExtraSpeed then scene.widgetList.achbonus.floatText = "AP from achievements increases starting Speed Level by " .. (MATH.floor(STAT.achv/50)) .. ". \nThis bonus is currently ACTIVE. You can toggle it in config." end
     scene.widgetList.achbonus:reset()
-    scene.widgetList.masterhint.floatText = "After mastering the upright version of a mod,\ncontinue reaching F10 with that mod active to progress the mastery!\nEvery 100 Master Points on a mod will increase your mastery level,\nwhich will give you a good amount of extra CE.\nYou can view your current mastery levels on the main screen.\nReverse materies share their levels with upright if you have them.\nReaching F10 with the mod upright gives 1 Mastery Point.\n If it's active in reverse, you'll get 2, and if it's ultra, you'll get 4.\nEasy mods don't count for mastery points.\nCurrent maximal mastery level is 10."
+    scene.widgetList.masterhint.floatText = "After mastering the upright version of a mod,\ncontinue reaching F10 with that mod active to progress the mastery!\nEvery 100 Master Points on a mod will increase your mastery level,\nwhich will give you a good amount of extra CE.\nYou can view your current mastery levels on the main screen.\nReverse materies share their levels with upright if you have them.\nReaching F10 with the mod upright gives 1 Mastery Point.\n If it's active in reverse, you'll get 2, and if it's ultra, you'll get 4.\nEasy mods don't count for mastery points.\nCurrent maximal mastery level is "..mLvMax.."."
     scene.widgetList.masterhint:reset()
 
     -- Full stats
@@ -609,24 +613,24 @@ function RefreshProfile()
     GC.rectangle('fill', 240, 35, 280, 25*9)
     GC.setColor(COLOR.lD)
     GC.rectangle('fill', 520, 35, 40, 25*9)
-    GC.setColor(COLOR.dY)
-    GC.rectangle('fill', 240, 35, (STAT.heaven["EX"] % 100) *2.8, 25)
-    GC.setColor(COLOR.M)
-    GC.rectangle('fill', 240, 60, (STAT.heaven["NH"] % 100) *2.8, 25)
-    GC.setColor(COLOR.O)
-    GC.rectangle('fill', 240, 85, (STAT.heaven["MS"] % 100) *2.8, 25)
-    GC.setColor(COLOR.Y)
-    GC.rectangle('fill', 240, 110, (STAT.heaven["GV"] % 100) *2.8, 25)
-    GC.setColor(COLOR.R)
-    GC.rectangle('fill', 240, 135, (STAT.heaven["VL"] % 100) *2.8, 25)
-    GC.setColor(COLOR.S)
-    GC.rectangle('fill', 240, 160, (STAT.heaven["DH"] % 100) *2.8, 25)
-    GC.setColor(COLOR.P)
-    GC.rectangle('fill', 240, 185, (STAT.heaven["IN"] % 100) *2.8, 25)
-    GC.setColor(COLOR.G)
-    GC.rectangle('fill', 240, 210, (STAT.heaven["AS"] % 100) *2.8, 25)
-    GC.setColor(COLOR.W)
-    GC.rectangle('fill', 240, 235, (STAT.heaven["DP"] % 100) *2.8, 25)
+    GC.setColor(STAT.heaven["EX"]<(mLvMax*100) and COLOR.dY or COLOR.L)
+    GC.rectangle('fill', 240, 35,STAT.heaven["EX"]<(mLvMax*100) and ((STAT.heaven["EX"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["NH"]<(mLvMax*100) and COLOR.M or COLOR.L)
+    GC.rectangle('fill', 240, 60, STAT.heaven["NH"]<(mLvMax*100) and ((STAT.heaven["NH"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["MS"]<(mLvMax*100) and COLOR.O or COLOR.L)
+    GC.rectangle('fill', 240, 85, STAT.heaven["MS"]<(mLvMax*100) and ((STAT.heaven["MS"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["GV"]<(mLvMax*100) and COLOR.Y or COLOR.L)
+    GC.rectangle('fill', 240, 110, STAT.heaven["GV"]<(mLvMax*100) and ((STAT.heaven["GV"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["VL"]<(mLvMax*100) and COLOR.R or COLOR.L)
+    GC.rectangle('fill', 240, 135, STAT.heaven["VL"]<(mLvMax*100) and ((STAT.heaven["VL"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["DH"]<(mLvMax*100) and COLOR.S or COLOR.L)
+    GC.rectangle('fill', 240, 160, STAT.heaven["DH"]<(mLvMax*100) and ((STAT.heaven["DH"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["IN"]<(mLvMax*100) and COLOR.P or COLOR.L)
+    GC.rectangle('fill', 240, 185, STAT.heaven["IN"]<(mLvMax*100) and ((STAT.heaven["IN"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["AS"]<(mLvMax*100) and COLOR.G or COLOR.L)
+    GC.rectangle('fill', 240, 210, STAT.heaven["AS"]<(mLvMax*100) and ((STAT.heaven["AS"] % 100) *2.8) or 280, 25)
+    GC.setColor(STAT.heaven["DP"]<(mLvMax*100) and COLOR.W or COLOR.L)
+    GC.rectangle('fill', 240, 235, STAT.heaven["DP"]<(mLvMax*100) and ((STAT.heaven["DP"] % 100) *2.8) or 280, 25)
 GC.setColor(COLOR.L)
     GC.rectangle('fill', 240+(28*1), 35, 1, 25*9)
     GC.rectangle('fill', 240+(28*2), 35, 1, 25*9)
@@ -665,15 +669,15 @@ GC.setColor(COLOR.L)
         GC.print(l.v, l.x + l.d, l.y, 0, .75)
     end
     for _, l in next, {
-        { k = "",    v = { COLOR.lO, math.floor(STAT.heaven["EX"]/100) }, x = 26,  y = 33, d = 500 },
-        { k = "",  v = { COLOR.lM, math.floor(STAT.heaven["NH"]/100) },  x = 26,  y = 58, d = 500 },
-        { k = "",    v = { COLOR.O, math.floor(STAT.heaven["MS"]/100)         },  x = 26,  y = 83, d = 500 },
-        { k = "",    v = { COLOR.lY, math.floor(STAT.heaven["GV"]/100) },  x = 26, y = 108, d = 500 },
-        { k = "",   v = { COLOR.lR, math.floor(STAT.heaven["VL"]/100) },    x = 26, y = 133, d = 500 },
-        { k = "", v = { COLOR.lS, math.floor(STAT.heaven["DH"]/100) }, x = 26, y = 158, d = 500 },
-        { k = "",  v = { COLOR.lP, math.floor(STAT.heaven["IN"]/100) }, x = 26, y = 183, d = 500 },
-        { k = "",  v = { COLOR.lG, math.floor(STAT.heaven["AS"]/100) }, x = 26, y = 208, d = 500 },
-        { k = "",  v = { COLOR.lW, math.floor(STAT.heaven["DP"]/100) }, x = 26, y = 233, d = 500 },
+        { k = "",    v = { COLOR.lO, STAT.heaven["EX"] < (mLvMax*100) and math.floor(STAT.heaven["EX"]/100) or mLvMax }, x = 26,  y = 33, d = 500 },
+        { k = "",  v = { COLOR.lM, STAT.heaven["NH"] < (mLvMax*100) and math.floor(STAT.heaven["NH"]/100) or mLvMax },  x = 26,  y = 58, d = 500 },
+        { k = "",    v = { COLOR.O, STAT.heaven["MS"] < (mLvMax*100) and math.floor(STAT.heaven["MS"]/100) or mLvMax         },  x = 26,  y = 83, d = 500 },
+        { k = "",    v = { COLOR.lY, STAT.heaven["GV"] < (mLvMax*100) and math.floor(STAT.heaven["GV"]/100) or mLvMax },  x = 26, y = 108, d = 500 },
+        { k = "",   v = { COLOR.lR, STAT.heaven["VL"] < (mLvMax*100) and math.floor(STAT.heaven["VL"]/100) or mLvMax },    x = 26, y = 133, d = 500 },
+        { k = "", v = { COLOR.lS, STAT.heaven["DH"] < (mLvMax*100) and math.floor(STAT.heaven["DH"]/100) or mLvMax }, x = 26, y = 158, d = 500 },
+        { k = "",  v = { COLOR.lP, STAT.heaven["IN"] < (mLvMax*100) and math.floor(STAT.heaven["IN"]/100) or mLvMax }, x = 26, y = 183, d = 500 },
+        { k = "",  v = { COLOR.lG, STAT.heaven["AS"] < (mLvMax*100) and math.floor(STAT.heaven["AS"]/100) or mLvMax }, x = 26, y = 208, d = 500 },
+        { k = "",  v = { COLOR.lW, STAT.heaven["DP"] < (mLvMax*100) and math.floor(STAT.heaven["DP"]/100) or mLvMax }, x = 26, y = 233, d = 500 },
     } do
         GC.setColor(textColor)
         --GC.print(l.k, l.x, l.y, 0, .75)
